@@ -182,7 +182,7 @@
             <div class="panel urate-panel row" style="border:1px solid #efefef;padding:10px;margin:10px;border-radius: 25px;">
                 <div class="col-lg-12">	
 					<div class="navbar-left" style="padding-left:10px;">
-					  <h4 class="title-periode1" style="font-weight: bold;">Data EPG</h4>
+					  <h4 class="title-periode1" style="font-weight: bold;">Data EPG Weekly</h4>
 					</div>
 
 				</div>
