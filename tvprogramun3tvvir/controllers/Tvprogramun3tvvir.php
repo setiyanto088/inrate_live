@@ -2763,8 +2763,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
 		 //ob_end_clean();
 		
-		//$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel_growth.xls');
-		$objWriter->save('/var/www/html/tmp_doc/Audience_by_channel_growth.xls');
+		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel_growth.xls');
 
 	  
 		//var_dump($data_ch);die;  
