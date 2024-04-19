@@ -2129,23 +2129,16 @@ class Tvprogramun3tvvir extends JA_Controller {
 		}		
 		$data['prime'] = $prime;
 		$data['nprime'] = $nprime;
-		//var_dump($html);die;
 		
 		$data['drag'] = $html;
 		
 		$data['channels'] = $this->tvprogramun_model->list_spot_by_program_all_bar("channel_name",$where,$periode,$pilihaudiencebar,"0","True"); 
 		
 		
-		
 		$data['weekdt'] = $this->tvprogramun_model->get_curr_week(date("Y-m-d"));
 		$data['monthdt'] = $this->tvprogramun_model->get_curr_month(date("Y"));
 		
-		//$curr_week = $cw[0]['WK'];
-		
-		//print_r($data['monthdt']);die;
-		
-		//print_r($data['channels'][1]);die;
-
+		$data['first_date'] = $data['weekdt'][0]['START_DATE'];
 		$query_qr = "SELECT CHN.CHANNEL CHANNEL,";
 		$week_in = "";
 		$join_left = "";
@@ -2166,10 +2159,10 @@ class Tvprogramun3tvvir extends JA_Controller {
 			";
 			
 			$th_tb = $th_tb."<th >Week ".$ri." <br>".$wkwk['PER']."</th>";
-			
+			$data['end_date'] = $wkwk['EMD_DATE'];
 			$ri++;
 		}
-		
+				
 		$week_in = substr($week_in, 0, -1);
 		
 		$ri_now = $ri - 1;

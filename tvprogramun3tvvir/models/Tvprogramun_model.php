@@ -120,7 +120,7 @@ class Tvprogramun_model extends CI_Model {
 			$sql = "
 					SELECT * FROM (
 							SELECT *,CONCAT(DATE_FORMAT(START_DATE,'%d%b'),' - ',DATE_FORMAT(EMD_DATE,'%d%b')) AS PER FROM `WEEK_PARAM_DATE`
-							WHERE (`WEEK` BETWEEN WEEK('".$first_day."') AND WEEK('".$this_day."') )
+							WHERE (`WEEK` BETWEEN WEEK('".$first_day."')-1 AND WEEK('".$this_day."')-1 )
 							AND `YEAR` = YEAR('".$this_day."') 
 							AND EMD_DATE <= '".$this_day."'
 							ORDER BY START_DATE DESC
@@ -128,7 +128,6 @@ class Tvprogramun_model extends CI_Model {
 						) A ORDER BY START_DATE ASC
 					";
 					
-		
 		$out		= array();
 		$query		= $this->db->query($sql);
 		$result = $query->result_array();

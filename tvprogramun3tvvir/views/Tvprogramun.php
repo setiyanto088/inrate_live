@@ -278,9 +278,9 @@
 									<th rowspan = "0" scope="row">Rank <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
 									<th rowspan = "0" scope="row">Channel <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
 									<?php $k = 1; foreach($weekdt as $weekdts){ ?>
-									<th scope="row" ><?php echo "Week ".$weekdts['WEEK_MONTH']." <br>".$weekdts['PER']; ?></th>
+									<th scope="row" ><?php echo "Week ".$weekdts['WEEK']." <br>".$weekdts['PER']; ?></th>
 									<?php  $k++; } ?>
-									<th rowspan = "0" scope="row">Growth <?php echo 'W'.$weekdt[2]['WEEK_MONTH'].' Ke W'.$weekdt[3]['WEEK_MONTH']  ?> <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+									<th rowspan = "0" scope="row">Growth <?php echo 'W'.$weekdt[2]['WEEK'].' Ke W'.$weekdt[3]['WEEK']  ?> <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
 									<th rowspan = "0" scope="row">% Growth <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
 								</tr>
 
@@ -1517,7 +1517,7 @@ $(function () {
               }); 
               
               m = moment(new Date());              
-			    $(this).val('<?php echo $first_day; ?>');
+			    $(this).val('<?php echo $first_date; ?>');
           });
 		  
 		  $('#end_date').each(function() {
@@ -1528,7 +1528,7 @@ $(function () {
               });
               
               m = moment(new Date());              
-			    $(this).val('<?php echo $this_day; ?>');
+			    $(this).val('<?php echo $end_date; ?>');
           });
 		  
 		  	
