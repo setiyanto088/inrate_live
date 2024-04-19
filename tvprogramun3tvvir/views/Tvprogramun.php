@@ -3357,6 +3357,17 @@ function audiencebar_view(){
 	var check = check;
 	var profile_chan = $('#profile_chan').val();
 	var channel = $('#channel').val().replace('&',' AND ');
+	
+	if(start_date == '' ){
+		alert('Date Filter Must Not Blank');
+		 throw '';  
+	}
+	
+	if(end_date == '' ){
+		alert('Date Filter Must Not Blank');
+		 throw '';  
+	}
+	
 	 var ch = []; 
 	     /* HANDLE ALL CHANNEL */
           var channel_header = "";                                                                    

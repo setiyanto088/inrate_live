@@ -2514,7 +2514,6 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
 		
 		$data['weekdt'] = $this->tvprogramun_model->get_sel_week($first_day,$this_day);
-		
 			$bulan['01'] = 'January';
 			$bulan['02'] = 'February';
 			$bulan['03'] = 'March';
@@ -2632,18 +2631,8 @@ class Tvprogramun3tvvir extends JA_Controller {
 
 			
 		}
-
-		//echo $query_qr;die; 
-		// die;
-		//print_r($data['weekdt']);die;
 		
-
-		
-			$data['channels'] = $this->tvprogramun_model->list_spot_by_program_all_bar_fix($query_qr); 
-		
-
-		//print_r($data['channels']);die;
-		
+		$data['channels'] = $this->tvprogramun_model->list_spot_by_program_all_bar_fix($query_qr); 
 		
 		$array_channel = array();
 
@@ -2667,7 +2656,6 @@ class Tvprogramun3tvvir extends JA_Controller {
 			array_push($scama, $scam); 
 		}	
 		
-		//print_r($scama);die;
 		$pathx = base_url() . 'assets/urate-frontend-master/';
 		
 		$table_html = '
@@ -2775,7 +2763,8 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
 		 //ob_end_clean();
 		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel_growth.xls');
+		//$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel_growth.xls');
+		$objWriter->save('/var/www/html/tmp_doc/Audience_by_channel_growth.xls');
 
 	  
 		//var_dump($data_ch);die;  
