@@ -80,7 +80,7 @@ class Audience_model extends CI_Model {
 	  $db = $this->clickhouse->db();
 	  
         $sql = "SELECT CHANNEL_NAME_PROG AS CHANNEL_CIM FROM `CHANNEL_PARAM_FINAL` C
-        WHERE C.`F2A_STATUS` IN (0,-99) AND CHANNEL_NAME_PROG LIKE '%".strtoupper($strSearch)."%'  
+        WHERE C.`F2A_STATUS` IN (0,-99) AND UPPER(CHANNEL_NAME_PROG) LIKE '%".strtoupper($strSearch)."%'  
 		GROUP BY CHANNEL_NAME_PROG
         ORDER BY C.`CHANNEL_NAME_PROG`";
 		
