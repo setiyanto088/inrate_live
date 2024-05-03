@@ -48,7 +48,7 @@ class Audience_model extends CI_Model {
 	 
 			$query2 = "
 			 SELECT PROGRAM, START_PROGRAM FROM `M_SUMMARY_AUDIENCE_N_PTV` A
-			JOIN `CHANNEL_PARAM_FINAL` B ON A.CHANNEL = B.`CHANNEL_NAME`
+			JOIN `CHANNEL_PARAM_FINAL` B ON A.CHANNEL = B.`CHANNEL_NAME_PROG`
   			WHERE `DATE` = '".$param['date']."' 
   			AND `CHANNEL_NAME_PROG` = '".$param['channel']."'
 			AND PROGRAM <> 'ALL'
@@ -60,7 +60,7 @@ class Audience_model extends CI_Model {
 			
 			$query2 = "
 			 SELECT PROGRAM, START_PROGRAM FROM `M_SUMMARY_AUDIENCE_N_PTV` A
-			JOIN `CHANNEL_PARAM_FINAL` B ON A.CHANNEL = B.`CHANNEL_NAME`
+			JOIN `CHANNEL_PARAM_FINAL` B ON A.CHANNEL = B.`CHANNEL_NAME_PROG`
   			WHERE `DATE` BETWEEN '".$param['date']."' AND '".$param['dateend']."' 
   			AND `CHANNEL_NAME_PROG` = '".$param['channel']."'
 			AND PROGRAM <> 'ALL'
@@ -69,39 +69,39 @@ class Audience_model extends CI_Model {
 			";           
 			
 		}
+		
         
 		$result = $db->select($query2);
 		return $result->rows();	  
   	} 
 	
 	  public function channelsearch($strSearch,$role){ 
+	  
+	  $db = $this->clickhouse->db();
+	  
         $sql = "SELECT CHANNEL_NAME_PROG AS CHANNEL_CIM FROM `CHANNEL_PARAM_FINAL` C
         WHERE C.`F2A_STATUS` IN (0,-99) AND CHANNEL_NAME_PROG LIKE '%".strtoupper($strSearch)."%'  
 		GROUP BY CHANNEL_NAME_PROG
         ORDER BY C.`CHANNEL_NAME_PROG`";
-        $out		= array();
-        $query		= $this->db->query($sql);
-        $result = $query->result_array();
-        
-        return $result;
+		
+		
+        $result = $db->select($sql);
+		return $result->rows();	  
     } 
 	
 	 public function get_channel(){       
 		
+		 $db = $this->clickhouse->db();
 		
 		
-		
-		$sql = "
+		$query2 = "
 		 SELECT CHANNEL_NAME_PROG AS CHANNEL_CIM, CHANNEL_NAME_PROG AS CHANNEL_CDR FROM `CHANNEL_PARAM_FINAL`
         GROUP BY `CHANNEL_NAME_PROG`
 		order by CHANNEL_NAME_PROG
 		";
         
-        $out		= array();
-        $query		= $this->db->query($sql);
-        $result = $query->result_array();
-        
-        return $result;
+       $result = $db->select($query2);
+		return $result->rows();	  
     }	
 	
 	public function list_profile() {
