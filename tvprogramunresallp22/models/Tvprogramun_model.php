@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+		
 class Tvprogramun_model extends CI_Model {
 	
 	public function __construct()
@@ -3972,7 +3972,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 	
 	public function list_spot_by_program_all2Ps_new_print($field,$wheres,$params,$pilihprog,$profile) {
 		
-		$where = " AND (PROGRAM LIKE '%".$params['searchtxt']."%' OR CHANNEL LIKE '%".$params['searchtxt']."%') ";
+		$where = " AND (UPPER(PROGRAM) LIKE '%".strtoupper($params['searchtxt'])."%' OR UPPER(CHANNEL) LIKE '%".strtoupper($params['searchtxt'])."%') ";
 		
 			if($params['check'] == "True"){
 				$wh_chn = '';
@@ -4534,7 +4534,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 	public function list_spot_by_program_all2Ps_new_avg_alls_print($field,$wheres,$params,$pilihprog,$profile) { 
 		$db = $this->clickhouse->db();
 		
-		$where = " AND (PROGRAM LIKE '%".$params['search_t']."%' OR CHANNEL LIKE '%".$params['search_t']."%') ";
+		$where = " AND (UPPER(PROGRAM) LIKE '%".strtoupper($params['search_t'])."%' OR UPPER(CHANNEL) LIKE '%".strtoupper($params['search_t'])."%') ";
 			
 			if($params['check2'] == "True"){
 				$wh_chn = '';
@@ -4789,7 +4789,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 			IF($params['survey_data'] == '2022'){
 				
 				if($profile == 0 || $profile == 1){
-					$tbl_m = 'CDR_EPG_RES__STEP2_2021';
+					$tbl_m = 'CDR_EPG_RES_STEP2_2021';
 					
 					$prof_qr = "
 					
@@ -4840,7 +4840,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 			}else{
 				
 				if($profile == 0 || $profile == 1){
-					$tbl_m = 'CDR_EPG_RES__STEP2_2021';
+					$tbl_m = 'CDR_EPG_RES_STEP2_2021';
 					
 					$prof_qr = '
 					
@@ -4954,7 +4954,6 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 			
 			}
 		
-		//ECHO $query2;die;
 	
  		  $query2s		= $db->select($query2);
 		  $result2 = $query2s->rows();
@@ -5234,7 +5233,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 			IF($params['survey_data'] == '2022'){
 				
 				if($profile == 0 || $profile == 1){
-					$tbl_m = 'CDR_EPG_RES__STEP2_2021';
+					$tbl_m = 'CDR_EPG_RES_STEP2_2021';
 					
 					$prof_qr = "
 					
@@ -5285,7 +5284,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 			}else{
 				
 				if($profile == 0 || $profile == 1){
-					$tbl_m = 'CDR_EPG_RES__STEP2_2021';
+					$tbl_m = 'CDR_EPG_RES_STEP2_2021';
 					
 					$prof_qr = '
 					
@@ -5401,7 +5400,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 			
 			}
 		
-		//ECHO $query2;DIE;
+		ECHO $query2;DIE;
 	
 		
  		 //$out		= array();
@@ -5703,6 +5702,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 				ORDER BY ".$params['order_column']." ".$params['order_dir']."  
 				";
 		}
+		
 		
 		 $querys		= $db->select($query2);
 		  $result = $querys->rows();
