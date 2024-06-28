@@ -3194,7 +3194,7 @@ function table2_view(){
 	var user_id = $.cookie(window.cookie_prefix + "user_id");
     var token = $.cookie(window.cookie_prefix + "token");   
 	
-	//$('#search_ps').val('');
+	$('#search_ps').val('');
 	var form_data = new FormData();  
 	var type = $('#product_program').val();
 	var field = "Program";
