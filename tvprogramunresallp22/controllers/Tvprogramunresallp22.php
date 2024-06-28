@@ -48,7 +48,7 @@ class Tvprogramunresallp22 extends JA_Controller {
 		$where = '';
 		
 
-			$periode = date_format(date_create($this->Anti_si($this->input->post('end_date',true))),"Y-F");
+			$periode = date_format(date_create($this->Anti_si($this->input->post('start_date',true))),"Y-F");
 
 		  
 		   if( !empty($this->Anti_si($this->input->post('type',true))) ) {
@@ -183,6 +183,7 @@ class Tvprogramunresallp22 extends JA_Controller {
 
 		$date_periode = $this->tvprogramun_model->get_periode_date_n($periode); 
 		
+		
 		if($tipe_filter == 'live'){
 		
 			if($start_date == $date_periode[0]['STR_TGL'] && $end_date == $date_periode[0]['END_TGL'] ){
@@ -239,7 +240,7 @@ class Tvprogramunresallp22 extends JA_Controller {
 		   }
 			 $result["data"] = $data;
 			 
-			
+			print_r($data);die;
 
 			
 		   $this->load->library('excel');
@@ -419,7 +420,6 @@ class Tvprogramunresallp22 extends JA_Controller {
 			$nmonth = date("m", strtotime($periode));
 			$date_periode = $this->tvprogramun_model->get_periode_date_n($params['periode']);
 			
-			//print_r($date_periode);die;
 		
 		
 		

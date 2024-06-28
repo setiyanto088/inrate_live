@@ -5401,7 +5401,6 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 			}
 		
 
-		
  		 //$out		= array();
 		  $querys		= $db->select($query);
 		  $result = $querys->rows();
@@ -5701,7 +5700,6 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 				ORDER BY ".$params['order_column']." ".$params['order_dir']."  
 				";
 		}
-		
 		
 		 $querys		= $db->select($query2);
 		  $result = $querys->rows();
