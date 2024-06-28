@@ -240,7 +240,6 @@ class Tvprogramunresallp22 extends JA_Controller {
 		   }
 			 $result["data"] = $data;
 			 
-			print_r($data);die;
 
 			
 		   $this->load->library('excel');
