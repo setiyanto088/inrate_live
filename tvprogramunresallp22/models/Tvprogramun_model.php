@@ -5629,7 +5629,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 	public function list_spot_by_program_all2Ps_new_alls_print($field,$wheres,$params,$pilihprog,$profile) {
 		$db = $this->clickhouse->db();
 		
-		$where = " AND (A.PROGRAM LIKE '%".$params['search_t']."%' OR A.CHANNEL LIKE '%".$params['search_t']."%') AND TANGGAL = '".$params['periode']."'";
+		$where = " AND (UPPER(A.PROGRAM) LIKE '%".strtoupper($params['search_t'])."%' OR UPPER(A.CHANNEL) LIKE '%".strtoupper($params['search_t'])."%') AND TANGGAL = '".$params['periode']."'";
 			
 			if($params['check2'] == "True"){
 				$wh_chn = "";
