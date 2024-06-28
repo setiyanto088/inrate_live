@@ -5400,8 +5400,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 			
 			}
 		
-		ECHO $query2;DIE;
-	
+
 		
  		 //$out		= array();
 		  $querys		= $db->select($query);
