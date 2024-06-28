@@ -2158,7 +2158,7 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 				
 				$('#program_export').removeAttr('disabled');
 				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_program.xls','Audience_by_program.xls');
+				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_programs.xls','Audience_by_program.xls');
 									
 			}, error: function(obj, response) {
 				console.log('ajax list detail error:' + response);	

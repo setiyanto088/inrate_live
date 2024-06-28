@@ -291,7 +291,7 @@ class Tvprogramunresallp22 extends JA_Controller {
 
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_program.xls');	
+		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_programs.xls');	
 		
 			
 	}
