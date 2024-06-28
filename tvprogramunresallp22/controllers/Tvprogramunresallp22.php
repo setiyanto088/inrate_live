@@ -180,7 +180,7 @@ class Tvprogramunresallp22 extends JA_Controller {
 			}
 			
 
-		$date_periode = $this->tvprogramun_model->get_periode_date($periode); 
+		$date_periode = $this->tvprogramun_model->get_periode_date_n($periode); 
 		
 		if($tipe_filter == 'live'){
 		
