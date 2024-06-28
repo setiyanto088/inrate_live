@@ -180,6 +180,7 @@ class Tvprogramunresallp22 extends JA_Controller {
 			}
 			
 
+
 		$date_periode = $this->tvprogramun_model->get_periode_date_n($periode); 
 		
 		if($tipe_filter == 'live'){
@@ -268,7 +269,6 @@ class Tvprogramunresallp22 extends JA_Controller {
 	   
 	   $it1 = 2;
 		 foreach($data as $frt){
-			
 			
 			 $objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue('A'.$it1, $frt[0])
