@@ -2063,7 +2063,7 @@ GROUP BY CHANNEL ORDER BY CHANNEL
 		  
 	  }
 	  
-	 // ECHO  $sql;DIE;
+	
       
    		 $query2s		= $db->select($sql);
 		$return = $query2s->rows();	
@@ -2150,15 +2150,18 @@ GROUP BY CHANNEL ORDER BY CHANNEL
 	  
 	  if($params['flag'] == 1){
 		  $tbl_r = 'LOGPROOF_RES_ALL_DETAIL_2021';
+		  $tbls = 'REACH_POSTBUY_RES_ALL_P22';
 	  }else{
 		  $tbl_r = 'LOGPROOF_RES_ALL_DETAIL';
+		   $tbls = 'REACH_POSTBUY_RES_ALL_P22';
 	  }
 	  
+	  
 	   IF($l_where_clause_product == ''){
-      
+	  
       $sql 	= "
 	  
-		SELECT,
+		 SELECT 
   		 (SUM(REACH1)/".$params['univ'].")*100 REACH_1,
   		 (SUM(REACH2)/".$params['univ'].")*100 REACH_2,
   		 (SUM(REACH3)/".$params['univ'].")*100 REACH_3,
@@ -2172,9 +2175,9 @@ GROUP BY CHANNEL ORDER BY CHANNEL
 			 IF(COUNT(RESPID) >= 3,toInt32(WEIGHT),0) REACH3,
 			 IF(COUNT(RESPID) >= 7,toInt32(WEIGHT),0) REACH7,
 			 IF(COUNT(RESPID) >= 13,toInt32(WEIGHT),0) REACH13,
-			 IF(COUNT(RESPID) >= 21,toInt32(WEIGHT),0) REACH21 FROM REACH_POSTBUY_RES_P22 A 
+			 IF(COUNT(RESPID) >= 21,toInt32(WEIGHT),0) REACH21 FROM ".$tbls." A
 			 JOIN `PROFILE_CARDNO_RES` B ON A.RESPID = B.CARDNO
-			WHERE B.`ID_PROFILE` = ".$params['profile']."  
+			 WHERE B.`ID_PROFILE` = ".$params['profile']."  
 			 ".$l_where_clause_startdate."
 			 ".$l_where_clause_enddate."
 			 ".$l_where_clause_kategori."
@@ -2183,14 +2186,13 @@ GROUP BY CHANNEL ORDER BY CHANNEL
 			 GROUP BY RESPID, ".$params['kategoriby'].",WEIGHT
   		 ) A 
 
-	  
 	  ";
 	  
-	   }ELSE{
-		   
-		    $sql 	= "
+	  }else{
+		  
+		  $sql 	= "
 	  
-		SELECT 
+		 SELECT 
   		 (SUM(REACH1)/".$params['univ'].")*100 REACH_1,
   		 (SUM(REACH2)/".$params['univ'].")*100 REACH_2,
   		 (SUM(REACH3)/".$params['univ'].")*100 REACH_3,
@@ -2204,9 +2206,9 @@ GROUP BY CHANNEL ORDER BY CHANNEL
 			 IF(COUNT(RESPID) >= 3,toInt32(WEIGHT),0) REACH3,
 			 IF(COUNT(RESPID) >= 7,toInt32(WEIGHT),0) REACH7,
 			 IF(COUNT(RESPID) >= 13,toInt32(WEIGHT),0) REACH13,
-			 IF(COUNT(RESPID) >= 21,toInt32(WEIGHT),0) REACH21 FROM REACH_POSTBUY_RES_PRODUCT_P22 A 
+			 IF(COUNT(RESPID) >= 21,toInt32(WEIGHT),0) REACH21 FROM ".$tbls." A
 			 JOIN `PROFILE_CARDNO_RES` B ON A.RESPID = B.CARDNO
-			WHERE B.`ID_PROFILE` = ".$params['profile']."  
+			 WHERE B.`ID_PROFILE` = ".$params['profile']."  
 			 ".$l_where_clause_startdate."
 			 ".$l_where_clause_enddate."
 			 ".$l_where_clause_kategori."
@@ -2215,12 +2217,12 @@ GROUP BY CHANNEL ORDER BY CHANNEL
 			 ".$l_where_clause_program."
 			 GROUP BY RESPID, PRODUCT,WEIGHT
   		 ) A 
-		 
-		 ";
-		   
-	   }
-	   
-	   //echo $sql;die;
+
+	  ";
+		  
+	  }
+	  
+	  	   
       
    		$query 	=  $db->select($sql);
   		$return = $query->rows();
