@@ -1808,7 +1808,7 @@ $db = $this->clickhouse->db();
           $l_where_clause_channel = " AND CHANNEL IN (".$new_cin.") ";
       }
 	  
-	  if($params['get_product'] == 'null' || $params['kategoriby'] == ''|| $params['get_product'] == 'undefined'){
+	  if($params['get_product'] == 'null' || $params['get_product'] == '' || $params['kategoriby'] == ''|| $params['get_product'] == 'undefined'){
           $l_where_clause_product = ''; 
       }else{
           if($params['get_product'] == "all"){
@@ -1886,9 +1886,7 @@ $db = $this->clickhouse->db();
 	) P
 GROUP BY CHANNEL ORDER BY CHANNEL
   		 ";
-		 
-		 //ECHO $sql2;DIE;
-   		
+		    		
 		$querys		= $db->select($sql2);
 		$result = $querys->rows();
   		

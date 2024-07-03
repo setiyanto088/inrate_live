@@ -1157,9 +1157,8 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 					->setCellValue('C1', 'Views')
 					->setCellValue('D1', 'Spot')
 					->setCellValue('E1', 'AVG View per Spot');
-
 		  $list2 = $this->postbuyadspeformance_model->get_filter_grandtotal_adspeformance($params);
-		
+			
 		 $content = '';
 	  
 		  $i = 1;
