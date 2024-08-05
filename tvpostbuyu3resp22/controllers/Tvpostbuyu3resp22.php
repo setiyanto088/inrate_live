@@ -101,7 +101,7 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 		
 		
 		if (!isset($user)){
-			$user="0";
+			$user="1";
 		 
 		}
 		$periode=$tahun;
