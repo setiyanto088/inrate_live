@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Listtvpc extends CI_Controller {
@@ -9,6 +10,11 @@ class Listtvpc extends CI_Controller {
       $this->load->model('createprofileu/createprofileu_model');
 	 
 	  
+	}
+	
+	public function Anti_si($string) {
+		$string = strip_tags(trim(addslashes(htmlspecialchars(stripslashes($string)))));
+		return $string;
 	}
 	
 	public function channelsearch(){
@@ -114,14 +120,14 @@ class Listtvpc extends CI_Controller {
 		
 		
 		$params['id_user'] = $this->session->userdata('user_id');
-		$params['list'] = $this->Anti_si($_POST['list']);
-		$params['channel'] = $this->Anti_si($_POST['channel']);
-		$params['preset'] = $this->Anti_si($_POST['preset']);
-		$params['start_date'] = explode('/',$this->Anti_si($_POST['start_date']));
-		$params['end_date'] = explode('/',$this->Anti_si($_POST['end_date']));
-		$params['program'] = $this->Anti_si($_POST['program']);
-		$params['daypart'] = $this->Anti_si($_POST['daypart']);
-		$params['data'] = $this->Anti_si($_POST['data']);
+		$params['list'] = $this->Anti_si($this->input->post('list',true));
+		$params['channel'] = $this->Anti_si($this->input->post('channel',true));
+		$params['preset'] = $this->Anti_si($this->input->post('preset',true));
+		$params['start_date'] = explode('/',$this->Anti_si($this->input->post('start_date',true)));
+		$params['end_date'] = explode('/',$this->Anti_si($this->input->post('end_date',true)));
+		$params['program'] = $this->Anti_si($this->input->post('program',true));
+		$params['daypart'] = $this->Anti_si($this->input->post('daypart',true));
+		$params['data'] = $this->Anti_si($this->input->post('data',true));
 		
 		if($params['daypart'] == 'ALL'){
 			$params['time_segment'][0] = "00:00:00";
@@ -130,6 +136,7 @@ class Listtvpc extends CI_Controller {
 			$params['time_segment'] = explode('-',$params['daypart']);
 		}
 		
+		//print_r($params);die;
 		
 		$genre_program = $this->audience_model->get_genre($params);
 		
@@ -279,13 +286,15 @@ class Listtvpc extends CI_Controller {
                 'message' => 'Error retrieving list program'
             );
             
-            $this->json_result($result);
+            //$this->json_result($result);
         }
         
         $param['channel']	= $this->Anti_si($this->input->post('valselect',true));
         $param['date']	= $this->Anti_si($this->input->post('dateselect',true));
         $param['dateend']	= $this->Anti_si($this->input->post('dateend',true));
       
+		
+	  
 		 $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $param['dateend']);
           $param['dateend'] = $date->format('Y-m-d');
@@ -294,6 +303,7 @@ class Listtvpc extends CI_Controller {
           $date = $dt->createFromFormat('d/m/Y', $param['date']);
           $param['date'] = $date->format('Y-m-d');
 	  
+	 // print_r($param);die;
         
         $list = $this->audience_model->list_program($param);
 		

@@ -97,7 +97,7 @@
                   <h3 class=""><strong>List Program Comparison<strong></h3>
               </div>   
 			<div class="col-md-7 text-right">
-				<button id="button_filters" onClick="search()" class="button_black"><em class="fa fa-refresh"></i> &nbsp Process</button>
+				<button id="button_filters" onClick="search()" class="button_black"><em class="fa fa-refresh"></em> &nbsp Process</button>
 			</div>			  
           </div>
           <div class="panel">
@@ -203,7 +203,7 @@
 					  <h4 class="title-periode2" style="font-weight: bold;">Result</h4>
 					</div>
 					 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
-						<button class="button_black " onclick="excel()" id=''><em class="fa fa-download"></i> &nbsp Export</button>
+						<button class="button_black " onclick="excel()" id=''><em class="fa fa-download"></em> &nbsp Export</button>
 					</div>
 				</div>
               </div>
@@ -273,8 +273,8 @@
 				</div>
 				<div class="modal-footer">                                       
           <img alt="img" class="gambar" src="<?php echo $path; ?>assets/images/icon_loader.gif" id="loaderdp" style="display: none;">
-					<button type="button" class="button_white" data-dismiss="modal"><em class="fa fa-times"></i>&nbsp Cancel</button>
-					<button type="button" class="button_black" onClick="create_daypart()"><em class="fa fa-check"></i>&nbsp Create</button>
+					<button type="button" class="button_white" data-dismiss="modal"><em class="fa fa-times"></em>&nbsp Cancel</button>
+					<button type="button" class="button_black" onClick="create_daypart()"><em class="fa fa-check"></em>&nbsp Create</button>
 				</div>
 			</div>
 		</div>
@@ -311,7 +311,7 @@
 					<div class="form-group dataset col-md-3" style="">
 						<label for=""> &nbsp  </label>
 						<div class="select-wrapper" style="">
-							<button type="button" class="button_black" onClick="save_channel_list()"><em class="fa fa-check"></i> &nbsp Save</button>
+							<button type="button" class="button_black" onClick="save_channel_list()"><em class="fa fa-check"></em> &nbsp Save</button>
 						</div>
 					</div> 	
 							 
@@ -339,7 +339,7 @@
 				</div>
 				<div class="modal-footer">                                       
           <img alt="img" class="gambar" src="<?php echo $path; ?>assets/images/icon_loader.gif" id="loaderdp" style="display: none;">
-					<button type="button" class="button_white" data-dismiss="modal"><em class="fa fa-times"></i> &nbsp Cancel</button>
+					<button type="button" class="button_white" data-dismiss="modal"><em class="fa fa-times"></em> &nbsp Cancel</button>
 					
 				</div>
 			</div>
@@ -789,21 +789,26 @@
           var token = $.cookie(window.cookie_prefix + "token"); 
                   
           $('#programsss').empty('');
+		  
+		  var form_data = new FormData();  
+			form_data.append('valselect', channel);
+			form_data.append('dateselect', sdate);
+			form_data.append('dateend', dateend);
           
-          var form_data = {			
-              valselect : channel,
-              dateselect : sdate,
-              dateend : dateend
-          };                                                                                                    
+                                                                                              
           var strVar = "";  
           
           $.ajax({
-              type	: "POST",
               url		: "<?php echo base_url().'listtvpc/list_program/';?>"+ "?sess_user_id=" + user_id + "&sess_token=" + token,
-              data	: JSON.stringify(form_data),			
-              dataType: 'json',
-              contentType: 'application/json; charset=utf-8',
-              success	: function(response) {
+              data	: form_data,			
+              dataType: 'text',
+			  cache: false,
+              contentType: false,
+				processData: false,
+				type: 'post',
+              success	: function(responsed) {
+				  
+				  var response = jQuery.parseJSON(responsed);
                    if(response.data != undefined){    
                       $('#custom_programsss').hide();
                       $('#loader2').fadeIn(500).delay(1500).fadeOut(500);
@@ -1010,33 +1015,32 @@
 						  $('#loader').show();
 						  $('.loader').css('display','block');
           
- 			
+ 			 var form_data = new FormData();  
+			form_data.append('list', crnewdata);
+			form_data.append('end_date', end_date);
+			form_data.append('start_date', start_date);
+			form_data.append('profile', profile);
+			form_data.append('channel', channel);
+			form_data.append('preset', preset);
+			form_data.append('program', program);
+			form_data.append('user_id', user_id);
+			form_data.append('token', token);
+			form_data.append('data', data);
+			form_data.append('daypart',daypart);
 			
-                    var form_data = {
-                        list		 : crnewdata,
-                        end_date		 : end_date,
-                        start_date		 : start_date,
-                        profile		 : profile,
-                        channel		 : channel,
-                        preset		 : preset,
-                        program		 : program,
-                        user_id		 : user_id,
-                        token		 : token,
-                        data		 : data,
-                        daypart		 : daypart
-                      
-                    }
-					
+
 					var urls = "<?php echo base_url();?>listtvpc/cr_pp" + "?sess_user_id=" + user_id + "&sess_token=" + token;
 					
 					 $.ajax({ 
-                        type: "POST",
                         url: urls,
-                        data: JSON.stringify(form_data),
-                         dataType: 'json',
-                        contentType: 'application/json; charset=utf-8'
-                    }).done(function(response) {
-						  
+                      data	: form_data,			
+					  dataType: 'text',
+					  cache: false,
+					  contentType: false,
+						processData: false,
+						type: 'post',
+                    }).done(function(responsed) {
+						   var response = jQuery.parseJSON(responsed);
 						  $('#body_tbl').html(response.data['table']);
 						
 						
