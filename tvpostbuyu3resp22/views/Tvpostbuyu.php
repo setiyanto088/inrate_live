@@ -108,8 +108,7 @@
         <div class="row">
           <div class="col-md-5">                         
             <ol class="breadcrumb">
-                <li class="breadcrumb-item">Pay TV</li>
-                <li class="breadcrumb-item">Dashboard</li>
+                <li class="breadcrumb-item">Post Buy Analytics</li>
                 <li class="breadcrumb-item active">Post Buy Dashboard</li>
             </ol>
             <h3 class="page-title">Post Buy Dashboard</h3>

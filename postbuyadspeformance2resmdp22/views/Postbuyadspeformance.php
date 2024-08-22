@@ -197,8 +197,8 @@
           <div class="row">
                   <div class="col-md-5">
                   <ol class="breadcrumb">
-                      <li class="breadcrumb-item">Urban</li>
-                      <li class="breadcrumb-item active"><strong>Post Buy Analytics</strong></li>
+                      <li class="breadcrumb-item">Post Buy Analytics</li>
+                      <li class="breadcrumb-item active"><strong>Channel Pay TV</strong></li>
                   </ol>
                   <h3 class="page-title-inner"><strong>Post Buy Analytics</strong></h3>
               </div>  

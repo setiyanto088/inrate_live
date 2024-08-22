@@ -133,7 +133,14 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 		}
 		
 		$date_plan = explode('/',$start_date);
+		$date_plan_end = explode('/',$end_date);
 		$date_ads = explode('/',$start_date_ads);
+		$date_ads_end = explode('/',$end_date_ads);
+		
+		$start_date_fm =  $date_plan[2].'-'.$date_plan[1].'-'.$date_plan[0];
+		$end_date_fm =  $date_plan_end[2].'-'.$date_plan_end[1].'-'.$date_plan_end[0];
+		$start_date_ads_fm =  $date_ads[2].'-'.$date_ads[1].'-'.$date_ads[0];
+		$end_date_ads_fm =  $date_ads_end[2].'-'.$date_ads_end[1].'-'.$date_ads_end[0];
      
 		$arr_date = $this->returnBetweenDates( $date_plan[0].'-'.$date_plan[1].'-'.$date_plan[2], $date_ads[0].'-'.$date_ads[1].'-'.$date_ads[2]);
 		
@@ -144,10 +151,14 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 		$params['order_column'] = $order_fields[$order_column];
 		$params['order_dir'] 	= $order_dir;
 		$params['filter'] 		= $search_value;
+		$params['start_date_fm'] 	= $start_date_fm;
 		$params['start_date'] 	= $start_date;
 		$params['start_date_ads'] 	= $start_date_ads;
+		$params['start_date_ads_fm'] 	= $start_date_ads_fm;
 		$params['end_date'] 	= $end_date;
+		$params['end_date_fm'] 	= $end_date_fm;
 		$params['end_date_ads'] 	= $end_date_ads;
+		$params['end_date_ads_fm'] 	= $end_date_ads_fm;
 		$params['cost']			= $cost;
 		$params['discount']		= 100-$discount;
 		$params['high_tvr']		= $high_tvr;
@@ -172,6 +183,7 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 		$params['channel'] = substr($chna,0,-1);
 		
 		$list = $this->mediaplanningu_model->list_planning($params);
+
 		
 		$data_mp = array();	
 		
@@ -330,23 +342,24 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 			}
 
 		}
-
+		
+		
 		
 			usort($array_ads_list_all, function($a, $b) {
 				return $a['VIEWER'] - $b['VIEWER'];
 			});
-			
-			
+
 			$narray = array_reverse($array_ads_list_all);
-			
-			
-			
-			
+
 			usort($array_ads_list_ext, function($a, $b) {
 				return $a['VIEWER'] - $b['VIEWER'];
 			});
 			
+
+			
 			$narray_ext = array_reverse($array_ads_list_ext);
+			
+			
 
 		$ads_summ = $narray;
 		
@@ -403,6 +416,8 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 				}
 			
 		}
+		
+		
 		
 		
 		if(count($data_mp9) < count($data_mp)){
@@ -494,6 +509,8 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 		}
 		
 		
+		
+		
 		$array_summ29 = [];
 		$is9 = 0;
 		$ichannel9 = 0;
@@ -534,8 +551,12 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 			$ichannel9++;
 		}
 		
+		
+		
+		
 		$data_cal = array();	
 		$in = 0;
+		
 		
 		
 		foreach ( $ads_summ as $k => $v ) { 
@@ -576,6 +597,8 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 			
 			$in++;
 		}	
+		
+		//PRINT_R($data_cal);DIE;
 		 
 		
 		$result['cost9'] = number_format($cost_m9,0, ",", ".");
@@ -669,10 +692,14 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 		}
 		
 		
+		
+		
 		$data_cal = array();	
 		$in = 0;
 		
-		$ads_summ = json_decode($cr_data,true);
+		$ads_summ = json_decode(str_replace('&quot;','"',$cr_data),true);
+		//print_r($ads_summ);die;
+		
 		
 		$array_colorss = ['E0B0FF','BDEDFF','ADD8E6','00FF00','7FFFD4','C0C0C0','FF00FF','B6B6B4','728FCE','95B9C7','DAEE01','F5FFFA','FFA07A','FFE6E8'];
 		
@@ -696,7 +723,7 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 					
 					$time = explode('/',$v['DATE']);
 					$reach = $cost / $v['VIEWER'];
-					$newformat = $v['DATE'];
+					$newformat = DateTime::createFromFormat('d/m/Y', $v['DATE'])->format('Y-m-d');
 					
 			array_push($data_cal, 
 				array(
@@ -704,8 +731,8 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 					$newformat,
 					$v['CHANNEL'],	
 					$v['PROGRAM'],					
-					$newformat.' '.$v['START_TIME'],					
-					$newformat.' '.$v['END_TIME'],					
+					$v['START_TIME'],					
+					$v['END_TIME'],					
 					$v['TYPE'],					
 					number_format($v['TVR'],2, ",", "."),
 					number_format($tvs,2, ",", "."),

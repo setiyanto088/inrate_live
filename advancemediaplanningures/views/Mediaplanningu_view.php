@@ -139,7 +139,7 @@ $(function () {
 								<div class="form-group">
 									<label>Profile</label>
 									  <select class='urate-select' name="profiles" id="profiles" title='Please Choose Profile ...'>
-										  <option value="0" >All People</option>
+										  <option value="1" >All People</option>
 										  <?php foreach($profile as $key) { ?>
 										  <option value="<?php echo $key['id']; ?>" ><?php echo $key['name']; ?></option>
 										  <?php } ?>
@@ -772,7 +772,7 @@ $(function () {
               });
               
               $('#profile').empty('');
-              var strVar = "<li data-for='profile'><a href='#' data-real='0' class='urate-select-form-two' data-for='profile'>All People</a></li>";              
+              var strVar = "<li data-for='profile'><a href='#' data-real='1' class='urate-select-form-two' data-for='profile'>All People</a></li>";              
                                           
               $.ajax({
                   type	: "POST",
@@ -812,7 +812,7 @@ $(function () {
           
           $("#start_date").on("change",function(){
               $('#profile').empty('');
-              var strVar = "<li data-for='profile'><a href='#' data-real='0' class='urate-select-form-two' data-for='profile'>All People</a></li>";              
+              var strVar = "<li data-for='profile'><a href='#' data-real='1' class='urate-select-form-two' data-for='profile'>All People</a></li>";              
                                           
               $.ajax({
                   type	: "POST",
@@ -2542,7 +2542,7 @@ var start_date_ads = $('#start_date_ads').val();
         
         $('#profile').empty('');
         
-        var strVar = "<li data-for='profile'><a href='#' data-real='0' class='urate-select-form-two' data-for='profile'>All People</a></li>";
+        var strVar = "<li data-for='profile'><a href='#' data-real='1' class='urate-select-form-two' data-for='profile'>All People</a></li>";
         
         $.ajax({
             type	: "POST",

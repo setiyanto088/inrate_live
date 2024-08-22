@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php 
+date_default_timezone_set('Asia/Jakarta');
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Mediaplanningu_model extends CI_Model {
 	
@@ -155,6 +157,7 @@ class Mediaplanningu_model extends CI_Model {
 
 		$end_date = explode('/',$params['end_date_ads']);
 
+		$db = $this->clickhouse->db();
 		
 		$get_profile = $this->get_profile_id($params['profiles']);
 		
@@ -169,7 +172,18 @@ class Mediaplanningu_model extends CI_Model {
 						
 				";
 				
-		}else{
+		}elseif($params['profiles'] == 1){
+		
+			$query = " 
+					SELECT SUM(WEIGHT) AUDIENCE FROM (
+					SELECT `RESPID`,`WEIGHT`,`WEIGHT_ALL` FROM `CDR_EPG_RES_ALL_STEP2_2022` A
+					WHERE `BEGIN_PROGRAM` BETWEEN '".$start_date[2]."-".$start_date[1]."-".$start_date[0]." 00:00:00' AND '".$end_date[2]."-".$end_date[1]."-".$end_date[0]." 23:59:59'
+					GROUP BY A.`RESPID`,A.`WEIGHT`,A.`WEIGHT_ALL`
+					) OP
+						
+				";
+				
+		}ELSE{
 			
 			if($get_profile[0]['flag'] == '1'){
 				$tbl_m = 'CDR_EPG_RES_ALL_STEP2_2021';
@@ -179,20 +193,24 @@ class Mediaplanningu_model extends CI_Model {
 			
 				$query = " 
 					SELECT SUM(WEIGHT) AUDIENCE FROM (
-					SELECT A.`GENDER`,A.`WEIGHT`,A.`WEIGHT_ALL` FROM `".$tbl_m."` A
+					SELECT A.`RESPID`,A.`WEIGHT`,A.`WEIGHT_ALL` FROM `CDR_EPG_RES_ALL_STEP2_2022` A
 					JOIN `PROFILE_CARDNO_RES` B ON A.RESPID = B.`CARDNO`
 					WHERE `BEGIN_PROGRAM` BETWEEN '".$start_date[2]."-".$start_date[1]."-".$start_date[0]." 00:00:00' AND '".$end_date[2]."-".$end_date[1]."-".$end_date[0]." 23:59:59'
 					AND B.`ID_PROFILE` = ".$params['profiles']."
-					GROUP BY `RESPID`
+					GROUP BY A.`RESPID`,A.`WEIGHT`,A.`WEIGHT_ALL`
 					) OP
 						
 				";
 			
 		}
-		$sql	= $this->db2->query($query);
-		$this->db2->close();
-		$this->db2->initialize(); 	
-		return $sql->result_array();	
+			// echo $query ;die;
+		// $sql	= $this->db2->query($query);
+		// $this->db2->close();
+		// $this->db2->initialize(); 	
+		// return $sql->result_array();	
+		
+		$result = $db->select($query);
+		return $result->rows();
 		
 	}	
 	
@@ -212,15 +230,27 @@ class Mediaplanningu_model extends CI_Model {
 			$start_date = explode('/',$params['start_date']);
 
 		$end_date = explode('/',$params['end_date']);
-
+		
+		$db = $this->clickhouse->db();
 		
 		if($params['profiles'] == 0){
 		
 			$query = " 
 					SELECT SUM(WEIGHT) AUDIENCE FROM (
-					SELECT `GENDER`,`WEIGHT`,`WEIGHT_ALL` FROM `CDR_EPG_RES_ALL_STEP2_2021` A
+					SELECT `RESPID`,`WEIGHT`,`WEIGHT_ALL` FROM `CDR_EPG_RES_ALL_STEP2_2021` A
 					WHERE `BEGIN_PROGRAM` BETWEEN '".$start_date[2]."-".$start_date[1]."-".$start_date[0]." 00:00:00' AND '".$end_date[2]."-".$end_date[1]."-".$end_date[0]." 23:59:59'
-					GROUP BY `RESPID`
+					GROUP BY A.`RESPID`,A.`WEIGHT`,A.`WEIGHT_ALL`
+					) OP
+						
+				";
+				
+		}elseif($params['profiles'] == 1){
+		
+			$query = " 
+					SELECT SUM(WEIGHT) AUDIENCE FROM (
+					SELECT `RESPID`,`WEIGHT`,`WEIGHT_ALL` FROM `CDR_EPG_RES_ALL_STEP2_2022` A
+					WHERE `BEGIN_PROGRAM` BETWEEN '".$start_date[2]."-".$start_date[1]."-".$start_date[0]." 00:00:00' AND '".$end_date[2]."-".$end_date[1]."-".$end_date[0]." 23:59:59'
+					GROUP BY A.`RESPID`,A.`WEIGHT`,A.`WEIGHT_ALL`
 					) OP
 						
 				";
@@ -229,20 +259,25 @@ class Mediaplanningu_model extends CI_Model {
 			
 				$query = " 
 					SELECT SUM(WEIGHT) AUDIENCE FROM (
-					SELECT A.`GENDER`,A.`WEIGHT`,A.`WEIGHT_ALL` FROM `CDR_EPG_RES_ALL_STEP2_2021` A
+					SELECT A.`RESPID`,A.`WEIGHT`,A.`WEIGHT_ALL` FROM `CDR_EPG_RES_ALL_STEP2_2022` A
 					JOIN `PROFILE_CARDNO_RES` B ON A.RESPID = B.`CARDNO`
 					WHERE `BEGIN_PROGRAM` BETWEEN '".$start_date[2]."-".$start_date[1]."-".$start_date[0]." 00:00:00' AND '".$end_date[2]."-".$end_date[1]."-".$end_date[0]." 23:59:59'
 					AND B.`ID_PROFILE` = ".$params['profiles']."
-					GROUP BY `RESPID`
+					GROUP BY A.`RESPID`,A.`WEIGHT`,A.`WEIGHT_ALL`
 					) OP
 						
 				";
 			
 		}
-		$sql	= $this->db2->query($query);
-		$this->db2->close();
-		$this->db2->initialize(); 	
-		return $sql->result_array();	
+		
+		// echo $query ;die;
+		// $sql	= $this->db2->query($query);
+		// $this->db2->close();
+		// $this->db2->initialize(); 	
+		// return $sql->result_array();	
+		
+		$result = $db->select($query);
+		return $result->rows();
 		
 	}
 	
@@ -820,23 +855,25 @@ public function print_list_planning_cal($params = array()) {
 			$where_channel = " AND CHANNEL ='".$channel['CHANNEL']."' ";
 		}
 		
-		$sql = "  SELECT RANK() OVER (ORDER BY REACH ASC) AS RANK, * FROM (
-							SELECT (RATE * ".$params['discount']." / 100 ) AS RATE_D, ((RATE * ".$params['discount']." / 100 )*1000)/(TVR) AS CPRP, 
-							((RATE * ".$params['discount']." / 100 )*1000)/VIEWER AS CPV, 
-							((RATE * ".$params['discount']." / 100 )*1000)/(`VIEWER`) AS REACH ,DATE_FORMAT(STR_TO_DATE(`DATE`, '%d/%m/%Y') , '%Y-%m-%d')  DATE ,`CHANNEL`,`PROGRAM`,`TYPE`,`STATUS`,`START_TIME`,`END_TIME`,`DURATION`,`LEVEL1`,`LEVEL2`,`SPLIT_MINUTES`,`FLAG_TV`,`PERIODE`,`TIME_PERIODE`,`VIEWER`,`VIEWER_ALL`,`UNIVERSE`,`TVR`,`TVS`,`IDX`,`VIEWER_A`,`VIEWER_ALL_A`,`UNIVERSE_A`,`TVR_A`,`TVS_A`,`IDX_A`,`PROFILE_ID` FROM M_SUMMARY_MEDIA_PLAN_D_RES_P
+	$db = $this->clickhouse->db();
+				
+				$sql = "  SELECT  *,1 as RANK FROM (
+							SELECT `DATE`,`CHANNEL`,`PROGRAM`,`TITTLE`,`TYPE`,`STATUS`,`START_TIME`,`END_TIME`,`DURATION`,`RATE`,
+							`LEVEL1`,`LEVEL2`,`SPLIT_MINUTES`,`FLAG_TV`,`PERIODE`,`TIME_PERIODE`,`VIEWER`,`VIEWER_ALL`,`UNIVERSE`,
+							`TVR`,`TVS`,`IDX`,`VIEWER_A`,`VIEWER_ALL_A`,`UNIVERSE_A`,`TVR_A`*100 AS TVR_A,`TVS_A`*100 AS TVS_A,`IDX_A`,`PROFILE_ID`,
+							(RATE * ".$params['discount']." / 100 ) AS RATE_D, ((RATE * ".$params['discount']." / 100 )*1000)/(TVR*100) AS CPRP, 
+							((RATE * ".$params['discount']." / 100 )*1000)/(`VIEWER`) AS REACH  FROM M_SUMMARY_MEDIA_PLAN_D_RES_P
 							WHERE PROFILE_ID = ".$params['profiles']."
-							AND STR_TO_DATE(`DATE`, '%d/%m/%Y') BETWEEN STR_TO_DATE('".$params['start_date_ads']."', '%d/%m/%Y')  
-							AND STR_TO_DATE('".$params['end_date_ads']."', '%d/%m/%Y')  AND RATE > 0 ".$add_where." ".$where_channel." 
+							AND toDate(`SPLIT_MINUTES`)  BETWEEN '".$params['start_date_ads_fm']."' AND '".$params['end_date_ads_fm']."' AND `TYPE` IS NOT NULL AND RATE > 0 ".$add_where." ".$where_channel." 
 						) PO 
-						ORDER BY ".$order_sort.", STR_TO_DATE(`DATE`, '%d/%m/%Y') ASC,CHANNEL ASC,PROGRAM ASC
-						LIMIT ".$channel['SPOT']."
+						ORDER BY ".$order_sort.", `DATE` ASC,CHANNEL ASC,PROGRAM ASC
 				";
-	
+				
+		//ECHO $sql;DIE;
 		$out		= array();
-		$query		= $this->db2->query($sql);
-		$result = $query->result_array(); 
-    
-		return $result;
+		
+		$result = $db->select($sql);
+		return $result->rows();
 	
 	}
 	
@@ -959,35 +996,29 @@ public function print_list_planning_cal($params = array()) {
 			$where_channel = " AND CHANNEL IN (".$params['channel'].") ";
 		}
     
-    		
+
+		
+		
+		$db = $this->clickhouse->db();
 				
-				
-				$sql = "  
-				SELECT RANK() OVER (ORDER BY REACH ASC) AS RANK, * FROM (
-							SELECT (RATE * ".$params['discount']." / 100 ) AS RATE_D, ((RATE * ".$params['discount']." / 100 )*1000)/(TVR) AS CPRP, 
-							((RATE * ".$params['discount']." / 100 )*1000)/VIEWER AS CPV, 
-							((RATE * ".$params['discount']." / 100 )*1000)/(`VIEWER`) AS REACH ,* FROM M_SUMMARY_MEDIA_PLAN_D_RES_P
+				$sql = "  SELECT  *,1 as RANK FROM (
+							SELECT `DATE`,`CHANNEL`,`PROGRAM`,`TITTLE`,`TYPE`,`STATUS`,`START_TIME`,`END_TIME`,`DURATION`,`RATE`,
+							`LEVEL1`,`LEVEL2`,`SPLIT_MINUTES`,`FLAG_TV`,`PERIODE`,`TIME_PERIODE`,`VIEWER`,`VIEWER_ALL`,`UNIVERSE`,
+							`TVR`,`TVS`,`IDX`,`VIEWER_A`,`VIEWER_ALL_A`,`UNIVERSE_A`,`TVR_A`*100 AS TVR_A,`TVS_A`*100 AS TVS_A,`IDX_A`,`PROFILE_ID`,
+							(RATE * ".$params['discount']." / 100 ) AS RATE_D, ((RATE * ".$params['discount']." / 100 )*1000)/(TVR*100) AS CPRP, 
+							((RATE * ".$params['discount']." / 100 )*1000)/(`VIEWER`) AS REACH  FROM M_SUMMARY_MEDIA_PLAN_D_RES_P
 							WHERE PROFILE_ID = ".$params['profiles']."
-							AND STR_TO_DATE(`DATE`, '%d/%m/%Y') BETWEEN STR_TO_DATE('".$params['start_date']."', '%d/%m/%Y')  
-							AND STR_TO_DATE('".$params['end_date']."', '%d/%m/%Y')  AND RATE > 0 ".$add_where." ".$where_channel." 
+							AND toDate(`SPLIT_MINUTES`)  BETWEEN '".$params['start_date_fm']."' AND '".$params['end_date_fm']."' AND `TYPE` IS NOT NULL AND RATE > 0 ".$add_where." ".$where_channel." 
 						) PO 
-						ORDER BY ".$order_sort.", STR_TO_DATE(`DATE`, '%d/%m/%Y') ASC,CHANNEL ASC,PROGRAM ASC
+						ORDER BY ".$order_sort.", `DATE` ASC,CHANNEL ASC,PROGRAM ASC
 				";
+				
 		
 		$out		= array();
-		$query		= $this->db2->query($sql);
-		$result = $query->result_array(); 
 		
-		
-			
-		
-		
-    
-	
-		
-		
-		
-		return $result;
+		$result = $db->select($sql);
+		return $result->rows();
+
 	}
 	
 	public function list_planning_reach_adsn($params = array(),$limit,$profile_data) {					
@@ -1035,7 +1066,7 @@ public function print_list_planning_cal($params = array()) {
 		} else {
 			$where_channel = " AND CHANNEL IN (".$params['channel'].") ";
 		}
-    
+    $db = $this->clickhouse->db();
  				
 				if($params['profiles'] == 0 ){
 				
@@ -1062,52 +1093,57 @@ public function print_list_planning_cal($params = array()) {
 					 
 				}elseif($params['profiles'] == 1){
 				
-					$sql = "  
-					SELECT (SUM(WEIGHT)/UNIVERSE_A)*100 AS REACH_S FROM (
+						$sql = " 
+					SELECT (SUM(WEIGHT)/AVG(UNIVERSE_A))*100 AS REACH_S FROM (
 							SELECT RESPID,WEIGHT,UNIVERSE_A FROM 
 							(
-									SELECT RANK() OVER (ORDER BY REACH ASC) AS RANK, * FROM (
+								SELECT  * FROM (
 									SELECT (RATE * ".$params['discount']." / 100 ) AS RATE_D, ((RATE * ".$params['discount']." / 100 )*1000)/(TVR) AS CPRP, 
 									((RATE * ".$params['discount']." / 100 )*1000)/VIEWER AS CPV, 
 									((RATE * ".$params['discount']." / 100 )*1000)/(`VIEWER`) AS REACH ,* FROM M_SUMMARY_MEDIA_PLAN_D_RES_P
 									WHERE PROFILE_ID = ".$params['profiles']."
-									AND STR_TO_DATE(`DATE`, '%d/%m/%Y') BETWEEN STR_TO_DATE('".$params['start_date_ads']."', '%d/%m/%Y')  
-									AND STR_TO_DATE('".$params['end_date_ads']."', '%d/%m/%Y')  AND RATE > 0 ".$add_where." ".$where_channel." 
+									AND (START_TIME BETWEEN '".$start_date_r." 00:00:00' AND '".$end_date_r." 23:59:59' ) 
+									AND RATE > 0   
+									AND CHANNEL IN ('.IDKU','AFN','ANIMAX','AXN','BEIN SPORT 1','BEIN SPORT 2','BEIN SPORT 3','CARTOON NETWORK','CELESTIAL MOVIES','CHANNEL [V]','CNBC','CNN INDONESIA','CNN INTERNATIONAL','DISCOVERY CHANNEL','EGG','FIGHT SPORTS','FOX','FOX ACTION MOVIES','FOX CRIME','FOX FAMILY MOVIES','FOX LIFE','FOX MOVIES PREMIUM','FOX SPORT 1','FOX SPORT 2','FOX SPORT 3','FX','GALAXY TV','GEM','IMC','K-PLUS','KIX','NATIONAL GEOGRAPHIC CHANNEL','NATIONAL GEOGRAPHIC PEOPLE','NATIONAL GEOGRAPHIC WILD','RUANG TRAMPIL','S-ONE','SONY ENTERTAINMENT CHANNEL','STAR CHINESE CHANNEL','THRILL','USEE INFO','USEE PRIME','WAKUWAKU JAPA')  
 								) PO 
-							ORDER BY ".$order_sort.", STR_TO_DATE(`DATE`, '%d/%m/%Y') ASC,CHANNEL ASC,PROGRAM ASC
+							ORDER BY  (RATE * ".$params['discount']." / 100 ) ASC, START_TIME ASC,CHANNEL ASC,PROGRAM ASC
 							LIMIT ".$limit."
 							) B LEFT JOIN (SELECT * FROM `CDR_EPG_RES_ALL_STEP2_2022` WHERE BEGIN_PROGRAM BETWEEN '".$start_date_r." 00:00:00' AND '".$end_date_r." 23:59:59') A 
-							ON A.CHANNEL = B.CHANNEL AND A.PROGRAM =B.PROGRAM AND CONCAT(STR_TO_DATE(DATE, '%d/%m/%Y'),' ',START_TIME) BETWEEN A.BEGIN_PROGRAM AND A.END_PROGRAM
-							GROUP BY RESPID
+							ON A.CHANNEL = B.CHANNEL AND A.PROGRAM =B.PROGRAM 
+							WHERE toDateTime(START_TIME) BETWEEN A.BEGIN_PROGRAM AND A.END_PROGRAM
+							GROUP BY RESPID,WEIGHT,UNIVERSE_A
 							
 					) AS FD
-					";
+					";	
 				 
 				}else{
 					
 					if($profile_data[0]['flag'] == 2){
-						$sql = "  
-						SELECT (SUM(WEIGHT)/UNIVERSE_A)*100 AS REACH_S FROM (
-								SELECT RESPID,A.WEIGHT,UNIVERSE_A FROM 
+						$sql = " 
+						SELECT (SUM(WEIGHT)/AVG(UNIVERSE_A))*100 AS REACH_S FROM (
+								SELECT RESPID,A.WEIGHT AS WEIGHT,UNIVERSE_A FROM 
 								(
-										SELECT RANK() OVER (ORDER BY REACH ASC) AS RANK, * FROM (
+									SELECT  * FROM (
 										SELECT (RATE * ".$params['discount']." / 100 ) AS RATE_D, ((RATE * ".$params['discount']." / 100 )*1000)/(TVR) AS CPRP, 
 										((RATE * ".$params['discount']." / 100 )*1000)/VIEWER AS CPV, 
 										((RATE * ".$params['discount']." / 100 )*1000)/(`VIEWER`) AS REACH ,* FROM M_SUMMARY_MEDIA_PLAN_D_RES_P
 										WHERE PROFILE_ID = ".$params['profiles']."
-										AND STR_TO_DATE(`DATE`, '%d/%m/%Y') BETWEEN STR_TO_DATE('".$params['start_date_ads']."', '%d/%m/%Y')  
-										AND STR_TO_DATE('".$params['end_date_ads']."', '%d/%m/%Y')  AND RATE > 0 ".$add_where." ".$where_channel." 
+										AND (START_TIME BETWEEN '".$start_date_r." 00:00:00' AND '".$end_date_r." 23:59:59' ) 
+										AND RATE > 0   
+										AND CHANNEL IN ('.IDKU','AFN','ANIMAX','AXN','BEIN SPORT 1','BEIN SPORT 2','BEIN SPORT 3','CARTOON NETWORK','CELESTIAL MOVIES','CHANNEL [V]','CNBC','CNN INDONESIA','CNN INTERNATIONAL','DISCOVERY CHANNEL','EGG','FIGHT SPORTS','FOX','FOX ACTION MOVIES','FOX CRIME','FOX FAMILY MOVIES','FOX LIFE','FOX MOVIES PREMIUM','FOX SPORT 1','FOX SPORT 2','FOX SPORT 3','FX','GALAXY TV','GEM','IMC','K-PLUS','KIX','NATIONAL GEOGRAPHIC CHANNEL','NATIONAL GEOGRAPHIC PEOPLE','NATIONAL GEOGRAPHIC WILD','RUANG TRAMPIL','S-ONE','SONY ENTERTAINMENT CHANNEL','STAR CHINESE CHANNEL','THRILL','USEE INFO','USEE PRIME','WAKUWAKU JAPA')  
 									) PO 
-								ORDER BY ".$order_sort.", STR_TO_DATE(`DATE`, '%d/%m/%Y') ASC,CHANNEL ASC,PROGRAM ASC
+								ORDER BY  (RATE * ".$params['discount']." / 100 ) ASC, START_TIME ASC,CHANNEL ASC,PROGRAM ASC
 								LIMIT ".$limit."
-								) B LEFT JOIN (SELECT * FROM `CDR_EPG_RES_ALL_STEP2_2022` WHERE BEGIN_PROGRAM BETWEEN '".$start_date_r." 00:00:00' AND '".$end_date_r." 23:59:59') A 
-								ON A.CHANNEL = B.CHANNEL AND A.PROGRAM =B.PROGRAM AND CONCAT(STR_TO_DATE(DATE, '%d/%m/%Y'),' ',START_TIME) BETWEEN A.BEGIN_PROGRAM AND A.END_PROGRAM
+								) B LEFT JOIN (
+									SELECT * FROM `CDR_EPG_RES_ALL_STEP2_2022` WHERE BEGIN_PROGRAM BETWEEN '".$start_date_r." 00:00:00' AND '".$end_date_r." 23:59:59'
+								) A ON A.CHANNEL = B.CHANNEL AND A.PROGRAM =B.PROGRAM 
 								JOIN `PROFILE_CARDNO_RES` C ON A.RESPID = C.`CARDNO`
 								WHERE `ID_PROFILE` = ".$params['profiles']."
-								GROUP BY RESPID
+								AND toDateTime(START_TIME) BETWEEN A.BEGIN_PROGRAM AND A.END_PROGRAM
+								GROUP BY RESPID,A.WEIGHT,UNIVERSE_A
 								
 						) AS FD
-						";
+						";	
 					}else{
 						$sql = "  
 						SELECT (SUM(WEIGHT)/UNIVERSE_A)*100 AS REACH_S FROM (
@@ -1138,11 +1174,9 @@ public function print_list_planning_cal($params = array()) {
 				}
 		
 		$out		= array();
-		$query		= $this->db2->query($sql);
-		$result = $query->result_array(); 
 		
-		
-		return $result;
+		$result = $db->select($sql);
+		return $result->rows();
 	}
 	
 	public function list_planning_reach($params = array(),$limit,$profile_data) {					
@@ -1190,7 +1224,7 @@ public function print_list_planning_cal($params = array()) {
 		} else {
 			$where_channel = " AND CHANNEL IN (".$params['channel'].") ";
 		}
-    
+    $db = $this->clickhouse->db();
  				
 				if($params['profiles'] == 0 ){
 				
@@ -1216,53 +1250,62 @@ public function print_list_planning_cal($params = array()) {
 					";
 					 
 				}elseif($params['profiles'] == 1){
-				
-					$sql = "  
-					SELECT (SUM(WEIGHT)/UNIVERSE_A)*100 AS REACH_S FROM (
+					
+					
+					$sql = " 
+					SELECT (SUM(WEIGHT)/AVG(UNIVERSE_A))*100 AS REACH_S FROM (
 							SELECT RESPID,WEIGHT,UNIVERSE_A FROM 
 							(
-									SELECT RANK() OVER (ORDER BY REACH ASC) AS RANK, * FROM (
+								SELECT  * FROM (
 									SELECT (RATE * ".$params['discount']." / 100 ) AS RATE_D, ((RATE * ".$params['discount']." / 100 )*1000)/(TVR) AS CPRP, 
 									((RATE * ".$params['discount']." / 100 )*1000)/VIEWER AS CPV, 
 									((RATE * ".$params['discount']." / 100 )*1000)/(`VIEWER`) AS REACH ,* FROM M_SUMMARY_MEDIA_PLAN_D_RES_P
 									WHERE PROFILE_ID = ".$params['profiles']."
-									AND STR_TO_DATE(`DATE`, '%d/%m/%Y') BETWEEN STR_TO_DATE('".$params['start_date']."', '%d/%m/%Y')  
-									AND STR_TO_DATE('".$params['end_date']."', '%d/%m/%Y')  AND RATE > 0 ".$add_where." ".$where_channel." 
+									AND (START_TIME BETWEEN '".$start_date_r." 00:00:00' AND '".$end_date_r." 23:59:59' ) 
+									AND RATE > 0   
+									AND CHANNEL IN ('.IDKU','AFN','ANIMAX','AXN','BEIN SPORT 1','BEIN SPORT 2','BEIN SPORT 3','CARTOON NETWORK','CELESTIAL MOVIES','CHANNEL [V]','CNBC','CNN INDONESIA','CNN INTERNATIONAL','DISCOVERY CHANNEL','EGG','FIGHT SPORTS','FOX','FOX ACTION MOVIES','FOX CRIME','FOX FAMILY MOVIES','FOX LIFE','FOX MOVIES PREMIUM','FOX SPORT 1','FOX SPORT 2','FOX SPORT 3','FX','GALAXY TV','GEM','IMC','K-PLUS','KIX','NATIONAL GEOGRAPHIC CHANNEL','NATIONAL GEOGRAPHIC PEOPLE','NATIONAL GEOGRAPHIC WILD','RUANG TRAMPIL','S-ONE','SONY ENTERTAINMENT CHANNEL','STAR CHINESE CHANNEL','THRILL','USEE INFO','USEE PRIME','WAKUWAKU JAPA')  
 								) PO 
-							ORDER BY ".$order_sort.", STR_TO_DATE(`DATE`, '%d/%m/%Y') ASC,CHANNEL ASC,PROGRAM ASC
+							ORDER BY  (RATE * ".$params['discount']." / 100 ) ASC, START_TIME ASC,CHANNEL ASC,PROGRAM ASC
 							LIMIT ".$limit."
 							) B LEFT JOIN (SELECT * FROM `CDR_EPG_RES_ALL_STEP2_2022` WHERE BEGIN_PROGRAM BETWEEN '".$start_date_r." 00:00:00' AND '".$end_date_r." 23:59:59') A 
-							ON A.CHANNEL = B.CHANNEL AND A.PROGRAM =B.PROGRAM AND CONCAT(STR_TO_DATE(DATE, '%d/%m/%Y'),' ',START_TIME) BETWEEN A.BEGIN_PROGRAM AND A.END_PROGRAM
-							GROUP BY RESPID
+							ON A.CHANNEL = B.CHANNEL AND A.PROGRAM =B.PROGRAM 
+							WHERE toDateTime(START_TIME) BETWEEN A.BEGIN_PROGRAM AND A.END_PROGRAM
+							GROUP BY RESPID,WEIGHT,UNIVERSE_A
 							
 					) AS FD
-					";
+					";	
 				 
 				}else{
 					
 					if($profile_data[0]['flag'] == 2){
-						$sql = "  
-						SELECT (SUM(WEIGHT)/UNIVERSE_A)*100 AS REACH_S FROM (
-								SELECT RESPID,A.WEIGHT,UNIVERSE_A FROM 
+						
+						$sql = " 
+						SELECT (SUM(WEIGHT)/AVG(UNIVERSE_A))*100 AS REACH_S FROM (
+								SELECT RESPID,A.WEIGHT AS WEIGHT,UNIVERSE_A FROM 
 								(
-										SELECT RANK() OVER (ORDER BY REACH ASC) AS RANK, * FROM (
+									SELECT  * FROM (
 										SELECT (RATE * ".$params['discount']." / 100 ) AS RATE_D, ((RATE * ".$params['discount']." / 100 )*1000)/(TVR) AS CPRP, 
 										((RATE * ".$params['discount']." / 100 )*1000)/VIEWER AS CPV, 
 										((RATE * ".$params['discount']." / 100 )*1000)/(`VIEWER`) AS REACH ,* FROM M_SUMMARY_MEDIA_PLAN_D_RES_P
 										WHERE PROFILE_ID = ".$params['profiles']."
-										AND STR_TO_DATE(`DATE`, '%d/%m/%Y') BETWEEN STR_TO_DATE('".$params['start_date']."', '%d/%m/%Y')  
-										AND STR_TO_DATE('".$params['end_date']."', '%d/%m/%Y')  AND RATE > 0 ".$add_where." ".$where_channel." 
+										AND (START_TIME BETWEEN '".$start_date_r." 00:00:00' AND '".$end_date_r." 23:59:59' ) 
+										AND RATE > 0   
+										AND CHANNEL IN ('.IDKU','AFN','ANIMAX','AXN','BEIN SPORT 1','BEIN SPORT 2','BEIN SPORT 3','CARTOON NETWORK','CELESTIAL MOVIES','CHANNEL [V]','CNBC','CNN INDONESIA','CNN INTERNATIONAL','DISCOVERY CHANNEL','EGG','FIGHT SPORTS','FOX','FOX ACTION MOVIES','FOX CRIME','FOX FAMILY MOVIES','FOX LIFE','FOX MOVIES PREMIUM','FOX SPORT 1','FOX SPORT 2','FOX SPORT 3','FX','GALAXY TV','GEM','IMC','K-PLUS','KIX','NATIONAL GEOGRAPHIC CHANNEL','NATIONAL GEOGRAPHIC PEOPLE','NATIONAL GEOGRAPHIC WILD','RUANG TRAMPIL','S-ONE','SONY ENTERTAINMENT CHANNEL','STAR CHINESE CHANNEL','THRILL','USEE INFO','USEE PRIME','WAKUWAKU JAPA')  
 									) PO 
-								ORDER BY ".$order_sort.", STR_TO_DATE(`DATE`, '%d/%m/%Y') ASC,CHANNEL ASC,PROGRAM ASC
+								ORDER BY  (RATE * ".$params['discount']." / 100 ) ASC, START_TIME ASC,CHANNEL ASC,PROGRAM ASC
 								LIMIT ".$limit."
-								) B LEFT JOIN (SELECT * FROM `CDR_EPG_RES_ALL_STEP2_2022` WHERE BEGIN_PROGRAM BETWEEN '".$start_date_r." 00:00:00' AND '".$end_date_r." 23:59:59') A 
-								ON A.CHANNEL = B.CHANNEL AND A.PROGRAM =B.PROGRAM AND CONCAT(STR_TO_DATE(DATE, '%d/%m/%Y'),' ',START_TIME) BETWEEN A.BEGIN_PROGRAM AND A.END_PROGRAM
+								) B LEFT JOIN (
+									SELECT * FROM `CDR_EPG_RES_ALL_STEP2_2022` WHERE BEGIN_PROGRAM BETWEEN '".$start_date_r." 00:00:00' AND '".$end_date_r." 23:59:59'
+								) A ON A.CHANNEL = B.CHANNEL AND A.PROGRAM =B.PROGRAM 
 								JOIN `PROFILE_CARDNO_RES` C ON A.RESPID = C.`CARDNO`
 								WHERE `ID_PROFILE` = ".$params['profiles']."
-								GROUP BY RESPID
+								AND toDateTime(START_TIME) BETWEEN A.BEGIN_PROGRAM AND A.END_PROGRAM
+								GROUP BY RESPID,A.WEIGHT,UNIVERSE_A
 								
 						) AS FD
-						";
+						";	
+					
+					
 					}else{
 						$sql = "  
 						SELECT (SUM(WEIGHT)/UNIVERSE_A)*100 AS REACH_S FROM (
@@ -1293,11 +1336,9 @@ public function print_list_planning_cal($params = array()) {
 				}
 		
 		$out		= array();
-		$query		= $this->db2->query($sql);
-		$result = $query->result_array(); 
 		
-		
-		return $result;
+		$result = $db->select($sql);
+		return $result->rows();
 	}
 	
 	public function list_planning_reach_ads($params = array(),$limit,$array_date_reach,$array_epg_channel_v,$profile_data) {					
