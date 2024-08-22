@@ -677,8 +677,10 @@
         	} 	         
           
           /* HANDLE ALL CHANNEL */
-          var channel_header = "";                                                                    
+                                                                          
           if(channel == "0"){
+			  
+			  var channel_header = "";  
               /* READ CHANNEL FROM AFTER CHOOSE GENRE */
               $('#custom_channel').next().children().each(function(){
                   if($(this).children().html() != "All Channel"){
@@ -691,7 +693,6 @@
               channel_header = channel;
           }      
           
-		  console.log(channel_header);
 		  
            channel_header=channel_header.split(",");
           var pjgcolspan =channel_header.length;   
@@ -716,7 +717,7 @@
 		  
 
           if(channel == "0"){
-              ch = "0";
+              ch = [];
           } else {
               for(var i=0; i < channel_header.length; i++){
                   ch.push("'"+channel_header[i]+"'");
@@ -728,6 +729,8 @@
               return false;	
           }	        
           
+		  
+		  console.log(ch);
           var form_data = {
               sess_user_id     : user_id,
               sess_token      : token,

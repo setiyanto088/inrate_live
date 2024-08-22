@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tvccresp22 extends JA_Controller {
@@ -294,6 +295,7 @@ class Tvccresp22 extends JA_Controller {
       } else {
           $profiles = 0;
       }   
+	  
       
       if( ! empty($this->Anti_si($_POST['genre'])) ) {
           $genre = str_replace("AND","&",$this->Anti_si($_POST['genre']));
@@ -303,8 +305,8 @@ class Tvccresp22 extends JA_Controller {
       
       $order_fields = ['DATE','M1'];
       
-      if( ! empty($this->Anti_si($_POST['channel'])) ) {
-          $channel = $this->Anti_si($_POST['channel']);
+      if( ! empty($_POST['channel']) ) {
+          $channel = $_POST['channel'];
           
           if($channel == "0"){
               $channel_array = $this->tvcc_model->channelsearch("",$genre);
@@ -361,7 +363,7 @@ class Tvccresp22 extends JA_Controller {
       $params['channel']		= str_replace("AND","&",$channel);
       $params['cgroup']		= $cgroup;
       
-	  
+  
 	   $list = $this->tvcc_model->list_tvcc($params);
 	   
 	 
@@ -448,8 +450,8 @@ class Tvccresp22 extends JA_Controller {
           $genre = "0";
       }
       
-      if( ! empty($this->Anti_si($_POST['channel'])) ) {
-          $channel = $this->Anti_si($_POST['channel']);
+      if( ! empty($_POST['channel']) ) {
+          $channel = $_POST['channel'];
       } else {
           $channel = "0";
       }

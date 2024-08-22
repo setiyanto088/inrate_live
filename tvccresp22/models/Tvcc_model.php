@@ -395,7 +395,7 @@ ORDER BY `DATE`,M1
 ORDER BY ".$strOrderBy;
 
  		$usql = $case_max.$case_str.$sql;
-		
+				
 		$db = $this->clickhouse->db();
  		
 		
