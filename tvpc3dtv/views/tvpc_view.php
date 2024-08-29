@@ -953,7 +953,7 @@
           
           /* HANDLE ALL CHANNEL */
           var channel_header = "";                                                                    
-          if(channel == "0"){
+          if(channel == "0" && genre !== '0'){
               /* READ CHANNEL FROM AFTER CHOOSE GENRE */
               $('#custom_channel').next().children().each(function(){
                   if($(this).children().html() != "All Channel"){
@@ -962,7 +962,10 @@
               })
               
               channel_header = channel_header.slice(0,-1);
-          } else {
+          } else if(channel == "0" && genre == '0'){
+			  channel_header = "0";
+			  
+		  } else {
               channel_header = channel;
           }  
           

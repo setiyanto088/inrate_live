@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 ini_set('max_execution_time', 0); 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -49,18 +50,35 @@ class Tvpc3dtv extends JA_Controller {
 		$params['profile'] =   $this->Anti_si($this->input->post('profile', TRUE));
 		$params['genre'] =   str_replace("AND","&",$this->Anti_si($this->input->post('genre', TRUE)));
 		$params['daypart'] =   $this->Anti_si($this->input->post('daypart', TRUE));
- 		$channel =   str_replace("AND","&",str_replace("  AND  "," & ",$this->Anti_si($this->input->post('channel', TRUE))));
-		$channel = explode(',',$channel);
-		$ccc = '';
 		
-		foreach($channel as $chn){
+		if($channel == "'0'"){
 			
-			$ccc .= "'".$chn."',";
+						
+			$get_channel = $this->tvpc_model->list_channel();
+			$txt_channel = '';
+			foreach($get_channel as $get_channels){
+				
+				$txt_channel = $txt_channel."'".$get_channels['channel']."',";
+				
+			}
+						
+			$params['channel']	= rtrim($txt_channel,",");
+		}else{			
+			$channel =   str_replace("AND","&",str_replace("  AND  "," & ",$this->Anti_si($this->input->post('channel', TRUE))));
+			$channel = explode(',',$channel);
+			$ccc = '';
 			
+			foreach($channel as $chn){
+				
+				$ccc .= "'".$chn."',";
+				
+			}
+			
+			
+			$params['channel'] = substr($ccc,0,-1);
 		}
 		
-		
-		$params['channel'] = substr($ccc,0,-1);
+
  	
  		
 		$list = $this->tvpc_model->list_tvpc_export($params);
@@ -241,6 +259,24 @@ class Tvpc3dtv extends JA_Controller {
 			$search_value = null;
 		}
 		
+		
+		
+		if($channel == "'0'"){
+			
+						
+			$get_channel = $this->tvpc_model->list_channel();
+			$txt_channel = '';
+			foreach($get_channel as $get_channels){
+				
+				$txt_channel = $txt_channel."'".$get_channels['channel']."',";
+				
+			}
+						
+			$params['channel']	= rtrim($txt_channel,",");
+		}else{			
+			$params['channel']		= str_replace("AND","&",str_replace("  AND  "," & ",$channel));
+		}
+		
  		$params['starttime'] 	= $start_time;
 		$params['endtime'] 		= $end_time;
 		$params['limit'] 		= (int) $length;
@@ -252,7 +288,7 @@ class Tvpc3dtv extends JA_Controller {
 		$params['end_date']		= $end_date;
 		$params['profile']		= $profile;
 		$params['genre']		= str_replace("AND","&",$genre);
-		$params['channel']		= str_replace("AND","&",str_replace("  AND  "," & ",$channel));
+		
  		
 		$list = $this->tvpc_model->list_tvpc($params);
 		
