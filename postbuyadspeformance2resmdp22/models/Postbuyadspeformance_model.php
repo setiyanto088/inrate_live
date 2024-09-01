@@ -2089,9 +2089,9 @@ GROUP BY CHANNEL ORDER BY CHANNEL
       }else{
           if($params['kategoriby'] == "PO_NUMBER"){
 			  $params['kategoriby'] = "HOUSENUMBER";
-              $l_where_clause_kategori = ' AND REPLACE(A.'.$params['kategoriby'].', "\r", "") = "'.str_replace("*","'",$params['kategori']).'" ';
+              $l_where_clause_kategori = " AND REPLACE(A.".$params['kategoriby'].", '\r', '') = '".str_replace('*','"',$params['kategori'])."' ";
           } else {
-              $l_where_clause_kategori = ' AND A.'.$params['kategoriby'].' = "'.str_replace("*","'",$params['kategori']).'" ';
+              $l_where_clause_kategori = " AND A.".$params['kategoriby']." = '".str_replace('*','"',$params['kategori'])."' ";
           }
       }
 	  
@@ -2219,7 +2219,7 @@ GROUP BY CHANNEL ORDER BY CHANNEL
 	  ";
 		  
 	  }
-	  
+	   
 	  	   
       
    		$query 	=  $db->select($sql);
