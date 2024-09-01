@@ -18,7 +18,7 @@ class Createprofileu_model extends CI_Model {
 		formatDateTime(SPLIT_MINUTES,'%T') dd1,
 		formatDateTime(DATE_ADD(SECOND ,59,SPLIT_MINUTES),'%T') dd2,
 		* FROM `SUMMARY_PER_MINUTES_RES_V2`
-		WHERE PROFILE_ID = ".$id_prof."
+		WHERE PROFILE_ID = '".$id_prof."'
 		AND SPLIT_MINUTES BETWEEN '".$start_date." 00:00:00' AND '".$start_date." 23:59:59'
 		AND CHANNEL IN ('ANTV','INDOSIAR','KOMPAS TV','METRO TV','NET TV','SCTV','TRANS 7','TRANS TV','TV ONE','TVRI')
 		ORDER BY CHANNEL, SPLIT_MINUTES

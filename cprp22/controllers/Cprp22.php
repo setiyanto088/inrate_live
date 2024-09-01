@@ -1140,7 +1140,6 @@ function returnBetweenDates( $startDate, $endDate ){
 	
 	$arr_date = $this->returnBetweenDates("".$date_start[2]."-".$date_start[1]."-".$date_start[0]."","".$date_end[2]."-".$date_end[1]."-".$date_end[0]."");
 	
-	//print_r($arr_date);die;
 	//echo  $start_date;die;
 	$this->load->library('excel');
 	   
@@ -1158,7 +1157,8 @@ function returnBetweenDates( $startDate, $endDate ){
 			}
 		
 		$list = $this->createprofileu_model->get_mbm($id_prof,$arr_dates,$arr_dates);
-	
+		
+		print_r($list);die;
 
 	   
 		$objPHPExcel->getProperties()->setCreator("Unics")
