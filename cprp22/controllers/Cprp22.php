@@ -1158,7 +1158,6 @@ function returnBetweenDates( $startDate, $endDate ){
 		
 		$list = $this->createprofileu_model->get_mbm($id_prof,$arr_dates,$arr_dates);
 		
-		//print_r($list);die;
 
 	   
 		$objPHPExcel->getProperties()->setCreator("Unics")
@@ -1223,7 +1222,7 @@ function returnBetweenDates( $startDate, $endDate ){
 		
 		 //ob_end_clean();
 		
-		$objWriter->save('/var/www/html/urbanrate/tmp_doc/aaaa.xls');	
+		$objWriter->save('data/opep/srcs/html/tmp_doc/aaaa.xls');	
 
   }
 
