@@ -11,10 +11,13 @@ class Createprofileu_model extends CI_Model {
 	
 	public function get_mbm($id_prof,$start_date,$end_date){
 		
+		$db = $this->clickhouse->db();
 		
 		$query = "
-		SELECT DATE_FORMAT(SPLIT_MINUTES,'%d/%m/%Y') tgl,DATE_FORMAT(SPLIT_MINUTES,'%H:%i:%s') dd1,
-		DATE_FORMAT(DATE_ADD(SPLIT_MINUTES, INTERVAL 59 SECOND),'%H:%i:%s') AS dd2,* FROM `SUMMARY_PER_MINUTES_RES_V2`
+		SELECT formatDateTime(SPLIT_MINUTES,'%d/%m/%Y') tgl,
+		formatDateTime(SPLIT_MINUTES,'%T') dd1,
+		formatDateTime(DATE_ADD(SECOND ,59,SPLIT_MINUTES),'%T') dd2,
+		* FROM `SUMMARY_PER_MINUTES_RES_V2`
 		WHERE PROFILE_ID = ".$id_prof."
 		AND SPLIT_MINUTES BETWEEN '".$start_date." 00:00:00' AND '".$start_date." 23:59:59'
 		AND CHANNEL IN ('ANTV','INDOSIAR','KOMPAS TV','METRO TV','NET TV','SCTV','TRANS 7','TRANS TV','TV ONE','TVRI')
@@ -22,10 +25,10 @@ class Createprofileu_model extends CI_Model {
 		";
 		
 		
-		$sql	= $this->db2->query($query); 
-		$this->db2->close();
-		$this->db2->initialize(); 	
-		return $sql->result_array();	   
+		$sql	= $db->select($query);
+		$result = $sql->rows();		
+
+		return 	$result;	
 		
 	}		
 	
