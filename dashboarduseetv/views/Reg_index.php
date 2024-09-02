@@ -178,13 +178,13 @@
 										<thead>
 											<tr>
 												<th style="width:15px" scope="row">Rank <img alt="img" class="cArrowDown" alt="arrow" ></th>
-												<th scope="row">Regional 1 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 2 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 3 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 4 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 5 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 6 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 7 <img alt="img" class="cArrowDown" ></th>
+												<th scope="row">Regional 1 </th>
+												<th scope="row">Regional 2 </th>
+												<th scope="row">Regional 3 </th>
+												<th scope="row">Regional 4 </th>
+												<th scope="row">Regional 5 </th>
+												<th scope="row">Regional 6 </th>
+												<th scope="row">Regional 7 </th>
 											</tr>
 
 										</thead>
@@ -219,13 +219,13 @@
 										<thead>
 											<tr>
 												<th style="width:15px" scope="row">Rank <img alt="img" class="cArrowDown"  alt="arrow"  ></th>
-												<th scope="row">Regional 1 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 2 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 3 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 4 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 5 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 6 <img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Regional 7 <img alt="img" class="cArrowDown" ></th>
+												<th scope="row">Regional 1 </th>
+												<th scope="row">Regional 2 </th>
+												<th scope="row">Regional 3 </th>
+												<th scope="row">Regional 4 </th>
+												<th scope="row">Regional 5 </th>
+												<th scope="row">Regional 6 </th>
+												<th scope="row">Regional 7 </th>
 											</tr>
 
 										</thead>
@@ -259,31 +259,31 @@
 										<thead>
 											<tr>
 												<th rowspan="2" scope="col">Rank <img alt="img" class="cArrowDown"  alt="arrow" ></th>
-												<th colspan="2" scope="row">Regional 1 <img alt="img" class="cArrowDown" ></th>
+												<th colspan="2" scope="row">Regional 1 </th>
 												
 												<th colspan="2" scope="row">Regional 2 <img alt="img" class="cArrowDown"  alt="arrow" ></th>
-												<th colspan="2" scope="row">Regional 3 <img alt="img" class="cArrowDown" ></th>
-												<th colspan="2" scope="row">Regional 4 <img alt="img" class="cArrowDown" ></th>
-												<th colspan="2" scope="row">Regional 5 <img alt="img" class="cArrowDown" ></th>
-												<th colspan="2" scope="row">Regional 6 <img alt="img" class="cArrowDown" ></th>
-												<th colspan="2" scope="row">Regional 7 <img alt="img" class="cArrowDown" ></th>
+												<th colspan="2" scope="row">Regional 3 </th>
+												<th colspan="2" scope="row">Regional 4 </th>
+												<th colspan="2" scope="row">Regional 5 </th>
+												<th colspan="2" scope="row">Regional 6 </th>
+												<th colspan="2" scope="row">Regional 7 </th>
 												
 											</tr>
 											<tr>
-												<th scope="row">Program<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Channel<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Program<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Channel<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Program<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Channel<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Program<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Channel<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Program<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Channel<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Program<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Channel<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Program<img alt="img" class="cArrowDown" ></th>
-												<th scope="row">Channel<img alt="img" class="cArrowDown" ></th>
+												<th scope="row">Program</th>
+												<th scope="row">Channel</th>
+												<th scope="row">Program</th>
+												<th scope="row">Channel</th>
+												<th scope="row">Program</th>
+												<th scope="row">Channel</th>
+												<th scope="row">Program</th>
+												<th scope="row">Channel</th>
+												<th scope="row">Program</th>
+												<th scope="row">Channel</th>
+												<th scope="row">Program</th>
+												<th scope="row">Channel</th>
+												<th scope="row">Program</th>
+												<th scope="row">Channel</th>
 											</tr>
 
 										</thead>
@@ -414,7 +414,7 @@ function program_change(){
 				success: function(data){
 					$('#table_program_program').html("");
 					
-					var table_html = '<table aria-describedby="mydesc"  id="example34" class="table table-striped table-bordered example" style=" font-size:11px !important;table-layout:fixed;"><thead><tr><th rowspan="2">Rank <img alt="img" class="cArrowDown" ></th><th colspan="2">Regional 1 <img alt="img" class="cArrowDown" ></th><th colspan="2">Regional 2 <img alt="img" class="cArrowDown" ></th><th colspan="2">Regional 3 <img alt="img" class="cArrowDown" ></th><th colspan="2">Regional 4 <img alt="img" class="cArrowDown" ></th><th colspan="2">Regional 5 <img alt="img" class="cArrowDown" ></th><th colspan="2">Regional 6 <img alt="img" class="cArrowDown" ></th><th colspan="2">Regional 7 <img alt="img" class="cArrowDown" ></th></tr><tr><th>Program<img alt="img" class="cArrowDown" ></th><th>Channel<img alt="img" class="cArrowDown" ></th><th>Program<img alt="img" class="cArrowDown" ></th><th>Channel<img alt="img" class="cArrowDown" ></th><th>Program<img alt="img" class="cArrowDown" ></th><th>Channel<img alt="img" class="cArrowDown" ></th><th>Program<img alt="img" class="cArrowDown" ></th><th>Channel<img alt="img" class="cArrowDown" ></th><th>Program<img alt="img" class="cArrowDown" ></th><th>Channel<img alt="img" class="cArrowDown" ></th><th>Program<img alt="img" class="cArrowDown" ></th><th>Channel<img alt="img" class="cArrowDown" ></th><th>Program<img alt="img" class="cArrowDown" ></th><th>Channel<img alt="img" class="cArrowDown" ></th></tr></thead></table>';
+					var table_html = '<table aria-describedby="mydesc"  id="example34" class="table table-striped table-bordered example" style=" font-size:11px !important;table-layout:fixed;"><thead><tr><th rowspan="2">Rank </th><th colspan="2">Regional 1 </th><th colspan="2">Regional 2 </th><th colspan="2">Regional 3 </th><th colspan="2">Regional 4 </th><th colspan="2">Regional 5 </th><th colspan="2">Regional 6 </th><th colspan="2">Regional 7 </th></tr><tr><th>Program</th><th>Channel</th><th>Program</th><th>Channel</th><th>Program</th><th>Channel</th><th>Program</th><th>Channel</th><th>Program</th><th>Channel</th><th>Program</th><th>Channel</th><th>Program</th><th>Channel</th></tr></thead></table>';
 					
 					$('#table_program_program').html(table_html);
 					
@@ -534,7 +534,7 @@ function channel_change(){
 					
 					$('#table_program_channel').html("");
 					
-					var table_html = '<table aria-describedby="mydesc"  id="example3" class="table table-striped table-bordered example" style="width: 100%; font-size:8px !important;table-layout:fixed;"><thead><tr><th class="sorting" style="width: 51.0104px !important;">Rank <img alt="img" class="cArrowDown" ></th><th style="width: 51.0104px;" class="sorting">Regional 1 <img alt="img" class="cArrowDown" ></th><th style="width: 51.0104px !important;" class="sorting">Regional 2 <img alt="img" class="cArrowDown" ></th><th style="width: 51.0104px; !important" class="sorting">Regional 3 <img alt="img" class="cArrowDown" ></th><th style="width: 51.0104px; !important" class="sorting">Regional 4 <img alt="img" class="cArrowDown" ></th><th style="width: 51.0104px; !important" class="sorting">Regional 5 <img alt="img" class="cArrowDown" ></th><th style="width: 51.0104px; !important" class="sorting">Regional 6 <img alt="img" class="cArrowDown" ></th><th style="width: 51.0104px; !important" class="sorting">Regional 7 <img alt="img" class="cArrowDown" ></th></tr></thead></table>';
+					var table_html = '<table aria-describedby="mydesc"  id="example3" class="table table-striped table-bordered example" style="width: 100%; font-size:8px !important;table-layout:fixed;"><thead><tr><th class="sorting" style="width: 51.0104px !important;">Rank </th><th style="width: 51.0104px;" class="sorting">Regional 1 </th><th style="width: 51.0104px !important;" class="sorting">Regional 2 </th><th style="width: 51.0104px; !important" class="sorting">Regional 3 </th><th style="width: 51.0104px; !important" class="sorting">Regional 4 </th><th style="width: 51.0104px; !important" class="sorting">Regional 5 </th><th style="width: 51.0104px; !important" class="sorting">Regional 6 </th><th style="width: 51.0104px; !important" class="sorting">Regional 7 </th></tr></thead></table>';
 					 
 					$('#table_program_channel').html(table_html);
 					
@@ -1917,7 +1917,7 @@ function table2_view2(){
 			$('#table_program2').html("");
 
 			if(types == "1"){
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_EPG <img alt="img" class="cArrowDown" ></th><th>SPLIT_EPG<img alt="img" class="cArrowDown" ></th><th>LOAD_CDR<img alt="img" class="cArrowDown" ></th><th>CLEANSING_CDR <img alt="img" class="cArrowDown" ></th><th>SPLIT_CDR<img alt="img" class="cArrowDown" ></th><th>JOIN_CDR_EPG<img alt="img" class="cArrowDown" ></th><th>RATING_PERMINUTES <img alt="img" class="cArrowDown" ></th><th>TVCC<img alt="img" class="cArrowDown" ></th><th>MEDIAPLAN<img alt="img" class="cArrowDown" ></th><th>DASHBOARD<img alt="img" class="cArrowDown" ></th><th>BEFORE_AFTER<img alt="img" class="cArrowDown" ></th><th>MIGRATION <img alt="img" class="cArrowDown" ></th><th>AUDIENCE<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_EPG </th><th>SPLIT_EPG</th><th>LOAD_CDR</th><th>CLEANSING_CDR </th><th>SPLIT_CDR</th><th>JOIN_CDR_EPG</th><th>RATING_PERMINUTES </th><th>TVCC</th><th>MEDIAPLAN</th><th>DASHBOARD</th><th>BEFORE_AFTER</th><th>MIGRATION </th><th>AUDIENCE</th><th>Status</th></tr></thead></table></div>');
 
 				daily = data;
 
@@ -2051,7 +2051,7 @@ function table2_view2(){
 				});	
 			}else if(types == "2" ){
 				
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>SPLIT_LOGPROOF<img alt="img" class="cArrowDown" ></th><th>JOIN_LOGPROOF_CDR<img alt="img" class="cArrowDown" ></th><th>DETAIL_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>PTV_CIM_RATING<img alt="img" class="cArrowDown" ></th><th>REACH_BRAND<img alt="img" class="cArrowDown" ></th><th>REACH_AGENCY<img alt="img" class="cArrowDown" ></th><th>REACH_ADVERTISER<img alt="img" class="cArrowDown" ></th><th>SUB_CAT<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_LOGPROOF </th><th>SPLIT_LOGPROOF</th><th>JOIN_LOGPROOF_CDR</th><th>DETAIL_LOGPROOF </th><th>PTV_CIM_RATING</th><th>REACH_BRAND</th><th>REACH_AGENCY</th><th>REACH_ADVERTISER</th><th>SUB_CAT</th><th>Status</th></tr></thead></table></div>');
 				
 				daily = data;
 
@@ -2216,7 +2216,7 @@ function table2_view2(){
 				});	
 			}else if(types == "3" ){
 				
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>SPLIT_LOGPROOF<img alt="img" class="cArrowDown" ></th><th>JOIN_LOGPROOF_CDR<img alt="img" class="cArrowDown" ></th><th>DETAIL_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>PTV_CIM_RATING<img alt="img" class="cArrowDown" ></th><th>REACH_BRAND<img alt="img" class="cArrowDown" ></th><th>REACH_AGENCY<img alt="img" class="cArrowDown" ></th><th>REACH_ADVERTISER<img alt="img" class="cArrowDown" ></th><th>SUB_CAT<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_LOGPROOF </th><th>SPLIT_LOGPROOF</th><th>JOIN_LOGPROOF_CDR</th><th>DETAIL_LOGPROOF </th><th>PTV_CIM_RATING</th><th>REACH_BRAND</th><th>REACH_AGENCY</th><th>REACH_ADVERTISER</th><th>SUB_CAT</th><th>Status</th></tr></thead></table></div>');
 				
 				daily = data;
 
@@ -2381,7 +2381,7 @@ function table2_view2(){
 				});	
 			}else if(types == "4" ){
 				
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_CIM <img alt="img" class="cArrowDown" ></th><th>SPLIT_CIM<img alt="img" class="cArrowDown" ></th><th>DETAIL_CIM<img alt="img" class="cArrowDown" ></th><th>CIM_RATING<img alt="img" class="cArrowDown" ></th><th>DASHBOARD<img alt="img" class="cArrowDown" ></th><th>REACH_PRODUCT<img alt="img" class="cArrowDown" ></th><th>REACH_SECTOR<img alt="img" class="cArrowDown" ></th><th>REACH_ADVERTISER<img alt="img" class="cArrowDown" ></th><th>REACH_PRODUCT_MONTHLY<img alt="img" class="cArrowDown" ></th><th>REACH_SECTOR_MONTHLY<img alt="img" class="cArrowDown" ></th><th>REACH_ADVERTISER_MONTHLY<img alt="img" class="cArrowDown" ></th><th>SUB_CAT<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_CIM </th><th>SPLIT_CIM</th><th>DETAIL_CIM</th><th>CIM_RATING</th><th>DASHBOARD</th><th>REACH_PRODUCT</th><th>REACH_SECTOR</th><th>REACH_ADVERTISER</th><th>REACH_PRODUCT_MONTHLY</th><th>REACH_SECTOR_MONTHLY</th><th>REACH_ADVERTISER_MONTHLY</th><th>SUB_CAT</th><th>Status</th></tr></thead></table></div>');
 				
 				daily = data;
 
@@ -2593,7 +2593,7 @@ function table2_view2(){
 				});	
 			}else if(types == "5" ){
 				
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_RATECARD <img alt="img" class="cArrowDown" ></th><th>CLEANSING_RATECARD<img alt="img" class="cArrowDown" ></th><th>SPLIT_RATECARD<img alt="img" class="cArrowDown" ></th><th>DETAIL_RATECARD<img alt="img" class="cArrowDown" ></th><th>RATING_PERMINUTES<img alt="img" class="cArrowDown" ></th><th>MEDIAPLAN_RATING<img alt="img" class="cArrowDown" ></th><th>TVCC<img alt="img" class="cArrowDown" ></th><th>DASHBOARD_MEDIAPLAN<img alt="img" class="cArrowDown" ></th><th>AFTER_BEFORE<img alt="img" class="cArrowDown" ></th><th>MIGRATION<img alt="img" class="cArrowDown" ></th><th>AUDIENCE<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_RATECARD </th><th>CLEANSING_RATECARD</th><th>SPLIT_RATECARD</th><th>DETAIL_RATECARD</th><th>RATING_PERMINUTES</th><th>MEDIAPLAN_RATING</th><th>TVCC</th><th>DASHBOARD_MEDIAPLAN</th><th>AFTER_BEFORE</th><th>MIGRATION</th><th>AUDIENCE</th><th>Status</th></tr></thead></table></div>');
 				
 				daily = data;
 
@@ -2790,7 +2790,7 @@ function table2_view2(){
 				});	
 			}else if(types == "7" ){
 				
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>SPLIT_LOGPROOF<img alt="img" class="cArrowDown" ></th><th>JOIN_LOGPROOF_CDR<img alt="img" class="cArrowDown" ></th><th>DETAIL_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>PTV_CIM_RATING<img alt="img" class="cArrowDown" ></th><th>REACH_BRAND<img alt="img" class="cArrowDown" ></th><th>REACH_AGENCY<img alt="img" class="cArrowDown" ></th><th>REACH_ADVERTISER<img alt="img" class="cArrowDown" ></th><th>SUB_CAT<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_LOGPROOF </th><th>SPLIT_LOGPROOF</th><th>JOIN_LOGPROOF_CDR</th><th>DETAIL_LOGPROOF </th><th>PTV_CIM_RATING</th><th>REACH_BRAND</th><th>REACH_AGENCY</th><th>REACH_ADVERTISER</th><th>SUB_CAT</th><th>Status</th></tr></thead></table></div>');
 				
 				daily = data;
 
@@ -2955,7 +2955,7 @@ function table2_view2(){
 				});	
 			}else if(types == "8" ){
 				
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>SPLIT_LOGPROOF<img alt="img" class="cArrowDown" ></th><th>JOIN_LOGPROOF_CDR<img alt="img" class="cArrowDown" ></th><th>DETAIL_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>PTV_CIM_RATING<img alt="img" class="cArrowDown" ></th><th>REACH_BRAND<img alt="img" class="cArrowDown" ></th><th>REACH_AGENCY<img alt="img" class="cArrowDown" ></th><th>REACH_ADVERTISER<img alt="img" class="cArrowDown" ></th><th>SUB_CAT<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_LOGPROOF </th><th>SPLIT_LOGPROOF</th><th>JOIN_LOGPROOF_CDR</th><th>DETAIL_LOGPROOF </th><th>PTV_CIM_RATING</th><th>REACH_BRAND</th><th>REACH_AGENCY</th><th>REACH_ADVERTISER</th><th>SUB_CAT</th><th>Status</th></tr></thead></table></div>');
 				
 				daily = data;
 
@@ -3149,7 +3149,7 @@ function onreproc_f(date_data,type_jobs){
 			
 		$('#table_program').html("");
 			
-			$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>File Name <img alt="img" class="cArrowDown" s></th><th>Size <img alt="img" class="cArrowDown" ></th><th>Row File Count <img alt="img" class="cArrowDown" ></th><th>Row Load<img alt="img" class="cArrowDown" ></th><th>Row Cleansing<img alt="img" class="cArrowDown" ></th><th>Date Load<img alt="img" class="cArrowDown" ></th><th>File Type<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table>');
+			$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>File Name <img alt="img" class="cArrowDown" s></th><th>Size </th><th>Row File Count </th><th>Row Load</th><th>Row Cleansing</th><th>Date Load</th><th>File Type</th><th>Status</th></tr></thead></table>');
 			
 			obj = data;
 						
@@ -3222,7 +3222,7 @@ function onreproc(date_data,type_jobs){
 			$('#table_program2').html("");
 
 			if(types == "1"){
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_EPG <img alt="img" class="cArrowDown" ></th><th>SPLIT_EPG<img alt="img" class="cArrowDown" ></th><th>LOAD_CDR<img alt="img" class="cArrowDown" ></th><th>CLEANSING_CDR <img alt="img" class="cArrowDown" ></th><th>SPLIT_CDR<img alt="img" class="cArrowDown" ></th><th>JOIN_CDR_EPG<img alt="img" class="cArrowDown" ></th><th>RATING_PERMINUTES <img alt="img" class="cArrowDown" ></th><th>TVCC<img alt="img" class="cArrowDown" ></th><th>MEDIAPLAN<img alt="img" class="cArrowDown" ></th><th>BEFORE_AFTER<img alt="img" class="cArrowDown" ></th><th>MIGRATION <img alt="img" class="cArrowDown" ></th><th>AUDIENCE<img alt="img" class="cArrowDown" ></th><th>DASHBOARD<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_EPG </th><th>SPLIT_EPG</th><th>LOAD_CDR</th><th>CLEANSING_CDR </th><th>SPLIT_CDR</th><th>JOIN_CDR_EPG</th><th>RATING_PERMINUTES </th><th>TVCC</th><th>MEDIAPLAN</th><th>BEFORE_AFTER</th><th>MIGRATION </th><th>AUDIENCE</th><th>DASHBOARD</th><th>Status</th></tr></thead></table></div>');
 
 				daily = data;
 
@@ -3354,7 +3354,7 @@ function onreproc(date_data,type_jobs){
 				});	
 			}else if(types == "2" ){
 				
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>SPLIT_LOGPROOF<img alt="img" class="cArrowDown" ></th><th>JOIN_LOGPROOF_CDR<img alt="img" class="cArrowDown" ></th><th>DETAIL_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>PTV_CIM_RATING<img alt="img" class="cArrowDown" ></th><th>REACH_BRAND<img alt="img" class="cArrowDown" ></th><th>REACH_AGENCY<img alt="img" class="cArrowDown" ></th><th>REACH_ADVERTISER<img alt="img" class="cArrowDown" ></th><th>SUB_CAT<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_LOGPROOF </th><th>SPLIT_LOGPROOF</th><th>JOIN_LOGPROOF_CDR</th><th>DETAIL_LOGPROOF </th><th>PTV_CIM_RATING</th><th>REACH_BRAND</th><th>REACH_AGENCY</th><th>REACH_ADVERTISER</th><th>SUB_CAT</th><th>Status</th></tr></thead></table></div>');
 				
 				daily = data;
 
@@ -3519,7 +3519,7 @@ function onreproc(date_data,type_jobs){
 				});	
 			}else if(types == "3" ){
 				
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>SPLIT_LOGPROOF<img alt="img" class="cArrowDown" ></th><th>JOIN_LOGPROOF_CDR<img alt="img" class="cArrowDown" ></th><th>DETAIL_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>PTV_CIM_RATING<img alt="img" class="cArrowDown" ></th><th>REACH_BRAND<img alt="img" class="cArrowDown" ></th><th>REACH_AGENCY<img alt="img" class="cArrowDown" ></th><th>REACH_ADVERTISER<img alt="img" class="cArrowDown" ></th><th>SUB_CAT<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_LOGPROOF </th><th>SPLIT_LOGPROOF</th><th>JOIN_LOGPROOF_CDR</th><th>DETAIL_LOGPROOF </th><th>PTV_CIM_RATING</th><th>REACH_BRAND</th><th>REACH_AGENCY</th><th>REACH_ADVERTISER</th><th>SUB_CAT</th><th>Status</th></tr></thead></table></div>');
 				
 				daily = data;
 
@@ -3684,7 +3684,7 @@ function onreproc(date_data,type_jobs){
 				});	
 			}else if(types == "4" ){
 				
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_CIM <img alt="img" class="cArrowDown" ></th><th>SPLIT_CIM<img alt="img" class="cArrowDown" ></th><th>DETAIL_CIM<img alt="img" class="cArrowDown" ></th><th>DETAIL_LOGPROOF <img alt="img" class="cArrowDown" ></th><th>CIM_RATING<img alt="img" class="cArrowDown" ></th><th>REACH_PRODUCT<img alt="img" class="cArrowDown" ></th><th>REACH_SECTOR<img alt="img" class="cArrowDown" ></th><th>REACH_ADVERTISER<img alt="img" class="cArrowDown" ></th><th>REACH_PRODUCT_MONTHLY<img alt="img" class="cArrowDown" ></th><th>REACH_SECTOR_MONTHLY<img alt="img" class="cArrowDown" ></th><th>REACH_ADVERTISER_MONTHLY<img alt="img" class="cArrowDown" ></th><th>SUB_CAT<img alt="img" class="cArrowDown" ></th><th>DASHBOARD<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_CIM </th><th>SPLIT_CIM</th><th>DETAIL_CIM</th><th>DETAIL_LOGPROOF </th><th>CIM_RATING</th><th>REACH_PRODUCT</th><th>REACH_SECTOR</th><th>REACH_ADVERTISER</th><th>REACH_PRODUCT_MONTHLY</th><th>REACH_SECTOR_MONTHLY</th><th>REACH_ADVERTISER_MONTHLY</th><th>SUB_CAT</th><th>DASHBOARD</th><th>Status</th></tr></thead></table></div>');
 				
 				daily = data;
 
@@ -3895,7 +3895,7 @@ function onreproc(date_data,type_jobs){
 				});	
 			}else if(types == "5" ){
 				
-				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>LOAD_RATECARD <img alt="img" class="cArrowDown" ></th><th>CLEANSING_RATECARD<img alt="img" class="cArrowDown" ></th><th>SPLIT_RATECARD<img alt="img" class="cArrowDown" ></th><th>DETAIL_RATECARD<img alt="img" class="cArrowDown" ></th><th>RATING_PERMINUTES<img alt="img" class="cArrowDown" ></th><th>MEDIAPLAN_RATING<img alt="img" class="cArrowDown" ></th><th>TVCC<img alt="img" class="cArrowDown" ></th><th>AFTER_BEFORE<img alt="img" class="cArrowDown" ></th><th>MIGRATION<img alt="img" class="cArrowDown" ></th><th>AUDIENCE<img alt="img" class="cArrowDown" ></th><th>DASHBOARD_MEDIAPLAN<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table></div>');
+				$('#table_program2').html('<div id="table_program2"><table aria-describedby="mydesc"  id="example4" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>LOAD_RATECARD </th><th>CLEANSING_RATECARD</th><th>SPLIT_RATECARD</th><th>DETAIL_RATECARD</th><th>RATING_PERMINUTES</th><th>MEDIAPLAN_RATING</th><th>TVCC</th><th>AFTER_BEFORE</th><th>MIGRATION</th><th>AUDIENCE</th><th>DASHBOARD_MEDIAPLAN</th><th>Status</th></tr></thead></table></div>');
 				
 				daily = data;
 
@@ -4121,7 +4121,7 @@ var tahun = $('#tahun').val();
 		success: function(data){
 			$('#table_program').html("");
 			
-			$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>File Name <img alt="img" class="cArrowDown" s></th><th>Size <img alt="img" class="cArrowDown" ></th><th>Row File Count <img alt="img" class="cArrowDown" ></th><th>Row Load<img alt="img" class="cArrowDown" ></th><th>Row Cleansing<img alt="img" class="cArrowDown" ></th><th>Date Load<img alt="img" class="cArrowDown" ></th><th>File Type<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th></tr></thead></table>');
+			$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>File Name <img alt="img" class="cArrowDown" s></th><th>Size </th><th>Row File Count </th><th>Row Load</th><th>Row Cleansing</th><th>Date Load</th><th>File Type</th><th>Status</th></tr></thead></table>');
 			
 			obj = data;
 
@@ -4205,7 +4205,7 @@ function table2_view(){
 			$('#table_program').html("");
 			
 			if(field == "Program"){
-				$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date <img alt="img" class="cArrowDown" ></th><th>File Name <img alt="img" class="cArrowDown" s></th><th>Size <img alt="img" class="cArrowDown" ></th><th>Row File Count <img alt="img" class="cArrowDown" ></th><th>Row Load<img alt="img" class="cArrowDown" ></th><th>Row Cleansing<img alt="img" class="cArrowDown" ></th><th>Date Load<img alt="img" class="cArrowDown" ></th><th>File Type<img alt="img" class="cArrowDown" ></th><th>Status<img alt="img" class="cArrowDown" ></th><th>Checking Data<img alt="img" class="cArrowDown" ></th></tr></thead></table>');
+				$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>File Name <img alt="img" class="cArrowDown" s></th><th>Size </th><th>Row File Count </th><th>Row Load</th><th>Row Cleansing</th><th>Date Load</th><th>File Type</th><th>Status</th><th>Checking Data</th></tr></thead></table>');
 			}else{
 				$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped table-bordered example" style="color:black"><thead><tr><th><img alt="img" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"> Rangking</th><th><img alt="img" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"> '+field+'</th><th><img alt="img" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"> '+type+'</th></tr></thead></table>');
 			}
