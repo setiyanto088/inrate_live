@@ -4,27 +4,32 @@ class Tvcc_model extends CI_Model {
 	public function __construct()
 	{
 		parent::__construct();
-		//$this->load->library('ClickHouse');
-		 $this->db2 = $this->load->database('db_prod', TRUE);
+		$this->load->library('ClickHouse');
+		$this->db2 = $this->load->database('db_survey', TRUE);
 		
 	}
 	
 	
 	public function get_value_res($param) {
-		$query = 'SELECT `'.$param.'` AS LABEL,SUM(WEIGHT) AS PP FROM `URBAN_PROFILE_P22`
+		$this->load->library('ClickHouse');
+		$db = $this->clickhouse->db();
+		
+		$query = "SELECT ".$param." AS LABEL,SUM(WEIGHT) AS PP FROM `URBAN_PROFILE_P22`
 			WHERE WEIGHT IS NOT NULL
-			AND '.$param.' <> ""
-			GROUP BY `'.$param.'`
-			ORDER BY PP DESC';			
-		$sql	= $this->db2->query($query);
-		$this->db2->close();
-		$this->db2->initialize(); 
-		return $sql->result_array();	   
+			AND ".$param." <> ''
+			GROUP BY ".$param."
+			ORDER BY PP DESC ";	
+			
+		 $querys		= $db->select($query);
+		  $result = $querys->rows();
+		  return $result; 
 	}	
 	
 	public function get_merk_list() {
-		//$query = 'SELECT * FROM `MERK_NAME_CLN` WHERE `DEFAULT` = 1 GROUP BY DESCRIPTION';			
-		$query = 'SELECT * FROM MERK_SUMMARY_P22';			
+		$query = 'SELECT * FROM `MERK_NAME_CLN` GROUP BY DESCRIPTION';	
+		//$db = $this->clickhouse->db();
+		
+		//$query = 'SELECT * FROM MERK_SUMMARY_P22';			
 		$sql	= $this->db2->query($query);
 		$this->db2->close();
 		$this->db2->initialize(); 
@@ -40,11 +45,13 @@ class Tvcc_model extends CI_Model {
 	}
 	
 	public function get_value_res_split($param) {
+		
+		
+		$db = $this->clickhouse->db();
 			
-		$sql	= $this->db2->query($param);
-		$this->db2->close();
-		$this->db2->initialize(); 
-		return $sql->result_array();	   
+		 $querys		= $db->select($param);
+		  $result = $querys->rows();
+		  return $result; 
 	}
 
 	public function list_profile($iduser,$idrole,$period) {

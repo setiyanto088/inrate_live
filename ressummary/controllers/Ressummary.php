@@ -179,6 +179,8 @@ class Ressummary extends CI_Controller {
 		
 		$merk_list = $this->tvcc_model->get_merk_list();
 		
+		
+		
 		foreach($merk_list as $merk_lists){
 			
 			$array_data[$merk_lists['MERK']]['title'] = $merk_lists['LABEL'];
@@ -210,17 +212,18 @@ class Ressummary extends CI_Controller {
 			
 			$merk_list_sub = $this->tvcc_model->get_merk_list_sub($merk_lists['DESCRIPTION']);
 			
-			$scr = ' SELECT ';
+			$scr = " SELECT ";
 			foreach($merk_list_sub as $merk_list_subs){
 
-				$scr .= ' SUM(IF('.$merk_lists['DESCRIPTION'].' LIKE "%'.$merk_list_subs['FIELD'].'%",WEIGHT,0 )) AS `'.strtoupper($merk_list_subs['LABEL']).'`,';
+				$scr .= " SUM(IF(".$merk_lists['DESCRIPTION']." LIKE '%".$merk_list_subs['FIELD']."%',WEIGHT,0 )) AS `".strtoupper($merk_list_subs['LABEL'])."`,";
 
 			}
 			
 			$scr = substr($scr,0,-1);
 			
-			$scr .= ' FROM URBAN_PROFILE_P22 WHERE WEIGHT IS NOT NULL';
-
+			$scr .= " FROM URBAN_PROFILE_P22 WHERE WEIGHT IS NOT NULL";
+			
+			
 			$datax = $this->tvcc_model->get_value_res_split($scr);
 			
 			$array_data = [];
@@ -292,18 +295,17 @@ class Ressummary extends CI_Controller {
 		
 		$array_index = [];
 		
-		$scr = ' SELECT ';
+		$scr = " SELECT ";
 		foreach($param as $params){
 			
-			$scr .= ' SUM(IF('.$field.' LIKE "%'.$params.'%",WEIGHT,0 )) AS `'.$params.'`,';
+			$scr .= " SUM(IF(".$field." LIKE '%".$params."%',WEIGHT,0 )) AS `".$params."`,";
 			
 		}
 		
 		$scr = substr($scr,0,-1);
 		
-		$scr .= ' FROM URBAN_PROFILE_P22 WHERE WEIGHT IS NOT NULL';
-		
-	//	ECHO $scr;die;
+		$scr .= " FROM URBAN_PROFILE_P22 WHERE WEIGHT IS NOT NULL";
+
 		
 		$data = $this->tvcc_model->get_value_res_split($scr);
 		
@@ -389,16 +391,16 @@ class Ressummary extends CI_Controller {
 'tv_mostwatch_digital_rcti' => 'RCTI','tv_mostwatch_digital_mnctv' => 'MNC TV','tv_mostwatch_digital_gtv' => 'GTV','tv_mostwatch_digital_inews' => 'iNews','tv_mostwatch_digital_metrotv' => 'Metro TV','tv_mostwatch_digital_sctv' => 'SCTV','tv_mostwatch_digital_antv' => 'ANTV','tv_mostwatch_digital_indosiar' => 'Indosiar','tv_mostwatch_digital_trans7' => 'Trans 7','tv_mostwatch_digital_transtv' => 'Trans TV','tv_mostwatch_digital_tvone' => 'TV One','tv_mostwatch_digital_nettv' => 'NET TV','tv_mostwatch_digital_cnn_indo' => 'CNN Indonesia','tv_mostwatch_digital_kompastv' => 'Kompas TV','tv_mostwatch_digital_etc' => 'Lainnya',
 'tv_mostwatch_analog_rcti' => 'RCTI','tv_mostwatch_analog_mnctv' => 'MNC TV','tv_mostwatch_analog_gtv' => 'GTV','tv_mostwatch_analog_inews' => 'iNews','tv_mostwatch_analog_metrotv' => 'Metro TV','tv_mostwatch_analog_sctv' => 'SCTV','tv_mostwatch_analog_antv' => 'ANTV','tv_mostwatch_analog_indosiar' => 'Indosiar','tv_mostwatch_analog_trans7' => 'Trans 7','tv_mostwatch_analog_transtv' => 'Trans TV','tv_mostwatch_analog_tvone' => 'TV One','tv_mostwatch_analog_nettv' => 'NET TV','tv_mostwatch_analog_cnn_indo' => 'CNN Indonesia','tv_mostwatch_analog_kompastv' => 'Kompas TV','tv_mostwatch_analog_etc' => 'Lainnya'];
 		
-		$scr = ' SELECT ';
+		$scr = " SELECT ";
 		foreach($param as $params){
 			
-			$scr .= ' SUM(`'.$params.'`*WEIGHT) '.$params.',';
+			$scr .= " SUM(toInt32(".$params.")*WEIGHT) ".$params.",";
 			
 		}
 		
 		$scr = substr($scr,0,-1);
 		
-		$scr .= ' FROM URBAN_PROFILE_P22 WHERE WEIGHT IS NOT NULL';
+		$scr .= " FROM URBAN_PROFILE_P22 WHERE WEIGHT IS NOT NULL";
 		
 		
 		$data = $this->tvcc_model->get_value_res_split($scr);
@@ -438,16 +440,16 @@ class Ressummary extends CI_Controller {
 		
 		$array_index = ['tv_mostwatch_genre_antv' => 'ANTV','tv_mostwatch_genre_gtv' => 'GTV','tv_mostwatch_genre_indosiar' => 'Indosiar','tv_mostwatch_genre_kompastv' => 'Kompas TV','tv_mostwatch_genre_metrotv' => 'MetroTV','tv_mostwatch_genre_nettv' => 'Net TV','tv_mostwatch_genre_mnctv' => 'MNC TV','tv_mostwatch_genre_tvone' => 'TV One','tv_mostwatch_genre_rcti' => 'RCTI','tv_mostwatch_genre_sctv' => 'SCTV ','tv_mostwatch_genre_transtv' => 'Trans TV','tv_mostwatch_genre_trans7' => 'Trans 7','tv_mostwatch_genre_hbo' => 'HBO','tv_mostwatch_genre_tvn' => 'TVN','tv_mostwatch_genre_bioskop' => 'Bioskop Indonesia','tv_mostwatch_genre_cnn' => 'CNN','tv_mostwatch_genre_mtv' => 'MTV','tv_mostwatch_genre_sone' => 'S One','tv_mostwatch_genre_bein' => 'BEIN Sport','tv_mostwatch_genre_natgeowild' => 'Nat Geo Wild','tv_mostwatch_genre_natgeo' => 'National Geographic','tv_mostwatch_genre_cartoon' => 'Cartoon Network','tv_mostwatch_genre_etc' => 'Lainnya'];
 		
-		$scr = ' SELECT ';
+		$scr = " SELECT ";
 		foreach($param as $params){
 			
-			$scr .= ' SUM(IF(`'.$params.'` = "",0,WEIGHT)) '.$params.',';
+			$scr .= " SUM(IF(`".$params."` = '',0,WEIGHT)) `".$params."`,";
 			
 		}
 		
 		$scr = substr($scr,0,-1);
 		
-		$scr .= ' FROM URBAN_PROFILE_P22 WHERE WEIGHT IS NOT NULL';
+		$scr .= " FROM URBAN_PROFILE_P22 WHERE WEIGHT IS NOT NULL";
 		
 		
 		$data = $this->tvcc_model->get_value_res_split($scr);
