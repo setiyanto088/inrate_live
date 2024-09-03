@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Makassar');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tvprogramun3 extends JA_Controller {

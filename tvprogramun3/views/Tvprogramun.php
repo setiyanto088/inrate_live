@@ -2859,16 +2859,16 @@ function audiencebar_view8(){
 	 var htl_head2 = '';
 	for(var ii=0;ii<list_array.length;ii++){
 		
-		htl_head += '<th colspan=5 >'+list_array[ii]+'<img alt="image" class="cArrowDown" ></th>';
+		htl_head += '<th colspan=5 >'+list_array[ii]+'<img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png" ></th>';
 		
 		
-		htl_head2 += '<th>Audience <img alt="image" class="cArrowDown" ></th><th>TVR <img alt="image" class="cArrowDown" ></th><th>TVS <img alt="image" class="cArrowDown" ></th><th>Views <img alt="image" class="cArrowDown" ></th><th>Reach <img alt="image" class="cArrowDown" ></th>';
+		htl_head2 += '<th>Audience <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png" ></th><th>TVR <img alt="image" class="cArrowDown"  src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th><th>TVS <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png" ></th><th>Views <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png" ></th><th>Reach <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png" ></th>';
 		
 	}
 	
 	
 	
-	var htl = '<table aria-describedby="table" id="example48" class="table table-striped example" style="width: 100%"><thead style="color:red"><tr><th rowspan=2>Rank <img alt="image" class="cArrowDown" ></th><th rowspan=2 >Channel <img alt="image" class="cArrowDown" ></th>'+htl_head+'</tr><tr>'+htl_head2+'</tr></thead></table>';
+	var htl = '<table aria-describedby="table" id="example48" class="table table-striped example" style="width: 100%"><thead style="color:red"><tr><th rowspan=2>Rank <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png" ></th><th rowspan=2 >Channel <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png" ></th>'+htl_head+'</tr><tr>'+htl_head2+'</tr></thead></table>';
 	
  	
 	$('#table_program28').html('');
