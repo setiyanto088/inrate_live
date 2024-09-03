@@ -183,19 +183,21 @@ class Ressummary extends CI_Controller {
 		
 		foreach($merk_list as $merk_lists){
 			
-			$array_data[$merk_lists['MERK']]['title'] = $merk_lists['LABEL'];
-			$array_data[$merk_lists['MERK']]['label'][0] = "'".$merk_lists['M1']."'";
-			$array_data[$merk_lists['MERK']]['label'][1] = "'".$merk_lists['M2']."'";
-			$array_data[$merk_lists['MERK']]['label'][2] = "'".$merk_lists['M3']."'";
-			$array_data[$merk_lists['MERK']]['label'][3] = "'".$merk_lists['M4']."'";
-			$array_data[$merk_lists['MERK']]['label'][4] = "'".$merk_lists['M5']."'";
-			$array_data[$merk_lists['MERK']]['value'][0] = $merk_lists['V1'];
-			$array_data[$merk_lists['MERK']]['value'][1] = $merk_lists['V2'];
-			$array_data[$merk_lists['MERK']]['value'][2] = $merk_lists['V3'];
-			$array_data[$merk_lists['MERK']]['value'][3] = $merk_lists['V4'];
-			$array_data[$merk_lists['MERK']]['value'][4] = $merk_lists['V5'];
+			$array_data[$merk_lists['LABEL']]['title'] = $merk_lists['TITLE'];
+			$array_data[$merk_lists['LABEL']]['label'][0] = "'".$merk_lists['M1']."'";
+			$array_data[$merk_lists['LABEL']]['label'][1] = "'".$merk_lists['M2']."'";
+			$array_data[$merk_lists['LABEL']]['label'][2] = "'".$merk_lists['M3']."'";
+			$array_data[$merk_lists['LABEL']]['label'][3] = "'".$merk_lists['M4']."'";
+			$array_data[$merk_lists['LABEL']]['label'][4] = "'".$merk_lists['M5']."'";
+			$array_data[$merk_lists['LABEL']]['value'][0] = $merk_lists['V1'];
+			$array_data[$merk_lists['LABEL']]['value'][1] = $merk_lists['V2'];
+			$array_data[$merk_lists['LABEL']]['value'][2] = $merk_lists['V3'];
+			$array_data[$merk_lists['LABEL']]['value'][3] = $merk_lists['V4'];
+			$array_data[$merk_lists['LABEL']]['value'][4] = $merk_lists['V5'];
 			
 		}
+		
+		//print_r($array_data);die;
 		
 		return $array_data;
 		
@@ -258,12 +260,16 @@ class Ressummary extends CI_Controller {
 			$qry_insert = $qry_insert.''.$qry_insert_sub.');
 			';
 			
+			echo $qry_insert.'<br>';
+			
 			$qry_all = $qry_all.''.$qry_insert;
-			//echo $qry_insert;die;
+			
 			$array_data_merk[$merk_lists['DESCRIPTION']] = $data_f;
 			
 			
 		}
+		
+		//echo $qry_all;
 		
 		return $array_data_merk;
 		
