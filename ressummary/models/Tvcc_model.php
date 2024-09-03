@@ -26,8 +26,7 @@ class Tvcc_model extends CI_Model {
 	}	
 	
 	public function get_merk_list() {
-		//$query = "SELECT * FROM `MERK_NAME_CLN` WHERE DESCRIPTION NOT LIKE '%6%' GROUP BY DESCRIPTION";	
-		//$db = $this->clickhouse->db();
+	
 		
 		$query = 'SELECT * FROM MERK_SUMMARY_P22';			
 		$sql	= $this->db2->query($query);

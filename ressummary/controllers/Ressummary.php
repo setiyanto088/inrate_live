@@ -39,7 +39,6 @@ class Ressummary extends CI_Controller {
 	$data['demografi']['OCCUPATION'] = $this->get_data_chart_index('JOB');
 	$data['demografi']['HOME OWN'] = $this->get_data_chart_index('HOME_OWN');
 	
-		//$data['demografi']['index'] = ['age_group','gender','MARITAL_STAT'];
 	$data['demografi']['index'] = ['MARITAL STATUS','HH EXPENDITURE','EDUCATION','OCCUPATION','RELIGION','HOME OWN','HAVE KID UNDER 5 YEAR','HAVE KID BETWEEN 5 AND 9 YEAR'];
 	
 
@@ -134,9 +133,7 @@ class Ressummary extends CI_Controller {
 	$data['viewers_b']['index'] = ['WATCHING BEHAVIOUR','SIARAN TV'];
 	
 	$data['viewers_b']['WATCHING BEHAVIOUR']['index'] = ['DAY PART','TV GENRE','KUALITAS TV','CHANNEL PALING SERING DITONTON'];
-	//$data['viewers_b']['WATCHING BEHAVIOUR']['DAY PART'] = $this->get_data_chart_split(['tv_wkday_pagi','tv_wkday_siang','tv_wkday_sore','tv_wkday_mlm','tv_wkday_dini','tv_wkday_etc','tv_wkend_pagi','tv_wkend_siang','tv_wkend_sore','tv_wkend_mlm','tv_wkend_dini','tv_wkend_etc']);
-	
-	//print_r($data['viewers_b']['WATCHING BEHAVIOUR']['DAY PART']);die; 
+
 	$data['viewers_b']['WATCHING BEHAVIOUR']['TV GENRE'] = $this->get_data_chart_split(['tv_genre_movies','tv_genre_series','tv_genre_news','tv_genre_religi','tv_genre_ent','tv_genre_kids','tv_genre_sport','tv_genre_lifestyle','tv_genre_music','tv_genre_knowledge','tv_genre_documentary','tv_genre_local']);
 	$data['viewers_b']['WATCHING BEHAVIOUR']['KUALITAS TV'] = $this->get_data_chart('tv_quality');
 	$data['viewers_b']['WATCHING BEHAVIOUR']['CHANNEL PALING SERING DITONTON'] = $this->get_data_chart_split_nu(['tv_mostwatch_genre_antv','tv_mostwatch_genre_gtv','tv_mostwatch_genre_indosiar','tv_mostwatch_genre_kompastv','tv_mostwatch_genre_metrotv','tv_mostwatch_genre_nettv','tv_mostwatch_genre_mnctv','tv_mostwatch_genre_tvone','tv_mostwatch_genre_rcti','tv_mostwatch_genre_sctv','tv_mostwatch_genre_transtv','tv_mostwatch_genre_trans7','tv_mostwatch_genre_hbo','tv_mostwatch_genre_tvn','tv_mostwatch_genre_bioskop','tv_mostwatch_genre_cnn','tv_mostwatch_genre_mtv','tv_mostwatch_genre_sone','tv_mostwatch_genre_bein','tv_mostwatch_genre_natgeowild','tv_mostwatch_genre_natgeo','tv_mostwatch_genre_cartoon','tv_mostwatch_genre_etc']);
@@ -151,9 +148,6 @@ class Ressummary extends CI_Controller {
 	$data['viewers_b']['SIARAN TV']['CHANNEL TV ANALOG'] = $this->get_data_chart_split(['tv_mostwatch_analog_rcti','tv_mostwatch_analog_mnctv','tv_mostwatch_analog_gtv','tv_mostwatch_analog_inews','tv_mostwatch_analog_metrotv','tv_mostwatch_analog_sctv','tv_mostwatch_analog_antv','tv_mostwatch_analog_indosiar','tv_mostwatch_analog_trans7','tv_mostwatch_analog_transtv','tv_mostwatch_analog_tvone','tv_mostwatch_analog_nettv','tv_mostwatch_analog_cnn_indo','tv_mostwatch_analog_kompastv','tv_mostwatch_analog_etc']);
 
 
-
-
-	//print_r($data['media']);die;
 
 	$data['merk_data'] = $this->get_data_chart_merk_summ();
 	
@@ -196,9 +190,7 @@ class Ressummary extends CI_Controller {
 			$array_data[$merk_lists['LABEL']]['value'][4] = $merk_lists['V5'];
 			
 		}
-		
-		//print_r($array_data);die;
-		
+				
 		return $array_data;
 		
 	}
@@ -224,7 +216,6 @@ class Ressummary extends CI_Controller {
 			$scr = substr($scr,0,-1);
 			
 			$scr .= " FROM URBAN_PROFILE_P22 WHERE WEIGHT IS NOT NULL";
-			
 			
 			$datax = $this->tvcc_model->get_value_res_split($scr);
 			
@@ -260,7 +251,6 @@ class Ressummary extends CI_Controller {
 			$qry_insert = $qry_insert.''.$qry_insert_sub.');
 			';
 			
-			echo $qry_insert.'<br>';
 			
 			$qry_all = $qry_all.''.$qry_insert;
 			
@@ -268,8 +258,6 @@ class Ressummary extends CI_Controller {
 			
 			
 		}
-		
-		//echo $qry_all;
 		
 		return $array_data_merk;
 		
