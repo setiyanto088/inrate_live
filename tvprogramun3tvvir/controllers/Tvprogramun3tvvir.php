@@ -3418,11 +3418,11 @@ class Tvprogramun3tvvir extends JA_Controller {
 				
 				$where_periode = substr($where_periode, 0, -1);
 				
-				if($type == 'ALL'){
+				if($tipe_filter == 'ALL'){
 
 							
 						IF($type == 'AUDIENCE'){
-							$tbt = "M_SUM_TV_DASH_CHAN_TVOD";
+							$tbt = "M_SUM_TV_DASH_CHAN_TVOD";								
 							$query_qr2 = $query_qr2."".$week_in2." FROM (
 							
 							 SELECT A.CHANNEL,A.VIEWERS+IF(B.VIEWERS IS NULL,0,B.VIEWERS) VIEWERS FROM (
@@ -3432,13 +3432,11 @@ class Tvprogramun3tvvir extends JA_Controller {
 									".$where."
 								) A LEFT JOIN (
 										SELECT CHANNEL,VIEWERS AS VIEWERS FROM ".$tbt."
-										WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
+										WHERE `TANGGAL` = '".$first_day."'
 										AND TIPE_VIEW = 'VIEWERS'
-										AND TIPE_FILTER = '".$tipe_filter."'
+										AND TIPE_FILTER = 'TVOD'
 										AND ID_PROFILE = 0
-										AND STR_TO_DATE(TANGGAL,'%Y-%M') < STR_TO_DATE('".date('Y-F')."','%Y-%M')
 										".$where."
-										GROUP BY CHANNEL
 								) B ON A.CHANNEL = B.CHANNEL		
 										
 									) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
@@ -3495,13 +3493,13 @@ class Tvprogramun3tvvir extends JA_Controller {
 				
 						IF($type == 'AUDIENCE'){
 							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
-							$query_qr2 = $query_qr2."".$week_in2." FROM (
+															
+									$query_qr2 = $query_qr2."".$week_in2." FROM (
 										SELECT CHANNEL,MAX(VIEWERS) AS VIEWERS FROM ".$tbt."
-										WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
+										WHERE `TANGGAL` = '".$first_day."'
 										AND TIPE_VIEW = 'VIEWERS'
 										AND TIPE_FILTER = '".$tipe_filter."'
 										AND ID_PROFILE = 0
-										AND TANGGAL IN (".$where_periode.")
 										".$where."
 										GROUP BY CHANNEL
 									) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
@@ -4000,13 +3998,11 @@ class Tvprogramun3tvvir extends JA_Controller {
 									".$where."
 								) A LEFT JOIN (
 										SELECT CHANNEL,VIEWERS AS VIEWERS FROM ".$tbt."
-										WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
+										WHERE `TANGGAL` = '".$first_day."'
 										AND TIPE_VIEW = 'VIEWERS'
-										AND TIPE_FILTER = '".$tipe_filter."'
+										AND TIPE_FILTER = 'TVOD'
 										AND ID_PROFILE = 0
-										AND STR_TO_DATE(TANGGAL,'%Y-%M') < STR_TO_DATE('".date('Y-F')."','%Y-%M')
 										".$where."
-										GROUP BY CHANNEL
 								) B ON A.CHANNEL = B.CHANNEL		
 										
 									) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
@@ -4065,11 +4061,10 @@ class Tvprogramun3tvvir extends JA_Controller {
 							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
 							$query_qr2 = $query_qr2."".$week_in2." FROM (
 										SELECT CHANNEL,MAX(VIEWERS) AS VIEWERS FROM ".$tbt."
-										WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
+										WHERE `TANGGAL` = '".$first_day."'
 										AND TIPE_VIEW = 'VIEWERS'
 										AND TIPE_FILTER = '".$tipe_filter."'
 										AND ID_PROFILE = 0
-										AND TANGGAL IN (".$where_periode.")
 										".$where."
 										GROUP BY CHANNEL
 									) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
