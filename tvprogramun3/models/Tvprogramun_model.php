@@ -1044,29 +1044,28 @@ return $result2;
 		if ($pilihprog=='TVR'){
 		 
 					
-					 $query2 = 	'	
-					SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+					$query2 = 	"	
+					SELECT z.* FROM 
 					( 
-					SELECT DISTINCT a.`'.$field.'`,CHANNEL,GRP AS Spot FROM M_SUM_TV_DASH_PROG_GRP_WEEK_PTV a 
-					WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-					'.$where.' '.$wh_chn.' 
-					AND ID_PROFILE = "'.$profile.'" 
+					SELECT DISTINCT a.`".$field."`,CHANNEL,GRP AS Spot FROM M_SUM_TV_DASH_PROG_GRP_WEEK_PTV a 
+					WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+					".$where." ".$wh_chn." ".$wheres."
+					AND ID_PROFILE = '".$profile."' 
 					ORDER BY Spot DESC
 					)z 
-					';
+					";
 		}elseif ($pilihprog=='Viewers') {
 	
-			$query2 = 	'
-			SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+			$query2 = 	"
+			SELECT z.* FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_VIEWERS_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_VIEWERS_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC		
 						)z 
-						
-						';
+						";
 						
 		}elseif ($pilihprog=='avgtotdur')	 {
 		
@@ -1096,38 +1095,42 @@ return $result2;
 		
 		}elseif ($pilihprog=='Duration') {
 	
-						$query2 = 	'
-			SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+						$query2 = 	"
+			SELECT z.* FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_DURATION_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_DURATION_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC
 						)z 
-						
-						';
+						";
 						
 		}else {
 		
-						$query2 = 	'
-			SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+						$query2 = 	"
+			SELECT z.* FROM 
 				( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC
 						)z 
-						
-						';
+						";
 		}		
 		
+		$db = $this->clickhouse->db();
 		
-		 $sql	= $this->db->query($query2);
-		$this->db->close();
-		$this->db->initialize(); 
- 		return $sql->result_array();		
+		 // $sql	= $this->db->query($query2);
+		// $this->db->close();
+		// $this->db->initialize(); 
+ 		// return $sql->result_array();	
+
+	$results2 = $db->select($query2);
+	 $result2 = $results2->rows();	 
+		return $result2;
+		
 	}
 	
 	public function list_spot_by_program_all2Ps_new_week($field,$wheres,$params,$pilihprog,$profile) {
@@ -1146,128 +1149,128 @@ return $result2;
 		if ($pilihprog=='TVR'){
 		 
 					
-				 $query = 	'	
+				 $query = 	"	
 					SELECT COUNT(*) AS jumlah FROM 
 					( 
-					SELECT DISTINCT a.`'.$field.'`,CHANNEL,GRP AS Spot FROM M_SUM_TV_DASH_PROG_GRP_WEEK_PTV a 
-					WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-					'.$where.' '.$wh_chn.' '.$wheres.'
-					AND ID_PROFILE = "'.$profile.'" 
+					SELECT DISTINCT a.`".$field."`,CHANNEL,GRP AS Spot FROM M_SUM_TV_DASH_PROG_GRP_WEEK_PTV a 
+					WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+					".$where." ".$wh_chn." ".$wheres."
+					AND ID_PROFILE = '".$profile."' 
 					ORDER BY Spot DESC
 					)z 
-					';
+					";
 					
-					 $query2 = 	'	
-					SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+					 $query2 = 	"	
+					SELECT z.* FROM 
 					( 
-					SELECT DISTINCT a.`'.$field.'`,CHANNEL,GRP AS Spot FROM M_SUM_TV_DASH_PROG_GRP_WEEK_PTV a 
-					WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-					'.$where.' '.$wh_chn.' '.$wheres.'
-					AND ID_PROFILE = "'.$profile.'" 
+					SELECT DISTINCT a.`".$field."`,CHANNEL,GRP AS Spot FROM M_SUM_TV_DASH_PROG_GRP_WEEK_PTV a 
+					WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+					".$where." ".$wh_chn." ".$wheres."
+					AND ID_PROFILE = '".$profile."' 
 					ORDER BY Spot DESC
 					)z 
-					LIMIT '.$params['limit'].' 
-					OFFSET '.$params['offset'].' 
-					';
+					LIMIT ".$params['limit']." 
+					OFFSET ".$params['offset']." 
+					";
 		}elseif ($pilihprog=='Viewers') {
-		$query = 	'
+		$query = 	"
 			SELECT COUNT(*) AS jumlah FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_VIEWERS_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_VIEWERS_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC					
 						)z 
-						';
+						";
 						
-			$query2 = 	'
-			SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+			$query2 = 	"
+			SELECT z.* FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_VIEWERS_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_VIEWERS_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC		
 						)z 
-						LIMIT '.$params['limit'].' 
-						OFFSET '.$params['offset'].' 
-						';
+						LIMIT ".$params['limit']." 
+						OFFSET ".$params['offset']." 
+						";
 						
 		}elseif ($pilihprog=='Viewers2') {
-		$query = 	'
+		$query = 	"
 			SELECT COUNT(*) AS jumlah FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND TPE="VIEWERS2" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND TPE='VIEWERS2' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC					
 						)z 
-						';
+						";
 						
-			$query2 = 	'
-			SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+			$query2 = 	"
+			SELECT z.* FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND TPE="VIEWERS2" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND TPE='VIEWERS2' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC		
 						)z 
-						LIMIT '.$params['limit'].' 
-						OFFSET '.$params['offset'].' 
-						';
+						LIMIT ".$params['limit']." 
+						OFFSET ".$params['offset']." 
+						";
 						
 		}elseif ($pilihprog=='TVS') {
-		$query = 	'
+		$query = 	"
 			SELECT COUNT(*) AS jumlah FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND TPE="TVS" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND TPE='TVS' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC					
 						)z 
-						';
+						";
 						
-			$query2 = 	'
-			SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+			$query2 = 	"
+			SELECT z.* FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND TPE="TVS" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND TPE='TVS' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC		
 						)z 
-						LIMIT '.$params['limit'].' 
-						OFFSET '.$params['offset'].' 
-						';
+						LIMIT ".$params['limit']." 
+						OFFSET ".$params['offset']." 
+						";
 						
 		}elseif ($pilihprog=='TVR2') {
-		$query = 	'
+		$query = 	"
 			SELECT COUNT(*) AS jumlah FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND TPE="TVR" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND TPE='TVR' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC					
 						)z  
-						';
+						";
 						
-			$query2 = 	'
-			SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+			$query2 = 	"
+			SELECT z.* FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND TPE="TVR" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_EXT_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND TPE='TVR' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC		
 						)z 
-						LIMIT '.$params['limit'].' 
-						OFFSET '.$params['offset'].' 
-						';
+						LIMIT ".$params['limit']." 
+						OFFSET ".$params['offset']." 
+						";
 						
 		}elseif ($pilihprog=='avgtotaud')	 {
 		
@@ -1366,72 +1369,79 @@ return $result2;
 						';
 		
 		}elseif ($pilihprog=='Duration') {
-		$query = 	'
+		$query = 	"
 			SELECT COUNT(*) AS jumlah FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_DURATION_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_DURATION_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC
 						)z 
-						';
+						";
 						
-						$query2 = 	'
-			SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+						$query2 = 	"
+			SELECT z.* FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_DURATION_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_DURATION_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC
 						)z 
-						LIMIT '.$params['limit'].' 
-						OFFSET '.$params['offset'].' 
-						';
+						LIMIT ".$params['limit']." 
+						OFFSET ".$params['offset']." 
+						";
 						
 		}else {
-			$query = 	'
+			$query = 	"
 			SELECT COUNT(*) AS jumlah FROM 
 						( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC
 						)z 
-						';
+						";
 						
-						$query2 = 	'
-			SELECT z.*, rank() over ( ORDER BY Spot DESC,'.$field.' DESC) AS Rangking FROM 
+						$query2 = 	"
+			SELECT z.* FROM 
 				( 
-						SELECT DISTINCT a.`'.$field.'`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_WEEK_PTV a
-						WHERE TANGGAL ="'.$params['periode'].'" AND WEEK ="'.$params['week'].'" 
-						'.$where.' '.$wh_chn.' '.$wheres.'
-						AND ID_PROFILE = "'.$profile.'" 
+						SELECT DISTINCT a.`".$field."`,CHANNEL , VIEWERS AS Spot FROM M_SUM_TV_DASH_PROG_WEEK_PTV a
+						WHERE TANGGAL ='".$params['periode']."' AND WEEK ='".$params['week']."' 
+						".$where." ".$wh_chn." ".$wheres."
+						AND ID_PROFILE = '".$profile."' 
 						ORDER BY Spot DESC
 						)z 
-						LIMIT '.$params['limit'].' 
-						OFFSET '.$params['offset'].' 
-						';
+						LIMIT ".$params['limit']." 
+						OFFSET ".$params['offset']." 
+						";
 		}		
 		
-		
- 		  $out		= array();
-		  $querys		= $this->db2->query($query);
-		  $result = $querys->row();
+		//echo $query;die;
+ 		  	$db = $this->clickhouse->db();
+ 		
+		  $out		= array();
+		 
 		  
-		  $total_filtered = $result->jumlah;
-		  $total 			= $result->jumlah;
+		  $results = $db->select($query);
+		  $result = $results->rows();	 
+		  
+		  $total_filtered = $result[0]['jumlah'];
+		  $total 			= $result[0]['jumlah'];
 	  
 			if(($params['offset']+10) > $total_filtered){
 			$limit_data = $total_filtered - $params['offset'];
 		  }else{
 			$limit_data = $params['limit'] ;
 		  }
+	  
  
-		 $query2s		= $this->db2->query($query2);
-      $result2 = $query2s->result_array();						
+
+	$results2 = $db->select($query2);
+	 $result2 = $results2->rows();	 
+	  
       $return = array(
           'data' => $result2,
           'total_filtered' => $total_filtered,
