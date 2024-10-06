@@ -3450,7 +3450,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 											WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
 											AND TANGGAL <> '".$first_day."'
 											AND TIPE_VIEW = 'TOTAL_VIEWS'
-											AND TIPE_FILTER = 'ALL'
+											AND TIPE_FILTER = 'TVOD'
 											AND ID_PROFILE = 0
 											".$where."
 											GROUP BY CHANNEL
@@ -3473,7 +3473,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 									WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
 									AND TANGGAL <> '".$first_day."'
 									AND TIPE_VIEW = 'DURATION'
-									AND TIPE_FILTER = 'ALL'
+									AND TIPE_FILTER = 'TVOD'
 									AND ID_PROFILE = 0
 									".$where."
 									GROUP BY CHANNEL
@@ -4036,7 +4036,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 											WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
 											AND TANGGAL <> '".$first_day."'
 											AND TIPE_VIEW = 'TOTAL_VIEWS'
-											AND TIPE_FILTER = 'ALL'
+											AND TIPE_FILTER = 'TVOD'
 											AND ID_PROFILE = 0
 											".$where."
 											GROUP BY CHANNEL
@@ -4059,7 +4059,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 									WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
 									AND TANGGAL <> '".$first_day."'
 									AND TIPE_VIEW = 'DURATION'
-									AND TIPE_FILTER = 'ALL'
+									AND TIPE_FILTER = 'TVOD'
 									AND ID_PROFILE = 0
 									".$where."
 									GROUP BY CHANNEL
