@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Tvprogramun3tvvir extends JA_Controller {
+class Dashboardarea extends JA_Controller {
  
   public function __construct()
 	{
@@ -1950,6 +1950,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
 		// $data['bln'] = $this->tvprogramun_model->get_bulan();
 		$data['thn'] = $this->tvprogramun_model->get_tahun();
+		$data['last_date'] = $this->tvprogramun_model->get_last_date();
 		
 
 		//cek session login
@@ -2334,7 +2335,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 		$data['totpopulasi'] = $this->tvprogramun_model->list_populasi2($periode);
 
 		
-		$this->template->load('maintemplate', 'tvprogramun3tvvir/views/Tvprogramun', $data);
+		$this->template->load('maintemplate', 'dashboardarea/views/Tvprogramun', $data);
 	}	
 
 	function days_in_month($month, $year) 
@@ -2914,6 +2915,74 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
 	}
 	
+	function audiencebar_by_area(){
+		
+		$userid = $this->session->userdata('user_id');
+		$params['user_id'] = $userid;
+		
+		$data['start_date']=$this->Anti_si($this->input->post('start_date',true));
+		$data['end_date']=$this->Anti_si($this->input->post('end_date',true));
+		$data['tipe_filter']=$this->Anti_si($this->input->post('tipe_filter',true));
+		$data['preset'] = $this->Anti_si($this->input->post('preset',true));
+		
+		if($preset == "0"){
+			
+			$where = "";
+		}else{
+			
+			$channel_set = $this->tvprogramun_model->channel_set($preset,$userid);
+			
+			//print_r($channel_set);die;
+			
+			$channel_list = explode(',',$channel_set[0]['CHANNEL_LIST']);
+			
+			$str_channel = '';
+			foreach($channel_list as $channel_lists){
+				
+				$str_channel = $str_channel."'".$channel_lists."',";
+				
+			}
+			
+			$str_channel = substr($str_channel, 0, -1);
+			
+			$where = "AND CHANNEL IN (".$str_channel.")"; 
+		}
+		
+		
+		$data['channels'] = $this->tvprogramun_model->list_data_area($data); 
+
+		$table_html = '
+			<table aria-describedby="mydesc"  id="myTablearea" class="table table-striped">
+											<thead style="color:red">
+												<tr>
+													<th  scope="row">Area</th>
+													<th text-align="right" scope="row">Audience</th>
+													<th text-align="right" scope="row">Total Views</th>
+													<th text-align="right" scope="row">Duration</th>
+													<th text-align="right" scope="row">Action</th>
+													
+												</tr></thead><tbody>';
+		foreach($data['channels']['data'] as $channels){
+			
+			$table_html .= '<tr>
+				<td class="details-control">'.$channels['AREA'].'</td>
+				<td text-align="right" >'.number_format($channels['UV'],0,',','.').'</td>
+				<td text-align="right" >'.number_format($channels['VIEWERS'],0,',','.').'</td>
+				<td text-align="right" >'.number_format($channels['DURATION'],0,',','.').'</td>
+				<td text-align="right" ><button class="button_black">Expand</button><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+													
+			</tr>';
+			
+		}
+		$table_html .= '</tbody></table>
+		';
+		
+		
+		$data['table'] = $table_html;
+		echo json_encode($data,true);
+		
+	}
+	
 	function audiencebar_by_channel(){
 		
 		$userid = $this->session->userdata('user_id');
@@ -3442,50 +3511,50 @@ class Tvprogramun3tvvir extends JA_Controller {
 									) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
 						
 						}ELSEIF($type == 'TOTAL_VIEWS'){
-							$tbt = "M_SUM_TV_DASH_CHAN_TVOD";
-							$query_qr2 = $query_qr2."".$week_in2." FROM (
+							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
+							$query_qr2 = $query_qr2.''.$week_in2.' FROM (
 							
 										SELECT A.CHANNEL,A.VIEWERS+IF(B.VIEWERS IS NULL,0,B.VIEWERS) VIEWERS FROM (
-											SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM ".$tbt."
-											WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-											AND TANGGAL <> '".$first_day."'
-											AND TIPE_VIEW = 'TOTAL_VIEWS'
-											AND TIPE_FILTER = 'ALL'
+											SELECT CHANNEL,'.$drag.'(VIEWERS) AS VIEWERS FROM '.$tbt.'
+											WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
 											AND ID_PROFILE = 0
-											".$where."
+											AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
+											'.$where.'
 											GROUP BY CHANNEL
 										) A LEFT JOIN (
-													SELECT CHANNEL,".$drag."(VIEWERS) AS VIEWERS FROM M_SUM_TV_DASH_CHAN_VIEWERS_PTV
-													WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-													and TANGGAL <> '".$first_day."'
+													SELECT CHANNEL,'.$drag.'(VIEWERS) AS VIEWERS FROM M_SUM_TV_DASH_CHAN_VIEWERS_PTV
+													WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
+													AND TIPE_VIEW = "TOTAL_VIEWS"
+													AND TIPE_FILTER = "'.$tipe_filter.'"
 													AND ID_PROFILE = 0
-													".$where."
+													AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
+													'.$where.'
 													GROUP BY CHANNEL
 										) B ON A.CHANNEL = B.CHANNEL		
-									) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
+									) CHN '.$join_left2.' WHERE 1=1  ORDER BY CHN.VIEWERS DESC ';
 									
 						}ELSE{
-							$tbt = "M_SUM_TV_DASH_CHAN_TVOD";
-							$query_qr2 = $query_qr2."".$week_in2." FROM (
+							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
+							$query_qr2 = $query_qr2.''.$week_in2.' FROM (
 							
 							SELECT A.CHANNEL,A.VIEWERS+IF(B.VIEWERS IS NULL,0,B.VIEWERS) VIEWERS FROM (
-								SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM ".$tbt."
-									WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-									AND TANGGAL <> '".$first_day."'
-									AND TIPE_VIEW = 'DURATION'
-									AND TIPE_FILTER = 'ALL'
+								SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM '.$tbt.'
+									WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
 									AND ID_PROFILE = 0
-									".$where."
+									AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
+									'.$where.'
 									GROUP BY CHANNEL
 								) A LEFT JOIN (
 										SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM M_SUM_TV_DASH_CHAN_DURATION_PTV
-										WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-										and TANGGAL <> '".$first_day."'
+										WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
+										AND TIPE_VIEW = "DURATION"
+										AND TIPE_FILTER = "'.$tipe_filter.'"
 										AND ID_PROFILE = 0
-										".$where."
+										AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
+										'.$where.'
 										GROUP BY CHANNEL
 								) B ON A.CHANNEL = B.CHANNEL	
-									) CHN ".$join_left2." WHERE 1=1 ORDER BY CHN.VIEWERS DESC ";
+									) CHN '.$join_left2.' WHERE 1=1 ORDER BY CHN.VIEWERS DESC ';
 									
 						}	
 							
@@ -3594,8 +3663,6 @@ class Tvprogramun3tvvir extends JA_Controller {
 
 		
 			$data['monthdt'] = $this->tvprogramun_model->get_sel_week_month($first_day,$this_day);
-			
-			if(COUNT($data['monthdt']) > 1){
 		
 			$query_qr = "SELECT CHN.CHANNEL CHANNEL,";
 			$week_in = "";
@@ -3766,24 +3833,6 @@ class Tvprogramun3tvvir extends JA_Controller {
 			$data['table'] = $table_html;
 			$data['data'] = $scama;
 			
-			}else{
-				
-				$table_html = '
-			<table id="example42" class="table table-striped example" style="width: 100%">
-								<thead style="color:red">
-									<tr>
-										<th> Data not Found</th>
-									</tr>
-									
-								</thead>
-							</table>
-			';
-			
-			
-							
-				$data['table'] = $table_html;
-				$data['data'] = [];
-			}
 			
 		}
 		
@@ -4029,49 +4078,49 @@ class Tvprogramun3tvvir extends JA_Controller {
 						
 						}ELSEIF($type == 'TOTAL_VIEWS'){
 							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
-							$query_qr2 = $query_qr2."".$week_in2." FROM (
+							$query_qr2 = $query_qr2.''.$week_in2.' FROM (
 							
 										SELECT A.CHANNEL,A.VIEWERS+IF(B.VIEWERS IS NULL,0,B.VIEWERS) VIEWERS FROM (
-											SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM ".$tbt."
-											WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-											AND TANGGAL <> '".$first_day."'
-											AND TIPE_VIEW = 'TOTAL_VIEWS'
-											AND TIPE_FILTER = 'ALL'
+											SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM '.$tbt.'
+											WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
 											AND ID_PROFILE = 0
-											".$where."
+											AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
+											'.$where.'
 											GROUP BY CHANNEL
 										) A LEFT JOIN (
-													SELECT CHANNEL,".$drag."(VIEWERS) AS VIEWERS FROM M_SUM_TV_DASH_CHAN_VIEWERS_PTV
-													WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-													and TANGGAL <> '".$first_day."'
+													SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM M_SUM_TV_DASH_CHAN_VIEWERS_PTV
+													WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
+													AND TIPE_VIEW = "TOTAL_VIEWS"
+													AND TIPE_FILTER = "'.$tipe_filter.'"
 													AND ID_PROFILE = 0
-													".$where."
+													AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
+													'.$where.'
 													GROUP BY CHANNEL
 										) B ON A.CHANNEL = B.CHANNEL		
-									) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
+									) CHN '.$join_left2.' WHERE 1=1  ORDER BY CHN.VIEWERS DESC ';
 									
 						}ELSE{
 							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
-							$query_qr2 = $query_qr2."".$week_in2." FROM (
+							$query_qr2 = $query_qr2.''.$week_in2.' FROM (
 							
 							SELECT A.CHANNEL,A.VIEWERS+IF(B.VIEWERS IS NULL,0,B.VIEWERS) VIEWERS FROM (
-								SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM ".$tbt."
-									WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-									AND TANGGAL <> '".$first_day."'
-									AND TIPE_VIEW = 'DURATION'
-									AND TIPE_FILTER = 'ALL'
+								SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM '.$tbt.'
+									WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
 									AND ID_PROFILE = 0
-									".$where."
+									AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
+									'.$where.'
 									GROUP BY CHANNEL
 								) A LEFT JOIN (
 										SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM M_SUM_TV_DASH_CHAN_DURATION_PTV
-										WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-										and TANGGAL <> '".$first_day."'
+										WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
+										AND TIPE_VIEW = "DURATION"
+										AND TIPE_FILTER = "'.$tipe_filter.'"
 										AND ID_PROFILE = 0
-										".$where."
+										AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
+										'.$where.'
 										GROUP BY CHANNEL
 								) B ON A.CHANNEL = B.CHANNEL	
-									) CHN ".$join_left2." WHERE 1=1 ORDER BY CHN.VIEWERS DESC ";
+									) CHN '.$join_left2.' WHERE 1=1 ORDER BY CHN.VIEWERS DESC ';
 									
 						}	
 							
@@ -4266,8 +4315,6 @@ class Tvprogramun3tvvir extends JA_Controller {
 			$data['monthdt'] = $this->tvprogramun_model->get_sel_week_month($first_day,$this_day);
 		
 			//$mhtj = $data['monthdt'];
-			
-			if(COUNT($data['monthdt']) > 1){
 		
 			$query_qr = "SELECT CHN.CHANNEL CHANNEL,";
 			$week_in = "";
@@ -4520,35 +4567,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 
 			$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel.xls');	
 			
-			}else{
-				
-				$this->load->library('excel');
-	   
-			   $objPHPExcel = new PHPExcel();
-			   
-			   
-			   
-			   $objPHPExcel->getProperties()->setCreator("Unics")
-											 ->setLastModifiedBy("Unics")
-											 ->setTitle("Postbuy Analytics")
-											 ->setSubject("Postbuy Analytics")
-											 ->setDescription("Report Postbuy")
-											 ->setKeywords("Postbuy Analytics")
-											 ->setCategory("Report");
-			   
-			   $objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A1', 'Data Not Found');
-				
-				$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
-				// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-				$objPHPExcel->setActiveSheetIndex(0);
-
-
-				$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-
-				$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel.xls');	
-					
-			}
+			
 		}
 				
 
