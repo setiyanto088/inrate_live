@@ -3362,6 +3362,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 					$query_qr2 = $query_qr2."".$week_in2." FROM (
 								SELECT CHANNEL,".$drag."(VIEWERS) AS VIEWERS FROM ".$tbt."
 								WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
+								AND TANGGAL <> '".$first_day."'
 								AND ID_PROFILE = 0
 								AND CHANNEL <> ''
 								".$where."
@@ -3373,6 +3374,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 					$query_qr2 = $query_qr2."".$week_in2." FROM (
 								SELECT CHANNEL,".$drag."(VIEWERS) AS VIEWERS FROM ".$tbt."
 								WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
+								AND TANGGAL <> '".$first_day."'
 								AND ID_PROFILE = 0
 								AND CHANNEL <> ''
 								".$where."
