@@ -196,7 +196,7 @@
 								<h6 class="" style="font-weight: bold;">Filter</h6>
 							</div>
 							 <div class="navbar-right" style="padding:10px" >
-								<button onClick="table2_view()" class="button_red">Apply Filter</button>
+								<button onClick="table2_viewd()" class="button_red">Apply Filter</button>
 							 </div>
 						 </div>
 						 
@@ -3416,51 +3416,44 @@ function table2_viewd(){
 
 			$('#table_programs').html(obj['table']);
 
-				$('#myTablearea').DataTable({
-					"bFilter": false,
-					"aaSorting": [],
-					"bLengthChange": false,
-					'iDisplayLength': 10,
-					"sPaginationType": "simple_numbers",
-					"Info" : false,
-					"language": {
-						"decimal": ",",
-						"thousands": "."
-					},
-					  aoColumns : [
-						{ sWidth: '10%' },
-						{ sWidth: '21%' },
-						{ sWidth: '22%' },
-						{ sWidth: '22%' },
-						{ sWidth: '20%' },
-					  ]
-				});	
-				
-				
-				 $('#myTablearea').on('click', 'tr td.details-control', function () {
-
-					var tr = $(this).closest('tr');
-					var row = table.row( tr );
-			 
-					if ( row.child.isShown() ) {
-						// This row is already open - close it
-						row.child.hide();
-						tr.removeClass('shown');
-					} else {
-						
-						row.child( format(row.data()) ).show();
-						tr.addClass('shown');
-						
-					}
 			
-
-				 } );
 			
 			
 		}
 	});	
 }
 
+function expand_area(area){
+	
+	
+	var btn_sc = $('#btn_expand_area_'+area).html();
+	
+	if(btn_sc == '+'){
+		$('#tableregion_'+area).fadeIn('slow');
+		$('#btn_expand_area_'+area).html('-');
+	}else{
+		$('#tableregion_'+area).fadeOut('slow');
+		$('#btn_expand_area_'+area).html('+');
+	}
+	
+	
+}
+
+function expand_region(region){
+	
+	
+	var btn_sc = $('#btn_expand_region_'+region).html();
+	
+	if(btn_sc == '+'){
+		$('#tablebranch_'+region).fadeIn('slow');
+		$('#btn_expand_region_'+region).html('-');
+	}else{
+		$('#tablebranch_'+region).fadeOut('slow');
+		$('#btn_expand_region_'+region).html('+');
+	}
+	
+	
+}
 
 function table2_view(){
 	

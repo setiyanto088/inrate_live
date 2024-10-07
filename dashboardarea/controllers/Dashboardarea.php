@@ -2949,10 +2949,77 @@ class Dashboardarea extends JA_Controller {
 		}
 		
 		
-		$data['channels'] = $this->tvprogramun_model->list_data_area($data); 
+		$datas = $this->tvprogramun_model->list_data_area($data); 
+		$data_array = [];
+		$curr_area = '';
+		$curr_region = '';
+		$html_table_area = '';
+		$html_table_region = '';
+		//print_r($data['channels']);die;
+		$area_int = 0;
+		$region_int = 0;
+		$branch_int = 0;
+		foreach($datas['data'] as $datass){
 
+			IF($datass['REGION'] == 'ALL' && $datass['BRANCH'] == 'ALL'){
+				
+				if($curr_area == ''){
+					$curr_area = $datass['AREA'];
+					
+					$data_array[$area_int]['AREA'] = $datass['AREA'];
+					$data_array[$area_int]['UV'] = $datass['UV'];
+					$data_array[$area_int]['VIEWERS'] = $datass['VIEWERS'];
+					$data_array[$area_int]['DURATION'] = $datass['DURATION'];
+				}
+				
+				if($curr_area == $datass['AREA']){
+					
+				}else{
+					$curr_area = $datass['AREA'];
+					$area_int++;
+					
+					$data_array[$area_int]['AREA'] = $datass['AREA'];
+					$data_array[$area_int]['UV'] = $datass['UV'];
+					$data_array[$area_int]['VIEWERS'] = $datass['VIEWERS'];
+					$data_array[$area_int]['DURATION'] = $datass['DURATION'];
+					$region_int = 0;
+				}
+				
+				
+			}else{
+				
+				if($datass['BRANCH'] == 'ALL'){
+					
+					if($curr_region == ''){
+						$curr_region = $datass['AREA'];
+					}
+
+					$data_array[$area_int]['REGION'][$region_int]['REGION'] = $datass['REGION'];
+					$data_array[$area_int]['REGION'][$region_int]['REGION_NAME'] = str_replace(" ","",$datass['REGION']);
+					$data_array[$area_int]['REGION'][$region_int]['UV'] = $datass['UV'];
+					$data_array[$area_int]['REGION'][$region_int]['VIEWERS'] = $datass['VIEWERS'];
+					$data_array[$area_int]['REGION'][$region_int]['DURATION'] = $datass['DURATION'];
+					$region_int++;
+					$branch_int = 0;
+
+					
+				}else{
+
+					$data_array[$area_int]['REGION'][$region_int-1]['BRANCH'][$branch_int]['BRANCH'] = $datass['BRANCH'];
+					$data_array[$area_int]['REGION'][$region_int-1]['BRANCH'][$branch_int]['BRANCH_NAME'] = str_replace(" ","",$datass['BRANCH']);
+					$data_array[$area_int]['REGION'][$region_int-1]['BRANCH'][$branch_int]['UV'] = $datass['UV'];
+					$data_array[$area_int]['REGION'][$region_int-1]['BRANCH'][$branch_int]['VIEWERS'] = $datass['VIEWERS'];
+					$data_array[$area_int]['REGION'][$region_int-1]['BRANCH'][$branch_int]['DURATION'] = $datass['DURATION'];
+					$branch_int++;
+				}
+				
+			}
+
+		}
+		
+		
 		$table_html = '
-			<table aria-describedby="mydesc"  id="myTablearea" class="table table-striped">
+		<table aria-describedby="mydesc"  id="myTablearea" class="table table-striped">
 											<thead style="color:red">
 												<tr>
 													<th  scope="row">Area</th>
@@ -2962,21 +3029,94 @@ class Dashboardarea extends JA_Controller {
 													<th text-align="right" scope="row">Action</th>
 													
 												</tr></thead><tbody>';
-		foreach($data['channels']['data'] as $channels){
+		
+		
+		
+		foreach($data_array as $data_arrays){
 			
-			$table_html .= '<tr>
-				<td class="details-control">'.$channels['AREA'].'</td>
-				<td text-align="right" >'.number_format($channels['UV'],0,',','.').'</td>
-				<td text-align="right" >'.number_format($channels['VIEWERS'],0,',','.').'</td>
-				<td text-align="right" >'.number_format($channels['DURATION'],0,',','.').'</td>
-				<td text-align="right" ><button class="button_black">Expand</button><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+				$html_table_area .= '<tr>
+							<td class="details-control"><button class="button_black" id="btn_expand_area_'.$data_arrays['AREA'].'" onClick="expand_area(\''.$data_arrays['AREA'].'\')">+</button> AREA '.$data_arrays['AREA'].'</td>
+							<td text-align="right" >'.number_format($data_arrays['UV'],0,',','.').'</td>
+							<td text-align="right" >'.number_format($data_arrays['VIEWERS'],0,',','.').'</td>
+							<td text-align="right" >'.number_format($data_arrays['DURATION'],0,',','.').'</td>
+							<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+						</tr>';
+						
+						
+						$table_html_region = '
+							<table aria-describedby="mydesc"  id="tableregion_'.$data_arrays['AREA'].'" class="table table-striped" style="display:none" >
+											<thead style="color:red">
+												<tr>
+													<th  scope="row">Region </th>
+													<th text-align="right" scope="row">Audience</th>
+													<th text-align="right" scope="row">Total Views</th>
+													<th text-align="right" scope="row">Duration</th>
+													<th text-align="right" scope="row">Action</th>
 													
-			</tr>';
+												</tr></thead><tbody>';
+												
+			foreach($data_arrays['REGION'] as $data_region){
+
+						$table_html_region .= '<tr>
+							<td class="details-control"><button class="button_black" id="btn_expand_region_'.$data_region['REGION_NAME'].'" onClick="expand_region(\''.$data_region['REGION_NAME'].'\')">+</button> '.$data_region['REGION'].'</td>
+							<td text-align="right" >'.number_format($data_region['UV'],0,',','.').'</td>
+							<td text-align="right" >'.number_format($data_region['VIEWERS'],0,',','.').'</td>
+							<td text-align="right" >'.number_format($data_region['DURATION'],0,',','.').'</td>
+							<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+																
+						</tr>';
+					
+					
+					$table_html_branch = '
+							<table aria-describedby="mydesc"  id="tablebranch_'.$data_region['REGION_NAME'].'" class="table table-striped" style="display:none">
+											<thead style="color:red">
+												<tr>
+													<th  scope="row">Branch </th>
+													<th text-align="right" scope="row">Audience</th>
+													<th text-align="right" scope="row">Total Views</th>
+													<th text-align="right" scope="row">Duration</th>
+													<th text-align="right" scope="row">Action</th>
+													
+												</tr></thead><tbody>';
+												
+												
+					foreach($data_region['BRANCH'] as $data_branch){
+						
+						$table_html_branch .= '<tr>
+							<td class="details-control">'.$data_branch['BRANCH'].'</td>
+							<td text-align="right" >'.number_format($data_branch['UV'],0,',','.').'</td>
+							<td text-align="right" >'.number_format($data_branch['VIEWERS'],0,',','.').'</td>
+							<td text-align="right" >'.number_format($data_branch['DURATION'],0,',','.').'</td>
+							<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+																
+						</tr>';
+						
+					}
+					
+					$table_html_branch .= '</tbody></table>
+					';
+					
+					$table_html_region .= '<tr>
+							<td class="details-control" colspan="5">'.$table_html_branch.'</td>
+						</tr>';
+					
+			
+			}
+			
+			$table_html_region .= '</tbody></table>
+			';
+				$html_table_area .= '<tr>
+							<td class="details-control" colspan="5">'.$table_html_region.'</td>
+						</tr>';
 			
 		}
-		$table_html .= '</tbody></table>
+		
+	
+
+		$table_html .= $html_table_area.'</tbody></table>
 		';
 		
+		//ECHO $table_html;DIE;
 		
 		$data['table'] = $table_html;
 		echo json_encode($data,true);
