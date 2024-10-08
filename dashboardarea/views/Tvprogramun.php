@@ -50,6 +50,8 @@
   <script language="javascript" src="<?php echo $path; ?>assets/vendors/timepicker-master/jquery.timepicker.js"></script> 
   <!-- Multiple Select -->
 	<script src="<?php echo base_url();?>assets/fastselect-master/dist/fastselect.standalone.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+
 	
   <style>
   .highcharts-credits{
@@ -225,10 +227,25 @@
 										<option value="02" >02</option>
 										<option value="03" >03</option>
 										<option value="04" >04</option>
-										<!--<option value="avgtotdur" >AVG Dur/Views</option>
-										<option value="share" >Audience Share</option>-->
 									</select> 
+								</div>
+							</div>
 							
+							<div class="col-lg-3">	
+								<div class="form-group">
+									<label>Region</label>	
+									<select class="form-control" name="region" id="region" required >
+										<option value="ALL" selected >All Region</option>
+									</select> 
+								</div>
+							</div>
+							
+							<div class="col-lg-3">	
+								<div class="form-group">
+									<label>Branch</label>	
+									<select class="form-control" name="branch" id="branch" required >
+										<option value="ALL" selected >All Branch</option>
+									</select> 
 								</div>
 							</div>
 							
@@ -247,27 +264,102 @@
 						 </div>
 					</div>
 					
-					<div class="col-lg-12">	
-					<div class="col-lg-2" style="" >
-					
+					<div class="panel-headings">
+              <div class="col-lg-12">	
+					<div class="navbar-left" style="padding-left:10px;">
+					  <h4 class="title-periode2" style="font-weight: bold;">Result</h4>
 					</div>
+				</div>
+          </div>
+          <div class="panel-body">
+              <!-- Nav tabs -->
+              <div class="col-md-2">
+ 								<div class="row" style="background-color:#F2F2F2;padding:5px;color:#000;border: none;border-radius:5px">
+									 <div class="col-md-6" id="tabs_table" style="border: none;background-color:#fff;border-radius:5px;">
+										<button id="tab_table" style="border: none;background-color:#fff;border-radius:5px;padding:3px 15px 3px 15px" onclick="tab_filter('table')" href="#table" aria-controls="table" role="tab" data-toggle="tab"><strong>Table</strong></button>
+									</div>
+									<div class="col-md-6" id="tabs_chart" style="border: none;border-radius:5px;">
+										<button id="tab_chart" style="border: none;border-radius:5px;padding:3px 15px 3px 15px" onclick="tab_filter('chart')" href="#chart" aria-controls="chart" role="tab" data-toggle="tab"><strong>Chart</strong></button>
+									</div>
+								</div>
+                              </div>               
+              <div class="result-control">
+               
+              </div>
+              <!-- / Nav tabs -->
+              <!-- Tab panes -->
+              <div class="tab-content">
+                  <!-- Tab Table -->
+                  <div role="tabpanel" class="tab-pane active" id="table" style="margin-top:50px;">
+                          <div class="loader" style="display:none">
+                              <img alt="img" class="gambar" src="<?php echo $path; ?>assets/images/icon_loader.gif">
+                          </div>
+						  <br/>
+                          <div class="row">
+							<div class="col-lg-12">	
+								 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
+									<button class="button_black" onclick="expor_province()" id=''><em class="fa fa-download"></em> &nbsp Export</button>
+								</div>
+							</div>
+							  <div class="col-md-12">													
+								<div id="table_programs">
+										<table aria-describedby="mydesc"  id="myTable" class="table table-striped">
+														<thead style="color:red">
+															<tr>
+																<!--<th style='width:10%'>Detail</th>-->
+																<th  scope="row">Area</th>
+																<th text-align="right" scope="row">Audience</th>
+																<th text-align="right" scope="row">Total Views</th>
+																<th text-align="right" scope="row">Duration</th>
+																<th text-align="right" scope="row">Action</th>
+																
+															</tr>
+														</thead>
+													</table>
+								</div>
+							  </div>
+							 
+						</div>
+                  </div>
+                  <!-- / Tab Table -->
+                  <!-- Tab Chart -->
+                  <div role="tabpanel" class="tab-pane" id="chart">
+					 <div class="row">
+					  <div class="col-md-12">
+							<div class="col-lg-3">	
+								<div class="form-group">
+									<label>Data</label>	
+									<select class="form-control" name="data_chart" id="data_chart" required >
+										<option value="Audience" selected >Audience</option>
+										<option value="Views" >Total Views</option>
+										<option value="Duration" >Duration</option>
+									</select> 
+							
+								</div>
+							</div>
 
-					</div>
-					<div id="table_programs">
-							<table aria-describedby="mydesc"  id="myTable" class="table table-striped">
-											<thead style="color:red">
-												<tr>
-													<!--<th style='width:10%'>Detail</th>-->
-													<th  scope="row">Area</th>
-													<th text-align="right" scope="row">Audience</th>
-													<th text-align="right" scope="row">Total Views</th>
-													<th text-align="right" scope="row">Duration</th>
-													<th text-align="right" scope="row">Action</th>
-													
-												</tr>
-											</thead>
-										</table>
-					</div>
+					  </div>
+					  <div class="col-md-12">	
+							<div class="row">
+							  <div class="col-md-12" >
+							  <h2 style="text-align: center;">Area Contributor</h2 >
+							  </div>
+							 </div>
+						  <div class="result-chart">
+						  
+							  <p id="dtmsg" style="text-align: center;font-size: 24px;display:none;">No data available<p>
+							  <div class="result-chart-graph" style="width:400px;height400px; margin : auto">
+								  <canvas id="container1" style="width: 500px; height: 300px; margin: 0 auto"></canvas>
+							  </div>
+						  </div>
+                      </div>
+                     </div>
+                  </div>
+                  <!-- / Tab Chart -->
+              </div>
+              <!-- / Tab panes -->
+          </div>
+
                 </div>
             </div>
           </div>
@@ -2235,7 +2327,26 @@ function table1_view(){
 }
 
 
-
+  function tab_filter(tabs){
+	
+			if(tabs == 'chart'){
+			
+				$('#tab_table').css('background-color','#F2F2F2');
+				$('#tabs_table').css('background-color','#F2F2F2');
+				$('#tab_chart').css('background-color','#fff');
+				$('#tabs_chart').css('background-color','#fff');
+			
+			}else{
+				
+				$('#tab_table').css('background-color','#fff');
+				$('#tabs_table').css('background-color','#fff');
+				$('#tab_chart').css('background-color','#F2F2F2');
+				$('#tabs_chart').css('background-color','#F2F2F2');
+				
+			
+			}
+			
+		 }
 
 function view_daypart(){
 	
@@ -3415,9 +3526,50 @@ function table2_viewd(){
 			$('#table_programs').html("");
 
 			$('#table_programs').html(obj['table']);
+			
+			var value = 75;
+var data = {
+  labels: [
+    "Area 01",
+    "Area 02",
+	"Area 03",
+	"Area 04"
+  ],
+  datasets: [
+    {
+      data: [73, 55, 84, 43],
+	  backgroundColor: [
+			'#FF0000',
+			'#FFDEDE',
+			'#AFDEDE',
+			'#BFDEDE',
+			'#CFDEDE',
+			'#DFDEDE',
+			'#EFDEDE'
+			
+		],
+    }]
+};
 
-			
-			
+var myChart = new Chart(document.getElementById('container1'), {
+  type: 'doughnut',
+  data: data,
+  options: {
+  	responsive: true,
+    legend: {
+      display: true,
+	  position: 'bottom'
+    },
+	plugins: {
+          labels: {
+            render: 'percentage'
+          }
+    },
+    cutoutPercentage: 50,
+
+  }
+});
+
 			
 		}
 	});	
