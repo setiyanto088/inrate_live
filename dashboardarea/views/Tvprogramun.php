@@ -52,6 +52,9 @@
 	<script src="<?php echo base_url();?>assets/fastselect-master/dist/fastselect.standalone.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
 
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
 	
   <style>
   .highcharts-credits{
@@ -130,6 +133,54 @@
 		color: #cb3827;
 		
 	}
+	
+	.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 320px;
+    max-width: 660px;
+    margin: 1em auto;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+.highcharts-description {
+    margin: 0.3rem 10px;
+}
+
 	
   </style>
 
@@ -339,20 +390,36 @@
 							</div>
 
 					  </div>
-					  <div class="col-md-12">	
-							<div class="row">
-							  <div class="col-md-12" >
-							  <h2 style="text-align: center;">Area Contributor</h2 >
-							  </div>
-							 </div>
-						  <div class="result-chart">
+					  <div id="area_chart" class="col-md-12" style="padding:10px">	
+						  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
 						  
 							  <p id="dtmsg" style="text-align: center;font-size: 24px;display:none;">No data available<p>
-							  <div class="result-chart-graph" style="width:400px;height400px; margin : auto">
-								  <canvas id="container1" style="width: 500px; height: 300px; margin: 0 auto"></canvas>
+							  <div class="result-chart-graph" style=" margin : auto">
+								  <div id="container1" style=" margin: 0 auto"></div>
 							  </div>
 						  </div>
                       </div>
+					  
+					  <div id="region_chart" class="col-md-6" style="display:none;padding:10px">	
+						  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
+						  
+							  <p id="dtmsg" style="text-align: center;font-size: 24px;display:none;">No data available<p>
+							  <div class="result-chart-graph" style=" margin : auto">
+								  <div id="container2" style=" margin: 0 auto"></div>
+							  </div>
+						  </div>
+                      </div>
+					  
+					  <div id="branch_chart" class="col-md-12" style="display:none;padding:10px">	
+						  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
+						  
+							  <p id="dtmsg" style="text-align: center;font-size: 24px;display:none;">No data available<p>
+							  <div class="result-chart-graph" style=" margin : auto">
+								  <div id="container3" style="width: 500px; height: 300px; margin: 0 auto"></div>
+							  </div>
+						  </div>
+                      </div>
+					  
                      </div>
                   </div>
                   <!-- / Tab Chart -->
@@ -3522,57 +3589,292 @@ function table2_viewd(){
 		success: function(data){
 			
 			obj = jQuery.parseJSON(data);
-
+			var data_chart = obj.data_area;
+			
+			console.log(data_chart);
+						
 			$('#table_programs').html("");
 
 			$('#table_programs').html(obj['table']);
-			
-			var value = 75;
-var data = {
-  labels: [
-    "Area 01",
-    "Area 02",
-	"Area 03",
-	"Area 04"
-  ],
-  datasets: [
-    {
-      data: [73, 55, 84, 43],
-	  backgroundColor: [
-			'#FF0000',
-			'#FFDEDE',
-			'#AFDEDE',
-			'#BFDEDE',
-			'#CFDEDE',
-			'#DFDEDE',
-			'#EFDEDE'
-			
-		],
-    }]
-};
 
-var myChart = new Chart(document.getElementById('container1'), {
-  type: 'doughnut',
-  data: data,
-  options: {
-  	responsive: true,
+		Highcharts.chart('container1', {
+    chart: {
+        type: 'pie',
+        custom: {},
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    title: {
+        text: '<h1>Area Contributor</h1>',
+		style: {
+                    fontSize: '2.9em'
+        }
+    },
+    subtitle: {
+        text: ''
+    },
+    tooltip: {
+        pointFormat: 'Audience: <b>{point.y}</b>',
+		style: {
+                    fontSize: '1.9em'
+        }
+    },
     legend: {
-      display: true,
-	  position: 'bottom'
+        enabled: false
     },
-	plugins: {
-          labels: {
-            render: 'percentage'
-          }
+    plotOptions: {
+        series: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            borderRadius: 8,
+            dataLabels: [{
+                enabled: true,
+                distance: 20,
+                format: '{point.name} <br> {point.percentage:.0f}%',
+				style: {
+                    fontSize: '1.9em'
+                }
+            }],
+            showInLegend: true
+        }
     },
-    cutoutPercentage: 50,
-
-  }
+    series: [{
+        name: 'Contributor',
+        colorByPoint: true,
+        innerSize: '60%',
+        data: data_chart,
+		point:{
+			events:{
+                  click: function (event) {
+					  refresh_chart_area('Area',this.id,obj.data_all);
+                  }
+            }
+		}
+    }]
 });
 
-			
+		
+		
 		}
 	});	
+}
+
+function refresh_chart_area(place,id,data_all){
+	var data_array = [];
+	for (const element of data_all) { // You can use `let` instead of `const` if you like
+		if(element.AREA == id){
+			
+			for (const elementd of element.REGION) {
+				
+				const data_rr = {};
+				data_rr.name = elementd.REGION;
+				data_rr.y = elementd.UV;
+				data_rr.id = elementd.REGION;
+				
+				data_array.push(data_rr);
+				
+			}
+		}
+		
+	}
+	
+	var data_chart = data_array;
+
+	
+		Highcharts.chart('container2', {
+    chart: {
+        type: 'pie',
+        custom: {},
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    title: {
+        text: '<h1>Region Contributor</h1>',
+		style: {
+                    fontSize: '2.9em'
+        }
+    },
+    subtitle: {
+        text: 'Area '+id,
+		style: {
+                    fontSize: '1.9em'
+        }
+    },
+    tooltip: {
+        pointFormat: 'Audience: <b>{point.y}</b>',
+		style: {
+                    fontSize: '1.9em'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    plotOptions: {
+        series: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            borderRadius: 8,
+            dataLabels: [{
+                enabled: true,
+                distance: 20,
+                format: '{point.name} <br> {point.percentage:.0f}%',
+				style: {
+                    fontSize: '1.9em'
+                }
+            }],
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Contributor',
+        colorByPoint: true,
+        innerSize: '60%',
+        data: data_chart,
+		point:{
+			events:{
+                  click: function (event) {
+					  refresh_chart_region('Region',this.id,data_all,id);
+                  }
+            }
+		}
+    }]
+});
+
+	
+	document.getElementById("area_chart").classList.remove('col-md-12');
+	document.getElementById("area_chart").classList.add('col-md-6');
+	$('#region_chart').show();
+	
+}
+
+function refresh_chart_region(place,id,data_all,area){
+
+	var data_array = [];
+	var label_array = [];
+	
+	for (const element of data_all) { 
+		if(element.AREA == area){
+			
+			for (const elementd of element.REGION) {
+					
+					if(elementd.REGION == id){
+						
+						for (const elementdt of elementd.BRANCH) {
+							// const data_rr = {};
+							// data_rr.name = elementdt.BRANCH;
+							// data_rr.y = elementdt.UV;
+							// data_rr.id = elementdt.BRANCH;
+							
+							label_array.push(elementdt.BRANCH);
+							data_array.push(elementdt.UV);
+						}
+					}
+				
+			}
+		}
+		
+	}
+	
+	var data_chart = data_array;
+	var label_chart = label_array;
+	console.log(data_chart);
+	var dataSum = 0;
+	for (var i=0;i < data_array.length;i++) {
+		dataSum += data_array[i]
+	}
+	
+	Highcharts.chart('container3', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+		text: '<h1>Branch Contributor</h1>',
+		style: {
+                    fontSize: '2.9em'
+        }
+    },
+    subtitle: {
+        text: id,
+		style: {
+                    fontSize: '1.9em'
+        }
+    },
+    xAxis: {
+        categories: label_chart,
+        crosshair: true,
+        accessibility: {
+            description: 'Countries'
+        },
+		labels: {
+                style: {
+                    fontSize:'1.3em'
+                }
+           }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        },
+		labels: {
+            overflow: 'justify',
+			style: {
+                fontSize:'1.3em'
+            }
+        }
+    },
+    tooltip: {
+        valueSuffix: '',
+		style: {
+            fontSize:'1.3em'
+        }
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        },
+		series: {
+            shadow:false,
+            borderWidth:0,
+			pointWidth: 25,
+            dataLabels:{
+                enabled:true,
+                formatter:function() {
+                    var pcnt = (this.y / dataSum) * 100;
+                    return Highcharts.numberFormat(pcnt, 1,',','.') + '%';
+                },
+				style: {
+                    fontSize: '1.5em'
+                }
+            }
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [
+        {	
+			dataSorting: {
+				enabled: true
+			},
+            name: 'Audience',
+            data: data_chart,
+			color: 'red'
+        }
+    ]
+});
+
+
+
+	$('#branch_chart').show();
+	
 }
 
 function expand_area(area){

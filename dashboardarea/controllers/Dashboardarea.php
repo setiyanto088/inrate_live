@@ -2959,6 +2959,7 @@ class Dashboardarea extends JA_Controller {
 		$area_int = 0;
 		$region_int = 0;
 		$branch_int = 0;
+		$data_area = [];
 		foreach($datas['data'] as $datass){
 
 			IF($datass['REGION'] == 'ALL' && $datass['BRANCH'] == 'ALL'){
@@ -2970,6 +2971,9 @@ class Dashboardarea extends JA_Controller {
 					$data_array[$area_int]['UV'] = $datass['UV'];
 					$data_array[$area_int]['VIEWERS'] = $datass['VIEWERS'];
 					$data_array[$area_int]['DURATION'] = $datass['DURATION'];
+					$data_area[$area_int]['name'] = 'Area '.$datass['AREA'];
+					$data_area[$area_int]['y'] = $datass['UV'];
+					$data_area[$area_int]['id'] = $datass['AREA'];
 				}
 				
 				if($curr_area == $datass['AREA']){
@@ -2983,7 +2987,11 @@ class Dashboardarea extends JA_Controller {
 					$data_array[$area_int]['VIEWERS'] = $datass['VIEWERS'];
 					$data_array[$area_int]['DURATION'] = $datass['DURATION'];
 					$region_int = 0;
+					$data_area[$area_int]['name'] = 'Area '.$datass['AREA'];
+					$data_area[$area_int]['y'] = $datass['UV'];
+					$data_area[$area_int]['id'] = $datass['AREA'];
 				}
+				
 				
 				
 			}else{
@@ -3119,6 +3127,8 @@ class Dashboardarea extends JA_Controller {
 		//ECHO $table_html;DIE;
 		
 		$data['table'] = $table_html;
+		$data['data_all'] = $data_array;
+		$data['data_area'] = $data_area;
 		echo json_encode($data,true);
 		
 	}
