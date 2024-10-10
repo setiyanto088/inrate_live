@@ -2950,6 +2950,7 @@ class Dashboardarea extends JA_Controller {
 		
 		
 		$datas = $this->tvprogramun_model->list_data_area($data); 
+				
 		$data_array = [];
 		$curr_area = '';
 		$curr_region = '';
@@ -2959,7 +2960,11 @@ class Dashboardarea extends JA_Controller {
 		$area_int = 0;
 		$region_int = 0;
 		$branch_int = 0;
+		$all_region_int = 0;
+		$all_branch_int = 0;
 		$data_area = [];
+		$data_region_pie = [];
+		$data_branch_bar = [];
 		foreach($datas['data'] as $datass){
 
 			IF($datass['REGION'] == 'ALL' && $datass['BRANCH'] == 'ALL'){
@@ -2971,9 +2976,12 @@ class Dashboardarea extends JA_Controller {
 					$data_array[$area_int]['UV'] = $datass['UV'];
 					$data_array[$area_int]['VIEWERS'] = $datass['VIEWERS'];
 					$data_array[$area_int]['DURATION'] = $datass['DURATION'];
-					$data_area[$area_int]['name'] = 'Area '.$datass['AREA'];
+					$data_area[$area_int]['name'] = $datass['AREA'];
 					$data_area[$area_int]['y'] = $datass['UV'];
 					$data_area[$area_int]['id'] = $datass['AREA'];
+					$data_area[$area_int]['UV'] = $datass['UV'];
+					$data_area[$area_int]['DURATION'] = $datass['DURATION'];
+					$data_area[$area_int]['VIEWERS'] = $datass['VIEWERS'];
 				}
 				
 				if($curr_area == $datass['AREA']){
@@ -2987,9 +2995,12 @@ class Dashboardarea extends JA_Controller {
 					$data_array[$area_int]['VIEWERS'] = $datass['VIEWERS'];
 					$data_array[$area_int]['DURATION'] = $datass['DURATION'];
 					$region_int = 0;
-					$data_area[$area_int]['name'] = 'Area '.$datass['AREA'];
+					$data_area[$area_int]['name'] = $datass['AREA'];
 					$data_area[$area_int]['y'] = $datass['UV'];
 					$data_area[$area_int]['id'] = $datass['AREA'];
+					$data_area[$area_int]['UV'] = $datass['UV'];
+					$data_area[$area_int]['DURATION'] = $datass['DURATION'];
+					$data_area[$area_int]['VIEWERS'] = $datass['VIEWERS'];
 				}
 				
 				
@@ -3007,9 +3018,15 @@ class Dashboardarea extends JA_Controller {
 					$data_array[$area_int]['REGION'][$region_int]['UV'] = $datass['UV'];
 					$data_array[$area_int]['REGION'][$region_int]['VIEWERS'] = $datass['VIEWERS'];
 					$data_array[$area_int]['REGION'][$region_int]['DURATION'] = $datass['DURATION'];
+					$data_region_pie[$all_region_int]['name'] = $datass['REGION'];
+					$data_region_pie[$all_region_int]['y'] = $datass['UV'];
+					$data_region_pie[$all_region_int]['id'] = $datass['REGION'];
+					$data_region_pie[$all_region_int]['UV'] = $datass['UV'];
+					$data_region_pie[$all_region_int]['VIEWERS'] = $datass['VIEWERS'];
+					$data_region_pie[$all_region_int]['DURATION'] = $datass['DURATION'];
 					$region_int++;
 					$branch_int = 0;
-
+					$all_region_int++;
 					
 				}else{
 
@@ -3019,6 +3036,12 @@ class Dashboardarea extends JA_Controller {
 					$data_array[$area_int]['REGION'][$region_int-1]['BRANCH'][$branch_int]['VIEWERS'] = $datass['VIEWERS'];
 					$data_array[$area_int]['REGION'][$region_int-1]['BRANCH'][$branch_int]['DURATION'] = $datass['DURATION'];
 					$branch_int++;
+					$data_branch_bar[$all_branch_int]['name'] = $datass['BRANCH'];
+					$data_branch_bar[$all_branch_int]['y'] = $datass['UV'];
+					$data_branch_bar[$all_branch_int]['UV'] = $datass['UV'];
+					$data_branch_bar[$all_branch_int]['VIEWERS'] = $datass['VIEWERS'];
+					$data_branch_bar[$all_branch_int]['DURATION'] = $datass['DURATION'];
+					$all_branch_int++;
 				}
 				
 			}
@@ -3126,9 +3149,14 @@ class Dashboardarea extends JA_Controller {
 		
 		//ECHO $table_html;DIE;
 		
+		$keys = array_column($data_branch_bar, 'y');
+		array_multisort($keys, SORT_ASC, $data_branch_bar);
+
 		$data['table'] = $table_html;
 		$data['data_all'] = $data_array;
+		$data['data_region'] = $data_region_pie;
 		$data['data_area'] = $data_area;
+		$data['data_branch'] = array_reverse($data_branch_bar);
 		echo json_encode($data,true);
 		
 	}

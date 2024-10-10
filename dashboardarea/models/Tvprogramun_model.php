@@ -247,20 +247,46 @@ class Tvprogramun_model extends CI_Model {
 	}
 	
 		public function list_data_area($params = array()) {
+			
+		if($data['preset'] == 0){
+			$where = '';
+		}else{
+			$where = 'CHANNEL IN () ';
+		}
 		
-		if($params['start_date'] == $params['end_date'] && $data['preset'] == 0){
+		if($params['start_date'] == $params['end_date'] ){
 			
 			$sql = "
 			SELECT * FROM M_SUM_TV_DASH_CHAN_DAY_AREA
 			WHERE DATE = '".$params['start_date']."'
+			".$where."
 			order by AREA,REGION,BRANCH
 			";
 			
 		}else{
 			
-			ECHO "ASSS";
+			$sql = "
+				SELECT CHANNELS,DATES,AREA,REGION,BRANCH,toInt32(UV) UV,toInt32(VIEWERS) VIEWERS,toFloat32(DURATION) DURATION FROM (
+				SELECT 'ALL' CHANNELS,'ALL' DATES,AREA,'ALL' REGION,'ALL' BRANCH, COUNT(DISTINCT(CARDNO)) AS UV, SUM(DURATION) AS DURATION, SUM(VIEWS) AS VIEWERS FROM DAILY_CHANNEL_CARDNO_SUMMARY A
+				JOIN AREA_TSEL_N B ON A.CARDNO = B.CARDNO 
+				WHERE DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
+				GROUP BY AREA
+				UNION ALL
+				SELECT 'ALL' CHANNELS,'ALL' DATES,AREA,REGION,'ALL' BRANCH, COUNT(DISTINCT(CARDNO)) AS UV, SUM(DURATION) AS DURATION, SUM(VIEWS) AS VIEWERS FROM DAILY_CHANNEL_CARDNO_SUMMARY A
+				JOIN AREA_TSEL_N B ON A.CARDNO = B.CARDNO 
+				WHERE DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
+				GROUP BY AREA,REGION
+				UNION ALL
+				SELECT 'ALL' CHANNELS,'ALL' DATES,AREA,REGION,BRANCH, COUNT(DISTINCT(CARDNO)) AS UV, SUM(DURATION) AS DURATION, SUM(VIEWS) AS VIEWERS FROM DAILY_CHANNEL_CARDNO_SUMMARY A
+				JOIN AREA_TSEL_N B ON A.CARDNO = B.CARDNO 
+				WHERE DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
+				GROUP BY AREA,REGION,BRANCH
+				) A
+				ORDER BY AREA,REGION,BRANCH
+			";
 		}
 	
+		//echo $sql;die;
 
 		$db = $this->clickhouse->db();
 		$out		= array();

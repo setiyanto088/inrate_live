@@ -268,38 +268,7 @@
 									<input type="text" class="form-control" name="end_date" id="end_date" placeholder="To ..." style="text-align:left" value="">
 								</div>
 							</div>
-							
-							<div class="col-lg-3">	
-								<div class="form-group">
-									<label>Area</label>	
-									<select class="form-control" name="audiencebar3" id="audiencebar3" required >
-										<option value="ALL" selected >All Area</option>
-										<option value="01" >01</option>
-										<option value="02" >02</option>
-										<option value="03" >03</option>
-										<option value="04" >04</option>
-									</select> 
-								</div>
-							</div>
-							
-							<div class="col-lg-3">	
-								<div class="form-group">
-									<label>Region</label>	
-									<select class="form-control" name="region" id="region" required >
-										<option value="ALL" selected >All Region</option>
-									</select> 
-								</div>
-							</div>
-							
-							<div class="col-lg-3">	
-								<div class="form-group">
-									<label>Branch</label>	
-									<select class="form-control" name="branch" id="branch" required >
-										<option value="ALL" selected >All Branch</option>
-									</select> 
-								</div>
-							</div>
-							
+
 							<div class="col-lg-3">
 								<label>Preset: <a href="#" data-toggle="modal" onClick="load_modal_load_channel()" id="ldctriger" style="color:red">Make New Preset</a> </label>
 								<select class="form-control" name="preset3" id="preset3" class="preset2" >  
@@ -310,7 +279,10 @@
 									} ?>
 								</select> 
 							</div>
-
+							<input type="hidden"  id="all_data_f" value="">
+							<input type="hidden"  id="data_area_f" value="">
+							<input type="hidden"  id="data_branch_f" value="">
+							<input type="hidden"  id="data_region_f" value="">
 						 
 						 </div>
 					</div>
@@ -366,6 +338,12 @@
 																
 															</tr>
 														</thead>
+														<tbody style="color:red">
+															<tr>
+																<!--<th style='width:10%'>Detail</th>-->
+																<th scope="row" colspan=5>Data Not Found</th>
+															</tr>
+														</tbody>
 													</table>
 								</div>
 							  </div>
@@ -380,19 +358,19 @@
 							<div class="col-lg-3">	
 								<div class="form-group">
 									<label>Data</label>	
-									<select class="form-control" name="data_chart" id="data_chart" required >
-										<option value="Audience" selected >Audience</option>
-										<option value="Views" >Total Views</option>
-										<option value="Duration" >Duration</option>
+									<select class="form-control" name="data_chart" id="data_chart" onChange="change_data_chart()" required >
+										<option value="UV" selected >Audience</option>
+										<option value="TOTAL_VIEWS" >Total Views</option>
+										<option value="DURATION" >Duration</option>
 									</select> 
 							
 								</div>
 							</div>
 
 					  </div>
-					  <div id="area_chart" class="col-md-12" style="padding:10px">	
+					  <div id="area_chart" class="col-md-6" style="padding:10px">	
 						  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
-						  
+								
 							  <p id="dtmsg" style="text-align: center;font-size: 24px;display:none;">No data available<p>
 							  <div class="result-chart-graph" style=" margin : auto">
 								  <div id="container1" style=" margin: 0 auto"></div>
@@ -400,9 +378,8 @@
 						  </div>
                       </div>
 					  
-					  <div id="region_chart" class="col-md-6" style="display:none;padding:10px">	
+					  <div id="region_chart" class="col-md-6" style="padding:10px">	
 						  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
-						  
 							  <p id="dtmsg" style="text-align: center;font-size: 24px;display:none;">No data available<p>
 							  <div class="result-chart-graph" style=" margin : auto">
 								  <div id="container2" style=" margin: 0 auto"></div>
@@ -410,12 +387,35 @@
 						  </div>
                       </div>
 					  
-					  <div id="branch_chart" class="col-md-12" style="display:none;padding:10px">	
+					  <div id="region_chart_filter" class="col-md-6" style="padding:10px;display:none">	
 						  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
-						  
+								<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
+									<button class="button_black" onclick="back_roegion()" id=''>Back to All</button>
+								</div>
 							  <p id="dtmsg" style="text-align: center;font-size: 24px;display:none;">No data available<p>
 							  <div class="result-chart-graph" style=" margin : auto">
-								  <div id="container3" style="width: 500px; height: 300px; margin: 0 auto"></div>
+								  <div id="container21" style=" margin: 0 auto"></div>
+							  </div>
+						  </div>
+                      </div>
+					  
+					  <div id="branch_chart" class="col-md-12" style="padding:10px">	
+						  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
+							  <p id="dtmsg" style="text-align: center;font-size: 24px;display:none;">No data available<p>
+							  <div class="result-chart-graph" style=" margin : auto">
+								  <div id="container3" style="margin: 0 auto"></div>
+							  </div>
+						  </div>
+                      </div>
+					  
+					   <div id="branch_chart_filter" class="col-md-12" style="padding:10px">	
+						  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
+							<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
+									<button class="button_black" onclick="back_branch()" id=''>Back to All</button>
+								</div>
+							  <p id="dtmsg" style="text-align: center;font-size: 24px;display:none;">No data available<p>
+							  <div class="result-chart-graph" style=" margin : auto">
+								  <div id="container31" style="margin: 0 auto"></div>
 							  </div>
 						  </div>
                       </div>
@@ -3538,8 +3538,9 @@ function table2_viewd(){
 	var week = "";
 	var start_date = $('#start_date').val();
 	var end_date = $('#end_date').val();
-	var tipe_filter = $('#audiencebar3').val();
+	var tipe_filter = '01';
 	var preset = $('#preset3').val();
+	var filter = $('#data_chart').val();
 
 	if(start_date == '' ){
 		alert('Date Filter Must Not Blank');
@@ -3589,15 +3590,77 @@ function table2_viewd(){
 		success: function(data){
 			
 			obj = jQuery.parseJSON(data);
-			var data_chart = obj.data_area;
 			
-			console.log(data_chart);
-						
+			$('#all_data_f').val(data);
+			
+			var data_chart = obj.data_area;
+			var data_chart_region = obj.data_region;
+									
 			$('#table_programs').html("");
 
 			$('#table_programs').html(obj['table']);
 
-		Highcharts.chart('container1', {
+	Highcharts.chart('container1', {
+		chart: {
+			type: 'pie',
+			custom: {},
+		},
+		accessibility: {
+			point: {
+				valueSuffix: '%'
+			}
+		},
+		title: {
+			text: '<h1>Area Contributor</h1>',
+			style: {
+						fontSize: '2.9em'
+			}
+		},
+		subtitle: {
+			text: ''
+		},
+		tooltip: {
+			pointFormat: 'Audience: <b>{point.y}</b>',
+			style: {
+						fontSize: '1.9em'
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+			series: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				borderRadius: 8,
+				dataLabels: [{
+					enabled: true,
+					distance: 20,
+					format: 'Area {point.name} <br> {point.percentage:.0f}%',
+					style: {
+						fontSize: '1.9em'
+					}
+				}],
+				showInLegend: true
+			}
+		},
+		series: [{
+			name: 'Contributor',
+			colorByPoint: true,
+			innerSize: '60%',
+			data: data_chart,
+			point:{
+				events:{
+					  click: function (event) {
+						  refresh_chart_area('Area',this.id,obj.data_all);
+						   $('#data_area_f').val(this.id);
+					  }
+				}
+			}
+		}]
+	});
+
+	Highcharts.chart('container2', {
     chart: {
         type: 'pie',
         custom: {},
@@ -3608,13 +3671,16 @@ function table2_viewd(){
         }
     },
     title: {
-        text: '<h1>Area Contributor</h1>',
+        text: '<h1>Region Contributor</h1>',
 		style: {
                     fontSize: '2.9em'
         }
     },
     subtitle: {
-        text: ''
+        text: 'All',
+		style: {
+                    fontSize: '1.9em'
+        }
     },
     tooltip: {
         pointFormat: 'Audience: <b>{point.y}</b>',
@@ -3635,7 +3701,7 @@ function table2_viewd(){
                 distance: 20,
                 format: '{point.name} <br> {point.percentage:.0f}%',
 				style: {
-                    fontSize: '1.9em'
+                    fontSize: '1.0em'
                 }
             }],
             showInLegend: true
@@ -3645,16 +3711,122 @@ function table2_viewd(){
         name: 'Contributor',
         colorByPoint: true,
         innerSize: '60%',
-        data: data_chart,
+        data: data_chart_region,
 		point:{
 			events:{
                   click: function (event) {
-					  refresh_chart_area('Area',this.id,obj.data_all);
+					  refresh_chart_region('Region',this.id,obj.data_all,this.id);
+					   $('#data_region_f').val(this.id);
                   }
             }
 		}
     }]
 });
+
+	var data_array = [];
+	var label_array = [];
+
+	for (const elementdt of obj.data_branch) {
+		label_array.push(elementdt.name);
+		data_array.push(elementdt.y);
+	}
+
+	
+	var data_chart = data_array;
+	var label_chart = label_array;
+	var dataSum = 0;
+	for (var i=0;i < data_array.length;i++) {
+		dataSum += data_array[i]
+	}
+	
+	Highcharts.chart('container3', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+		text: '<h1>Branch Contributor</h1>',
+		style: {
+                    fontSize: '2.9em'
+        }
+    },
+    subtitle: {
+        text: this.id,
+		style: {
+                    fontSize: '1.9em'
+        }
+    },
+    xAxis: {
+        categories: label_chart,
+        crosshair: true,
+        accessibility: {
+            description: 'Countries'
+        },
+		labels: {
+                style: {
+                    fontSize:'1.0em'
+                }
+           }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        },
+		labels: {
+            overflow: 'justify',
+			style: {
+                fontSize:'1.3em'
+            }
+        }
+    },
+    tooltip: {
+        valueSuffix: '',
+		formatter:function() {
+            var pcnt = (this.y / dataSum) * 100;
+			var percentage = Highcharts.numberFormat(pcnt, 1,',','.') + '%';
+			var html_tip = this.x+'<br>'+filter+' : '+this.y+'<br>'+percentage;
+            return html_tip;
+        },
+		style: {
+            fontSize:'1.3em'
+        }
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        },
+		series: {
+            shadow:false,
+            borderWidth:0,
+			pointWidth: 15,
+            dataLabels:{
+                enabled:true,
+                formatter:function() {
+                    var pcnt = (this.y / dataSum) * 100;
+                    return Highcharts.numberFormat(pcnt, 1,',','.') + '%';
+                },
+				style: {
+                    fontSize: '0.8em'
+                }
+            }
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [
+        {	
+			dataSorting: {
+				enabled: true
+			},
+            name: filter,
+            data: data_chart,
+			color: 'red'
+        }
+    ]
+});
+
 
 		
 		
@@ -3662,7 +3834,296 @@ function table2_viewd(){
 	});	
 }
 
-function refresh_chart_area(place,id,data_all){
+function change_data_chart(){
+	
+	var filter = $('#data_chart').val();
+	var data = $('#all_data_f').val();
+	var id_area = $('#data_area_f').val();
+	var id_region = $('#data_region_f').val();
+	obj = jQuery.parseJSON(data);
+
+	var data_array = [];
+	for (const elementd of obj.data_area) {
+				
+				const data_rr = {};
+				data_rr.name = elementd.name;
+				if(filter == 'UV'){
+					data_rr.y = elementd.UV;
+				}else if(filter == 'TOTAL_VIEWS'){
+					data_rr.y = elementd.VIEWERS;
+				}else{
+					data_rr.y = elementd.DURATION;
+				}
+				data_rr.id = elementd.name;
+				data_array.push(data_rr);
+				
+	}
+
+	var data_chart = data_array;
+	
+	Highcharts.chart('container1', {
+		chart: {
+			type: 'pie',
+			custom: {},
+		},
+		accessibility: {
+			point: {
+				valueSuffix: '%'
+			}
+		},
+		title: {
+			text: '<h1>Area Contributor</h1>',
+			style: {
+						fontSize: '2.9em'
+			}
+		},
+		subtitle: {
+			text: ''
+		},
+		tooltip: {
+			pointFormat: filter+' : <b>{point.y}</b>',
+			style: {
+						fontSize: '1.9em'
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+			series: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				borderRadius: 8,
+				dataLabels: [{
+					enabled: true,
+					distance: 20,
+					format: 'Area {point.name} <br> {point.percentage:.0f}%',
+					style: {
+						fontSize: '1.9em'
+					}
+				}],
+				showInLegend: true
+			}
+		},
+		series: [{
+			name: 'Contributor',
+			colorByPoint: true,
+			innerSize: '60%',
+			data: data_chart,
+			point:{
+				events:{
+					  click: function (event) {
+						  refresh_chart_area('Area',this.id,obj.data_all);
+						  $('#data_area_f').val(this.id);
+					  }
+				}
+			}
+		}]
+	});
+	
+	
+	var data_array_region = [];
+	for (const elementd of obj.data_region) {
+				
+				const data_rr = {};
+				data_rr.name = elementd.name;
+				if(filter == 'UV'){
+					data_rr.y = elementd.UV;
+				}else if(filter == 'TOTAL_VIEWS'){
+					data_rr.y = elementd.VIEWERS;
+				}else{
+					data_rr.y = elementd.DURATION;
+				}
+				data_rr.id = elementd.name;
+				data_array_region.push(data_rr);
+				
+	}
+
+	var data_chart_region = data_array_region;
+	
+	Highcharts.chart('container2', {
+		chart: {
+			type: 'pie',
+			custom: {},
+		},
+		accessibility: {
+			point: {
+				valueSuffix: '%'
+			}
+		},
+		title: {
+			text: '<h1>Region Contributor</h1>',
+			style: {
+						fontSize: '2.9em'
+			}
+		},
+		subtitle: {
+			text: 'All',
+			style: {
+						fontSize: '1.9em'
+			}
+		},
+		tooltip: {
+			pointFormat: filter+' : <b>{point.y}</b>',
+			style: {
+						fontSize: '1.9em'
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+			series: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				borderRadius: 8,
+				dataLabels: [{
+					enabled: true,
+					distance: 20,
+					format: '{point.name} <br> {point.percentage:.0f}%',
+					style: {
+						fontSize: '1.0em'
+					}
+				}],
+				showInLegend: true
+			}
+		},
+		series: [{
+			name: 'Contributor',
+			colorByPoint: true,
+			innerSize: '60%',
+			data: data_chart_region,
+			point:{
+				events:{
+					  click: function (event) {
+						  refresh_chart_region('Region',this.id,obj.data_all,this.id);
+						   $('#data_area_f').val(this.id);
+					  }
+				}
+			}
+		}]
+	});
+
+	refresh_chart_area2('Region',id_area,obj.data_all);
+	
+	var data_array = [];
+	var label_array = [];
+
+	for (const elementdt of obj.data_branch) {
+		label_array.push(elementdt.name);
+		if(filter == 'UV'){
+			data_array.push(elementdt.UV);
+		}else if(filter == 'TOTAL_VIEWS'){
+			data_array.push(elementdt.VIEWERS);
+		}else{
+			data_array.push(elementdt.DURATION);
+		}
+	}
+
+	var data_chart = data_array;
+	var label_chart = label_array;
+	var dataSum = 0;
+	for (var i=0;i < data_array.length;i++) {
+		dataSum += data_array[i]
+	}
+	
+	Highcharts.chart('container3', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+		text: '<h1>Branch Contributor</h1>',
+		style: {
+                    fontSize: '2.9em'
+        }
+    },
+    subtitle: {
+        text: this.id,
+		style: {
+                    fontSize: '1.9em'
+        }
+    },
+    xAxis: {
+        categories: label_chart,
+        crosshair: true,
+        accessibility: {
+            description: 'Countries'
+        },
+		labels: {
+                style: {
+                    fontSize:'1.0em'
+                }
+           }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        },
+		labels: {
+            overflow: 'justify',
+			style: {
+                fontSize:'1.3em'
+            }
+        }
+    },
+    tooltip: {
+        valueSuffix: '',
+		formatter:function() {
+            var pcnt = (this.y / dataSum) * 100;
+			var percentage = Highcharts.numberFormat(pcnt, 1,',','.') + '%';
+			var html_tip = this.x+'<br>'+filter+' : '+this.y+'<br>'+percentage;
+            return html_tip;
+        },
+		style: {
+            fontSize:'1.3em'
+        }
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        },
+		series: {
+            shadow:false,
+            borderWidth:0,
+			pointWidth: 15,
+            dataLabels:{
+                enabled:true,
+                formatter:function() {
+                    var pcnt = (this.y / dataSum) * 100;
+                    return Highcharts.numberFormat(pcnt, 1,',','.') + '%';
+                },
+				style: {
+                    fontSize: '0.8em'
+                }
+            }
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [
+        {	
+			dataSorting: {
+				enabled: true
+			},
+            name: filter,
+            data: data_chart,
+			color: 'red'
+        }
+    ]
+});
+
+	refresh_chart_region2('Region',id_region,obj.data_all,id_region);
+	
+}
+
+function refresh_chart_area2(place,id,data_all){
+	
+	
+	var filter = $('#data_chart').val();
+	
 	var data_array = [];
 	for (const element of data_all) { // You can use `let` instead of `const` if you like
 		if(element.AREA == id){
@@ -3671,7 +4132,13 @@ function refresh_chart_area(place,id,data_all){
 				
 				const data_rr = {};
 				data_rr.name = elementd.REGION;
-				data_rr.y = elementd.UV;
+				if(filter == 'UV'){
+					data_rr.y = elementd.UV;
+				}else if(filter == 'TOTAL_VIEWS'){
+					data_rr.y = elementd.VIEWERS;
+				}else{
+					data_rr.y = elementd.DURATION;
+				}
 				data_rr.id = elementd.REGION;
 				
 				data_array.push(data_rr);
@@ -3683,8 +4150,7 @@ function refresh_chart_area(place,id,data_all){
 	
 	var data_chart = data_array;
 
-	
-		Highcharts.chart('container2', {
+		Highcharts.chart('container21', {
     chart: {
         type: 'pie',
         custom: {},
@@ -3707,7 +4173,7 @@ function refresh_chart_area(place,id,data_all){
         }
     },
     tooltip: {
-        pointFormat: 'Audience: <b>{point.y}</b>',
+        pointFormat: filter+' : <b>{point.y}</b>',
 		style: {
                     fontSize: '1.9em'
         }
@@ -3740,45 +4206,159 @@ function refresh_chart_area(place,id,data_all){
 			events:{
                   click: function (event) {
 					  refresh_chart_region('Region',this.id,data_all,id);
+					  $('#data_region_f').val(this.id);
                   }
             }
 		}
     }]
 });
 
+}
+
+function refresh_chart_area(place,id,data_all){
 	
-	document.getElementById("area_chart").classList.remove('col-md-12');
-	document.getElementById("area_chart").classList.add('col-md-6');
-	$('#region_chart').show();
+	
+	var filter = $('#data_chart').val();
+	
+	var data_array = [];
+	for (const element of data_all) { // You can use `let` instead of `const` if you like
+		if(element.AREA == id){
+			
+			for (const elementd of element.REGION) {
+				
+				const data_rr = {};
+				data_rr.name = elementd.REGION;
+				if(filter == 'UV'){
+					data_rr.y = elementd.UV;
+				}else if(filter == 'TOTAL_VIEWS'){
+					data_rr.y = elementd.VIEWERS;
+				}else{
+					data_rr.y = elementd.DURATION;
+				}
+				data_rr.id = elementd.REGION;
+				
+				data_array.push(data_rr);
+				
+			}
+		}
+		
+	}
+
+	var data_chart = data_array;
+
+	
+		Highcharts.chart('container21', {
+    chart: {
+        type: 'pie',
+        custom: {},
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    title: {
+        text: '<h1>Region Contributor</h1>',
+		style: {
+                    fontSize: '2.9em'
+        }
+    },
+    subtitle: {
+        text: 'Area '+id,
+		style: {
+                    fontSize: '1.9em'
+        }
+    },
+    tooltip: {
+        pointFormat: filter+' : <b>{point.y}</b>',
+		style: {
+                    fontSize: '1.9em'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    plotOptions: {
+        series: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            borderRadius: 8,
+            dataLabels: [{
+                enabled: true,
+                distance: 20,
+                format: '{point.name} <br> {point.percentage:.0f}%',
+				style: {
+                    fontSize: '1.9em'
+                }
+            }],
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Contributor',
+        colorByPoint: true,
+        innerSize: '60%',
+        data: data_chart,
+		point:{
+			events:{
+                  click: function (event) {
+					  refresh_chart_region('Region',this.id,data_all,id);
+					  $('#data_region_f').val(this.id);
+                  }
+            }
+		}
+    }]
+});
+
+
+	
+	$('#region_chart').hide();
+	$('#region_chart_filter').show();
+
 	
 }
 
-function refresh_chart_region(place,id,data_all,area){
+function back_roegion(){
+	
+	$('#region_chart').show();
+	$('#region_chart_filter').hide();
+	
+}
+
+function back_branch(){
+	
+	$('#branch_chart').show();
+	$('#branch_chart_filter').hide();
+	
+}
+
+function refresh_chart_region2(place,id,data_all,area){
 
 	var data_array = [];
 	var label_array = [];
 	
+	var filter = $('#data_chart').val();
+	
 	for (const element of data_all) { 
-		if(element.AREA == area){
-			
 			for (const elementd of element.REGION) {
 					
 					if(elementd.REGION == id){
 						
 						for (const elementdt of elementd.BRANCH) {
-							// const data_rr = {};
-							// data_rr.name = elementdt.BRANCH;
-							// data_rr.y = elementdt.UV;
-							// data_rr.id = elementdt.BRANCH;
 							
 							label_array.push(elementdt.BRANCH);
-							data_array.push(elementdt.UV);
+							if(filter == 'UV'){
+								data_array.push(elementdt.UV);
+							}else if(filter == 'TOTAL_VIEWS'){
+								data_array.push(elementdt.VIEWERS);
+							}else{
+								data_array.push(elementdt.DURATION);
+							}
+							
 						}
 					}
 				
 			}
-		}
-		
 	}
 	
 	var data_chart = data_array;
@@ -3789,7 +4369,7 @@ function refresh_chart_region(place,id,data_all,area){
 		dataSum += data_array[i]
 	}
 	
-	Highcharts.chart('container3', {
+	Highcharts.chart('container31', {
     chart: {
         type: 'column'
     },
@@ -3831,6 +4411,12 @@ function refresh_chart_region(place,id,data_all,area){
     },
     tooltip: {
         valueSuffix: '',
+		formatter:function() {
+            var pcnt = (this.y / dataSum) * 100;
+			var percentage = Highcharts.numberFormat(pcnt, 1,',','.') + '%';
+			var html_tip = this.x+'<br>'+filter+' : '+this.y+'<br>'+percentage;
+            return html_tip;
+        },
 		style: {
             fontSize:'1.3em'
         }
@@ -3864,16 +4450,142 @@ function refresh_chart_region(place,id,data_all,area){
 			dataSorting: {
 				enabled: true
 			},
-            name: 'Audience',
+            name: filter,
+            data: data_chart,
+			color: 'red'
+        }
+    ]
+});
+	
+}
+
+function refresh_chart_region(place,id,data_all,area){
+
+	var data_array = [];
+	var label_array = [];
+	
+	var filter = $('#data_chart').val();
+	
+	for (const element of data_all) { 
+			for (const elementd of element.REGION) {
+					
+					if(elementd.REGION == id){
+						
+						for (const elementdt of elementd.BRANCH) {
+							
+							label_array.push(elementdt.BRANCH);
+							if(filter == 'UV'){
+								data_array.push(elementdt.UV);
+							}else if(filter == 'TOTAL_VIEWS'){
+								data_array.push(elementdt.VIEWERS);
+							}else{
+								data_array.push(elementdt.DURATION);
+							}
+							
+						}
+					}
+				
+			}
+	}
+	
+	var data_chart = data_array;
+	var label_chart = label_array;
+	console.log(data_chart);
+	var dataSum = 0;
+	for (var i=0;i < data_array.length;i++) {
+		dataSum += data_array[i]
+	}
+	
+	Highcharts.chart('container31', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+		text: '<h1>Branch Contributor</h1>',
+		style: {
+                    fontSize: '2.9em'
+        }
+    },
+    subtitle: {
+        text: id,
+		style: {
+                    fontSize: '1.9em'
+        }
+    },
+    xAxis: {
+        categories: label_chart,
+        crosshair: true,
+        accessibility: {
+            description: 'Countries'
+        },
+		labels: {
+                style: {
+                    fontSize:'1.3em'
+                }
+           }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        },
+		labels: {
+            overflow: 'justify',
+			style: {
+                fontSize:'1.3em'
+            }
+        }
+    },
+    tooltip: {
+        valueSuffix: '',
+		formatter:function() {
+            var pcnt = (this.y / dataSum) * 100;
+			var percentage = Highcharts.numberFormat(pcnt, 1,',','.') + '%';
+			var html_tip = this.x+'<br>'+filter+' : '+this.y+'<br>'+percentage;
+            return html_tip;
+        },
+		style: {
+            fontSize:'1.3em'
+        }
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        },
+		series: {
+            shadow:false,
+            borderWidth:0,
+			pointWidth: 25,
+            dataLabels:{
+                enabled:true,
+                formatter:function() {
+                    var pcnt = (this.y / dataSum) * 100;
+                    return Highcharts.numberFormat(pcnt, 1,',','.') + '%';
+                },
+				style: {
+                    fontSize: '1.5em'
+                }
+            }
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [
+        {	
+			dataSorting: {
+				enabled: true
+			},
+            name: filter,
             data: data_chart,
 			color: 'red'
         }
     ]
 });
 
-
-
-	$('#branch_chart').show();
+	$('#branch_chart').hide();
+	$('#branch_chart_filter').show();
 	
 }
 
@@ -4432,7 +5144,7 @@ $(document).ready(function(){
 	 $("#end_date").val('<?php echo $last_date[0]['MDATE'] ?>');
 		  
 	audiencebar_view2();
-	table2_viewd();
+	//table2_viewd();
 	
 	
 	
