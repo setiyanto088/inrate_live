@@ -4730,17 +4730,15 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 						".$prof_qr."
 					
 						) A LEFT JOIN (
-							SELECT B.CHANNEL_NAME_PROG CHANNEL,`PROGRAM`, 
+							SELECT CHANNEL,`PROGRAM`, 
 							AVG(A.AUDIENCE) AS AUDIENCE, 
 							AVG(A.VIEWERS) AS VIEWERS, 
 							AVG(A.TVR) AS TVR , 
 							AVG(A.TVS) AS TVS,
 							AVG(A.INDEX) AS `INDEX`,
-							AVG(A.REACH) AS REACH FROM `M_SUM_TV_DASH_PROG_DAYE_RES_FULL`  A JOIN
-							CHANNEL_PARAM_FINAL B ON A.CHANNEL = B.CHANNEL_NAME  
+							AVG(A.REACH) AS REACH FROM `M_SUM_TV_DASH_PROG_DAYE_RES_FULL`  A 
 								WHERE 1=1  
 								AND `STATUS` = 1
-								AND TYPE = 1 								
 								AND `ID_PROFILE` = ".$params['profile']." ".$where." ".$wh_chn." 
 								AND  DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
 								GROUP BY `CHANNEL`,PROGRAM
@@ -4769,11 +4767,9 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 								AVG(A.TVR) AS TVR , 
 								AVG(A.TVS) AS TVS,
 								AVG(A.INDEX) AS `INDEX`,
-								AVG(A.REACH) AS REACH FROM `M_SUM_TV_DASH_PROG_DAYE_RES_FULL`  A JOIN
-								CHANNEL_PARAM_FINAL B ON A.CHANNEL = B.CHANNEL_NAME  
+								AVG(A.REACH) AS REACH FROM `M_SUM_TV_DASH_PROG_DAYE_RES_FULL`  A 
 									WHERE 1=1  
 									AND `STATUS` = 1
-									AND TYPE = 1 								
 									AND `ID_PROFILE` = ".$params['profile']." ".$where." ".$wh_chn." 
 									AND  DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
 									GROUP BY `CHANNEL`,PROGRAM
