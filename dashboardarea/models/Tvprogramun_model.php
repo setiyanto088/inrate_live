@@ -246,14 +246,8 @@ class Tvprogramun_model extends CI_Model {
 		return $sql->result_array();			
 	}
 	
-		public function list_data_area($params = array()) {
+		public function list_data_area($params = array(),$where) {
 			
-		if($data['preset'] == 0){
-			$where = '';
-		}else{
-			$where = 'CHANNEL IN () ';
-		}
-		
 		if($params['start_date'] == $params['end_date'] ){
 			
 			$sql = "
@@ -270,16 +264,19 @@ class Tvprogramun_model extends CI_Model {
 				SELECT 'ALL' CHANNELS,'ALL' DATES,AREA,'ALL' REGION,'ALL' BRANCH, COUNT(DISTINCT(CARDNO)) AS UV, SUM(DURATION) AS DURATION, SUM(VIEWS) AS VIEWERS FROM DAILY_CHANNEL_CARDNO_SUMMARY A
 				JOIN AREA_TSEL_N B ON A.CARDNO = B.CARDNO 
 				WHERE DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
+				".$where."
 				GROUP BY AREA
 				UNION ALL
 				SELECT 'ALL' CHANNELS,'ALL' DATES,AREA,REGION,'ALL' BRANCH, COUNT(DISTINCT(CARDNO)) AS UV, SUM(DURATION) AS DURATION, SUM(VIEWS) AS VIEWERS FROM DAILY_CHANNEL_CARDNO_SUMMARY A
 				JOIN AREA_TSEL_N B ON A.CARDNO = B.CARDNO 
 				WHERE DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
+				".$where."
 				GROUP BY AREA,REGION
 				UNION ALL
 				SELECT 'ALL' CHANNELS,'ALL' DATES,AREA,REGION,BRANCH, COUNT(DISTINCT(CARDNO)) AS UV, SUM(DURATION) AS DURATION, SUM(VIEWS) AS VIEWERS FROM DAILY_CHANNEL_CARDNO_SUMMARY A
 				JOIN AREA_TSEL_N B ON A.CARDNO = B.CARDNO 
 				WHERE DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
+				".$where."
 				GROUP BY AREA,REGION,BRANCH
 				) A
 				ORDER BY AREA,REGION,BRANCH

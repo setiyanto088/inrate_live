@@ -287,14 +287,15 @@
 						 </div>
 					</div>
 					
-					<div class="panel-headings">
+			<div class="panel-headings" id="result_header" style="">
               <div class="col-lg-12">	
 					<div class="navbar-left" style="padding-left:10px;">
 					  <h4 class="title-periode2" style="font-weight: bold;">Result</h4>
 					</div>
 				</div>
           </div>
-          <div class="panel-body">
+            <img alt="img" class="gambar" id="loader_area1" src="<?php echo $path; ?>assets/images/icon_loader.gif" style="display:none">
+          <div class="panel-body" id="tab-contents-result" style="">
               <!-- Nav tabs -->
               <div class="col-md-2">
  								<div class="row" style="background-color:#F2F2F2;padding:5px;color:#000;border: none;border-radius:5px">
@@ -311,12 +312,11 @@
               </div>
               <!-- / Nav tabs -->
               <!-- Tab panes -->
-              <div class="tab-content">
+			   
+              <div class="tab-content" >
                   <!-- Tab Table -->
                   <div role="tabpanel" class="tab-pane active" id="table" style="margin-top:50px;">
-                          <div class="loader" style="display:none">
-                              <img alt="img" class="gambar" src="<?php echo $path; ?>assets/images/icon_loader.gif">
-                          </div>
+                         
 						  <br/>
                           <div class="row">
 							<div class="col-lg-12">	
@@ -3589,6 +3589,10 @@ function table2_viewd(){
 		type: 'post',
 		success: function(data){
 			
+			
+			$('#tab-contents-result').hide();
+			$('#loader_area1').show();
+			
 			obj = jQuery.parseJSON(data);
 			
 			$('#all_data_f').val(data);
@@ -3826,8 +3830,11 @@ function table2_viewd(){
         }
     ]
 });
-
-
+			
+			$('#loader_area1').hide();
+			$('#tab-contents-result').show();
+			$('#result_header').show();
+			
 		
 		
 		}

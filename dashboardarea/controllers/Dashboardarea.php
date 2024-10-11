@@ -2925,12 +2925,12 @@ class Dashboardarea extends JA_Controller {
 		$data['tipe_filter']=$this->Anti_si($this->input->post('tipe_filter',true));
 		$data['preset'] = $this->Anti_si($this->input->post('preset',true));
 		
-		if($preset == "0"){
+		if($data['preset'] == "0"){
 			
 			$where = "";
 		}else{
 			
-			$channel_set = $this->tvprogramun_model->channel_set($preset,$userid);
+			$channel_set = $this->tvprogramun_model->channel_set($data['preset'],$userid);
 			
 			//print_r($channel_set);die;
 			
@@ -2949,7 +2949,10 @@ class Dashboardarea extends JA_Controller {
 		}
 		
 		
-		$datas = $this->tvprogramun_model->list_data_area($data); 
+		//echo $where;die;
+		
+		
+		$datas = $this->tvprogramun_model->list_data_area($data,$where); 
 				
 		$data_array = [];
 		$curr_area = '';
@@ -3066,7 +3069,7 @@ class Dashboardarea extends JA_Controller {
 		foreach($data_array as $data_arrays){
 			
 				$html_table_area .= '<tr>
-							<td class="details-control"><button class="button_black" id="btn_expand_area_'.$data_arrays['AREA'].'" onClick="expand_area(\''.$data_arrays['AREA'].'\')">+</button> AREA '.$data_arrays['AREA'].'</td>
+							<td class="details-control"><button style="background-color: #f9f9f9;" class="button_blacks" id="btn_expand_area_'.$data_arrays['AREA'].'" onClick="expand_area(\''.$data_arrays['AREA'].'\')">+</button> AREA '.$data_arrays['AREA'].'</td>
 							<td text-align="right" >'.number_format($data_arrays['UV'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_arrays['VIEWERS'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_arrays['DURATION'],0,',','.').'</td>
@@ -3089,7 +3092,7 @@ class Dashboardarea extends JA_Controller {
 			foreach($data_arrays['REGION'] as $data_region){
 
 						$table_html_region .= '<tr>
-							<td class="details-control"><button class="button_black" id="btn_expand_region_'.$data_region['REGION_NAME'].'" onClick="expand_region(\''.$data_region['REGION_NAME'].'\')">+</button> '.$data_region['REGION'].'</td>
+							<td class="details-control"><button class="button_blacks" style="background-color: #f9f9f9;" id="btn_expand_region_'.$data_region['REGION_NAME'].'" onClick="expand_region(\''.$data_region['REGION_NAME'].'\')">+</button> '.$data_region['REGION'].'</td>
 							<td text-align="right" >'.number_format($data_region['UV'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_region['VIEWERS'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_region['DURATION'],0,',','.').'</td>
