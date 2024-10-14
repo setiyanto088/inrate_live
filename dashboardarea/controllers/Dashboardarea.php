@@ -3465,19 +3465,19 @@ class Dashboardarea extends JA_Controller {
 		$params['user_id'] = $userid;
 		
 		
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		$type =  $this->Anti_si($this->input->post('type',true));
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$profile=$this->Anti_si($this->input->post('profile',true));
-		$nmonth = date("m", strtotime($tahun));
-		$week=$this->Anti_si($this->input->post('week',true));
-		$start_date=$this->Anti_si($this->input->post('start_date',true));
-		$end_date=$this->Anti_si($this->input->post('end_date',true));
-		$check=$this->Anti_si($this->input->post('check',true));
-		$tipe_filter=$this->Anti_si($this->input->post('tipe_filter',true));
-		$channel = $this->Anti_si($this->input->post('channel',true));
-		$preset = $this->Anti_si($this->input->post('preset',true));
+		$data['where'] =  $this->Anti_si($this->input->post('cond',true));
+		$data['type'] =  $this->Anti_si($this->input->post('type',true));
+		//$data['type'] =  'UV';
+		$data['tahun']=$this->Anti_si($this->input->post('tahun',true));
+		$data['bulan']=$this->Anti_si($this->input->post('bulan',true));
+		$data['profile']=$this->Anti_si($this->input->post('profile',true));
+		$data['week']=$this->Anti_si($this->input->post('week',true));
+		$data['start_date']=$this->Anti_si($this->input->post('start_date',true));
+		$data['end_date']=$this->Anti_si($this->input->post('end_date',true));
+		$data['check']=$this->Anti_si($this->input->post('check',true));
+		$data['tipe_filter']=$this->Anti_si($this->input->post('tipe_filter',true));
+		$data['channel'] = $this->Anti_si($this->input->post('channel',true));
+		$data['preset'] = $this->Anti_si($this->input->post('preset',true));
 		
 		$DATE_NOW= DATE('m');
 		//print_r($channel);die;
@@ -3487,535 +3487,144 @@ class Dashboardarea extends JA_Controller {
 		} else {
 			$channel = NULL;
 		}	
-
-		$datef = $start_date;
-		$periode=$tahun;
-
-		$pilihaudiencebar = $type;
 		
-		$first_day = $start_date;
-		$this_day = $end_date;
+		$table_html_header = '<table aria-describedby="mydesc"  id="myTablearea" class="table table-striped">
+											<thead style="color:red">
+												<tr>
+													<th  scope="row">Area</th>';
+		$data['monthdt'] = $this->tvprogramun_model->get_sel_month_all($data['start_date'],$data['end_date']);
 		
-		if($preset == "0"){
-			
-			$where = "";
-		}else{
-			
-			$channel_set = $this->tvprogramun_model->channel_set($preset,$userid);
-			
-			$channel_list = explode(',',$channel_set[0]['CHANNEL_LIST']);
-			
-			$str_channel = '';
-			foreach($channel_list as $channel_lists){
-				
-				$str_channel = $str_channel."'".$channel_lists."',";
-				
-			}
-			
-			$str_channel = substr($str_channel, 0, -1);
-			
-			$where = "AND CHANNEL IN (".$str_channel.")"; 
-			$where2s = "AND A.CHANNEL IN (".$str_channel.")"; 
+		$table_html_header_month = '';
+		foreach($data['monthdt'] as $dtmonth){
+			$bulanm[] = $dtmonth['PERIODE_FULL'];
+			$table_html_header_month .= '<th text-align="right" scope="row">'.$dtmonth['PERIODE'].'</th>';
 		}
 		
-			$bulan['01'] = 'January';
-			$bulan['02'] = 'February';
-			$bulan['03'] = 'March';
-			$bulan['04'] = 'April';
-			$bulan['05'] = 'May';
-			$bulan['06'] = 'June';
-			$bulan['07'] = 'July';
-			$bulan['08'] = 'August';
-			$bulan['09'] = 'September';
-			$bulan['10'] = 'October';
-			$bulan['11'] = 'November';
-			$bulan['12'] = 'December';
+		$table_html_header .= $table_html_header_month.'<th text-align="right" scope="row">Total</th><th text-align="right" scope="row">Action</th></tr></thead><tbody>';
+		$bulanm[] = $data['start_date'];
 		
-
-		IF($type == 'AUDIENCE'){
-			$tbt = 'M_SUM_TV_DASH_CHAN_PTV';
-			$tbt2F = 'M_SUM_TV_DASH_CHAN_PTV_WEEK';
-			$w_week = 0;
-			$tbl_head = 'Audience';
-			$drag = 'MAX';
-		}ELSEIF($type == 'TOTAL_VIEWS'){
-			$tbt = 'M_SUM_TV_DASH_CHAN_VIEWERS_PTV';
-			$tbt2F = 'M_SUM_TV_DASH_CHAN_VIEWERS_WEEK_PTV';
-			$w_week = 1;
-			$tbl_head = 'Total Views';
-			$drag = 'SUM';
-		}ELSE{
-			$tbt = 'M_SUM_TV_DASH_CHAN_DURATION_PTV';
-			$tbt2F = 'M_SUM_TV_DASH_CHAN_DURATION_WEEK_PTV';
-			$w_week = 1;
-			$tbl_head = 'Duration';
-			$drag = 'SUM';
+		$data['channels'] = $this->tvprogramun_model->list_data_area_month($data); 
+		
+		$data_array = [];
+		
+		foreach($data['channels']['data'] as $datas){
+			
+			
+			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['UV'] = $datas['UV'];
+			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['VIEWERS'] = $datas['VIEWERS'];
+			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['DURATION'] = $datas['DURATION'];
+			
 		}
 		
-		IF($type == 'AUDIENCE'){
-			$tipe_tvod = 'VIEWERS';
-		}ELSE{
-			$tipe_tvod = $type;
-		}
+		//print_r($data_array);die;
 		
-		
-		if($this_day == "All"){
-		
-			if($tipe_filter == 'live'){
-				$data['monthdt'] = $this->tvprogramun_model->get_sel_month_all($first_day,$this_day);
-				
-				$query_qr2 = "SELECT CHN.CHANNEL CHANNEL,CHN.VIEWERS AS TOTAL ";
-				$week_in2 = "";
-				$join_left2 = "";
-				$ri2 = 1;
-				$th_tb = "";
-				foreach($data['monthdt'] as $wkwkwk){
-					$week_in2 = $week_in2.",A".$ri2.".VIEWERS AS V".$ri2." ";
-
-					$join_left2 = $join_left2." LEFT JOIN (
-								SELECT * FROM ".$tbt."
-								WHERE `TANGGAL` = '".$wkwkwk['PERIODE_FULL']."'
-								AND ID_PROFILE = 0
-								AND CHANNEL <> ''
-								".$where."
-							) A".$ri2." ON CHN.CHANNEL = A".$ri2.".CHANNEL ";
-					
-					$th_tb = $th_tb."<th > ".$wkwkwk['PERIODE']."</th>";
-					
-					$ri2++;
-				}
-				
-				IF($type == 'AUDIENCE'){
-					if($DATE_NOW == '02' && DATE('Y') == $first_day ){
-						$tbt = 'M_SUM_TV_DASH_CHAN_PTV';
-						$query_qr2 = $query_qr2."".$week_in2." FROM (
-									SELECT * FROM ".$tbt."
-									WHERE `TANGGAL` = '".$wkwkwk['PERIODE_FULL']."'
-									AND ID_PROFILE = 0
-									AND CHANNEL <> ''
-									".$where."
-								) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
-
-					}else{
-					
-						$tbt = 'M_SUM_TV_DASH_CHAN_PTV';
-						$query_qr2 = $query_qr2."".$week_in2." FROM (
-									SELECT * FROM ".$tbt."
-									WHERE `TANGGAL` = '".$first_day."'
-									AND ID_PROFILE = 0
-									AND CHANNEL <> ''
-									".$where."
-								) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
-					}
-				}ELSEIF($type == 'TOTAL_VIEWS'){
-					$tbt = 'M_SUM_TV_DASH_CHAN_VIEWERS_PTV';
-					$query_qr2 = $query_qr2."".$week_in2." FROM (
-								SELECT CHANNEL,".$drag."(VIEWERS) AS VIEWERS FROM ".$tbt."
-								WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-								AND ID_PROFILE = 0
-								AND CHANNEL <> ''
-								".$where."
-								GROUP BY CHANNEL
-							) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
+		$html_table_area = '';
+		$html_table_region = '';
+		$table_html_branch = '';
+		$int_area = 0;
+		foreach($data_array as $datass){
+			$area_d = array_keys($data_array);
+				$html_table_area .= '<tr>
+							<td class="details-control"><button style="background-color: #f9f9f9;" class="button_blacks" id="btn_expand_aream_'.$area_d[$int_area].'" onClick="expand_aream(\''.$area_d[$int_area].'\')">+</button> AREA '.$area_d[$int_area].'</td>';
 							
-				}ELSE{
-					$tbt = 'M_SUM_TV_DASH_CHAN_DURATION_PTV';
-					$query_qr2 = $query_qr2."".$week_in2." FROM (
-								SELECT CHANNEL,".$drag."(VIEWERS) AS VIEWERS FROM ".$tbt."
-								WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-								AND ID_PROFILE = 0
-								AND CHANNEL <> ''
-								".$where."
-								GROUP BY CHANNEL
-							) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
-							
-				}
-			
-			}else{
-				
-				IF($type == 'AUDIENCE'){
-					$tbts = 'VIEWERS';
-				}ELSE{
-					$tbts = $type;
-				}
-				
-				$data['monthdt'] = $this->tvprogramun_model->get_sel_month_all($first_day,$this_day);
-				
-				$query_qr2 = "SELECT CHN.CHANNEL CHANNEL,CHN.VIEWERS AS TOTAL ";
-				$week_in2 = "";
-				$join_left2 = "";
-				$ri2 = 1;
-				$th_tb = "";
-				$where_periode = "";
-				foreach($data['monthdt'] as $wkwkwk){
-					$week_in2 = $week_in2.",A".$ri2.".VIEWERS AS V".$ri2." ";
-
-					
-						$join_left2 = $join_left2." LEFT JOIN (
-								SELECT CHANNEL,VIEWERS AS VIEWERS FROM M_SUM_TV_DASH_CHAN_TVOD
-								WHERE `TANGGAL` = '".$wkwkwk['PERIODE_FULL']."'
-								AND TIPE_FILTER = '".$tipe_filter."'
-								AND TIPE_VIEW = '".$tbts."'
-								AND ID_PROFILE = 0
-								".$where."
-							) A".$ri2." ON CHN.CHANNEL = A".$ri2.".CHANNEL ";
-					
-					
-					$th_tb = $th_tb."<th > ".$wkwkwk['PERIODE']."</th>";
-					$where_periode = $where_periode."'".$wkwkwk['PERIODE_FULL']."',";
-					$ri2++;
-				}
-				
-				$where_periode = substr($where_periode, 0, -1);
-				
-				if($tipe_filter == 'ALL'){
-
-							
-						IF($type == 'AUDIENCE'){
-							$tbt = "M_SUM_TV_DASH_CHAN_TVOD";								
-							$query_qr2 = $query_qr2."".$week_in2." FROM (
-							
-							 SELECT A.CHANNEL,A.VIEWERS+IF(B.VIEWERS IS NULL,0,B.VIEWERS) VIEWERS FROM (
-									SELECT * FROM M_SUM_TV_DASH_CHAN_PTV
-									WHERE `TANGGAL` = '".$first_day."'
-									AND ID_PROFILE = 0
-									".$where."
-								) A LEFT JOIN (
-										SELECT CHANNEL,VIEWERS AS VIEWERS FROM ".$tbt."
-										WHERE `TANGGAL` = '".$first_day."'
-										AND TIPE_VIEW = 'VIEWERS'
-										AND TIPE_FILTER = 'TVOD'
-										AND ID_PROFILE = 0
-										".$where."
-								) B ON A.CHANNEL = B.CHANNEL		
-										
-									) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
-						
-						}ELSEIF($type == 'TOTAL_VIEWS'){
-							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
-							$query_qr2 = $query_qr2.''.$week_in2.' FROM (
-							
-										SELECT A.CHANNEL,A.VIEWERS+IF(B.VIEWERS IS NULL,0,B.VIEWERS) VIEWERS FROM (
-											SELECT CHANNEL,'.$drag.'(VIEWERS) AS VIEWERS FROM '.$tbt.'
-											WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
-											AND ID_PROFILE = 0
-											AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
-											'.$where.'
-											GROUP BY CHANNEL
-										) A LEFT JOIN (
-													SELECT CHANNEL,'.$drag.'(VIEWERS) AS VIEWERS FROM M_SUM_TV_DASH_CHAN_VIEWERS_PTV
-													WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
-													AND TIPE_VIEW = "TOTAL_VIEWS"
-													AND TIPE_FILTER = "'.$tipe_filter.'"
-													AND ID_PROFILE = 0
-													AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
-													'.$where.'
-													GROUP BY CHANNEL
-										) B ON A.CHANNEL = B.CHANNEL		
-									) CHN '.$join_left2.' WHERE 1=1  ORDER BY CHN.VIEWERS DESC ';
-									
-						}ELSE{
-							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
-							$query_qr2 = $query_qr2.''.$week_in2.' FROM (
-							
-							SELECT A.CHANNEL,A.VIEWERS+IF(B.VIEWERS IS NULL,0,B.VIEWERS) VIEWERS FROM (
-								SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM '.$tbt.'
-									WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
-									AND ID_PROFILE = 0
-									AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
-									'.$where.'
-									GROUP BY CHANNEL
-								) A LEFT JOIN (
-										SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM M_SUM_TV_DASH_CHAN_DURATION_PTV
-										WHERE SUBSTR(`TANGGAL`,1,4) = "'.$first_day.'"
-										AND TIPE_VIEW = "DURATION"
-										AND TIPE_FILTER = "'.$tipe_filter.'"
-										AND ID_PROFILE = 0
-										AND STR_TO_DATE(TANGGAL,"%Y-%M") < STR_TO_DATE("'.date('Y-F').'","%Y-%M")
-										'.$where.'
-										GROUP BY CHANNEL
-								) B ON A.CHANNEL = B.CHANNEL	
-									) CHN '.$join_left2.' WHERE 1=1 ORDER BY CHN.VIEWERS DESC ';
-									
-						}	
-							
-					}else{
-				
-						IF($type == 'AUDIENCE'){
-							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
-															
-									$query_qr2 = $query_qr2."".$week_in2." FROM (
-										SELECT CHANNEL,MAX(VIEWERS) AS VIEWERS FROM ".$tbt."
-										WHERE `TANGGAL` = '".$first_day."'
-										AND TIPE_VIEW = 'VIEWERS'
-										AND TIPE_FILTER = '".$tipe_filter."'
-										AND ID_PROFILE = 0
-										".$where."
-										GROUP BY CHANNEL
-									) CHN ".$join_left2." WHERE 1=1  ORDER BY CHN.VIEWERS DESC ";
-						
-						}ELSEIF($type == 'TOTAL_VIEWS'){
-							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
-							$query_qr2 = $query_qr2."".$week_in2." FROM (
-										SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM ".$tbt."
-										WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-										AND TIPE_VIEW = 'TOTAL_VIEWS'
-										AND TIPE_FILTER = '".$tipe_filter."'
-										AND ID_PROFILE = 0
-										AND TANGGAL IN (".$where_periode.")
-										".$where."
-										GROUP BY CHANNEL
-									) CHN ".$join_left2." WHERE 1=1 ORDER BY CHN.VIEWERS DESC ";
-									
-						}ELSE{
-							$tbt = 'M_SUM_TV_DASH_CHAN_TVOD';
-							$query_qr2 = $query_qr2."".$week_in2." FROM (
-										SELECT CHANNEL,SUM(VIEWERS) AS VIEWERS FROM ".$tbt."
-										WHERE SUBSTR(`TANGGAL`,1,4) = '".$first_day."'
-										AND TIPE_VIEW = 'DURATION'
-										AND TIPE_FILTER = '".$tipe_filter."'
-										AND ID_PROFILE = 0
-										AND TANGGAL IN (".$where_periode.")
-										".$where."
-										GROUP BY CHANNEL
-									) CHN ".$join_left2." WHERE 1=1 ORDER BY CHN.VIEWERS DESC ";
-									
-						}
-				 
-					}
-			}
-
-			//echo $query_qr2;die;
-			$data['years'] = $this->tvprogramun_model->list_spot_by_program_all_bar42($query_qr2,$where,$periode,$pilihaudiencebar,"0","True"); 
-			
-			$array_channel = array();
-
-			$scama = array();
-			$scama2 = array();
-			$scama42 = array();
-			$rkn2 = 1;
-			foreach($data['years'] as $array_channel_a){
-			
-			
-				if(isset($array_channel_a['CHANNEL'])){
-					$curr_channel = $array_channel_a['CHANNEL'];
-					
-					$scam42['Rangking'] = $rkn2; 
-					$scam42['channel'] = $array_channel_a['CHANNEL'];
-					
-					$sq = 1;
-					foreach($data['monthdt'] as $ssss){
-						$scam42['V'.$sq] = number_format($array_channel_a['V'.$sq],0,',','.');
-						$sq++;
-					}
-					$scam42['TOTAL'] = number_format($array_channel_a['TOTAL'],0,',','.');
-
-					
-					//die;
-				}
-				
-				array_push($scama42, $scam42); 
-				
-				$rkn2++;
-			}
-			
-			
-
-			$pathx = base_url() . 'assets/urate-frontend-master/';
-			
-			$table_html = '
-			<table id="example42" class="table table-striped example" style="width: 100%">
-								<thead style="color:red">
-									<tr>
-										<th rowspan = "0" >Rank <img class="cArrowDown" src="'.$pathx.'assets/images/icon_arrowdown.png"></th>
-										<th rowspan = "0" >Channel <img class="cArrowDown" src="'.$pathx.'assets/images/icon_arrowdown.png"></th>
-										'.$th_tb.'
-										<th rowspan = "0" >Total<img class="cArrowDown" src="'.$pathx.'assets/images/icon_arrowdown.png"></th>
-									</tr>
-								</thead>
-							</table>
-			';
-			
-							
-			$data['table'] = $table_html;
-			$data['data'] = $scama42;
-		
-		}else{
-
-		
-			$data['monthdt'] = $this->tvprogramun_model->get_sel_week_month($first_day,$this_day);
-		
-			$query_qr = "SELECT CHN.CHANNEL CHANNEL,";
-			$week_in = "";
-			$join_left = "";
-			$ri = 1;
-			$th_tb = "";
-			$th_tbs = "<tr>";
-			foreach($data['monthdt'] as $wkwk){
-				//$query_qr = $query_qr."A".$ri.".`VIEWERS` AS WE".$ri.",";
-				$query_qr = $query_qr." IF(A".$ri.".`VIEWERS` is null,0,A".$ri.".`VIEWERS`) AS WE".$ri.",A".$ri.".CHANNEL AS CHANNEL".$ri.",";
-				$week_in = $week_in."'".((($wkwk['WEEK']-$w_week)))."',";
-				
-				if($tipe_filter == "live"){ 
-				
-					IF($ri == 1){
-					
-						$join_left = $join_left." 
-							LEFT JOIN (	
-								SELECT z.*, rowNumberInAllBlocks()+1 as Rangking FROM 
-									( 
-										SELECT `CHANNEL`,".$drag."(VIEWERS) AS VIEWERS FROM ".$tbt2F."
-										WHERE SUBSTR(TANGGAL,1,4) = '".$wkwk['YEAR']."'  AND `WEEK` = '".((($wkwk['WEEK']-$w_week)))."'
-										".$where."
-										GROUP BY CHANNEL
-										order by VIEWERS desc
-									) z ORDER BY Rangking
-								) A".$ri." ON CHN.Rangking = A".$ri.".Rangking 
-						";
-					}else{
-						$join_left = $join_left." 
-							LEFT JOIN (	
-							SELECT z.*, rowNumberInAllBlocks()+1 as Rangking FROM 
-								( 
-									SELECT `CHANNEL`,".$drag."(VIEWERS) AS VIEWERS FROM ".$tbt2F."
-									WHERE SUBSTR(TANGGAL,1,4) = '".$wkwk['YEAR']."'  AND `WEEK` = '".((($wkwk['WEEK']-$w_week)))."'
-									".$where."
-									GROUP BY CHANNEL
-									order by VIEWERS desc
-								) z ORDER BY Rangking
-								) A".$ri." ON CHN.Rangking = A".$ri.".Rangking  
-						";
-
-					}
-				
-				}ELSE{
-					
-					IF($ri == 1){
-						$join_left = $join_left." 
-								LEFT JOIN (	
-								SELECT z.*, rowNumberInAllBlocks()+1 as Rangking FROM 
-												( 
-									SELECT `CHANNEL`, ".$drag."(VIEWERS) VIEWERS FROM `M_SUM_TV_DASH_CHAN_TVOD_WEEKS`
-									WHERE SUBSTR(TANGGAL,1,4) = '".$wkwk['YEAR']."'   AND  `WEEK` = '".((($wkwk['WEEK']-$w_week)))."'
-									AND TIPE_FILTER = '".$tipe_filter."' AND TIPE_VIEW = '".$tipe_tvod."'
-									".$where."
-									GROUP BY SUBSTR(TANGGAL,1,4),CHANNEL,`WEEK`
-									ORDER BY VIEWERS DESC
-								) z ORDER BY Rangking
-								) A".$ri." ON CHN.Rangking = A".$ri.".Rangking 
+							foreach($bulanm as $bulanms){
 								
-						";
-					}else{
-						
-						$join_left = $join_left." 
-								LEFT JOIN (	
-								SELECT z.*, rowNumberInAllBlocks()+1 as Rangking FROM 
-												( 
-									SELECT `CHANNEL`, ".$drag."(VIEWERS) VIEWERS FROM `M_SUM_TV_DASH_CHAN_TVOD_WEEKS`
-									WHERE SUBSTR(TANGGAL,1,4) = '".$wkwk['YEAR']."'   AND `WEEK` = '".((($wkwk['WEEK']-$w_week)))."'
-									AND TIPE_FILTER = '".$tipe_filter."' AND TIPE_VIEW = '".$tipe_tvod."'
-									".$where."
-									GROUP BY SUBSTR(TANGGAL,1,4),CHANNEL,`WEEK`
-									ORDER BY VIEWERS DESC
-								) z ORDER BY Rangking
-								) A".$ri." ON CHN.Rangking = A".$ri.".Rangking  
-								
-						";
-						
-					}
-				}
-				
-				
-				$th_tb = $th_tb."<th colspan = '2' >Week ".$ri." (".$wkwk['PER'].")</th>";
-				$th_tbs = $th_tbs."<td>Channel</td><td>".$tbl_head."</td>";
-				$ri++;
-			}
-			
-			//echo $th_tbs;die;
-			
-			$th_tbs = $th_tbs."</tr>";
-			
-			$week_in = substr($week_in, 0, -1);
-			
-			$ri_now = $ri - 1;
-			$ri_last = $ri - 2;
-			
-			if($tipe_filter == "live"){ 
-		
-				$query_qr = $query_qr." A1.VIEWERS AS TOTAL
-					FROM (
-						SELECT rowNumberInAllBlocks()+1 as Rangking,
-						CHANNEL,max(VIEWERS) as VIEWERS FROM ".$tbt2F."
-						WHERE SUBSTR(TANGGAL,1,4) = '".$data['monthdt'][0]['YEAR']."' AND `WEEK` IN (".$week_in.")
-						AND CHANNEL IS NOT NULL
-						".$where."
-						GROUP BY CHANNEL
-						order by VIEWERS desc
-					) CHN  ".$join_left." 
-					WHERE 1=1  ORDER BY  A1.VIEWERS DESC,CHANNEL ASC   "; 
-			
-			}ELSE{
-				
-				$query_qr = $query_qr." A1.VIEWERS AS TOTAL 
-					FROM (
-						SELECT rowNumberInAllBlocks()+1 as Rangking,
-						CHANNEL FROM `M_SUM_TV_DASH_CHAN_TVOD_WEEKS`
-						WHERE SUBSTR(TANGGAL,1,4) = '".$data['monthdt'][0]['YEAR']."' AND `WEEK` IN (".$week_in.")
-						AND CHANNEL IS NOT NULL
-						AND TIPE_FILTER = '".$tipe_filter."' AND TIPE_VIEW = '".$tipe_tvod."'
-						".$where." 
-						GROUP BY CHANNEL
-					) CHN  ".$join_left." 
-					WHERE 1=1  ORDER BY  A1.VIEWERS DESC,CHANNEL ASC   ";
-				
-			}
-			
-			//ECHO $query_qr;die;
-			
-			
-			$data['channels'] = $this->tvprogramun_model->list_spot_by_program_all_bar_fix($query_qr); 
-			
-
-			$array_channel = array();
- 
-			$dataM=$data['channels'];
-			$scama = array();
-			$scama2 = array();
-			for ($i=0;$i<count($dataM);$i++){
-				
-				$scam['Rangking'] = $i+1;
-				
-			
-				for($q=1;$q<=$ri_now;$q++){
-					$scam['channel'.$q] = $dataM[$i]['CHANNEL'.$q]; 
-					$scam['w'.$q] = number_format($dataM[$i]['WE'.$q],0,',','.');
-				}
-			
-				array_push($scama, $scam); 
-			}	
-			
-			//print_r($scama);die;
-			$pathx = base_url() . 'assets/urate-frontend-master/';
-			
-			$table_html = '
-			<table id="example42" class="table table-striped example" style="width: 100%">
-								<thead style="color:red">
-									<tr>
-										<th rowspan = "2" >Rank <img class="cArrowDown" src="'.$pathx.'assets/images/icon_arrowdown.png"></th>
-										'.$th_tb.'
-									</tr>
-										'.$th_tbs.'
-								</thead>
-							</table>
-			';
-			
-			
+								$html_table_area .= '<td text-align="right" >'.number_format($datass['ALL']['ALL'][$bulanms][$data['type']],0,',','.').'</td>';
+							}
 							
-			$data['table'] = $table_html;
-			$data['data'] = $scama;
+				$html_table_area .= '<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+						</tr>';
 			
 			
+							$table_html_region = '
+							<table aria-describedby="mydesc"  id="tableregionm_'.$area_d[$int_area].'" class="table table-striped" style="display:none" >
+											<thead style="color:red">
+												<tr>
+													<th  scope="row">Region </th>
+													'.$table_html_header_month.'
+													<th text-align="right" scope="row">Action</th>
+													
+												</tr></thead><tbody>';
+							
+				$int_region = 0;
+				foreach($datass as $data_region){
+					$region_d = array_keys($datass);
+					//echo $region_d[$int_region];die;
+					if($region_d[$int_region] !== 'ALL'){
+						
+						$table_html_region .= '<tr>
+							<td class="details-control"><button class="button_blacks" style="background-color: #f9f9f9;" id="btn_expand_regionm_'.str_replace(" ","",$region_d[$int_region]).'" onClick="expand_regionm(\''.str_replace(" ","",$region_d[$int_region]).'\')">+</button> '.$region_d[$int_region].'</td>';
+							foreach($bulanm as $bulanms){
+								
+								$table_html_region .= '<td text-align="right" >'.number_format($data_region['ALL'][$bulanms][$data['type']],0,',','.').'</td>';
+							}
+							$table_html_region .= '<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+																
+						</tr>';						
+					}
+					
+					
+						$table_html_branch = '
+							<table aria-describedby="mydesc"  id="tablebranchm_'.str_replace(" ","",$region_d[$int_region]).'" class="table table-striped" style="display:none">
+											<thead style="color:red">
+												<tr>
+													<th  scope="row">Branch </th>
+													'.$table_html_header_month.'
+													<th text-align="right" scope="row">Action</th>
+													
+												</tr></thead><tbody>';
+												
+				
+							$int_branch = 0;
+							foreach($data_region as $data_branch){
+								$branch_d = array_keys($data_region);
+								if($branch_d[$int_branch] !== 'ALL'){
+									
+									$table_html_branch .= '<tr>
+										<td class="details-control">'.$branch_d[$int_branch].'</td>';
+										foreach($bulanm as $bulanms){
+											
+											$table_html_branch .= '<td text-align="right" >'.number_format($data_branch[$bulanms][$data['type']],0,',','.').'</td>';
+										}
+										$table_html_branch .= '<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+																			
+									</tr>';						
+								}
+								
+								$int_branch++;	
+							}
+							
+							$table_html_branch .= '</tbody></table>
+								';
+								
+							$table_html_region .= '<tr>
+										<td class="details-control" colspan="13">'.$table_html_branch.'</td>
+									</tr>';
+						
+						
+					$int_region++;	
+					
+					
+					
+				}
+				
+			
+				
+				$table_html_region .= '</tbody></table>';
+				
+				$html_table_area .= '<tr>
+							<td class="details-control" colspan="13">'.$table_html_region.'</td>
+						</tr>';
+			$int_area++;
 		}
+
+		$table_html = $table_html_header.''.$html_table_area.'</tbody></table>
+		';
+		
+		//ECHO $table_html ;DIE;
+		
+		$data['table'] = $table_html;
+		//$data['data'] = $scama;
 		
 		echo json_encode($data,true);
 		

@@ -436,7 +436,7 @@
             data-gs-auto-position="1">
             <div class="panel urate-panel row" style="border:1px solid #efefef;padding:10px;margin:10px;border-radius: 25px;">
                 <div class="navbar-left" style="padding-left:10px;">
-				  <h4 class="title-periode1"><strong>Audience By Channel</strong></h4>
+				  <h4 class="title-periode1"><strong>Audience By Area Monthly</strong></h4>
                 </div>
 				<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
 						<button onClick="filter_panel('channels')" class="button_white" id="filter_channels"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
@@ -498,38 +498,12 @@
 								<div class="form-group">
 									<label>Data</label>	
 									<select class="form-control" name="audiencebar2" id="audiencebar2" required >
-										<option value="AUDIENCE" selected >Audience</option>
-										<option value="TOTAL_VIEWS" >Total Views</option>
+										<option value="UV" selected >Audience</option>
+										<option value="VIEWERS" >Total Views</option>
 										<option value="DURATION" >Duration</option>
 									</select> 
 							
 								</div>
-							</div>
-							
-							<div class="col-lg-3">	
-								<div class="form-group">
-									<label>Profile</label>	
-							
-									<select class="form-control" name="profile_chan2" id="profile_chan2"  >
-										<option value="0" selected >All People</option>
-										<?php foreach($profile as $prfs){
-											
-											echo '<option value='.$prfs['id'].'  >'.$prfs['name'].'</option>';
-										} ?>
-									</select> 
-							
-								</div>
-							</div>
-							
-							<div class="col-lg-3">
-								<label>Preset: <a href="#" data-toggle="modal" onClick="load_modal_load_channel()" id="ldctriger" style="color:red">Make New Preset</a> </label>
-								<select class="form-control" name="preset2" id="preset2" class="preset" >  
-									<option value="0" selected >All Channel</option>
-									<?php foreach($preset as $prfs){
-										
-										echo '<option value="'.$prfs['CHANNEL_NAME'].'"  >'.$prfs['CHANNEL_NAME'].'</option>';
-									} ?>
-								</select> 
 							</div>
 							
 							<div class="col-lg-3">
@@ -3142,9 +3116,9 @@ function audiencebar_view2(){
 	var start_date = $('#start_date42').val();
 	var end_date = $('#end_date42').val();
 	var tipe_filter = $('#tipe_filter2').val();
-	var preset = $('#preset2').val();
+	var preset = 0;
 	var check = check;
-	var profile_chan = $('#profile_chan2').val();
+	var profile_chan = 0;
 	var channel = $('#channel').val().replace('&',' AND ');
 	 var ch = []; 
 	     /* HANDLE ALL CHANNEL */
@@ -3196,135 +3170,11 @@ function audiencebar_view2(){
 			
 			obj = jQuery.parseJSON(data);
 			
-			console.log(obj['monthdt']);
 			
 			$('#table_program42').html("");
-
-			if(type == 'Viewers'){
-				
-				var tpe = 'Total Views';
-				
-			}else if(type == 'Duration'){
-				var tpe = 'Duration ';
-			}else if(type == 'avgtotdur'){
-				var tpe = 'Average Duration/Total Views';
-			}else if(type == 'share'){
-				var tpe = 'Audience Share';
-			}else{
-				
-				var tpe = type;
-			}
 			
-			var array_month_3 = ['0','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; 
+			$('#table_program42').html(obj['table']);
 			
-			if(end_date == 'All'){
-			
-				var column = [];
-				column[0] = { data: 'Rangking' };
-				column[1] = { data: 'channel' };
-
-
-				var i_d = 2;
-				for(i=1;i<=obj['monthdt'].length;i++){
-					
-									 
-					 column[i_d] =  {data: "V"+i,"sClass": "right" };
-					 
-					 i_d++;
-					 
-				}
-				column[i_d] = { data: 'TOTAL',"sClass": "right" };
-				
-		
-		
-				$('#table_program42').html(obj['table']);
-			
-				
-
-
-				
-				if(type == "Reach"){
-					$('#example42').DataTable({
-						"bFilter": false,
-						"aaSorting": [],
-						"bLengthChange": false,
-						'iDisplayLength': 10,
-						"sPaginationType": "simple_numbers",
-						"Info" : false,
-						"searching": true,
-						"language": {
-							"decimal": ",",
-							"thousands": "."
-						},
-						data: obj['data'],
-						columns: column
-					});	
-				}else{
-					$('#example42').DataTable({
-						"bFilter": false,
-						"aaSorting": [],
-						"bLengthChange": false,
-						'iDisplayLength': 10,
-						"sPaginationType": "simple_numbers",
-						"Info" : false,
-						
-						"searching": true,
-						data: obj['data'], 
-						"language": {
-							"decimal": ",",
-							"thousands": "."
-						},
-						"scrollX": true,
-						 fixedColumns:   {
-							leftColumns: 2
-						},
-						columns: column
-					});	
-				}
-			
-			}else{
-				
-				$('#table_program42').html("");
-				
-				var column = [];
-				column[0] = { data: 'Rangking' };
-				
-
-				var i_d = 1;
-				for(i=1;i<=obj['monthdt'].length;i++){
-					
-					 column[i_d] =  {data: "channel"+i };
-					 i_d++;				 
-					 column[i_d] =  {data: "w"+i,"sClass": "right" };
-					 i_d++;
-					 
-				}
-
-
-				$('#table_program42').html(obj['table']);
-
-
-					$('#example42').DataTable({
-						"bFilter": false,
-						"aaSorting": [],
-						"bLengthChange": false,
-						'iDisplayLength': 10,
-						"sPaginationType": "simple_numbers",
-						"Info" : false,
-						
-						"searching": true,
-						data: obj['data'], 
-						"language": {
-							"decimal": ",",
-							"thousands": "."
-						},
-						"scrollX": true,
-						 
-						columns: column
-					});	
-
-				
-			}
 			
 				
 		}
@@ -4612,6 +4462,22 @@ function expand_area(area){
 	
 }
 
+function expand_aream(area){
+	
+	
+	var btn_sc = $('#btn_expand_aream_'+area).html();
+	
+	if(btn_sc == '+'){
+		$('#tableregionm_'+area).fadeIn('slow');
+		$('#btn_expand_aream_'+area).html('-');
+	}else{
+		$('#tableregionm_'+area).fadeOut('slow');
+		$('#btn_expand_aream_'+area).html('+');
+	}
+	
+	
+}
+
 function expand_region(region){
 	
 	
@@ -4623,6 +4489,22 @@ function expand_region(region){
 	}else{
 		$('#tablebranch_'+region).fadeOut('slow');
 		$('#btn_expand_region_'+region).html('+');
+	}
+	
+	
+}
+
+function expand_regionm(region){
+	
+	
+	var btn_sc = $('#btn_expand_regionm_'+region).html();
+	
+	if(btn_sc == '+'){
+		$('#tablebranchm_'+region).fadeIn('slow');
+		$('#btn_expand_regionm_'+region).html('-');
+	}else{
+		$('#tablebranchm_'+region).fadeOut('slow');
+		$('#btn_expand_regionm_'+region).html('+');
 	}
 	
 	

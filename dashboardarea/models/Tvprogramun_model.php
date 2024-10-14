@@ -177,6 +177,38 @@ class Tvprogramun_model extends CI_Model {
 		return $result;
 	}
 	
+	public function list_data_area_month($params = array(),$where) {
+			
+				
+			$sql = "
+			SELECT * FROM M_SUM_TV_DASH_CHAN_PERIODE
+			WHERE TYPE_PERIODE IN ('MONTHLY','YEARLY') 
+			AND PERIODE LIKE '%".$params['start_date']."%'
+			order by PERIODE,AREA,REGION,BRANCH
+			";
+
+	
+		//echo $sql;die;
+
+		$db = $this->clickhouse->db();
+		$out		= array();
+		$resultS = $db->select($sql);
+		$result = $resultS->rows();	  
+    
+		$total_filtered['ROWS'] = count($result);
+		$total 			= count($result);
+		
+					    
+		$return = array(
+			'data' => $result,
+			'total_filtered' => $total_filtered['ROWS'],
+			'total' => $total,
+		);
+    
+		return $return;
+  
+	}
+	
 	public function get_tahun(){
 		
 		$db = $this->clickhouse->db();
