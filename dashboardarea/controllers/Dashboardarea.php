@@ -3078,7 +3078,7 @@ class Dashboardarea extends JA_Controller {
 						
 						
 						$table_html_region = '
-							<table aria-describedby="mydesc"  id="tableregion_'.$data_arrays['AREA'].'" class="table table-striped" style="display:none" >
+							<table aria-describedby="mydesc"  class="table table-striped" >
 											<thead style="color:red">
 												<tr>
 													<th  scope="row">Region </th>
@@ -3102,14 +3102,13 @@ class Dashboardarea extends JA_Controller {
 					
 					
 					$table_html_branch = '
-							<table aria-describedby="mydesc"  id="tablebranch_'.$data_region['REGION_NAME'].'" class="table table-striped" style="display:none">
+							<table aria-describedby="mydesc"   class="table table-striped" >
 											<thead style="color:red">
 												<tr>
 													<th  scope="row">Branch </th>
 													<th text-align="right" scope="row">Audience</th>
 													<th text-align="right" scope="row">Total Views</th>
 													<th text-align="right" scope="row">Duration</th>
-													<th text-align="right" scope="row">Action</th>
 													
 												</tr></thead><tbody>';
 												
@@ -3121,7 +3120,6 @@ class Dashboardarea extends JA_Controller {
 							<td text-align="right" >'.number_format($data_branch['UV'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_branch['VIEWERS'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_branch['DURATION'],0,',','.').'</td>
-							<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
 																
 						</tr>';
 						
@@ -3130,7 +3128,7 @@ class Dashboardarea extends JA_Controller {
 					$table_html_branch .= '</tbody></table>
 					';
 					
-					$table_html_region .= '<tr>
+					$table_html_region .= '<tr id="tablebranch_'.$data_region['REGION_NAME'].'" style="display:none">
 							<td class="details-control" colspan="5">'.$table_html_branch.'</td>
 						</tr>';
 					
@@ -3139,7 +3137,7 @@ class Dashboardarea extends JA_Controller {
 			
 			$table_html_region .= '</tbody></table>
 			';
-				$html_table_area .= '<tr>
+				$html_table_area .= '<tr id="tableregion_'.$data_arrays['AREA'].'" style="display:none" >
 							<td class="details-control" colspan="5">'.$table_html_region.'</td>
 						</tr>';
 			
@@ -3497,12 +3495,16 @@ class Dashboardarea extends JA_Controller {
 		$table_html_header_month = '';
 		foreach($data['monthdt'] as $dtmonth){
 			$bulanm[] = $dtmonth['PERIODE_FULL'];
+			$bulan_label[] = $dtmonth['PERIODE'];
+			$bulan_label_full[] = $dtmonth['PERIODE_FULL'];
 			$table_html_header_month .= '<th text-align="right" scope="row">'.$dtmonth['PERIODE'].'</th>';
 		}
 		
 		$table_html_header .= $table_html_header_month.'<th text-align="right" scope="row">Total</th><th text-align="right" scope="row">Action</th></tr></thead><tbody>';
 		$bulanm[] = $data['start_date'];
 		
+		$data['bulan_label'] = $bulan_label;
+		$data['bulan_label_full'] = $bulan_label_full;
 		$data['channels'] = $this->tvprogramun_model->list_data_area_month($data); 
 		
 		$data_array = [];
@@ -3510,18 +3512,22 @@ class Dashboardarea extends JA_Controller {
 		foreach($data['channels']['data'] as $datas){
 			
 			
+			$data_array[$datas['AREA']]['NAME'] = $datas['AREA'];
+			$data_array[$datas['AREA']][$datas['REGION']]['NAME'] = $datas['REGION'];
+			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']]['NAME'] = $datas['BRANCH'];
 			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['UV'] = $datas['UV'];
 			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['VIEWERS'] = $datas['VIEWERS'];
 			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['DURATION'] = $datas['DURATION'];
 			
 		}
 		
-		//print_r($data_array);die;
 		
 		$html_table_area = '';
 		$html_table_region = '';
-		$table_html_branch = '';
+		
 		$int_area = 0;
+		
+		
 		foreach($data_array as $datass){
 			$area_d = array_keys($data_array);
 				$html_table_area .= '<tr>
@@ -3537,20 +3543,22 @@ class Dashboardarea extends JA_Controller {
 			
 			
 							$table_html_region = '
-							<table aria-describedby="mydesc"  id="tableregionm_'.$area_d[$int_area].'" class="table table-striped" style="display:none" >
+							<table aria-describedby="mydesc"  class="table table-striped" >
 											<thead style="color:red">
 												<tr>
 													<th  scope="row">Region </th>
 													'.$table_html_header_month.'
+													<th text-align="right" scope="row">Total</th>
 													<th text-align="right" scope="row">Action</th>
 													
 												</tr></thead><tbody>';
 							
 				$int_region = 0;
+				$table_html_branch = '';
 				foreach($datass as $data_region){
 					$region_d = array_keys($datass);
 					//echo $region_d[$int_region];die;
-					if($region_d[$int_region] !== 'ALL'){
+					if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
 						
 						$table_html_region .= '<tr>
 							<td class="details-control"><button class="button_blacks" style="background-color: #f9f9f9;" id="btn_expand_regionm_'.str_replace(" ","",$region_d[$int_region]).'" onClick="expand_regionm(\''.str_replace(" ","",$region_d[$int_region]).'\')">+</button> '.$region_d[$int_region].'</td>';
@@ -3564,13 +3572,14 @@ class Dashboardarea extends JA_Controller {
 					}
 					
 					
+					if($region_d[$int_region] !== 'NAME'){
 						$table_html_branch = '
-							<table aria-describedby="mydesc"  id="tablebranchm_'.str_replace(" ","",$region_d[$int_region]).'" class="table table-striped" style="display:none">
+							<table aria-describedby="mydesc"  class="table table-striped" >
 											<thead style="color:red">
 												<tr>
 													<th  scope="row">Branch </th>
 													'.$table_html_header_month.'
-													<th text-align="right" scope="row">Action</th>
+													<th text-align="right" scope="row">Total</th>
 													
 												</tr></thead><tbody>';
 												
@@ -3578,7 +3587,7 @@ class Dashboardarea extends JA_Controller {
 							$int_branch = 0;
 							foreach($data_region as $data_branch){
 								$branch_d = array_keys($data_region);
-								if($branch_d[$int_branch] !== 'ALL'){
+								if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
 									
 									$table_html_branch .= '<tr>
 										<td class="details-control">'.$branch_d[$int_branch].'</td>';
@@ -3586,20 +3595,20 @@ class Dashboardarea extends JA_Controller {
 											
 											$table_html_branch .= '<td text-align="right" >'.number_format($data_branch[$bulanms][$data['type']],0,',','.').'</td>';
 										}
-										$table_html_branch .= '<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
-																			
-									</tr>';						
+										$table_html_branch .= '</tr>';						
 								}
 								
 								$int_branch++;	
 							}
 							
-							$table_html_branch .= '</tbody></table>
-								';
-								
-							$table_html_region .= '<tr>
+							$table_html_branch .= '</tbody></table>';
+							
+							$table_html_region .= '<tr id="tablebranchm_'.str_replace(" ","",$region_d[$int_region]).'" style="display:none" >
 										<td class="details-control" colspan="13">'.$table_html_branch.'</td>
 									</tr>';
+							
+					}			
+							
 						
 						
 					$int_region++;	
@@ -3612,7 +3621,7 @@ class Dashboardarea extends JA_Controller {
 				
 				$table_html_region .= '</tbody></table>';
 				
-				$html_table_area .= '<tr>
+				$html_table_area .= '<tr id="tableregionm_'.$area_d[$int_area].'" style="display:none" >
 							<td class="details-control" colspan="13">'.$table_html_region.'</td>
 						</tr>';
 			$int_area++;
@@ -3624,7 +3633,7 @@ class Dashboardarea extends JA_Controller {
 		//ECHO $table_html ;DIE;
 		
 		$data['table'] = $table_html;
-		//$data['data'] = $scama;
+		$data['data_all'] = $data_array;
 		
 		echo json_encode($data,true);
 		

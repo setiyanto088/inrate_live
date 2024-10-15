@@ -184,6 +184,7 @@ class Tvprogramun_model extends CI_Model {
 			SELECT * FROM M_SUM_TV_DASH_CHAN_PERIODE
 			WHERE TYPE_PERIODE IN ('MONTHLY','YEARLY') 
 			AND PERIODE LIKE '%".$params['start_date']."%'
+			AND TYPE_DATA = '".$params['tipe_filter']."'
 			order by PERIODE,AREA,REGION,BRANCH
 			";
 

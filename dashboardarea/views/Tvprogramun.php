@@ -54,6 +54,7 @@
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 	
   <style>
@@ -237,7 +238,6 @@
                 </div>
 				<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
 						<button onClick="filter_panel('program')" class="button_white" id="filter_program"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
-						<button class="button_black" id="program_export"><em class="fa fa-download"></em> &nbsp Export</button>
 				</div>
 				<br>
 
@@ -440,7 +440,6 @@
                 </div>
 				<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
 						<button onClick="filter_panel('channels')" class="button_white" id="filter_channels"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
-						<button class="button_black" onClick="chanel_export2()" id="export_channel42"><em class="fa fa-download"></em> &nbsp Export</button>
 				</div>
 
                 <div class="widget-content">
@@ -510,7 +509,7 @@
 								<div class="form-group">
 									<label>Type</label>	
 									<select class="form-control" name="tipe_filter2" id="tipe_filter2" required >
-										<option value="live" selected >Live</option>
+										<option value="LIVE" selected >Live</option>
 										<option value="ALL" >All</option> 
 										<option value="TVOD" >TVOD</option>
 									</select>
@@ -527,24 +526,128 @@
 					</div>
 						 
 				</div>
+				
+				<div class="panel-headings" id="result_header" style="">
+					<div class="col-lg-12">	
+						<div class="navbar-left" style="padding-left:10px;">
+						  <h4 class="title-periode2" style="font-weight: bold;">Result</h4>
+						</div>
+					</div>
+				</div>
+				
+				
+				
+				<div class="panel-body" id="tab-contents-result2" style="">
+              <!-- Nav tabs -->
+					<div class="col-md-2">
+ 								<div class="row" style="background-color:#F2F2F2;padding:5px;color:#000;border: none;border-radius:5px">
+									 <div class="col-md-6" id="tabs_table2" style="border: none;background-color:#fff;border-radius:5px;">
+										<button id="tab_table2" style="border: none;background-color:#fff;border-radius:5px;padding:3px 15px 3px 15px" onclick="tab_filter2('table')" href="#table2" aria-controls="table2" role="tab" data-toggle="tab"><strong>Table</strong></button>
+									</div>
+									<div class="col-md-6" id="tabs_chart2" style="border: none;border-radius:5px;">
+										<button id="tab_chart2" style="border: none;border-radius:5px;padding:3px 15px 3px 15px" onclick="tab_filter2('chart')" href="#chart2" aria-controls="chart2" role="tab" data-toggle="tab"><strong>Chart</strong></button>
+									</div>
+								</div>
+                              </div>  
+							  
+					 <div class="tab-content" >
+                  <!-- Tab Table -->
+                  <div role="tabpanel" class="tab-pane active" id="table2" style="margin-top:50px;">
+                         
+						  <br/>
+                          <div class="row">
+							<div class="col-lg-12">	
+								 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
+									<button class="button_black" onclick="expor_province()" id=''><em class="fa fa-download"></em> &nbsp Export</button>
+								</div>
+							</div>
+							  <div class="col-md-12">													
+								<div id="table_program42" >
+									<table aria-describedby="table" id="example42" class="table table-striped example" style="width: 100%">
+										<thead style="color:red">
+											<tr>
+												<th rowspan = "0" scope="row">Rankss <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+												<th rowspan = "0" scope="row">Channel <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+												<?php $k = 1; foreach($monthdt as $monthdts){ ?>
+												<th scope="row" ><?php echo $monthdts['PERIODE']; ?></th>
+												<?php  $k++; } ?>
+												<th rowspan = "0" scope="row">Total<img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+											</tr>
+										</thead>
+									</table>
+								</div> 
+							  </div>
+							 
+						</div>
+                  </div>
+                  <!-- / Tab Table -->
+                  <!-- Tab Chart -->
+                  <div role="tabpanel" class="tab-pane" id="chart2">
+					 <div class="row">
+					  <div id="month_chart" class="col-md-12" style="padding:10px">	
+		
+						  <div class="col-lg-12" id="line-chart-area-op">
+							  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
+							   <div class="row">
+											<div class="col-lg-12">	
+													<div class="navbar-right" id="btn-line-back" style="padding-right:20px;padding-top:10px;">
+													 &nbsp 
+													</div>
+											</div>
+											<div class="col-lg-12">	
+												<div class="result-chart-graph" style=" margin : auto">
+												  <div id="container4" style="margin: 0 auto"></div>
+												</div>
+											</div>
+								    </div>
+							  </div>
+						  </div>
+						  
+						  <div class="col-lg-12" id="line-chart-region-op" style="display:none">
+							  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
+							   <div class="row">
+											<div class="col-lg-12">	
+													<div class="navbar-right" id="btn-line-back" style="padding-right:20px;padding-top:10px;">
+													<button class="button_black" onclick="back_line_reg()"> &nbsp Back</button>
+													</div>
+											</div>
+											<div class="col-lg-12">	
+												<div class="result-chart-graph" style=" margin : auto">
+												  <div id="container42" style="margin: 0 auto"></div>
+												</div>
+											</div>
+								    </div>
+							  </div>
+						  </div>
+						  
+						   <div class="col-lg-12" id="line-chart-branch-op" style="display:none">
+							  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
+							   <div class="row">
+											<div class="col-lg-12">	
+													<div class="navbar-right" id="btn-line-backs" style="padding-right:20px;padding-top:10px;">
+													<button class="button_black" onclick="back_line_bre()"> &nbsp Back</button>
+													</div>
+											</div>
+											<div class="col-lg-12">	
+												<div class="result-chart-graph" style=" margin : auto">
+												  <div id="container43" style="margin: 0 auto"></div>
+												</div>
+											</div>
+								    </div>
+							  </div>
+						  </div>
+						  
+                      </div>
 
+                     </div>
+                  </div>
+                  <!-- / Tab Chart -->
+              </div>
+              <!-- / Tab panes -->
+          </div>
 					
-					<div id="table_program42" >
-						<table aria-describedby="table" id="example42" class="table table-striped example" style="width: 100%">
-							<thead style="color:red">
-								<tr>
-									<th rowspan = "0" scope="row">Rankss <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
-									<th rowspan = "0" scope="row">Channel <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
-									<?php $k = 1; foreach($monthdt as $monthdts){ ?>
-									<th scope="row" ><?php echo $monthdts['PERIODE']; ?></th>
-									<?php  $k++; } ?>
-									<th rowspan = "0" scope="row">Total<img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
-								</tr>
-
-
-							</thead>
-						</table>
-					</div> 
+					
+				</div>
                   <canvas id="widget-spot-channel" height="100"></canvas>
 			  
             </div>
@@ -2387,6 +2490,27 @@ function table1_view(){
 			
 			}
 			
+		 }  
+		 
+		 function tab_filter2(tabs){
+	
+			if(tabs == 'chart'){
+			
+				$('#tab_table2').css('background-color','#F2F2F2');
+				$('#tabs_table2').css('background-color','#F2F2F2');
+				$('#tab_chart2').css('background-color','#fff');
+				$('#tabs_chart2').css('background-color','#fff');
+			
+			}else{
+				
+				$('#tab_table2').css('background-color','#fff');
+				$('#tabs_table2').css('background-color','#fff');
+				$('#tab_chart2').css('background-color','#F2F2F2');
+				$('#tabs_chart2').css('background-color','#F2F2F2');
+				
+			
+			}
+			
 		 }
 
 function view_daypart(){
@@ -3101,9 +3225,7 @@ function chanel_export2(){
 
 
 function audiencebar_view2(){
-	
 
-	
 	var check = "True";
 	
 	
@@ -3119,34 +3241,12 @@ function audiencebar_view2(){
 	var preset = 0;
 	var check = check;
 	var profile_chan = 0;
-	var channel = $('#channel').val().replace('&',' AND ');
-	 var ch = []; 
-	     /* HANDLE ALL CHANNEL */
-          var channel_header = "";                                                                    
-          if(channel == "0"){
-              /* READ CHANNEL FROM AFTER CHOOSE GENRE */
-              $('#custom_channel').next().children().each(function(){
-                  if($(this).children().html() != "All Channel"){
-                      channel_header += $(this).children().html()+",";
-                  }
-              })
-              
-              channel_header = channel_header.slice(0,-1);
-          } else {
-              channel_header = channel;
-          }  
-          
-          channel_header = channel_header.split(",");
-          for(var i=0; i < channel_header.length; i++){
-              ch.push("'"+channel_header[i].replace('&',' AND ')+"'");
-          }
 
 
 	form_data.append('cond',"<?php echo $cond; ?>");
 	form_data.append('type', type);
 	form_data.append('tahun', tahun);
 	form_data.append('bulan', bulan);
-	form_data.append('channel', ch);
 	form_data.append('week', week);
 	form_data.append('check', check); 
 	form_data.append('start_date', start_date);
@@ -3170,12 +3270,13 @@ function audiencebar_view2(){
 			
 			obj = jQuery.parseJSON(data);
 			
+			const data_alls = Object.entries(obj['data_all']);
 			
 			$('#table_program42').html("");
 			
 			$('#table_program42').html(obj['table']);
-			
-			
+
+			refresh_chart_line_area(data_alls,type,obj.bulan_label);
 				
 		}
 	});	
@@ -3975,6 +4076,421 @@ function change_data_chart(){
 	refresh_chart_region2('Region',id_region,obj.data_all,id_region);
 	
 }
+
+function back_line_reg(){
+	
+	$('#line-chart-area-op').show();
+	$('#line-chart-region-op').hide();
+	
+	
+}
+
+function back_line_bre(){
+	
+	$('#line-chart-region-op').show();
+	$('#line-chart-branch-op').hide();
+	
+	
+}
+
+
+function refresh_chart_line_area(data_alls,type,bulan_label){
+	
+	$('#line-chart-area-op').show();
+	$('#line-chart-region-op').hide();
+	
+	var data_array = [];
+			for (const elementd of data_alls) {
+				
+				const data_rr = {};
+				data_rr.name = 'Area '+elementd[0];
+				data_rr.name_data = elementd[0];
+				
+				
+				const data_rr_s = [];
+				for (const elementdm of obj.monthdt) {
+					
+					data_rr_s.push(elementd[1]['ALL']['ALL'][elementdm['PERIODE_FULL']][type]);
+
+				}
+				
+				data_rr.data = data_rr_s;
+				data_array.push(data_rr);
+			}
+									
+			Highcharts.chart('container4', {
+
+			title: {
+				text: 'Monthly Trend Area',
+				align: 'center',
+				style: {
+					fontSize: '2.9em'
+				}
+			},
+			subtitle: {
+				text: '',
+				align: ''
+			},
+
+			yAxis: {
+				title: {
+					text: ''
+				},
+				labels: {
+					  style: {
+						fontSize: '1.5em'
+					  }
+					},
+			},
+
+			xAxis: {
+				categories: bulan_label,
+				labels: {
+					  style: {
+						fontSize: '1.5em'
+					  }
+					},
+			},
+
+			legend: {
+				align: 'center',
+				verticalAlign: 'bottom',
+				itemStyle: {
+					fontSize:'1.5em'
+				},
+			},
+
+			plotOptions: {
+				series: {
+					label: {
+						connectorAllowed: false,
+						style: {
+							fontSize: '1.5em'
+						}
+					},
+					point: {
+						events: {
+							click: function() {
+								//alert (this.series.name+' '+ this.x+'<br>'+type+' : '+this.y);
+								refresh_chart_line(this.series.name,data_alls,type,obj.bulan_label);
+							}
+						}
+					}
+				}
+			},
+
+			tooltip: {
+				valueSuffix: '',
+				formatter:function() {
+					var html_tip = this.series.name+' '+this.x+'<br>'+type+' : '+this.y;
+					return html_tip;
+				},
+				style: {
+					fontSize:'1.3em'
+				}
+			},
+			
+			series:data_array,
+
+			responsive: {
+				rules: [{
+					condition: {
+						maxWidth: 500
+					},
+					chartOptions: {
+						legend: {
+							layout: 'horizontal',
+							align: 'center',
+							verticalAlign: 'bottom'
+						}
+					}
+				}]
+			}
+
+		});
+	
+}
+
+function refresh_chart_line(area,data_alls,type,bulan_label){
+			
+		$('#line-chart-area-op').hide();
+		$('#line-chart-region-op').show();
+	
+			var data_array = [];
+			for (const elementd of data_alls) {
+				
+				if(area == 'Area '+elementd[0]){
+					const data_rrg = Object.entries(elementd[1]);
+					
+					for (const elementdreg of data_rrg) {
+						
+						
+						if(elementdreg[0] == 'ALL' || elementdreg[0] == 'NAME'){
+							
+						}else{
+							const data_rr = {};
+							data_rr.name = elementdreg[0];
+							
+							
+							const data_rr_s = [];
+							for (const elementdm of obj.monthdt) {
+								
+								data_rr_s.push(elementdreg[1]['ALL'][elementdm['PERIODE_FULL']][type]);
+
+							}
+							
+							data_rr.data = data_rr_s;
+							data_array.push(data_rr);
+						}
+					}
+				}
+			}
+						
+			Highcharts.chart('container42', {
+	
+			title: {
+				text: 'Monthly Trend Region',
+				align: 'center',
+				style: {
+					fontSize: '2.9em'
+				}
+			},
+			subtitle: {
+				text: area,
+				align: 'center',
+				style: {
+					fontSize: '2.0em'
+				}
+			},
+			
+
+			yAxis: {
+				title: {
+					text: ''
+				},
+				labels: {
+					  style: {
+						fontSize: '1.5em'
+					  }
+					},
+			},
+
+			xAxis: {
+				categories: bulan_label,
+				labels: {
+					  style: {
+						fontSize: '1.5em'
+					  }
+					},
+			},
+
+			legend: {
+				align: 'center',
+				verticalAlign: 'bottom',
+				itemStyle: {
+					fontSize:'1.5em'
+				},
+			},
+
+			plotOptions: {
+				series: {
+					label: {
+						connectorAllowed: false,
+						style: {
+							fontSize: '1.5em'
+						}
+					},
+					point: {
+						events: {
+							click: function() {
+								refresh_chart_line_branch(area,this.series.name,data_alls,type,bulan_label);
+							}
+						}
+					}
+				}
+			},
+
+			tooltip: {
+				valueSuffix: '',
+				formatter:function() {
+					var html_tip = this.series.name+' '+this.x+'<br>'+type+' : '+this.y;
+					return html_tip;
+				},
+				style: {
+					fontSize:'1.3em'
+				}
+			},
+			
+			series:data_array,
+			exporting: {
+				buttons: {
+					customButton: {
+						x: -62,
+						onclick: function () {
+							alert('Clicked');
+						},
+						symbol: 'circle'
+					}
+				}
+			},
+			responsive: {
+				rules: [{
+					condition: {
+						maxWidth: 500
+					},
+					chartOptions: {
+						legend: {
+							layout: 'horizontal',
+							align: 'center',
+							verticalAlign: 'bottom'
+						}
+					}
+				}]
+			}
+
+		});
+
+}
+
+
+function refresh_chart_line_branch(area,region,data_alls,type,bulan_label){
+			
+		$('#line-chart-region-op').hide();
+		$('#line-chart-branch-op').show();
+	
+			var data_array = [];
+			for (const elementd of data_alls) {
+				
+				if(area == 'Area '+elementd[0]){
+					const data_rrg = Object.entries(elementd[1]);
+					for (const elementdreg of data_rrg) {
+						if(elementdreg[0] == region){
+							const data_brn = Object.entries(elementdreg[1]);
+							for (const elementdbre of data_brn) {
+								
+								if(elementdbre[0] == 'ALL' || elementdbre[0] == 'NAME'){
+							
+								}else{
+									const data_rr = {};
+									data_rr.name = elementdbre[0];
+									
+									
+									const data_rr_s = [];
+									for (const elementdm of obj.monthdt) {
+										
+										data_rr_s.push(elementdbre[1][elementdm['PERIODE_FULL']][type]);
+
+									}
+									
+									data_rr.data = data_rr_s;
+									data_array.push(data_rr);
+								}
+								
+							}
+						}
+					}
+				}
+			}
+						
+			Highcharts.chart('container43', {
+	
+			title: {
+				text: 'Monthly Trend Branch',
+				align: 'center',
+				style: {
+					fontSize: '2.9em'
+				}
+			},
+			subtitle: {
+				text: region,
+				align: 'center',
+				style: {
+					fontSize: '2.0em'
+				}
+			},
+			
+
+			yAxis: {
+				title: {
+					text: ''
+				},
+				labels: {
+					  style: {
+						fontSize: '1.5em'
+					  }
+					},
+			},
+
+			xAxis: {
+				categories: bulan_label,
+				labels: {
+					  style: {
+						fontSize: '1.5em'
+					  }
+					},
+			},
+
+			legend: {
+				align: 'center',
+				verticalAlign: 'bottom',
+				itemStyle: {
+					fontSize:'1.5em'
+				},
+			},
+
+			plotOptions: {
+				series: {
+					label: {
+						connectorAllowed: false,
+						style: {
+							fontSize: '1.5em'
+						}
+					}
+				}
+			},
+
+			tooltip: {
+				valueSuffix: '',
+				formatter:function() {
+					var html_tip = this.series.name+' '+this.x+'<br>'+type+' : '+this.y;
+					return html_tip;
+				},
+				style: {
+					fontSize:'1.3em'
+				}
+			},
+			
+			series:data_array,
+			exporting: {
+				buttons: {
+					customButton: {
+						x: -62,
+						onclick: function () {
+							alert('Clicked');
+						},
+						symbol: 'circle'
+					}
+				}
+			},
+			responsive: {
+				rules: [{
+					condition: {
+						maxWidth: 500
+					},
+					chartOptions: {
+						legend: {
+							layout: 'horizontal',
+							align: 'center',
+							verticalAlign: 'bottom'
+						}
+					}
+				}]
+			}
+
+		});
+
+}
+
 
 function refresh_chart_area2(place,id,data_all){
 	
