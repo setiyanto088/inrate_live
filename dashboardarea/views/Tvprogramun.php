@@ -321,7 +321,7 @@
                           <div class="row">
 							<div class="col-lg-12">	
 								 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
-									<button class="button_black" onclick="expor_province()" id=''><em class="fa fa-download"></em> &nbsp Export</button>
+									<button class="button_black" onClick="print_area('area','all')" id="button_export_all" style="display:none"><em class="fa fa-download"></em> &nbsp Export</button>
 								</div>
 							</div>
 							  <div class="col-md-12">													
@@ -3479,7 +3479,7 @@ function audiencebar_view(){
 
 function table2_viewd(){
 	
-
+	
 	
 	var check = "True";
 	
@@ -3554,6 +3554,9 @@ function table2_viewd(){
 			$('#table_programs').html("");
 
 			$('#table_programs').html(obj['table']);
+			
+			$('#button_export_all').show();
+			
 
 	Highcharts.chart('container1', {
 		chart: {
@@ -3790,6 +3793,72 @@ function table2_viewd(){
 		
 		}
 	});	
+}
+
+function print_area(location,datat){
+	
+	var form_data = new FormData();  
+
+	var week = "";
+	var start_date = $('#start_date').val();
+	var end_date = $('#end_date').val();
+	var tipe_filter = '01';
+	var preset = $('#preset3').val();
+	var filter = $('#data_chart').val();
+
+	if(start_date == '' ){
+		alert('Date Filter Must Not Blank');
+		 throw '';  
+	}
+	
+	if(end_date == '' ){
+		alert('Date Filter Must Not Blank');
+		 throw '';  
+	}
+				var listDate = [];
+				var dateMove = new Date(start_date);
+				var strDate = start_date;
+
+				while (strDate < end_date){
+				  var strDate = dateMove.toISOString().slice(0,10);
+				  listDate.push(strDate);
+				  dateMove.setDate(dateMove.getDate()+1);
+				};
+			
+
+			
+				if(listDate.length > 61){
+					
+					$('#errorm').modal('show');
+					$('#body_error').html('<h5>Maximal Duration is 31 Days !!!! </h5>');
+					throw '';
+				}
+				
+
+	form_data.append('start_date', start_date);
+	form_data.append('end_date', end_date);
+	form_data.append('tipe_filter', tipe_filter);
+	form_data.append('preset', preset);
+	
+		$.ajax({
+			url: "<?php echo base_url().'dashboardarea/audiencebar_by_area_export'; ?>", 
+			dataType: 'json',  // what to expect back from the PHP script, if anything
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,                         
+			type: 'post',
+			success: function(data){
+				
+				 //$("#export_channel42").attr("disabled", false);
+				
+				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_channel.xls','Audience_by_area.xls');
+									
+			}, error: function(obj, response) {
+				console.log('ajax list detail error:' + response);	
+			} 
+		});	
+	
 }
 
 function change_data_chart(){

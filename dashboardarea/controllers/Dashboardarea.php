@@ -3073,7 +3073,7 @@ class Dashboardarea extends JA_Controller {
 							<td text-align="right" >'.number_format($data_arrays['UV'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_arrays['VIEWERS'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_arrays['DURATION'],0,',','.').'</td>
-							<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+							<td text-align="right" ><button class="button_black" onClick="print_area(\'area\',\'all\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
 						</tr>';
 						
 						
@@ -3636,6 +3636,100 @@ class Dashboardarea extends JA_Controller {
 		$data['data_all'] = $data_array;
 		
 		echo json_encode($data,true);
+		
+		
+	}
+	
+	public function audiencebar_by_area_export(){
+		
+		$userid = $this->session->userdata('user_id');
+		$params['user_id'] = $userid;
+		
+		$data['start_date']=$this->Anti_si($this->input->post('start_date',true));
+		$data['end_date']=$this->Anti_si($this->input->post('end_date',true));
+		$data['tipe_filter']=$this->Anti_si($this->input->post('tipe_filter',true));
+		$data['preset'] = $this->Anti_si($this->input->post('preset',true));
+		
+		if($data['preset'] == "0"){
+			
+			$where = "";
+		}else{
+			
+			$channel_set = $this->tvprogramun_model->channel_set($data['preset'],$userid);
+			
+			//print_r($channel_set);die;
+			
+			$channel_list = explode(',',$channel_set[0]['CHANNEL_LIST']);
+			
+			$str_channel = '';
+			foreach($channel_list as $channel_lists){
+				
+				$str_channel = $str_channel."'".$channel_lists."',";
+				
+			}
+			
+			$str_channel = substr($str_channel, 0, -1);
+			
+			$where = "AND CHANNEL IN (".$str_channel.")"; 
+		}
+		
+		
+		//echo $where;die;
+		
+		
+		$datass = $this->tvprogramun_model->list_data_area($data,$where); 
+				
+		$data_array = [];
+			foreach($datass['data'] as $datas){
+			
+				$data_array[$datas['AREA']]['NAME'] = $datas['AREA'];
+				$data_array[$datas['AREA']][$datas['REGION']]['NAME'] = $datas['REGION'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']]['NAME'] = $datas['BRANCH'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']]['UV'] = $datas['UV'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']]['VIEWERS'] = $datas['VIEWERS'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']]['DURATION'] = $datas['DURATION'];
+				
+			}
+			
+		$this->load->library('excel');
+		   
+		$objPHPExcel = new PHPExcel();
+
+		$objPHPExcel->getProperties()->setCreator("Unics")
+										 ->setLastModifiedBy("Unics")
+										 ->setTitle("Postbuy Analytics")
+										 ->setSubject("Postbuy Analytics")
+										 ->setDescription("Report Postbuy")
+										 ->setKeywords("Postbuy Analytics")
+										 ->setCategory("Report");
+		
+		 $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'Locaton')
+						->setCellValue('B1', 'Rangking')
+						->setCellValue('C1', 'Total Views')
+						->setCellValue('D1', 'Duration');
+						
+		$vtl = 2;
+		foreach($data_array as $data_arrays){
+			
+			 $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'Area '.$data_arrays['NAME'])
+						->setCellValue('B1', $data_arrays['ALL']['ALL']['UV'])
+						->setCellValue('C1', $data_arrays['ALL']['ALL']['VIEWERS'])
+						->setCellValue('D1', $data_arrays['ALL']['ALL']['DURATION']);
+			
+		}
+		
+		//print_r($data_array);die;
+		
+		$objPHPExcel->getActiveSheet()->setTitle('Audience by Area Summary');
+			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel->setActiveSheetIndex(0);
+
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			// header('Content-Type: application/vnd.ms-excel');
+
+		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_area.xls');
 		
 		
 	}
