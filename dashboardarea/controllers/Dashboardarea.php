@@ -3704,7 +3704,7 @@ class Dashboardarea extends JA_Controller {
 										 ->setCategory("Report");
 		
 		 $objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A1', 'Locaton')
+						->setCellValue('A1', 'Area')
 						->setCellValue('B1', 'Rangking')
 						->setCellValue('C1', 'Total Views')
 						->setCellValue('D1', 'Duration');

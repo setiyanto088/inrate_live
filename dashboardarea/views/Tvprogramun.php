@@ -3842,7 +3842,7 @@ function print_area(location,datat){
 	
 		$.ajax({
 			url: "<?php echo base_url().'dashboardarea/audiencebar_by_area_export'; ?>", 
-			dataType: 'json',  // what to expect back from the PHP script, if anything
+			dataType: 'text',  // what to expect back from the PHP script, if anything
 			cache: false,
 			contentType: false,
 			processData: false,
@@ -3854,8 +3854,6 @@ function print_area(location,datat){
 				
 				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_area.xls','Audience_by_area.xls');
 									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
 			} 
 		});	
 	
