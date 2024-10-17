@@ -321,7 +321,7 @@
                           <div class="row">
 							<div class="col-lg-12">	
 								 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
-									<button class="button_black" onClick="print_area('area','all')" id="button_export_all" style="display:none"><em class="fa fa-download"></em> &nbsp Export</button>
+									<button class="button_black" onClick="print_area('All','All')" id="button_export_all" style="display:none"><em class="fa fa-download"></em> &nbsp Export</button>
 								</div>
 							</div>
 							  <div class="col-md-12">													

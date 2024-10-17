@@ -3073,7 +3073,7 @@ class Dashboardarea extends JA_Controller {
 							<td text-align="right" >'.number_format($data_arrays['UV'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_arrays['VIEWERS'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_arrays['DURATION'],0,',','.').'</td>
-							<td text-align="right" ><button class="button_black" onClick="print_area(\'area\',\'all\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
+							<td text-align="right" ><button class="button_black" onClick="print_area(\''.$data_arrays['AREA'].'\',\'All\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
 						</tr>';
 						
 						
@@ -3096,7 +3096,7 @@ class Dashboardarea extends JA_Controller {
 							<td text-align="right" >'.number_format($data_region['UV'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_region['VIEWERS'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_region['DURATION'],0,',','.').'</td>
-							<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+							<td text-align="right" ><button class="button_black" onClick="print_area(\''.$data_arrays['AREA'].'\',\''.$data_region['REGION_NAME'].'\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
 																
 						</tr>';
 					
@@ -3649,6 +3649,8 @@ class Dashboardarea extends JA_Controller {
 		$data['end_date']=$this->Anti_si($this->input->post('end_date',true));
 		$data['tipe_filter']=$this->Anti_si($this->input->post('tipe_filter',true));
 		$data['preset'] = $this->Anti_si($this->input->post('preset',true));
+		$data['area'] = $this->Anti_si($this->input->post('location',true));
+		$data['region'] = $this->Anti_si($this->input->post('datat',true));
 		
 		if($data['preset'] == "0"){
 			
@@ -3711,49 +3713,106 @@ class Dashboardarea extends JA_Controller {
 
 		
 		$vtl = 2;
-		foreach($data_array as $data_arrays){
-			
-			 $objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
-						->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
-						->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
-						->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
-			$vtl++;
-			
-			$area_d = array_keys($data_array);
-			$int_region = 0;
-			foreach($data_arrays as $data_arraysr){
-				$region_d = array_keys($data_arrays);
-				
-				if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
+		
+		if($data['area'] ==  'All'){
+			if($data['region'] == 'All'){
+				foreach($data_array as $data_arrays){
+					
 					$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
-						->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
-						->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
-						->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
-						$vtl++;
+								->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
+								->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
+								->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
+								->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
+					$vtl++;
+					
+					$area_d = array_keys($data_array);
+					$int_region = 0;
+					foreach($data_arrays as $data_arraysr){
+						$region_d = array_keys($data_arrays);
 						
-						$int_branch = 0;
-						foreach($data_arraysr as $data_branch){
-							$branch_d = array_keys($data_arraysr);
-							if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
-								
-								$objPHPExcel->setActiveSheetIndex(0)
-								->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
-								->setCellValue('B'.$vtl, $data_branch['UV'])
-								->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
-								->setCellValue('D'.$vtl, $data_branch['DURATION']);
+						if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
+							$objPHPExcel->setActiveSheetIndex(0)
+								->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
+								->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
+								->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
+								->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
 								$vtl++;
 								
-							}
-							
-							$int_branch++;	
+								$int_branch = 0;
+								foreach($data_arraysr as $data_branch){
+									$branch_d = array_keys($data_arraysr);
+									if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+										
+										$objPHPExcel->setActiveSheetIndex(0)
+										->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
+										->setCellValue('B'.$vtl, $data_branch['UV'])
+										->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
+										->setCellValue('D'.$vtl, $data_branch['DURATION']);
+										$vtl++;
+										
+									}
+									
+									$int_branch++;	
+								}
+								
 						}
-						
+						$int_region++;	
+					}
+								
+					
 				}
-				$int_region++;	
-			}
+			}else{
+				foreach($data_array as $data_arrays){
+					$area_d = array_keys($data_array);
+					
+					if($area_d == $data['area']){
+					
+						$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
+									->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
+									->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
+									->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
+						$vtl++;
 						
+						
+						$int_region = 0;
+						foreach($data_arrays as $data_arraysr){
+							$region_d = array_keys($data_arrays);
+
+							if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
+								$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
+									->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
+									->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
+									->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
+									$vtl++;
+									
+									$int_branch = 0;
+									foreach($data_arraysr as $data_branch){
+										$branch_d = array_keys($data_arraysr);
+										if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+											
+											$objPHPExcel->setActiveSheetIndex(0)
+											->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
+											->setCellValue('B'.$vtl, $data_branch['UV'])
+											->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
+											->setCellValue('D'.$vtl, $data_branch['DURATION']);
+											$vtl++;
+											
+										}
+										
+										$int_branch++;	
+									}
+									
+							}
+							$int_region++;	
+
+						}
+								
+					}
+				}
+			}
+		}else{
 			
 		}
 		
