@@ -3890,6 +3890,8 @@ function print_area_month(location,datat){
 	form_data.append('tipe_filter', tipe_filter);
 	form_data.append('profile', profile_chan);
 	form_data.append('preset', preset);
+	form_data.append('location', location);
+	form_data.append('datat', datat)
 	
 		$.ajax({
 			url: "<?php echo base_url().'dashboardarea/audiencebar_by_area_month_export'; ?>", 

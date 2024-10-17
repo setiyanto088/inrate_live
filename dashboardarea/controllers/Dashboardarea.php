@@ -3096,7 +3096,7 @@ class Dashboardarea extends JA_Controller {
 							<td text-align="right" >'.number_format($data_region['UV'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_region['VIEWERS'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_region['DURATION'],0,',','.').'</td>
-							<td text-align="right" ><button class="button_black" onClick="print_area(\''.$data_arrays['AREA'].'\',\''.$data_region['REGION_NAME'].'\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
+							<td text-align="right" ><button class="button_black" onClick="print_area(\''.$data_arrays['AREA'].'\',\''.$data_region['REGION'].'\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
 																
 						</tr>';
 					
