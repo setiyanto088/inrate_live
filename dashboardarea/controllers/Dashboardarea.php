@@ -3713,11 +3713,11 @@ class Dashboardarea extends JA_Controller {
 		foreach($data_array as $data_arrays){
 			
 			 $objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A1', 'Area '.$data_arrays['NAME'])
-						->setCellValue('B1', $data_arrays['ALL']['ALL']['UV'])
-						->setCellValue('C1', $data_arrays['ALL']['ALL']['VIEWERS'])
-						->setCellValue('D1', $data_arrays['ALL']['ALL']['DURATION']);
-			
+						->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
+						->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
+						->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
+						->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
+			$vtl++;
 		}
 		
 		//print_r($data_array);die;
