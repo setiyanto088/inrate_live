@@ -3956,156 +3956,164 @@ class Dashboardarea extends JA_Controller {
 		$objPHPExcel->setActiveSheetIndex(0)
 		->setCellValue($array_cell[$gos].'1', 'Total');
 		
-		// $vtl = 2;
-		// $int_area = 0;
-		// if($data['area'] ==  'All' && $data['region'] == 'All'){
+		$vtl = 2;
+		$int_area = 0;
+		if($data['area'] ==  'All' && $data['region'] == 'All'){
 
-				// foreach($data_array as $data_arrays){
+				foreach($data_array as $data_arrays){
 					
-					// $objPHPExcel->setActiveSheetIndex(0)
-								// ->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
-								// ->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
-								// ->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
-								// ->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
-					// $vtl++;
+					$objPHPExcel->setActiveSheetIndex(0)
+								->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME']);
 					
-					// $area_d = array_keys($data_array);
-					// $int_region = 0;
-					// foreach($data_arrays as $data_arraysr){
-						// $region_d = array_keys($data_arrays);
+					$gos = 0;
+					foreach($bulanm as $bulanms){
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($gos.''.$vtl, $data_arrays['ALL']['ALL'][$data['type']]);
+						$gos++;	
+					}
+					
+					$vtl++;
+					
+					$area_d = array_keys($data_array);
+					$int_region = 0;
+					foreach($data_arrays as $data_arraysr){
+						$region_d = array_keys($data_arrays);
 						
-						// if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
-							// $objPHPExcel->setActiveSheetIndex(0)
-								// ->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
-								// ->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
-								// ->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
-								// ->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
-								// $vtl++;
+						if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME']);
+							
+								$gos = 0;
+								foreach($bulanm as $bulanms){
+									$objPHPExcel->setActiveSheetIndex(0)->setCellValue($gos.''.$vtl, $data_arraysr['ALL'][$data['type']]);
+									$gos++;	
+								}
+								$vtl++;
 								
-								// $int_branch = 0;
-								// foreach($data_arraysr as $data_branch){
-									// $branch_d = array_keys($data_arraysr);
-									// if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+								$int_branch = 0;
+								foreach($data_arraysr as $data_branch){
+									$branch_d = array_keys($data_arraysr);
+									if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
 										
-										// $objPHPExcel->setActiveSheetIndex(0)
-										// ->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
-										// ->setCellValue('B'.$vtl, $data_branch['UV'])
-										// ->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
-										// ->setCellValue('D'.$vtl, $data_branch['DURATION']);
-										// $vtl++;
+										$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME']);
 										
-									// }
+										$gos = 0;
+										foreach($bulanm as $bulanms){
+											$objPHPExcel->setActiveSheetIndex(0)->setCellValue($gos.''.$vtl, $data_branch[$data['type']]);
+											$gos++;	
+										}
+										$vtl++;
+										
+									}
 									
-									// $int_branch++;	
-								// }
+									$int_branch++;	
+								}
 								
-						// }
-						// $int_region++;	
-					// }
+						}
+						$int_region++;	
+					}
 								
 					
-				// }
-		// }elseif($data['area'] !==  'All' && $data['region'] == 'All'){
-				// foreach($data_array as $data_arrays){
-					// $area_d = array_keys($data_array);				
+				}
+		}elseif($data['area'] !==  'All' && $data['region'] == 'All'){
+				foreach($data_array as $data_arrays){
+					$area_d = array_keys($data_array);				
 					
-					// if($area_d[$int_area] == $data['area']){
+					if($area_d[$int_area] == $data['area']){
 					
-						// $objPHPExcel->setActiveSheetIndex(0)
-									// ->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
-									// ->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
-									// ->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
-									// ->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
-						// $vtl++;
+						$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
+									->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
+									->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
+									->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
+						$vtl++;
 						
 						
-						// $int_region = 0;
-						// foreach($data_arrays as $data_arraysr){
-							// $region_d = array_keys($data_arrays);
+						$int_region = 0;
+						foreach($data_arrays as $data_arraysr){
+							$region_d = array_keys($data_arrays);
 
-							// if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
-								// $objPHPExcel->setActiveSheetIndex(0)
-									// ->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
-									// ->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
-									// ->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
-									// ->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
-									// $vtl++;
+							if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
+								$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
+									->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
+									->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
+									->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
+									$vtl++;
 									
-									// $int_branch = 0;
-									// foreach($data_arraysr as $data_branch){
-										// $branch_d = array_keys($data_arraysr);
-										// if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+									$int_branch = 0;
+									foreach($data_arraysr as $data_branch){
+										$branch_d = array_keys($data_arraysr);
+										if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
 											
-											// $objPHPExcel->setActiveSheetIndex(0)
-											// ->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
-											// ->setCellValue('B'.$vtl, $data_branch['UV'])
-											// ->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
-											// ->setCellValue('D'.$vtl, $data_branch['DURATION']);
-											// $vtl++;
+											$objPHPExcel->setActiveSheetIndex(0)
+											->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
+											->setCellValue('B'.$vtl, $data_branch['UV'])
+											->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
+											->setCellValue('D'.$vtl, $data_branch['DURATION']);
+											$vtl++;
 											
-										// }
+										}
 										
-										// $int_branch++;	
-									// }
+										$int_branch++;	
+									}
 									
-							// }
-							// $int_region++;	
+							}
+							$int_region++;	
 
-						// }
+						}
 								
-					// }
-					// $int_area ++;
-				// }			
-		// }else{
-			// foreach($data_array as $data_arrays){
-					// $area_d = array_keys($data_array);				
+					}
+					$int_area ++;
+				}			
+		}else{
+			foreach($data_array as $data_arrays){
+					$area_d = array_keys($data_array);				
 					
-					// if($area_d[$int_area] == $data['area']){
+					if($area_d[$int_area] == $data['area']){
 					
-						// $objPHPExcel->setActiveSheetIndex(0)
-									// ->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
-									// ->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
-									// ->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
-									// ->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
-						// $vtl++;
+						$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
+									->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
+									->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
+									->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
+						$vtl++;
 						
 						
-						// $int_region = 0;
-						// foreach($data_arrays as $data_arraysr){
-							// $region_d = array_keys($data_arrays);
-								// if($region_d[$int_region] == $data['region']){
-									// $objPHPExcel->setActiveSheetIndex(0)
-										// ->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
-										// ->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
-										// ->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
-										// ->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
-										// $vtl++;
+						$int_region = 0;
+						foreach($data_arrays as $data_arraysr){
+							$region_d = array_keys($data_arrays);
+								if($region_d[$int_region] == $data['region']){
+									$objPHPExcel->setActiveSheetIndex(0)
+										->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
+										->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
+										->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
+										->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
+										$vtl++;
 										
-										// $int_branch = 0;
-										// foreach($data_arraysr as $data_branch){
-											// $branch_d = array_keys($data_arraysr);
-											// if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+										$int_branch = 0;
+										foreach($data_arraysr as $data_branch){
+											$branch_d = array_keys($data_arraysr);
+											if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
 												
-												// $objPHPExcel->setActiveSheetIndex(0)
-												// ->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
-												// ->setCellValue('B'.$vtl, $data_branch['UV'])
-												// ->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
-												// ->setCellValue('D'.$vtl, $data_branch['DURATION']);
-												// $vtl++;
+												$objPHPExcel->setActiveSheetIndex(0)
+												->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
+												->setCellValue('B'.$vtl, $data_branch['UV'])
+												->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
+												->setCellValue('D'.$vtl, $data_branch['DURATION']);
+												$vtl++;
 												
-											// }
+											}
 											
-											// $int_branch++;	
-										// }
-								// }
-							// $int_region++;	
+											$int_branch++;	
+										}
+								}
+							$int_region++;	
 
-						// }
+						}
 								
-					// }
-					// $int_area ++;
-				// }	
-		// }
+					}
+					$int_area ++;
+				}	
+		}
 		
 		//print_r($data_array);die;
 		
