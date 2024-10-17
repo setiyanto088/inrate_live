@@ -3073,7 +3073,7 @@ class Dashboardarea extends JA_Controller {
 							<td text-align="right" >'.number_format($data_arrays['UV'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_arrays['VIEWERS'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_arrays['DURATION'],0,',','.').'</td>
-							<td text-align="right" ><button class="button_black" onClick="print_area(\''.$data_arrays['AREA'].'\',\'All\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
+							<td text-align="right" ><button class="button_black export_area" onClick="print_area(\''.$data_arrays['AREA'].'\',\'All\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
 						</tr>';
 						
 						
@@ -3092,7 +3092,7 @@ class Dashboardarea extends JA_Controller {
 			foreach($data_arrays['REGION'] as $data_region){
 
 						$table_html_region .= '<tr>
-							<td class="details-control"><button class="button_blacks" style="background-color: #f9f9f9;" id="btn_expand_region_'.$data_region['REGION_NAME'].'" onClick="expand_region(\''.$data_region['REGION_NAME'].'\')">+</button> '.$data_region['REGION'].'</td>
+							<td class="details-control"><button class="button_blacks export_area" style="background-color: #f9f9f9;" id="btn_expand_region_'.$data_region['REGION_NAME'].'" onClick="expand_region(\''.$data_region['REGION_NAME'].'\')">+</button> '.$data_region['REGION'].'</td>
 							<td text-align="right" >'.number_format($data_region['UV'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_region['VIEWERS'],0,',','.').'</td>
 							<td text-align="right" >'.number_format($data_region['DURATION'],0,',','.').'</td>

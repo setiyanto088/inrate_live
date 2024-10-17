@@ -182,6 +182,12 @@
     margin: 0.3rem 10px;
 }
 
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
 	
   </style>
 
@@ -294,7 +300,11 @@
 					</div>
 				</div>
           </div>
-            <img alt="img" class="gambar" id="loader_area1" src="<?php echo $path; ?>assets/images/icon_loader.gif" style="display:none">
+			<div class="row" id="loader_area1" style="display:none">
+				<div class="col-md-12" style="margin:auto">
+					<img alt="img" class="gambar"  src="<?php echo $path; ?>assets/images/icon_loader.gif" style="display: block;margin-left: auto;margin-right: auto;">
+				</div>
+			</div>
           <div class="panel-body" id="tab-contents-result" style="">
               <!-- Nav tabs -->
               <div class="col-md-2">
@@ -321,7 +331,7 @@
                           <div class="row">
 							<div class="col-lg-12">	
 								 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
-									<button class="button_black" onClick="print_area('All','All')" id="button_export_all" style="display:none"><em class="fa fa-download"></em> &nbsp Export</button>
+									<button class="button_black export_area" onClick="print_area('All','All')" id="button_export_all" style="display:none"><em class="fa fa-download"></em> &nbsp Export</button>
 								</div>
 							</div>
 							  <div class="col-md-12">													
@@ -352,8 +362,8 @@
                   </div>
                   <!-- / Tab Table -->
                   <!-- Tab Chart -->
-                  <div role="tabpanel" class="tab-pane" id="chart">
-					 <div class="row">
+                  <div role="tabpanel" class="tab-pane" id="chart" >
+					 <div class="row" id="chart-result" style="display:none">
 					  <div class="col-md-12">
 							<div class="col-lg-3">	
 								<div class="form-group">
@@ -3486,6 +3496,10 @@ function table2_viewd(){
 	
 	var form_data = new FormData();  
 
+	$('#loader_area1').show();
+	$('#tab-contents-result').hide();
+			
+			
 	var week = "";
 	var start_date = $('#start_date').val();
 	var end_date = $('#end_date').val();
@@ -3540,10 +3554,6 @@ function table2_viewd(){
 		type: 'post',
 		success: function(data){
 			
-			
-			$('#tab-contents-result').hide();
-			$('#loader_area1').show();
-			
 			obj = jQuery.parseJSON(data);
 			
 			$('#all_data_f').val(data);
@@ -3552,10 +3562,11 @@ function table2_viewd(){
 			var data_chart_region = obj.data_region;
 									
 			$('#table_programs').html("");
-
+			
 			$('#table_programs').html(obj['table']);
 			
 			$('#button_export_all').show();
+			$('#chart-result').show();
 			
 
 	Highcharts.chart('container1', {
@@ -3785,11 +3796,9 @@ function table2_viewd(){
     ]
 });
 			
-			$('#loader_area1').hide();
-			$('#tab-contents-result').show();
-			$('#result_header').show();
 			
-		
+			$('#tab-contents-result').show();
+			$('#loader_area1').hide();
 		
 		}
 	});	
@@ -3797,6 +3806,9 @@ function table2_viewd(){
 
 function print_area(location,datat){
 	
+	
+	$('.export_area').prop('disabled', true);
+
 	var form_data = new FormData();  
 
 	var week = "";
@@ -3855,6 +3867,7 @@ function print_area(location,datat){
 				 //$("#export_channel42").attr("disabled", false);
 				
 				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_area.xls','Audience_by_area.xls');
+				$('.export_area').prop('disabled', false);
 									
 			} 
 		});	
