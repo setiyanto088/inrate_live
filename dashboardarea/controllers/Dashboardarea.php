@@ -3704,7 +3704,7 @@ class Dashboardarea extends JA_Controller {
 										 ->setCategory("Report");
 		
 		 $objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A1', 'Area')
+						->setCellValue('A1', 'Location')
 						->setCellValue('B1', 'Rangking')
 						->setCellValue('C1', 'Total Views')
 						->setCellValue('D1', 'Duration');
@@ -3723,7 +3723,7 @@ class Dashboardarea extends JA_Controller {
 			$area_d = array_keys($data_array);
 			$int_region = 0;
 			foreach($data_arrays as $data_arraysr){
-				$region_d = array_keys($datass);
+				$region_d = array_keys($data_arrays);
 				
 				if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
 					$objPHPExcel->setActiveSheetIndex(0)
