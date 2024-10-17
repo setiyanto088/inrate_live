@@ -3713,9 +3713,9 @@ class Dashboardarea extends JA_Controller {
 
 		
 		$vtl = 2;
-		
-		if($data['area'] ==  'All'){
-			if($data['region'] == 'All'){
+		$int_area = 0;
+		if($data['area'] ==  'All' && $data['region'] == 'All'){
+
 				foreach($data_array as $data_arrays){
 					
 					$objPHPExcel->setActiveSheetIndex(0)
@@ -3761,10 +3761,9 @@ class Dashboardarea extends JA_Controller {
 								
 					
 				}
-			}else{
+		}elseif($data['area'] !==  'All' && $data['region'] == 'All'){
 				foreach($data_array as $data_arrays){
-					$area_d = array_keys($data_array);
-					
+					$area_d = array_keys($data_array);					
 					if($area_d == $data['area']){
 					
 						$objPHPExcel->setActiveSheetIndex(0)
@@ -3810,10 +3809,8 @@ class Dashboardarea extends JA_Controller {
 						}
 								
 					}
-				}
-			}
-		}else{
-			
+					$int_area ++;
+				}			
 		}
 		
 		//print_r($data_array);die;
