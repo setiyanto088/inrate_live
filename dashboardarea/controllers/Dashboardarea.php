@@ -4100,7 +4100,7 @@ class Dashboardarea extends JA_Controller {
 											$branch_d = array_keys($data_arraysr);
 											if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
 												
-												$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
+												$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME']);
 												$gos = 0;
 												foreach($bulanm as $bulanms){
 													$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].''.$vtl, $data_branch[$bulanms][$data['type']]);
