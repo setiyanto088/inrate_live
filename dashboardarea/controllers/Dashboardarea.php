@@ -3732,10 +3732,24 @@ class Dashboardarea extends JA_Controller {
 						->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
 						->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
 						$vtl++;
+						
+						$int_branch = 0;
+						foreach($data_arraysr as $data_branch){
+							$branch_d = array_keys($data_arraysr);
+							if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+								
+								$objPHPExcel->setActiveSheetIndex(0)
+								->setCellValue('A'.$vtl, 'Branch '.$data_branch['NAME'])
+								->setCellValue('B'.$vtl, $data_branch['UV'])
+								->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
+								->setCellValue('D'.$vtl, $data_branch['DURATION']);
+								$vtl++;
+								
+							}
+						}
+						
 				}
-					
 				$int_region++;	
-				
 			}
 						
 			
