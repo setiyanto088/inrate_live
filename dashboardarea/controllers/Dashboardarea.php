@@ -3718,7 +3718,8 @@ class Dashboardarea extends JA_Controller {
 						->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
 						->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
 						->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
-						
+			$vtl++;
+			
 			$area_d = array_keys($data_array);
 			$int_region = 0;
 			foreach($data_arrays as $data_arraysr){
