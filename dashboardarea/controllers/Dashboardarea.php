@@ -3708,7 +3708,8 @@ class Dashboardarea extends JA_Controller {
 						->setCellValue('B1', 'Rangking')
 						->setCellValue('C1', 'Total Views')
 						->setCellValue('D1', 'Duration');
-						
+
+		
 		$vtl = 2;
 		foreach($data_array as $data_arrays){
 			
@@ -3717,7 +3718,26 @@ class Dashboardarea extends JA_Controller {
 						->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
 						->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
 						->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
-			$vtl++;
+						
+			$area_d = array_keys($data_array);
+			$int_region = 0;
+			foreach($data_arrays as $data_arraysr){
+				$region_d = array_keys($datass);
+				
+				if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
+					$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A'.$vtl, 'Region '.$data_arraysr['NAME'])
+						->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
+						->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
+						->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
+						$vtl++;
+				}
+					
+				$int_region++;	
+				
+			}
+						
+			
 		}
 		
 		//print_r($data_array);die;

@@ -3839,6 +3839,8 @@ function print_area(location,datat){
 	form_data.append('end_date', end_date);
 	form_data.append('tipe_filter', tipe_filter);
 	form_data.append('preset', preset);
+	form_data.append('location', location);
+	form_data.append('datat', datat);
 	
 		$.ajax({
 			url: "<?php echo base_url().'dashboardarea/audiencebar_by_area_export'; ?>", 
