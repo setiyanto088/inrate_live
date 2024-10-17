@@ -558,7 +558,7 @@
                           <div class="row">
 							<div class="col-lg-12">	
 								 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
-									<button class="button_black" onclick="expor_province()" id=''><em class="fa fa-download"></em> &nbsp Export</button>
+									<button class="button_black" onClick="print_area_month('All','All')" id=''><em class="fa fa-download"></em> &nbsp Export</button>
 								</div>
 							</div>
 							  <div class="col-md-12">													
@@ -3855,6 +3855,55 @@ function print_area(location,datat){
 				 //$("#export_channel42").attr("disabled", false);
 				
 				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_area.xls','Audience_by_area.xls');
+									
+			} 
+		});	
+	
+}
+
+function print_area_month(location,datat){
+	
+	var check = "True";
+
+	var form_data = new FormData();  
+	var type = $('#audiencebar2').val();
+	var tahun = $('#tahun').val();
+	var bulan = "";
+
+	var week = "";
+	var start_date = $('#start_date42').val();
+	var end_date = $('#end_date42').val();
+	var tipe_filter = $('#tipe_filter2').val();
+	var preset = 0;
+	var check = check;
+	var profile_chan = 0;
+
+
+	form_data.append('cond',"<?php echo $cond; ?>");
+	form_data.append('type', type);
+	form_data.append('tahun', tahun);
+	form_data.append('bulan', bulan);
+	form_data.append('week', week);
+	form_data.append('check', check); 
+	form_data.append('start_date', start_date);
+	form_data.append('end_date', end_date);
+	form_data.append('tipe_filter', tipe_filter);
+	form_data.append('profile', profile_chan);
+	form_data.append('preset', preset);
+	
+		$.ajax({
+			url: "<?php echo base_url().'dashboardarea/audiencebar_by_area_month_export'; ?>", 
+			dataType: 'text',  // what to expect back from the PHP script, if anything
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,                         
+			type: 'post',
+			success: function(data){
+				
+				 //$("#export_channel42").attr("disabled", false);
+				
+				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_area_month.xls','Audience_by_area_month.xls');
 									
 			} 
 		});	

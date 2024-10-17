@@ -3538,7 +3538,7 @@ class Dashboardarea extends JA_Controller {
 								$html_table_area .= '<td text-align="right" >'.number_format($datass['ALL']['ALL'][$bulanms][$data['type']],0,',','.').'</td>';
 							}
 							
-				$html_table_area .= '<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+				$html_table_area .= '<td text-align="right" ><button class="button_black" onClick="print_area_month(\''.$area_d[$int_area].'\',\'All\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
 						</tr>';
 			
 			
@@ -3566,7 +3566,7 @@ class Dashboardarea extends JA_Controller {
 								
 								$table_html_region .= '<td text-align="right" >'.number_format($data_region['ALL'][$bulanms][$data['type']],0,',','.').'</td>';
 							}
-							$table_html_region .= '<td text-align="right" ><button class="button_black"><em class="fa fa-download"></em> &nbsp Export</button></td>
+							$table_html_region .= '<td text-align="right" ><button class="button_black" onClick="print_area_month(\''.$area_d[$int_area].'\',\''.$region_d[$int_region].'\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
 																
 						</tr>';						
 					}
@@ -3873,6 +3873,250 @@ class Dashboardarea extends JA_Controller {
 			// header('Content-Type: application/vnd.ms-excel');
 
 		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_area.xls');
+		
+		
+	}
+	
+	
+	public function audiencebar_by_area_month_export(){
+		
+		$userid = $this->session->userdata('user_id');
+		$params['user_id'] = $userid;
+		
+		$data['where'] =  $this->Anti_si($this->input->post('cond',true));
+		$data['type'] =  $this->Anti_si($this->input->post('type',true));
+		//$data['type'] =  'UV';
+		$data['tahun']=$this->Anti_si($this->input->post('tahun',true));
+		$data['bulan']=$this->Anti_si($this->input->post('bulan',true));
+		$data['profile']=$this->Anti_si($this->input->post('profile',true));
+		$data['week']=$this->Anti_si($this->input->post('week',true));
+		$data['start_date']=$this->Anti_si($this->input->post('start_date',true));
+		$data['end_date']=$this->Anti_si($this->input->post('end_date',true));
+		$data['check']=$this->Anti_si($this->input->post('check',true));
+		$data['tipe_filter']=$this->Anti_si($this->input->post('tipe_filter',true));
+		$data['channel'] = $this->Anti_si($this->input->post('channel',true));
+		$data['preset'] = $this->Anti_si($this->input->post('preset',true));
+		
+		$DATE_NOW= DATE('m');
+		
+		if( ! empty($this->Anti_si($this->input->post('channel',true))) ) {
+			$channel = $this->Anti_si($this->input->post('channel',true));
+		} else {
+			$channel = NULL;
+		}	
+		
+		$data['monthdt'] = $this->tvprogramun_model->get_sel_month_all($data['start_date'],$data['end_date']);
+		foreach($data['monthdt'] as $dtmonth){
+			$bulanm[] = $dtmonth['PERIODE_FULL'];
+			$bulan_label[] = $dtmonth['PERIODE'];
+			$bulan_label_full[] = $dtmonth['PERIODE_FULL'];
+		}
+		$bulanm[] = $data['start_date'];
+		
+		$data['channels'] = $this->tvprogramun_model->list_data_area_month($data); 
+		
+		$data_array = [];
+		foreach($data['channels']['data'] as $datas){
+			
+			
+			$data_array[$datas['AREA']]['NAME'] = $datas['AREA'];
+			$data_array[$datas['AREA']][$datas['REGION']]['NAME'] = $datas['REGION'];
+			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']]['NAME'] = $datas['BRANCH'];
+			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['UV'] = $datas['UV'];
+			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['VIEWERS'] = $datas['VIEWERS'];
+			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['DURATION'] = $datas['DURATION'];
+			
+		}
+		
+		//print_r($data_array);die;
+		
+		$array_cell = ['B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+	   'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK'];
+			
+		$this->load->library('excel');
+		   
+		$objPHPExcel = new PHPExcel();
+
+		$objPHPExcel->getProperties()->setCreator("Unics")
+										 ->setLastModifiedBy("Unics")
+										 ->setTitle("Postbuy Analytics")
+										 ->setSubject("Postbuy Analytics")
+										 ->setDescription("Report Postbuy")
+										 ->setKeywords("Postbuy Analytics")
+										 ->setCategory("Report");
+		
+		$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'Location');
+		$gos = 1;
+		foreach($bulanm as $bulanms){
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos]."1", $bulanms); 
+						$gos++;	
+		}
+		
+		$objPHPExcel->setActiveSheetIndex(0)
+		->setCellValue($array_cell[$gos].'1', 'Total');
+		
+		// $vtl = 2;
+		// $int_area = 0;
+		// if($data['area'] ==  'All' && $data['region'] == 'All'){
+
+				// foreach($data_array as $data_arrays){
+					
+					// $objPHPExcel->setActiveSheetIndex(0)
+								// ->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
+								// ->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
+								// ->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
+								// ->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
+					// $vtl++;
+					
+					// $area_d = array_keys($data_array);
+					// $int_region = 0;
+					// foreach($data_arrays as $data_arraysr){
+						// $region_d = array_keys($data_arrays);
+						
+						// if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
+							// $objPHPExcel->setActiveSheetIndex(0)
+								// ->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
+								// ->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
+								// ->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
+								// ->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
+								// $vtl++;
+								
+								// $int_branch = 0;
+								// foreach($data_arraysr as $data_branch){
+									// $branch_d = array_keys($data_arraysr);
+									// if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+										
+										// $objPHPExcel->setActiveSheetIndex(0)
+										// ->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
+										// ->setCellValue('B'.$vtl, $data_branch['UV'])
+										// ->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
+										// ->setCellValue('D'.$vtl, $data_branch['DURATION']);
+										// $vtl++;
+										
+									// }
+									
+									// $int_branch++;	
+								// }
+								
+						// }
+						// $int_region++;	
+					// }
+								
+					
+				// }
+		// }elseif($data['area'] !==  'All' && $data['region'] == 'All'){
+				// foreach($data_array as $data_arrays){
+					// $area_d = array_keys($data_array);				
+					
+					// if($area_d[$int_area] == $data['area']){
+					
+						// $objPHPExcel->setActiveSheetIndex(0)
+									// ->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
+									// ->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
+									// ->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
+									// ->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
+						// $vtl++;
+						
+						
+						// $int_region = 0;
+						// foreach($data_arrays as $data_arraysr){
+							// $region_d = array_keys($data_arrays);
+
+							// if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
+								// $objPHPExcel->setActiveSheetIndex(0)
+									// ->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
+									// ->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
+									// ->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
+									// ->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
+									// $vtl++;
+									
+									// $int_branch = 0;
+									// foreach($data_arraysr as $data_branch){
+										// $branch_d = array_keys($data_arraysr);
+										// if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+											
+											// $objPHPExcel->setActiveSheetIndex(0)
+											// ->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
+											// ->setCellValue('B'.$vtl, $data_branch['UV'])
+											// ->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
+											// ->setCellValue('D'.$vtl, $data_branch['DURATION']);
+											// $vtl++;
+											
+										// }
+										
+										// $int_branch++;	
+									// }
+									
+							// }
+							// $int_region++;	
+
+						// }
+								
+					// }
+					// $int_area ++;
+				// }			
+		// }else{
+			// foreach($data_array as $data_arrays){
+					// $area_d = array_keys($data_array);				
+					
+					// if($area_d[$int_area] == $data['area']){
+					
+						// $objPHPExcel->setActiveSheetIndex(0)
+									// ->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
+									// ->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
+									// ->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
+									// ->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
+						// $vtl++;
+						
+						
+						// $int_region = 0;
+						// foreach($data_arrays as $data_arraysr){
+							// $region_d = array_keys($data_arrays);
+								// if($region_d[$int_region] == $data['region']){
+									// $objPHPExcel->setActiveSheetIndex(0)
+										// ->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
+										// ->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
+										// ->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
+										// ->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
+										// $vtl++;
+										
+										// $int_branch = 0;
+										// foreach($data_arraysr as $data_branch){
+											// $branch_d = array_keys($data_arraysr);
+											// if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+												
+												// $objPHPExcel->setActiveSheetIndex(0)
+												// ->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
+												// ->setCellValue('B'.$vtl, $data_branch['UV'])
+												// ->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
+												// ->setCellValue('D'.$vtl, $data_branch['DURATION']);
+												// $vtl++;
+												
+											// }
+											
+											// $int_branch++;	
+										// }
+								// }
+							// $int_region++;	
+
+						// }
+								
+					// }
+					// $int_area ++;
+				// }	
+		// }
+		
+		//print_r($data_array);die;
+		
+		$objPHPExcel->getActiveSheet()->setTitle('Audience by Area Month Summary');
+			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel->setActiveSheetIndex(0);
+
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			// header('Content-Type: application/vnd.ms-excel');
+
+		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_area_month.xls');
 		
 		
 	}
