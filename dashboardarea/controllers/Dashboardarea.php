@@ -3896,6 +3896,8 @@ class Dashboardarea extends JA_Controller {
 		$data['tipe_filter']=$this->Anti_si($this->input->post('tipe_filter',true));
 		$data['channel'] = $this->Anti_si($this->input->post('channel',true));
 		$data['preset'] = $this->Anti_si($this->input->post('preset',true));
+		$data['area'] = $this->Anti_si($this->input->post('location',true));
+		$data['region'] = $this->Anti_si($this->input->post('datat',true));
 		
 		$DATE_NOW= DATE('m');
 		
