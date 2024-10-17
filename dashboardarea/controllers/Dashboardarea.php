@@ -3486,150 +3486,299 @@ class Dashboardarea extends JA_Controller {
 			$channel = NULL;
 		}	
 		
-		$table_html_header = '<table aria-describedby="mydesc"  id="myTablearea" class="table table-striped">
-											<thead style="color:red">
-												<tr>
-													<th  scope="row">Area</th>';
-		$data['monthdt'] = $this->tvprogramun_model->get_sel_month_all($data['start_date'],$data['end_date']);
+		if($data['end_date'] == 'All'){
 		
-		$table_html_header_month = '';
-		foreach($data['monthdt'] as $dtmonth){
-			$bulanm[] = $dtmonth['PERIODE_FULL'];
-			$bulan_label[] = $dtmonth['PERIODE'];
-			$bulan_label_full[] = $dtmonth['PERIODE_FULL'];
-			$table_html_header_month .= '<th text-align="right" scope="row">'.$dtmonth['PERIODE'].'</th>';
-		}
-		
-		$table_html_header .= $table_html_header_month.'<th text-align="right" scope="row">Total</th><th text-align="right" scope="row">Action</th></tr></thead><tbody>';
-		$bulanm[] = $data['start_date'];
-		
-		$data['bulan_label'] = $bulan_label;
-		$data['bulan_label_full'] = $bulan_label_full;
-		$data['channels'] = $this->tvprogramun_model->list_data_area_month($data); 
-		
-		$data_array = [];
-		
-		foreach($data['channels']['data'] as $datas){
+			$table_html_header = '<table aria-describedby="mydesc"  id="myTablearea" class="table table-striped">
+												<thead style="color:red">
+													<tr>
+														<th  scope="row">Area</th>';
+			$data['monthdt'] = $this->tvprogramun_model->get_sel_month_all($data['start_date'],$data['end_date']);
 			
+			$table_html_header_month = '';
+			foreach($data['monthdt'] as $dtmonth){
+				$bulanm[] = $dtmonth['PERIODE_FULL'];
+				$bulan_label[] = $dtmonth['PERIODE'];
+				$bulan_label_full[] = $dtmonth['PERIODE_FULL'];
+				$table_html_header_month .= '<th text-align="right" scope="row">'.$dtmonth['PERIODE'].'</th>';
+			}
 			
-			$data_array[$datas['AREA']]['NAME'] = $datas['AREA'];
-			$data_array[$datas['AREA']][$datas['REGION']]['NAME'] = $datas['REGION'];
-			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']]['NAME'] = $datas['BRANCH'];
-			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['UV'] = $datas['UV'];
-			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['VIEWERS'] = $datas['VIEWERS'];
-			$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['DURATION'] = $datas['DURATION'];
+			$table_html_header .= $table_html_header_month.'<th text-align="right" scope="row">Total</th><th text-align="right" scope="row">Action</th></tr></thead><tbody>';
+			$bulanm[] = $data['start_date'];
 			
-		}
-		
-		
-		$html_table_area = '';
-		$html_table_region = '';
-		
-		$int_area = 0;
-		
-		
-		foreach($data_array as $datass){
-			$area_d = array_keys($data_array);
-				$html_table_area .= '<tr>
-							<td class="details-control"><button style="background-color: #f9f9f9;" class="button_blacks" id="btn_expand_aream_'.$area_d[$int_area].'" onClick="expand_aream(\''.$area_d[$int_area].'\')">+</button> AREA '.$area_d[$int_area].'</td>';
-							
-							foreach($bulanm as $bulanms){
-								
-								$html_table_area .= '<td text-align="right" >'.number_format($datass['ALL']['ALL'][$bulanms][$data['type']],0,',','.').'</td>';
-							}
-							
-				$html_table_area .= '<td text-align="right" ><button class="button_black export_area_month" onClick="print_area_month(\''.$area_d[$int_area].'\',\'All\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
-						</tr>';
+			$data['bulan_label'] = $bulan_label;
+			$data['bulan_label_full'] = $bulan_label_full;
+			$data['channels'] = $this->tvprogramun_model->list_data_area_month($data); 
 			
+			$data_array = [];
 			
-							$table_html_region = '
-							<table aria-describedby="mydesc"  class="table table-striped" >
-											<thead style="color:red">
-												<tr>
-													<th  scope="row">Region </th>
-													'.$table_html_header_month.'
-													<th text-align="right" scope="row">Total</th>
-													<th text-align="right" scope="row">Action</th>
-													
-												</tr></thead><tbody>';
-							
-				$int_region = 0;
-				$table_html_branch = '';
-				foreach($datass as $data_region){
-					$region_d = array_keys($datass);
-					//echo $region_d[$int_region];die;
-					if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
-						
-						$table_html_region .= '<tr>
-							<td class="details-control"><button class="button_blacks" style="background-color: #f9f9f9;" id="btn_expand_regionm_'.str_replace(" ","",$region_d[$int_region]).'" onClick="expand_regionm(\''.str_replace(" ","",$region_d[$int_region]).'\')">+</button> '.$region_d[$int_region].'</td>';
-							foreach($bulanm as $bulanms){
-								
-								$table_html_region .= '<td text-align="right" >'.number_format($data_region['ALL'][$bulanms][$data['type']],0,',','.').'</td>';
-							}
-							$table_html_region .= '<td text-align="right" ><button class="button_black export_area_month" onClick="print_area_month(\''.$area_d[$int_area].'\',\''.$region_d[$int_region].'\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
-																
-						</tr>';						
-					}
-					
-					
-					if($region_d[$int_region] !== 'NAME'){
-						$table_html_branch = '
-							<table aria-describedby="mydesc"  class="table table-striped" >
-											<thead style="color:red">
-												<tr>
-													<th  scope="row">Branch </th>
-													'.$table_html_header_month.'
-													<th text-align="right" scope="row">Total</th>
-													
-												</tr></thead><tbody>';
-												
+			foreach($data['channels']['data'] as $datas){
 				
-							$int_branch = 0;
-							foreach($data_region as $data_branch){
-								$branch_d = array_keys($data_region);
-								if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+				
+				$data_array[$datas['AREA']]['NAME'] = $datas['AREA'];
+				$data_array[$datas['AREA']][$datas['REGION']]['NAME'] = $datas['REGION'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']]['NAME'] = $datas['BRANCH'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['UV'] = $datas['UV'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['VIEWERS'] = $datas['VIEWERS'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['DURATION'] = $datas['DURATION'];
+				
+			}
+			
+			
+			$html_table_area = '';
+			$html_table_region = '';
+			
+			$int_area = 0;
+			
+			
+			foreach($data_array as $datass){
+				$area_d = array_keys($data_array);
+					$html_table_area .= '<tr>
+								<td class="details-control"><button style="background-color: #f9f9f9;" class="button_blacks" id="btn_expand_aream_'.$area_d[$int_area].'" onClick="expand_aream(\''.$area_d[$int_area].'\')">+</button> AREA '.$area_d[$int_area].'</td>';
+								
+								foreach($bulanm as $bulanms){
 									
-									$table_html_branch .= '<tr>
-										<td class="details-control">'.$branch_d[$int_branch].'</td>';
-										foreach($bulanm as $bulanms){
-											
-											$table_html_branch .= '<td text-align="right" >'.number_format($data_branch[$bulanms][$data['type']],0,',','.').'</td>';
-										}
-										$table_html_branch .= '</tr>';						
+									$html_table_area .= '<td text-align="right" >'.number_format($datass['ALL']['ALL'][$bulanms][$data['type']],0,',','.').'</td>';
 								}
 								
-								$int_branch++;	
-							}
+					$html_table_area .= '<td text-align="right" ><button class="button_black export_area_month" onClick="print_area_month(\''.$area_d[$int_area].'\',\'All\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
+							</tr>';
+				
+				
+								$table_html_region = '
+								<table aria-describedby="mydesc"  class="table table-striped" >
+												<thead style="color:red">
+													<tr>
+														<th  scope="row">Region </th>
+														'.$table_html_header_month.'
+														<th text-align="right" scope="row">Total</th>
+														<th text-align="right" scope="row">Action</th>
+														
+													</tr></thead><tbody>';
+								
+					$int_region = 0;
+					$table_html_branch = '';
+					foreach($datass as $data_region){
+						$region_d = array_keys($datass);
+						//echo $region_d[$int_region];die;
+						if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
 							
-							$table_html_branch .= '</tbody></table>';
-							
-							$table_html_region .= '<tr id="tablebranchm_'.str_replace(" ","",$region_d[$int_region]).'" style="display:none" >
-										<td class="details-control" colspan="13">'.$table_html_branch.'</td>
-									</tr>';
-							
-					}			
-							
+							$table_html_region .= '<tr>
+								<td class="details-control"><button class="button_blacks" style="background-color: #f9f9f9;" id="btn_expand_regionm_'.str_replace(" ","",$region_d[$int_region]).'" onClick="expand_regionm(\''.str_replace(" ","",$region_d[$int_region]).'\')">+</button> '.$region_d[$int_region].'</td>';
+								foreach($bulanm as $bulanms){
+									
+									$table_html_region .= '<td text-align="right" >'.number_format($data_region['ALL'][$bulanms][$data['type']],0,',','.').'</td>';
+								}
+								$table_html_region .= '<td text-align="right" ><button class="button_black export_area_month" onClick="print_area_month(\''.$area_d[$int_area].'\',\''.$region_d[$int_region].'\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
+																	
+							</tr>';						
+						}
 						
 						
-					$int_region++;	
+						if($region_d[$int_region] !== 'NAME'){
+							$table_html_branch = '
+								<table aria-describedby="mydesc"  class="table table-striped" >
+												<thead style="color:red">
+													<tr>
+														<th  scope="row">Branch </th>
+														'.$table_html_header_month.'
+														<th text-align="right" scope="row">Total</th>
+														
+													</tr></thead><tbody>';
+													
 					
+								$int_branch = 0;
+								foreach($data_region as $data_branch){
+									$branch_d = array_keys($data_region);
+									if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+										
+										$table_html_branch .= '<tr>
+											<td class="details-control">'.$branch_d[$int_branch].'</td>';
+											foreach($bulanm as $bulanms){
+												
+												$table_html_branch .= '<td text-align="right" >'.number_format($data_branch[$bulanms][$data['type']],0,',','.').'</td>';
+											}
+											$table_html_branch .= '</tr>';						
+									}
+									
+									$int_branch++;	
+								}
+								
+								$table_html_branch .= '</tbody></table>';
+								
+								$table_html_region .= '<tr id="tablebranchm_'.str_replace(" ","",$region_d[$int_region]).'" style="display:none" >
+											<td class="details-control" colspan="13">'.$table_html_branch.'</td>
+										</tr>';
+								
+						}			
+								
+							
+							
+						$int_region++;	
+						
+						
+						
+					}
 					
+				
 					
-				}
-				
-			
-				
-				$table_html_region .= '</tbody></table>';
-				
-				$html_table_area .= '<tr id="tableregionm_'.$area_d[$int_area].'" style="display:none" >
-							<td class="details-control" colspan="13">'.$table_html_region.'</td>
-						</tr>';
-			$int_area++;
-		}
+					$table_html_region .= '</tbody></table>';
+					
+					$html_table_area .= '<tr id="tableregionm_'.$area_d[$int_area].'" style="display:none" >
+								<td class="details-control" colspan="13">'.$table_html_region.'</td>
+							</tr>';
+				$int_area++;
+			}
 
-		$table_html = $table_html_header.''.$html_table_area.'</tbody></table>
-		';
+			$table_html = $table_html_header.''.$html_table_area.'</tbody></table>
+			';
 		
+		}else{
+			$table_html_header = '<table aria-describedby="mydesc"  id="myTablearea" class="table table-striped">
+												<thead style="color:red">
+													<tr>
+														<th  scope="row">Area</th>';
+														
+			$data['monthdt'] = $this->tvprogramun_model->get_sel_week_area($data['start_date'],$data['end_date']);
+			
+			//print_r($data['monthdt']);die;
+			$w_per = '';
+			$table_html_header_month = '';
+			foreach($data['monthdt'] as $dtmonth){
+				$bulanm[] = $data['start_date'].'-'.$dtmonth['WEEK'];
+				$bulan_label[] = $dtmonth['PER'];
+				$bulan_label_full[] = $dtmonth['PER'];
+				$table_html_header_month .= '<th text-align="right" scope="row">'.$dtmonth['PER'].'</th>';
+				$w_per .= "'".$data['start_date'].'-'.$dtmonth['WEEK']."',";
+			}
+			
+			$w_per = substr($w_per,0,-1);
+			$table_html_header .= $table_html_header_month.'<th text-align="right" scope="row">Action</th></tr></thead><tbody>';
+			
+			$data['bulan_label'] = $bulan_label;
+			$data['bulan_label_full'] = $bulan_label_full;
+			$data['channels'] = $this->tvprogramun_model->list_data_area_week($data,$w_per); 
+			
+			$data_array = [];
+			
+			foreach($data['channels']['data'] as $datas){
+				
+				
+				$data_array[$datas['AREA']]['NAME'] = $datas['AREA'];
+				$data_array[$datas['AREA']][$datas['REGION']]['NAME'] = $datas['REGION'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']]['NAME'] = $datas['BRANCH'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['UV'] = $datas['UV'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['VIEWERS'] = $datas['VIEWERS'];
+				$data_array[$datas['AREA']][$datas['REGION']][$datas['BRANCH']][$datas['PERIODE']]['DURATION'] = $datas['DURATION'];
+				
+			}
+						
+			$html_table_area = '';
+			$html_table_region = '';
+			
+			$int_area = 0;
+			
+			foreach($data_array as $datass){
+				$area_d = array_keys($data_array);
+					$html_table_area .= '<tr>
+								<td class="details-control"><button style="background-color: #f9f9f9;" class="button_blacks" id="btn_expand_aream_'.$area_d[$int_area].'" onClick="expand_aream(\''.$area_d[$int_area].'\')">+</button> AREA '.$area_d[$int_area].'</td>';
+								
+								foreach($bulanm as $bulanms){
+									
+									$html_table_area .= '<td text-align="right" >'.number_format($datass['ALL']['ALL'][$bulanms][$data['type']],0,',','.').'</td>';
+								}
+								
+					$html_table_area .= '<td text-align="right" ><button class="button_black export_area_month" onClick="print_area_month(\''.$area_d[$int_area].'\',\'All\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
+							</tr>';
+				
+				
+								$table_html_region = '
+								<table aria-describedby="mydesc"  class="table table-striped" >
+												<thead style="color:red">
+													<tr>
+														<th  scope="row">Region </th>
+														'.$table_html_header_month.'
+														<th text-align="right" scope="row">Action</th>
+														
+													</tr></thead><tbody>';
+								
+					$int_region = 0;
+					$table_html_branch = '';
+					foreach($datass as $data_region){
+						$region_d = array_keys($datass);
+						//echo $region_d[$int_region];die;
+						if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
+							
+							$table_html_region .= '<tr>
+								<td class="details-control"><button class="button_blacks" style="background-color: #f9f9f9;" id="btn_expand_regionm_'.str_replace(" ","",$region_d[$int_region]).'" onClick="expand_regionm(\''.str_replace(" ","",$region_d[$int_region]).'\')">+</button> '.$region_d[$int_region].'</td>';
+								foreach($bulanm as $bulanms){
+									
+									$table_html_region .= '<td text-align="right" >'.number_format($data_region['ALL'][$bulanms][$data['type']],0,',','.').'</td>';
+								}
+								$table_html_region .= '<td text-align="right" ><button class="button_black export_area_month" onClick="print_area_month(\''.$area_d[$int_area].'\',\''.$region_d[$int_region].'\')"><em class="fa fa-download"></em> &nbsp Export</button></td>
+																	
+							</tr>';						
+						}
+						
+						
+						if($region_d[$int_region] !== 'NAME'){
+							$table_html_branch = '
+								<table aria-describedby="mydesc"  class="table table-striped" >
+												<thead style="color:red">
+													<tr>
+														<th  scope="row">Branch </th>
+														'.$table_html_header_month.'
+														
+													</tr></thead><tbody>';
+													
+					
+								$int_branch = 0;
+								foreach($data_region as $data_branch){
+									$branch_d = array_keys($data_region);
+									if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
+										
+										$table_html_branch .= '<tr>
+											<td class="details-control">'.$branch_d[$int_branch].'</td>';
+											foreach($bulanm as $bulanms){
+												
+												$table_html_branch .= '<td text-align="right" >'.number_format($data_branch[$bulanms][$data['type']],0,',','.').'</td>';
+											}
+											$table_html_branch .= '</tr>';						
+									}
+									
+									$int_branch++;	
+								}
+								
+								$table_html_branch .= '</tbody></table>';
+								
+								$table_html_region .= '<tr id="tablebranchm_'.str_replace(" ","",$region_d[$int_region]).'" style="display:none" >
+											<td class="details-control" colspan="13">'.$table_html_branch.'</td>
+										</tr>';
+								
+						}			
+								
+							
+							
+						$int_region++;	
+						
+						
+						
+					}
+					
+				
+					
+					$table_html_region .= '</tbody></table>';
+					
+					$html_table_area .= '<tr id="tableregionm_'.$area_d[$int_area].'" style="display:none" >
+								<td class="details-control" colspan="13">'.$table_html_region.'</td>
+							</tr>';
+				$int_area++;
+			}
+
+			$table_html = $table_html_header.''.$html_table_area.'</tbody></table>
+			';
+			
+			
+		}
 		//ECHO $table_html ;DIE;
 		
 		$data['table'] = $table_html;
@@ -3907,15 +4056,37 @@ class Dashboardarea extends JA_Controller {
 			$channel = NULL;
 		}	
 		
-		$data['monthdt'] = $this->tvprogramun_model->get_sel_month_all($data['start_date'],$data['end_date']);
-		foreach($data['monthdt'] as $dtmonth){
-			$bulanm[] = $dtmonth['PERIODE_FULL'];
-			$bulan_label[] = $dtmonth['PERIODE'];
-			$bulan_label_full[] = $dtmonth['PERIODE_FULL'];
+		if($data['end_date'] == 'All'){
+			
+			$data['monthdt'] = $this->tvprogramun_model->get_sel_month_all($data['start_date'],$data['end_date']);
+			foreach($data['monthdt'] as $dtmonth){
+				$bulanm[] = $dtmonth['PERIODE_FULL'];
+				$bulan_label[] = $dtmonth['PERIODE'];
+				$bulan_label_full[] = $dtmonth['PERIODE_FULL'];
+			}
+			$bulanm[] = $data['start_date'];
+			
+			$data['channels'] = $this->tvprogramun_model->list_data_area_month($data); 
+			
+		}else{
+			
+			$data['monthdt'] = $this->tvprogramun_model->get_sel_week_area($data['start_date'],$data['end_date']);
+			
+			//print_r($data['monthdt']);die;
+			$w_per = '';
+			$table_html_header_month = '';
+			foreach($data['monthdt'] as $dtmonth){
+				$bulanm[] = $data['start_date'].'-'.$dtmonth['WEEK'];
+				$bulan_label[] = $dtmonth['PER'];
+				$bulan_label_full[] = $dtmonth['PER'];
+				$table_html_header_month .= '<th text-align="right" scope="row">'.$dtmonth['PER'].'</th>';
+				$w_per .= "'".$data['start_date'].'-'.$dtmonth['WEEK']."',";
+				$data['channels'] = $this->tvprogramun_model->list_data_area_week($data,$w_per); 
+			}
+			
 		}
-		$bulanm[] = $data['start_date'];
 		
-		$data['channels'] = $this->tvprogramun_model->list_data_area_month($data); 
+		
 		
 		$data_array = [];
 		foreach($data['channels']['data'] as $datas){

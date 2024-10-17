@@ -177,6 +177,24 @@ class Tvprogramun_model extends CI_Model {
 		return $result;
 	}
 	
+	public function get_sel_week_area($first_day,$this_day) {  
+
+
+
+			
+			$sql = "
+						SELECT *,CONCAT(DATE_FORMAT(START_DATE,'%d%b'),' - ',DATE_FORMAT(EMD_DATE,'%d%b')) AS PER,
+						CONCAT(YEAR,'-',WEEK) AS PERIODE_FULL
+						FROM WEEK_PARAM_DATE WHERE YEAR = '".$first_day."' AND DATE_FORMAT(START_DATE,'%m') = '".$this_day."'
+					";
+		
+		$out		= array();
+		$query		= $this->db->query($sql);
+		$result = $query->result_array();
+			
+		return $result;
+	}
+	
 	public function list_data_area_month($params = array(),$where) {
 			
 				
@@ -185,6 +203,40 @@ class Tvprogramun_model extends CI_Model {
 			WHERE TYPE_PERIODE IN ('MONTHLY','YEARLY') 
 			AND PERIODE LIKE '%".$params['start_date']."%'
 			AND TYPE_DATA = '".$params['tipe_filter']."'
+			order by PERIODE,AREA,REGION,BRANCH
+			";
+
+	
+		//echo $sql;die;
+
+		$db = $this->clickhouse->db();
+		$out		= array();
+		$resultS = $db->select($sql);
+		$result = $resultS->rows();	  
+    
+		$total_filtered['ROWS'] = count($result);
+		$total 			= count($result);
+		
+					    
+		$return = array(
+			'data' => $result,
+			'total_filtered' => $total_filtered['ROWS'],
+			'total' => $total,
+		);
+    
+		return $return;
+  
+	}
+	
+	public function list_data_area_week($params = array(),$where) {
+			
+				
+			$sql = "
+			SELECT * FROM M_SUM_TV_DASH_CHAN_PERIODE
+			WHERE TYPE_PERIODE IN ('WEEKLY') 
+			AND PERIODE LIKE '%".$params['start_date']."%'
+			AND TYPE_DATA = '".$params['tipe_filter']."'
+			AND PERIODE IN (".$where.")
 			order by PERIODE,AREA,REGION,BRANCH
 			";
 

@@ -4242,7 +4242,7 @@ function back_line_bre(){
 
 
 function refresh_chart_line_area(data_alls,type,bulan_label){
-	
+		
 	$('#line-chart-area-op').show();
 	$('#line-chart-region-op').hide();
 	
