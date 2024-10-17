@@ -4021,11 +4021,12 @@ class Dashboardarea extends JA_Controller {
 					
 					if($area_d[$int_area] == $data['area']){
 					
-						$objPHPExcel->setActiveSheetIndex(0)
-									->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
-									->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
-									->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
-									->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME']);
+						$gos = 0;
+						foreach($bulanm as $bulanms){
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].''.$vtl, $data_arrays['ALL']['ALL'][$bulanms][$data['type']]);
+							$gos++;	
+						}
 						$vtl++;
 						
 						
@@ -4034,23 +4035,24 @@ class Dashboardarea extends JA_Controller {
 							$region_d = array_keys($data_arrays);
 
 							if($region_d[$int_region] !== 'ALL' &&  $region_d[$int_region] !== 'NAME'){
-								$objPHPExcel->setActiveSheetIndex(0)
-									->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
-									->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
-									->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
-									->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
+								$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME']);
+									$gos = 0;
+									foreach($bulanm as $bulanms){
+										$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].''.$vtl, $data_arraysr['ALL'][$bulanms][$data['type']]);
+										$gos++;	
+									}
 									$vtl++;
 									
 									$int_branch = 0;
 									foreach($data_arraysr as $data_branch){
 										$branch_d = array_keys($data_arraysr);
 										if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
-											
-											$objPHPExcel->setActiveSheetIndex(0)
-											->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
-											->setCellValue('B'.$vtl, $data_branch['UV'])
-											->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
-											->setCellValue('D'.$vtl, $data_branch['DURATION']);
+											$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME']);
+											$gos = 0;
+											foreach($bulanm as $bulanms){
+												$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].''.$vtl, $data_branch[$bulanms][$data['type']]);
+												$gos++;	
+											}
 											$vtl++;
 											
 										}
@@ -4072,11 +4074,12 @@ class Dashboardarea extends JA_Controller {
 					
 					if($area_d[$int_area] == $data['area']){
 					
-						$objPHPExcel->setActiveSheetIndex(0)
-									->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
-									->setCellValue('B'.$vtl, $data_arrays['ALL']['ALL']['UV'])
-									->setCellValue('C'.$vtl, $data_arrays['ALL']['ALL']['VIEWERS'])
-									->setCellValue('D'.$vtl, $data_arrays['ALL']['ALL']['DURATION']);
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME']);
+						$gos = 0;
+						foreach($bulanm as $bulanms){
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].''.$vtl, $data_arrays['ALL']['ALL'][$bulanms][$data['type']]);
+							$gos++;	
+						}
 						$vtl++;
 						
 						
@@ -4084,11 +4087,12 @@ class Dashboardarea extends JA_Controller {
 						foreach($data_arrays as $data_arraysr){
 							$region_d = array_keys($data_arrays);
 								if($region_d[$int_region] == $data['region']){
-									$objPHPExcel->setActiveSheetIndex(0)
-										->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME'])
-										->setCellValue('B'.$vtl, $data_arraysr['ALL']['UV'])
-										->setCellValue('C'.$vtl, $data_arraysr['ALL']['VIEWERS'])
-										->setCellValue('D'.$vtl, $data_arraysr['ALL']['DURATION']);
+									$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$vtl, ' Region '.$data_arraysr['NAME']);
+										$gos = 0;
+										foreach($bulanm as $bulanms){
+											$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].''.$vtl, $data_arraysr['ALL'][$bulanms][$data['type']]);
+											$gos++;	
+										}
 										$vtl++;
 										
 										$int_branch = 0;
@@ -4096,11 +4100,12 @@ class Dashboardarea extends JA_Controller {
 											$branch_d = array_keys($data_arraysr);
 											if($branch_d[$int_branch] !== 'ALL' && $branch_d[$int_branch] !== 'NAME'){
 												
-												$objPHPExcel->setActiveSheetIndex(0)
-												->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
-												->setCellValue('B'.$vtl, $data_branch['UV'])
-												->setCellValue('C'.$vtl, $data_branch['VIEWERS'])
-												->setCellValue('D'.$vtl, $data_branch['DURATION']);
+												$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$vtl, '  Branch '.$data_branch['NAME'])
+												$gos = 0;
+												foreach($bulanm as $bulanms){
+													$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].''.$vtl, $data_branch[$bulanms][$data['type']]);
+													$gos++;	
+												}
 												$vtl++;
 												
 											}
