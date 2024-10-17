@@ -3930,7 +3930,7 @@ class Dashboardarea extends JA_Controller {
 			
 		}
 		
-		print_r($data_array);die;
+		
 		
 		$array_cell = ['B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
 	   'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK'];
