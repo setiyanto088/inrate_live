@@ -545,9 +545,13 @@ button[disabled]{
 					</div>
 				</div>
 				
+				<div class="row" id="loader_area2" style="">
+					<div class="col-md-12" style="margin:auto">
+						<img alt="img" class="gambar"  src="<?php echo $path; ?>assets/images/icon_loader.gif" style="display: block;margin-left: auto;margin-right: auto;">
+					</div>
+				</div>
 				
-				
-				<div class="panel-body" id="tab-contents-result2" style="">
+				<div class="panel-body" id="tab-contents-result2" style="display:none">
               <!-- Nav tabs -->
 					<div class="col-md-2">
  								<div class="row" style="background-color:#F2F2F2;padding:5px;color:#000;border: none;border-radius:5px">
@@ -568,7 +572,7 @@ button[disabled]{
                           <div class="row">
 							<div class="col-lg-12">	
 								 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
-									<button class="button_black" onClick="print_area_month('All','All')" id=''><em class="fa fa-download"></em> &nbsp Export</button>
+									<button class="button_black export_area_month" onClick="print_area_month('All','All')" id=''><em class="fa fa-download"></em> &nbsp Export</button>
 								</div>
 							</div>
 							  <div class="col-md-12">													
@@ -3239,6 +3243,9 @@ function audiencebar_view2(){
 	var check = "True";
 	
 	
+	$('#loader_area2').show();
+	$('#tab-contents-result2').hide();
+	
 	var form_data = new FormData();  
 	var type = $('#audiencebar2').val();
 	var tahun = $('#tahun').val();
@@ -3287,6 +3294,10 @@ function audiencebar_view2(){
 			$('#table_program42').html(obj['table']);
 
 			refresh_chart_line_area(data_alls,type,obj.bulan_label);
+			
+			$('#tab-contents-result2').show();
+			$('#loader_area2').hide();
+			
 				
 		}
 	});	
@@ -3876,6 +3887,8 @@ function print_area(location,datat){
 
 function print_area_month(location,datat){
 	
+	$('.export_area_month').prop('disabled', true);
+	
 	var check = "True";
 
 	var form_data = new FormData();  
@@ -3919,6 +3932,7 @@ function print_area_month(location,datat){
 				 //$("#export_channel42").attr("disabled", false);
 				
 				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_area_month.xls','Audience_by_area_month.xls');
+				$('.export_area_month').prop('disabled', false);
 									
 			} 
 		});	
