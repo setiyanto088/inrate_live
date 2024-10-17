@@ -3763,8 +3763,9 @@ class Dashboardarea extends JA_Controller {
 				}
 		}elseif($data['area'] !==  'All' && $data['region'] == 'All'){
 				foreach($data_array as $data_arrays){
-					$area_d = array_keys($data_array);					
-					if($area_d == $data['area']){
+					$area_d = array_keys($data_array);				
+					
+					if($area_d[$int_area] == $data['area']){
 					
 						$objPHPExcel->setActiveSheetIndex(0)
 									->setCellValue('A'.$vtl, 'Area '.$data_arrays['NAME'])
