@@ -3746,6 +3746,8 @@ class Dashboardarea extends JA_Controller {
 								$vtl++;
 								
 							}
+							
+							$int_branch++;	
 						}
 						
 				}
