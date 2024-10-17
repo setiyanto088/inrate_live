@@ -3852,7 +3852,7 @@ function print_area(location,datat){
 				
 				 //$("#export_channel42").attr("disabled", false);
 				
-				//download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_area.xls','Audience_by_area.xls');
+				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_area.xls','Audience_by_area.xls');
 									
 			}, error: function(obj, response) {
 				console.log('ajax list detail error:' + response);	
