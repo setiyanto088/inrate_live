@@ -3969,7 +3969,7 @@ class Dashboardarea extends JA_Controller {
 					
 					$gos = 0;
 					foreach($bulanm as $bulanms){
-						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($gos.''.$vtl, $data_arrays['ALL']['ALL'][$data['type']]);
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].''.$vtl, $data_arrays['ALL']['ALL'][$data['type']]);
 						$gos++;	
 					}
 					
@@ -3985,7 +3985,7 @@ class Dashboardarea extends JA_Controller {
 							
 								$gos = 0;
 								foreach($bulanm as $bulanms){
-									$objPHPExcel->setActiveSheetIndex(0)->setCellValue($gos.''.$vtl, $data_arraysr['ALL'][$data['type']]);
+									$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].''.$vtl, $data_arraysr['ALL'][$data['type']]);
 									$gos++;	
 								}
 								$vtl++;
@@ -3999,7 +3999,7 @@ class Dashboardarea extends JA_Controller {
 										
 										$gos = 0;
 										foreach($bulanm as $bulanms){
-											$objPHPExcel->setActiveSheetIndex(0)->setCellValue($gos.''.$vtl, $data_branch[$data['type']]);
+											$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].''.$vtl, $data_branch[$data['type']]);
 											$gos++;	
 										}
 										$vtl++;
