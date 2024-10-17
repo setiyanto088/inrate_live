@@ -3947,8 +3947,8 @@ class Dashboardarea extends JA_Controller {
 		
 		$objPHPExcel->setActiveSheetIndex(0)
 						->setCellValue('A1', 'Location');
-		$gos = 1;
-		foreach($bulanm as $bulanms){
+		$gos = 0;
+		foreach($bulan_label_full as $bulanms){
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos]."1", $bulanms); 
 						$gos++;	
 		}
