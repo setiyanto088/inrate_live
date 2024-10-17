@@ -186,6 +186,7 @@ class Tvprogramun_model extends CI_Model {
 						SELECT *,CONCAT(DATE_FORMAT(START_DATE,'%d%b'),' - ',DATE_FORMAT(EMD_DATE,'%d%b')) AS PER,
 						CONCAT(YEAR,'-',WEEK) AS PERIODE_FULL
 						FROM WEEK_PARAM_DATE WHERE YEAR = '".$first_day."' AND DATE_FORMAT(START_DATE,'%m') = '".$this_day."'
+						AND START_DATE < '".date('Y-m-d')."'
 					";
 		
 		$out		= array();
