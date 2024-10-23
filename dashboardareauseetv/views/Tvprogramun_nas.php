@@ -740,7 +740,7 @@ function channel_change(){
 					
 					if(tpe == 'table'){
 					
-						var table_html = '<table aria-describedby="mydesc"  id="example3" class="table table-striped " style="overflow-x:auto;white-space: nowrap; font-size:11px !important;"><thead style="color:red"><tr><th style="width:15px">Rank </th><th >Channel </th></tr></thead></table>';
+						var table_html = '<table aria-describedby="mydesc"  id="example3" class="table table-striped " style="overflow-x:auto;white-space: nowrap; font-size:14px !important;"><thead style="color:red"><tr><th style="width:15px">Rank </th><th >Channel </th></tr></thead></table>';
  						 
 						$('#table_program_channel').html(table_html);
 						
