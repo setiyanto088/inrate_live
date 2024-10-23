@@ -191,6 +191,7 @@
               <div class="panel-headings">
                   <h5 class='urate-panel-title'><strong>Minipack Detail</strong></h5>
               </div>
+	
               <div class="panel-body">
                   <!-- Nav tabs -->
              
@@ -228,13 +229,8 @@
 			   
 		     <div class="panel urate-panel urate-panel-result" style="border:1px solid #efefef;padding:10px">
               <div class="panel-headings">
-			  <div class="pull-left" >
-                  <h5 class='urate-panel-title' ><strong>Genre Detail</strong></h5>
-				  </div>
-			
-             	
+                  <h5 class='urate-panel-title'><strong>Genre Detail</strong></h5>
               </div>
-			 
               <div class="panel-body">
                   <!-- Nav tabs -->
              <br>

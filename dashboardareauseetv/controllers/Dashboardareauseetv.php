@@ -449,7 +449,7 @@ class dashboardareauseetv extends JA_Controller {
 			
 			if($regional == "0"){ 
 			
-				$arr_regional = ['01','02','03','04','05','06','07'];
+				$arr_regional = ['01','02','03','04'];
 				
 				$data['list_witel_h'] = $arr_regional;
 				
@@ -497,6 +497,7 @@ class dashboardareauseetv extends JA_Controller {
 				foreach($list_witel as $list_witels){
 					
 					$arr_regional[] = $list_witels['WITEL'];
+					$arr_regional_name[] = $list_witels;
 					
 				}
 				
@@ -512,7 +513,7 @@ class dashboardareauseetv extends JA_Controller {
 				}
 
 				$ta = 0;
-				foreach($arr_regional as $arr_reg){
+				foreach($arr_regional_name as $arr_reg){
 					
 					$rank_reg = $this->tvprogramun_model->list_rank_channel_witel_all($periode,$regional,$arr_reg,$where);
 					$tr = 0;
@@ -520,9 +521,9 @@ class dashboardareauseetv extends JA_Controller {
 					for($rt = 0; $rt < $max_rank; $rt++){
 						
 						if (isset($rank_reg[$rt]['CHANNEL'])) {
-							$array_view[$rt][$arr_reg] = $rank_reg[$rt]['CHANNEL'];
+							$array_view[$rt][$arr_reg['WITEL']] = $rank_reg[$rt]['CHANNEL'];
 						}else{
-							$array_view[$rt][$arr_reg] = "";
+							$array_view[$rt][$arr_reg['WITEL']] = "";
 						}
 						
 						$tr++;

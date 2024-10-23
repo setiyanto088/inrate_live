@@ -158,7 +158,7 @@
 				<div class="result-table" style="overflow-x:hidden">
 
 								<div id="table_program_channel">
-									<table aria-describedby="mydesc"  id="example3" class="table table-striped " style=" font-size:14px !important;">
+									<table aria-describedby="mydesc"  id="example3" class="table table-striped " style=" font-size:14px !important;white-space: nowrap;">
 										<thead style="color:red">
 											<tr>
 												<th  scope="row" style="width:15px">Rank </th>
@@ -166,7 +166,7 @@
 												<th  scope="row" ><?php 
 												
 												if($regional_text == "0"){
-													echo 'Regional '.str_replace('0','',$list_witel_hs); 
+													echo 'Area 0'.str_replace('0','',$list_witel_hs); 
 												}else{
 													echo $list_witel_hs; 
 												}
@@ -207,7 +207,7 @@
 				<div class="result-table" style="overflow-x:hidden">
 
 								<div id="table_program">
-									<table aria-describedby="mydesc"  id="example3" class="table table-striped " style=" font-size:14px ">
+									<table aria-describedby="mydesc"  id="example3" class="table table-striped " style=" font-size:14px;white-space: nowrap; ">
 										<thead  style="color:red">
 											<tr>
 												<th  scope="row" style="width:15px">Rank </th>
@@ -215,7 +215,7 @@
 													<th  scope="row"><?php 
 												
 												if($regional_text == "0"){
-													echo 'Regional '.str_replace('0','',$list_witel_hs); 
+													echo 'Area 0'.str_replace('0','',$list_witel_hs); 
 												}else{
 													echo $list_witel_hs; 
 												}
@@ -262,7 +262,7 @@
 				<div class="result-table" style="overflow-x:hidden">
 
 								<div id="table_program_pasad">
-									<table aria-describedby="mydesc"  id="example3" class="table table-striped" style=" font-size:14px">
+									<table aria-describedby="mydesc"  id="example3" class="table table-striped" style=" font-size:14px;white-space: nowrap;">
 										<thead style="color:red">
 											<tr>
 												<th  scope="row" style="width:15px">Rank </th>
@@ -270,7 +270,7 @@
 												<th  scope="row" ><?php 
 												
 												if($regional_text == "0"){
-													echo 'Regional '.str_replace('0','',$list_witel_hs); 
+													echo 'Area 0'.str_replace('0','',$list_witel_hs); 
 												}else{
 													echo $list_witel_hs; 
 												}
@@ -772,7 +772,7 @@ function channel_change(){
 							tab_cont += '<th><?php 
 												
 												if($regional_text == "0"){
-													echo 'Regional '.str_replace('0','',$list_witel_hs); 
+													echo 'Area 0'.str_replace('0','',$list_witel_hs); 
 												}else{
 													echo $list_witel_hs; 
 												}
@@ -782,7 +782,7 @@ function channel_change(){
 												?> </th>';
 					<?php } ?>
 					
-					var table_html = '<table aria-describedby="mydesc"  id="example3" class="table table-striped " style="font-size:10px !important;table-layout:fixed;"><thead style="color:red"><tr>'+tab_cont+'</tr></thead></table>';
+					var table_html = '<table aria-describedby="mydesc"  id="example3" class="table table-striped " style="font-size:14px !important;white-space: nowrap;"><thead style="color:red"><tr>'+tab_cont+'</tr></thead></table>';
 					
 					$('#table_program_channel').html(table_html);
 					

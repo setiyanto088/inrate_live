@@ -588,6 +588,7 @@ ORDER BY CHANNEL_NAME";
 								AND BRANCH = 'ALL'
 								AND TYPE_PERIODE = 'MONTHLY'
 								AND TYPE_DATA = 'LIVE'
+								".$where."
 								ORDER BY VIEWERS DESC
 								LIMIT 10
 								
@@ -659,14 +660,11 @@ ORDER BY CHANNEL_NAME";
 		
 					$db = $this->clickhouse->db();
 		$query = "
-		SELECT * FROM `M_SUM_TV_DASH_MINIPACK_AREA_PTV`
-		WHERE PERIODE = '".$periode."'
-		AND AREA = 'ALL'
-		AND REGIONAL = 'ALL'
-		AND BRANCH = 'ALL'
-		AND TYPE_PERIODE = 'MONTHLY'
-		AND TYPE_DATA = 'LIVE'
-		ORDER BY VIEWERS DESC
+			SELECT * FROM M_SUM_TV_DASH_CHAN_PTV
+							WHERE TANGGAL = '".$periode."'
+							AND ID_PROFILE = 0
+							".$where."
+							ORDER BY VIEWERS DESC
 		";
 		
 		
@@ -692,7 +690,7 @@ ORDER BY CHANNEL_NAME";
 		".$where."
 		ORDER BY VIEWERS DESC
 		";
-				
+						
 		$result = $db->select($query);
 		
 		
@@ -711,6 +709,7 @@ ORDER BY CHANNEL_NAME";
 		AND BRANCH = 'ALL'
 		AND TYPE_PERIODE = 'MONTHLY'
 		AND TYPE_DATA = 'LIVE'
+		".$where."
 		ORDER BY VIEWERS DESC
 		";
 		
@@ -727,9 +726,16 @@ ORDER BY CHANNEL_NAME";
 		
 		$db = $this->clickhouse->db();
 		$query = "
-		SELECT MAX(RANK) AS MAX_RANK FROM `SUMMARY_REG_CHANNEL_USEETV`
-		WHERE PERIODE = '".$periode."' ".$where."
-		ORDER BY MAX_RANK ASC
+		SELECT MAX(RNK) AS MAX_RANK FROM (
+		SELECT COUNT(*) RNK,AREA FROM `M_SUM_TV_DASH_CHANNEL_AREA_PTV`
+		WHERE PERIODE = '".$periode."'
+		AND REGIONAL = 'ALL'
+		AND BRANCH = 'ALL'
+		AND TYPE_PERIODE = 'MONTHLY'
+		AND TYPE_DATA = 'LIVE'
+		".$where."
+		GROUP BY AREA 
+		) N
 		";
 		
 		
@@ -767,10 +773,18 @@ ORDER BY CHANNEL_NAME";
 	public function list_rank_channel_witel_all_rank_detail($periode,$regional,$where){
 		
 		$db = $this->clickhouse->db();
+
 		$query = "
-		SELECT MAX(RANK) AS MAX_RANK FROM `SUMMARY_WIT_CHANNEL_USEETV`
-		WHERE PERIODE = '".$periode."' AND `REGIONAL` = '".$regional."' ".$where."
-		ORDER BY MAX_RANK ASC
+		SELECT MAX(RNK) AS MAX_RANK FROM (
+		SELECT COUNT(*) RNK,AREA,REGIONAL FROM `M_SUM_TV_DASH_CHANNEL_AREA_PTV`
+		WHERE PERIODE = '".$periode."'
+		AND AREA = '".$regional."'
+		AND BRANCH = 'ALL'
+		AND TYPE_PERIODE = 'MONTHLY'
+		AND TYPE_DATA = 'LIVE'
+		".$where."
+		GROUP BY AREA,REGIONAL
+		) N
 		";
 		
 		
@@ -820,6 +834,9 @@ ORDER BY CHANNEL_NAME";
 		AND `AREA` = '".$regional."'
 		AND `REGIONAL` = '".$witel['REGIONAL']."'
 		AND BRANCH = '".$witel['BRANCH']."'
+		AND TYPE_PERIODE = 'MONTHLY'
+		AND TYPE_DATA = 'LIVE'
+		".$where."
 		ORDER BY VIEWERS DESC
 		LIMIT 10
 		";
