@@ -581,10 +581,16 @@ ORDER BY CHANNEL_NAME";
 		$db = $this->clickhouse->db();
 		
 		$query = "
-		SELECT * FROM `SUMMARY_REG_CHANNEL_USEETV`
-		WHERE PERIODE = '".$periode."' AND `REGIONAL` = '".$regional."' ".$where."
-		ORDER BY VIEWERS DESC
-		LIMIT 10
+		SELECT * FROM `M_SUM_TV_DASH_CHANNEL_AREA_PTV`
+								WHERE PERIODE = '".$periode."'
+								AND AREA = '".$regional."'
+								AND REGIONAL = 'ALL'
+								AND BRANCH = 'ALL'
+								AND TYPE_PERIODE = 'MONTHLY'
+								AND TYPE_DATA = 'LIVE'
+								ORDER BY VIEWERS DESC
+								LIMIT 10
+								
 		";
 		
 		
@@ -676,14 +682,17 @@ ORDER BY CHANNEL_NAME";
 		
 		$db = $this->clickhouse->db();
 		$query = "
-		SELECT * FROM `SUMMARY_WIT_CHANNEL_USEETV`
-		WHERE PERIODE = '".$periode."' AND `REGIONAL` = '".$regional."'
-		AND WITEL = '".$witel."' ".$where."
+		SELECT * FROM `M_SUM_TV_DASH_CHANNEL_AREA_PTV`
+		WHERE PERIODE = '".$periode."'
+		AND AREA = '".$regional."'
+		AND REGIONAL = '".$witel['REGIONAL']."'
+		AND BRANCH = '".$witel['BRANCH']."'
+		AND TYPE_PERIODE = 'MONTHLY'
+		AND TYPE_DATA = 'LIVE'
+		".$where."
 		ORDER BY VIEWERS DESC
 		";
-		
-		
-		
+				
 		$result = $db->select($query);
 		
 		
@@ -779,11 +788,17 @@ ORDER BY CHANNEL_NAME";
 		
 		
 		$query = "
-		SELECT MAX(RANK) AS MAX_RANK FROM `SUMMARY_WIT_CHANNEL_USEETV`
-		WHERE PERIODE = '".$periode."' AND `REGIONAL` = '".$regional."'
-		
+		SELECT MAX(RNK) AS MAX_RANK FROM (
+		SELECT COUNT(*) RNK,AREA,REGIONAL FROM `M_SUM_TV_DASH_CHANNEL_AREA_PTV`
+		WHERE PERIODE = '".$periode."'
+		AND AREA = '".$regional."'
+		AND BRANCH = 'ALL'
+		AND TYPE_PERIODE = 'MONTHLY'
+		AND TYPE_DATA = 'LIVE'
+		GROUP BY AREA,REGIONAL
+		) N
 		";
-		
+				
 		
 		$db = $this->clickhouse->db();
 		$result = $db->select($query);
@@ -824,10 +839,16 @@ ORDER BY CHANNEL_NAME";
 		
 		
 		$query = "
-		SELECT CHANNEL, CONCAT(PROGRAM,'/',CHANNEL) AS PROGRAM, VIEWERS, RANK FROM `SUMMARY_PACK_PROGRAM_USEETV`
-		WHERE PERIODE = '".$periode."' AND `REGIONAL` = '".$regional."' ".$where." 
-		ORDER BY VIEWERS DESC
-		LIMIT 10
+		SELECT * FROM `M_SUM_TV_DASH_GENRE_PTV`
+								WHERE PERIODE = '".$periode."'
+								AND AREA = '".$regional."'
+								AND REGIONAL = 'ALL'
+								AND BRANCH = 'ALL'
+								AND TYPE_PERIODE = 'MONTHLY'
+								AND TYPE_DATA = 'LIVE'
+								ORDER BY VIEWERS DESC
+								LIMIT 10
+								
 		";
 		
 		
@@ -997,9 +1018,13 @@ ORDER BY CHANNEL_NAME";
 		
 		
 		$query = "
-		SELECT * FROM `SUMMARY_WIT_PACK_CHANNEL_USEETV`
-		WHERE PERIODE = '".$periode."' AND `REGIONAL` = '".$regional."'
-		AND WITEL = '".$witel."'
+		SELECT * FROM `M_SUM_TV_DASH_MINIPACK_AREA_PTV`
+		WHERE PERIODE = '".$periode."' 
+		AND `AREA` = '".$regional."'
+		AND `REGIONAL` = '".$witel['REGIONAL']."'
+		AND BRANCH = '".$witel['BRANCH']."'
+		AND TYPE_PERIODE = 'MONTHLY'
+		AND TYPE_DATA = 'LIVE' 
 		ORDER BY VIEWERS DESC
 		";
 		
@@ -1043,10 +1068,13 @@ ORDER BY CHANNEL_NAME";
 		
 		
 		$query = "
-		SELECT * FROM `SUMMARY_WIT_PACK_PROGRAM_USEETV`
-		WHERE PERIODE = '".$periode."' AND `REGIONAL` = '".$regional."'
-		AND WITEL = '".$witel."'
-		".$where."
+		SELECT * FROM `M_SUM_TV_DASH_GENRE_PTV`
+		WHERE PERIODE = '".$periode."' 
+		AND `AREA` = '".$regional."'
+		AND `REGIONAL` = '".$witel['REGIONAL']."'
+		AND BRANCH = '".$witel['BRANCH']."'
+		AND TYPE_PERIODE = 'MONTHLY'
+		AND TYPE_DATA = 'LIVE' 
 		ORDER BY VIEWERS DESC
 		";
 		
@@ -1185,10 +1213,15 @@ ORDER BY CHANNEL_NAME";
 		
 		
 		$query = "
-		SELECT MAX(RANK) MAX_RANK FROM `SUMMARY_WIT_PACK_CHANNEL_USEETV`
-		WHERE PERIODE = '".$periode."' AND `REGIONAL` = '".$regional."'
-		
-		ORDER BY MAX_RANK ASC
+		SELECT MAX(RNK) AS MAX_RANK FROM (
+		SELECT COUNT(*) RNK,AREA,REGIONAL FROM `M_SUM_TV_DASH_MINIPACK_AREA_PTV`
+		WHERE PERIODE = '".$periode."'
+		AND AREA = '".$regional."'
+		AND BRANCH = 'ALL'
+		AND TYPE_PERIODE = 'MONTHLY'
+		AND TYPE_DATA = 'LIVE'
+		GROUP BY AREA,REGIONAL
+		) N
 		";
 		
 		
@@ -1273,10 +1306,15 @@ ORDER BY CHANNEL_NAME";
 		
 		
 		$query = "
-		SELECT COUNT(DISTINCT(PROGRAM)) MAX_RANK FROM `SUMMARY_WIT_PACK_PROGRAM_USEETV`
-		WHERE PERIODE = '".$periode."' AND `REGIONAL` = '".$regional."'
-		".$where." 
-		
+		SELECT MAX(RNK) AS MAX_RANK FROM (
+		SELECT COUNT(*) RNK,AREA,REGIONAL FROM `M_SUM_TV_DASH_GENRE_PTV`
+		WHERE PERIODE = '".$periode."'
+		AND AREA = '".$regional."'
+		AND BRANCH = 'ALL'
+		AND TYPE_PERIODE = 'MONTHLY'
+		AND TYPE_DATA = 'LIVE'
+		GROUP BY AREA,REGIONAL
+		) N
 		";
 		
 		

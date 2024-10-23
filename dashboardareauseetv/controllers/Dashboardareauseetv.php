@@ -363,7 +363,7 @@ class dashboardareauseetv extends JA_Controller {
 			
 			foreach($rank_prog_chart as $rank_prog_chartss){
 				
-				$field_prog[] = $rank_prog_chartss['PROGRAM'];
+				$field_prog[] = $rank_prog_chartss['GENRE'];
 				$value_prog[] = intval($rank_prog_chartss['VIEWERS']);
 				
 			}
@@ -576,8 +576,13 @@ class dashboardareauseetv extends JA_Controller {
 				
 			}
 			
-			$data['field_channel'] = json_encode($field_channel,true);
-			$data['value_channel'] = json_encode($value_channel,true);
+			// $data['field_channel'] = json_encode($field_channel,true);
+			// $data['value_channel'] = json_encode($value_channel,true);
+			
+			$data['field_channel'] = $field_channel;
+			$data['value_channel'] = $value_channel;
+			
+			
 			
 			$list_witel = $this->tvprogramun_model->list_witel($periode,$regional);
 		
@@ -621,8 +626,8 @@ class dashboardareauseetv extends JA_Controller {
 						
 			$data['table'] = $array_view;
 			
-			$data['field_channel'][0] = $field_channel;
-			$data['value_channel'][0] = $value_channel;
+			// $data['field_channel'][0] = $field_channel;
+			// $data['value_channel'][0] = $value_channel;
 				
 			
 			echo json_encode($data,true);
@@ -958,23 +963,17 @@ class dashboardareauseetv extends JA_Controller {
 			foreach($list_witel as $list_witels){
 				
 				$arr_regional[] = $list_witels['WITEL'];
+				$arr_regional_name[] = $list_witels;
 				
 			}
 			
 			$data['list_witel_h'] = $arr_regional;
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 			if($tipe_table == 'channel'){
 				
 				$max_rank = $this->tvprogramun_model->list_rank_channel_witel_all_rank($periode,$regional,'');
+				
 				
 				$array_view = array();
 				
@@ -983,7 +982,7 @@ class dashboardareauseetv extends JA_Controller {
 				}
 
 				$ta = 0;
-				foreach($arr_regional as $arr_reg){
+				foreach($arr_regional_name as $arr_reg){
 					
 					$rank_reg = $this->tvprogramun_model->list_rank_channel_witel_all($periode,$regional,$arr_reg,'');
 					$tr = 0;
@@ -991,9 +990,9 @@ class dashboardareauseetv extends JA_Controller {
 					for($rt = 0; $rt < $max_rank; $rt++){
 						
 						if (isset($rank_reg[$rt]['CHANNEL'])) {
-							$array_view[$rt][$arr_reg] = $rank_reg[$rt]['CHANNEL'];
+							$array_view[$rt][$arr_reg['WITEL']] = $rank_reg[$rt]['CHANNEL'];
 						}else{
-							$array_view[$rt][$arr_reg] = "";
+							$array_view[$rt][$arr_reg['WITEL']] = "";
 						}
 						
 						$tr++;
@@ -1016,7 +1015,7 @@ class dashboardareauseetv extends JA_Controller {
 				}
 
 				$ta = 0;
-				foreach($arr_regional as $arr_reg){
+				foreach($arr_regional_name as $arr_reg){
 					
 					$rank_reg = $this->tvprogramun_model->list_rank_pack_witel_all($periode,$regional,$arr_reg);
 					$tr = 0;
@@ -1024,9 +1023,9 @@ class dashboardareauseetv extends JA_Controller {
 					for($rt = 0; $rt < $max_rank; $rt++){
 						
 						if (isset($rank_reg[$rt]['MINIPACK'])) {
-							$array_view[$rt][$arr_reg] = $rank_reg[$rt]['MINIPACK'];
+							$array_view[$rt][$arr_reg['WITEL']] = $rank_reg[$rt]['MINIPACK'];
 						}else{
-							$array_view[$rt][$arr_reg] = "";
+							$array_view[$rt][$arr_reg['WITEL']] = "";
 						}
 						
 						$tr++;
@@ -1038,47 +1037,7 @@ class dashboardareauseetv extends JA_Controller {
 				$data['channels_rank'] = json_encode($array_view,true);
 				
 				
-			}else{
-				
-				
-					$channle_list = $this->input->post('channle_list');
-				
-				
-					if (!isset($channle_list)){ 
-		
-
-						$list_channel= "";
-						$wheres = "";
-						$trakos = "";
-					}else{
-						
-						if($channle_list == "all,"){
-							
-							$list_channel= "";
-							$wheres = "";
-							$trakos = "";
-						
-						}else{
-							
-							$trakos = "ooo";
-						
-							$arr_channel = explode(",",substr($channle_list, 0, -1));
-							$wheres = " AND CHANNEL IN( ";
-							
-							foreach($arr_channel as $arr_channels){
-								
-								$wheres = $wheres."'".$arr_channels."',";
-								
-							}
-							
-							$lstr = substr($wheres, 0, -1);
-							
-							$wheres = $lstr." ) ";
-						}
-						
-					}
-					
-					$data['trakos'] = $trakos;
+			}else{				
 				
 				$max_rank = $this->tvprogramun_model->list_rank_prog_witel_all_rank_detail($periode,$regional,$wheres);
 				
@@ -1089,21 +1048,17 @@ class dashboardareauseetv extends JA_Controller {
 				}
 
 				$ta = 0;
-				foreach($arr_regional as $arr_reg){
+				foreach($arr_regional_name as $arr_reg){
 					
 					$rank_reg = $this->tvprogramun_model->list_rank_prog_witel_all_detail($periode,$regional,$arr_reg,$wheres);
 					$tr = 0;
 						
 					for($rt = 0; $rt < $max_rank; $rt++){
 						
-						if (isset($rank_reg[$rt]['PROGRAM'])) {
-							$array_view[$rt][$arr_reg.'_RANK'] = $rank_reg[$rt]['RANK'];
-							$array_view[$rt][$arr_reg.'_PROGRAM'] = $rank_reg[$rt]['PROGRAM'];
-							$array_view[$rt][$arr_reg.'_CHANNEL'] = $rank_reg[$rt]['CHANNEL'];
+						if (isset($rank_reg[$rt]['GENRE'])) {
+							$array_view[$rt][$arr_reg['WITEL']] = $rank_reg[$rt]['GENRE'];
 						}else{
-							$array_view[$rt][$arr_reg.'_RANK'] = "";
-							$array_view[$rt][$arr_reg.'_PROGRAM'] = "";
-							$array_view[$rt][$arr_reg.'_CHANNEL'] = "";
+							$array_view[$rt][$arr_reg['WITEL']] = "";
 						}
 						
 						$tr++;

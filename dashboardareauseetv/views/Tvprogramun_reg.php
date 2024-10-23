@@ -136,14 +136,17 @@
 			   
 		    <div class="panel urate-panel urate-panel-result" style="border:1px solid #efefef;padding:10px">
                <div class="panel-headings">
-					<div class="pull-left" >
-						<h5 class='urate-panel-title'><strong>Top 10 Rank Channel</strong></h5> 
+					<div class="row">
+						<div class="col-lg-6" >	
+							<div class="pull-left" >
+								<h5 class='urate-panel-title'><strong>Top 10 Rank Channel</strong></h5> 
+							</div>
+						</div>
+						<div class="col-lg-6" >	
+							<div class="pull-right" ><input type="checkbox" value="fta" id="fta_channel" checked='checked' onclick="channel_change();">Include FTA</label></div>
+						</div>
 					</div>
-				  <div class="pull-right" ><input type="checkbox" value="fta" id="fta_channel" checked='checked' onclick="channel_change();">Include FTA</label></div>
               </div>
-			  <br>
-			  <br>
-			  <br>
               <div class="panel-body">
                   <!-- Nav tabs -->
              
@@ -182,7 +185,6 @@
                <div class="panel-headings">
                   <h5 class='urate-panel-title'><strong>Top 10 Minipack (by Viewership)</strong></h5>
               </div>
-			  <br>
               <div class="panel-body">
                   <!-- Nav tabs -->
              
@@ -228,7 +230,7 @@
 				<div class="result-table" style="overflow-x:hidden">
 
 								<div id="table_program_program">
-									<table aria-describedby="mydesc"  id="example34" class="table table-striped" style=" font-size:11px !important;table-layout:fixed;">
+									<table aria-describedby="mydesc"  id="example34" class="table table-striped" style=" font-size:11px !important;table-layout:fixed;white-space: nowrap;">
 										<thead style="color:red">
 											<tr>
 												<th style="width:15px" scope="row">Rank </th>
@@ -392,7 +394,7 @@ function graph_sel(){
 				type: 'post',
 				success: function(data){
 					$('#table_program_program').html("");
-					$('#table_program_program').append(' <div class="col-lg-3" ></div> <div class="col-lg-6" >	<canvas id="myChart3"><canvas></div> <div class="col-lg-3" >	 </div>');
+					$('#table_program_program').append('<canvas id="myChart3"><canvas>');
 					
 						 var ctx3 = document.getElementById("myChart3").getContext('2d');
           
@@ -601,7 +603,7 @@ function table_sel(){
 							tab_cont += '<th ><?php echo $list_witel_hs; ?> </th>';
 					<?php } ?>
 					
-					var table_html = '<table aria-describedby="mydesc"  id="example34" class="table table-striped " style=" font-size:11px !important;table-layout:fixed;"><thead style="color:red"><tr>'+tab_cont+'</tr></thead></table>';
+					var table_html = '<table aria-describedby="mydesc"  id="example34" class="table table-striped " style=" font-size:11px !important;table-layout:fixed;white-space: nowrap;"><thead style="color:red"><tr>'+tab_cont+'</tr></thead></table>';
  					
 					$('#table_program_program').html(table_html);
 					

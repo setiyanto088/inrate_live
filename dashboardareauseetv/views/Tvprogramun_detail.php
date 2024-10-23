@@ -119,7 +119,7 @@
 										<h3><strong>
 										<?php
 										
-										echo 'Regional '.str_replace('0','',$regional_text); ?></strong></h3>								
+										echo 'Area 0'.str_replace('0','',$regional_text); ?></strong></h3>								
  										
 									</div>
 									<div class="col-lg-2" style="text-align:right" >		
@@ -207,7 +207,7 @@
 				<div class="result-table" style="overflow-x:hidden">
 
 								<div id="table_program">
-									<table aria-describedby="mydesc"  id="example3" class="table table-striped " style=" font-size:14px !important;table-layout:fixed;width:100%">
+									<table aria-describedby="mydesc"  id="example3" class="table table-striped " style=" font-size:14px ">
 										<thead  style="color:red">
 											<tr>
 												<th  scope="row" style="width:15px">Rank </th>
@@ -262,7 +262,7 @@
 				<div class="result-table" style="overflow-x:hidden">
 
 								<div id="table_program_pasad">
-									<table aria-describedby="mydesc"  id="example3" class="table table-striped" style=" font-size:14px !important;table-layout:fixed;">
+									<table aria-describedby="mydesc"  id="example3" class="table table-striped" style=" font-size:14px">
 										<thead style="color:red">
 											<tr>
 												<th  scope="row" style="width:15px">Rank </th>
