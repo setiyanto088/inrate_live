@@ -580,7 +580,7 @@ button[disabled]{
 									<table aria-describedby="table" id="example42" class="table table-striped example" style="width: 100%">
 										<thead style="color:red">
 											<tr>
-												<th rowspan = "0" scope="row">Rankss <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+												<th rowspan = "0" scope="row">Ranks <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
 												<th rowspan = "0" scope="row">Channel <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
 												<?php $k = 1; foreach($monthdt as $monthdts){ ?>
 												<th scope="row" ><?php echo $monthdts['PERIODE']; ?></th>
@@ -4264,7 +4264,7 @@ function refresh_chart_line_area(data_alls,type,bulan_label){
 				data_rr.data = data_rr_s;
 				data_array.push(data_rr);
 			}
-									
+
 			Highcharts.chart('container4', {
 
 			title: {

@@ -298,6 +298,208 @@
                  </div>
             </div>
           </div>
+		  
+		  <div class="grid-stack-item" data-gs-min-width="6" data-gs-min-height="1" data-gs-x="3" data-gs-y="0" data-gs-width="12" data-gs-height="2"
+            data-gs-auto-position="1">
+            <div class="panel urate-panel row" style="border:1px solid #efefef;padding:10px;margin:10px;border-radius: 25px;">
+                <div class="navbar-left" style="padding-left:10px;">
+				  <h4 class="title-periode1"><strong>Audience By Minipack Monthly</strong></h4>
+                </div>
+				<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
+						<button onClick="filter_panel('channels')" class="button_white" id="filter_channels"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
+				</div>
+
+                <div class="widget-content">
+				
+					<div class="col-lg-12 filter_panel" id="filter_panel_channels" style="display:none">	
+						<div class="col-lg-12">	
+							<div class="navbar-left">
+								<h6 class="" style="font-weight: bold;">Filter</h6>
+							</div>
+							 <div class="navbar-right" style="padding:10px" >
+								<button onClick="audiencebar_view2()" class="button_red">Apply Filter</button>
+							 </div>
+						 </div>
+						 
+						  <div class="col-lg-12">
+							
+							<div class="col-lg-3">	
+								<div class="form-group">
+									<label>Year</label>	
+									 <select class="form-control" name="start_date42" id="start_date42" class="preset2" >  
+										<option value="2024" selected>2024</option>
+										<option value="2023"  >2023</option>
+										<option value="2022"  >2022</option>
+										<option value="2021"  >2021</option>
+										<option value="2020"  >2020</option>
+										<option value="2019"  >2019</option>
+										<option value="2018"  >2018</option>
+										<option value="2017"  >2017</option>
+									</select> 
+								</div>
+							</div>
+							
+							<div class="col-lg-3">	
+								<div class="form-group">
+									<label>Month</label>	
+									<select class="form-control" name="end_date42" id="end_date42" class="preset2" >  
+										<option value="All" Selected >All Month</option>
+										<option value="01"  >January</option>
+										<option value="02"  >February</option>
+										<option value="03"  >March</option>
+										<option value="04"  >April</option>
+										<option value="05"  >May</option>
+										<option value="06"  >June</option>
+										<option value="07"  >July</option>
+										<option value="08"  >August</option>
+										<option value="09"  >September</option>
+										<option value="10"  >October</option>
+										<option value="11"  >November</option>
+										<option value="12"  >December</option>
+									</select> 
+								</div>
+							</div>
+							
+							<div class="col-lg-3">	
+								<div class="form-group">
+									<label>Data</label>	
+									<select class="form-control" name="audiencebar2" id="audiencebar2" required >
+										<option value="AUDIENCE" selected >Audience</option>
+										<option value="VIEWERS" >Total Views</option>
+										<option value="DURATION" >Duration</option>
+									</select> 
+							
+								</div>
+							</div>
+							
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label>Type</label>	
+									<select class="form-control" name="tipe_filter2" id="tipe_filter2" required >
+										<option value="LIVE" selected >Live</option>
+										<option value="ALL" >All</option> 
+										<option value="TVOD" >TVOD</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="col-lg-3">
+								<div class="form-group">
+										<label>Area</label>
+										<select class="form-control" name="tipe_area2" id="tipe_area2" required >
+											<option value="ALL" selected >All Area</option>
+											<option value="01" >Area 01</option>
+											<option value="02" >Area 02</option>
+											<option value="03" >Area 03</option>
+											<option value="04" >Area 04</option>
+										</select> 
+								</div>
+							</div>
+							
+						  </div>
+						 
+					</div>
+				
+					<div class="col-lg-12">	
+						
+					
+					</div>
+						 
+				</div>
+				
+				<div class="panel-headings" id="result_header" style="">
+					<div class="col-lg-12">	
+						<div class="navbar-left" style="padding-left:10px;">
+						  <h4 class="title-periode2" style="font-weight: bold;">Result</h4>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row" id="loader_area2" style="">
+					<div class="col-md-12" style="margin:auto">
+						<img alt="img" class="gambar"  src="<?php echo $path; ?>assets/images/icon_loader.gif" style="display: none;margin-left: auto;margin-right: auto;">
+					</div>
+				</div>
+				
+				<div class="panel-body" id="tab-contents-result2" style="">
+              <!-- Nav tabs -->
+					<div class="col-md-2">
+ 								<div class="row" style="background-color:#F2F2F2;padding:5px;color:#000;border: none;border-radius:5px">
+									 <div class="col-md-6" id="tabs_table2" style="border: none;background-color:#fff;border-radius:5px;">
+										<button id="tab_table2" style="border: none;background-color:#fff;border-radius:5px;padding:3px 15px 3px 15px" onclick="tab_filter2('table')" href="#table2" aria-controls="table2" role="tab" data-toggle="tab"><strong>Table</strong></button>
+									</div>
+									<div class="col-md-6" id="tabs_chart2" style="border: none;border-radius:5px;">
+										<button id="tab_chart2" style="border: none;border-radius:5px;padding:3px 15px 3px 15px" onclick="tab_filter2('chart')" href="#chart2" aria-controls="chart2" role="tab" data-toggle="tab"><strong>Chart</strong></button>
+									</div>
+								</div>
+                              </div>  
+							  
+					 <div class="tab-content" >
+                  <!-- Tab Table -->
+                  <div role="tabpanel" class="tab-pane active" id="table2" style="margin-top:50px;">
+                         
+						  <br/>
+                          <div class="row">
+							<div class="col-lg-12">	
+								 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
+									<button class="button_black export_area_month" onClick="print_area_month('All','All')" id=''><em class="fa fa-download"></em> &nbsp Export</button>
+								</div>
+							</div>
+							  <div class="col-md-12">													
+								<div id="table_program42" >
+								
+									<table aria-describedby="table" id="example42" class="table table-striped example" style="width: 100%">
+										<thead style="color:red">
+												<th rowspan = "0" scope="row">Ranks <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+												<th rowspan = "0" scope="row">Minipack <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+												<?php $k = 1; foreach($monthdt as $monthdts){ ?>
+												<th scope="row" ><?php echo $monthdts['PERIODE']; ?></th>
+												<?php  $k++; } ?>
+												<th rowspan = "0" scope="row">Total<img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+										</thead>
+									</table>
+								</div> 
+							  </div>
+							 
+						</div>
+                  </div>
+                  <!-- / Tab Table -->
+                  <!-- Tab Chart -->
+                  <div role="tabpanel" class="tab-pane" id="chart2">
+					 <div class="row">
+					  <div id="month_chart" class="col-md-12" style="padding:10px">	
+		
+						  <div class="col-lg-12" id="line-chart-area-op">
+							  <div class="result-chart" style="border: 1px solid #efefef;border-radius: 25px">
+							   <div class="row">
+											<div class="col-lg-12">	
+													<div class="navbar-right" id="btn-line-back" style="padding-right:20px;padding-top:10px;">
+													 &nbsp 
+													</div>
+											</div>
+											<div class="col-lg-12">	
+												<div class="result-chart-graph" style=" margin : auto">
+												  <div id="container4" style="margin: 0 auto"></div>
+												</div>
+											</div>
+								    </div>
+							  </div>
+						  </div>
+						  
+                      </div>
+
+                     </div>
+                  </div>
+                  <!-- / Tab Chart -->
+              </div>
+              <!-- / Tab panes -->
+          </div>
+					
+					
+				</div>
+                  <canvas id="widget-spot-channel" height="100"></canvas>
+			  
+            </div>
   
         </div>
         <!-- / Dashboard Widget -->
@@ -352,6 +554,27 @@
 			}
 			
 		 }  
+		 
+		  function tab_filter2(tabs){
+	
+			if(tabs == 'chart'){
+			
+				$('#tab_table2').css('background-color','#F2F2F2');
+				$('#tabs_table2').css('background-color','#F2F2F2');
+				$('#tab_chart2').css('background-color','#fff');
+				$('#tabs_chart2').css('background-color','#fff');
+			
+			}else{
+				
+				$('#tab_table2').css('background-color','#fff');
+				$('#tabs_table2').css('background-color','#fff');
+				$('#tab_chart2').css('background-color','#F2F2F2');
+				$('#tabs_chart2').css('background-color','#F2F2F2');
+				
+			
+			}
+			
+		 }
 		 
 
 function timesec(id){
@@ -498,7 +721,7 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 			}
 		},
 		subtitle: {
-			text: this.id,
+			text: '<h3>All Area</h3>',
 			style: {
 						fontSize: '1.9em'
 			}
@@ -731,6 +954,11 @@ function print_excel(){
 
 function audiencebar_view(){
 
+	tab_filter('table');
+	$("#chart").removeClass("active");
+	$("#table").removeClass("active");
+	$("#table").addClass("active");
+	
 	var check = "True";
 	var form_data = new FormData();  
 	var type = $('#audiencebar').val();
@@ -822,7 +1050,7 @@ function audiencebar_view(){
 					}
 				},
 				subtitle: {
-					text: this.id,
+					text: '<h3> Area '+tipe_area+'</h3>',
 					style: {
 								fontSize: '1.9em'
 					}
@@ -907,6 +1135,218 @@ function audiencebar_view(){
 	});	
 }
 
+
+function audiencebar_view2(){
+
+	var check = "True";
+	
+	tab_filter2('table');
+	$("#chart2").removeClass("active");
+	$("#table2").removeClass("active");
+	$("#table2").addClass("active");
+	
+	$('#loader_area2').show();
+	//$('#tab-contents-result2').hide();
+	
+	var form_data = new FormData();  
+	var type = $('#audiencebar2').val();
+	var tahun = $('#tahun').val();
+	var bulan = "";
+
+	var week = "";
+	var start_date = $('#start_date42').val();
+	var end_date = $('#end_date42').val();
+	var tipe_filter = $('#tipe_filter2').val();
+	var tipe_area2 = $('#tipe_area2').val();
+	var preset = 0;
+	var check = check;
+	var profile_chan = 0;
+
+
+	form_data.append('cond',"<?php echo $cond; ?>");
+	form_data.append('type', type);
+	form_data.append('tahun', tahun);
+	form_data.append('bulan', bulan);
+	form_data.append('week', week);
+	form_data.append('check', check); 
+	form_data.append('start_date', start_date);
+	form_data.append('end_date', end_date);
+	form_data.append('tipe_filter', tipe_filter);
+	form_data.append('profile', profile_chan);
+	form_data.append('preset', preset);
+	form_data.append('tipe_area', tipe_area2);
+
+  
+  $("#example42_wrapper").append('<div class="datatable-loading" style="position: absolute; background-color: rgb(255, 255, 255); opacity: 0.75; text-align: center; z-index: 10; left: 0px; top: 750px; width: 100%; height: 520px;"><span class="datatable-loading-inner" style="font-weight: bold; position: relative; top: 45%;"><img id="loading2" src="<?php echo base_url();?>assets/urate-frontend-master/assets/images/icon_loader.gif"></span></div>');
+			
+	$.ajax({
+		url: "<?php echo base_url().'tvprogramun3minipack/audiencebar_by_channel42'; ?>", 
+		dataType: 'text',  // what to expect back from the PHP script, if anything
+		cache: false,
+		contentType: false,
+		processData: false,
+		data: form_data,                         
+		type: 'post',
+		success: function(data){
+			
+			obj = jQuery.parseJSON(data);
+			
+		//	const data_alls = Object.entries(obj['data_all']);
+			
+			$('#table_program42').html("");
+						
+			var column = [];
+				column[0] = { data: 'Rangking' };
+				column[1] = { data: 'channel' };
+
+
+				var i_d = 2;
+				for(i=1;i<=obj['monthdt'].length;i++){
+					
+									 
+					 column[i_d] =  {data: "V"+i,"sClass": "right" };
+					 
+					 i_d++;
+					 
+				}
+				column[i_d] = { data: 'TOTAL',"sClass": "right" };
+			
+			$('#table_program42').html(obj['table']);		
+			// refresh_chart_line_area(data_alls,type,obj.bulan_label);
+			
+					$('#example42').DataTable({
+						"bFilter": false,
+						"aaSorting": [],
+						"bLengthChange": false,
+						'iDisplayLength': 10,
+						"sPaginationType": "simple_numbers",
+						"Info" : false,
+						
+						"searching": false,
+						data: obj['data'], 
+						"language": {
+							"decimal": ",",
+							"thousands": "."
+						},
+						"scrollX": true,
+						"sScrollXInner": "100%",
+						columns: column
+					});	
+					
+					var data_array = [];
+					for (const elementd of obj['data']) {
+						
+						console.log(elementd);
+						
+						const data_rr = {};
+						data_rr.name = elementd['channel'];
+						data_rr.name_data = elementd['channel'];
+						
+						const data_rr_s = [];
+						for(i=1;i<=obj['monthdt'].length;i++){
+							data_rr_s.push(parseInt(elementd['AV'+i]));
+						}
+						
+						data_rr.data = data_rr_s;
+						data_array.push(data_rr);
+				
+						
+					}
+					
+			
+				Highcharts.chart('container4', {
+
+					title: {
+						text: 'Monthly Trend Minipack',
+						align: 'center',
+						style: {
+							fontSize: '2.0em'
+						}
+					},
+					subtitle: {
+						text: '',
+						align: ''
+					},
+
+					yAxis: {
+						title: {
+							text: ''
+						},
+						labels: {
+							  style: {
+								fontSize: '1.0em'
+							  }
+							},
+					},
+
+					xAxis: {
+						categories: obj['bulan_label'],
+						labels: {
+							  style: {
+								fontSize: '1.0em'
+							  }
+							},
+					},
+
+					legend: {
+						layout: 'vertical',
+						align: 'right',
+						verticalAlign: 'middle',
+						itemStyle: {
+							fontSize:'1.0em'
+						},
+					},
+
+					plotOptions: {
+						series: {
+							label: {
+								connectorAllowed: false,
+								style: {
+									fontSize: '1.0em'
+								}
+							}
+						}
+					},
+
+					tooltip: {
+						valueSuffix: '',
+						formatter:function() {
+							var html_tip = this.series.name+' '+this.x+'<br>'+type+' : '+this.y;
+							return html_tip;
+						},
+						style: {
+							fontSize:'1.3em'
+						}
+					},
+					
+					series:data_array,
+
+					responsive: {
+						rules: [{
+							condition: {
+								maxWidth: 500
+							},
+							chartOptions: {
+								legend: {
+									layout: 'horizontal',
+									align: 'center',
+									verticalAlign: 'bottom'
+								}
+							}
+						}]
+					}
+
+				});
+		
+		
+			
+			$('#loader_area2').hide();
+			
+				
+		}
+	});	
+}
+
     
     function diff(from, to) {
 		
@@ -983,6 +1423,8 @@ $( document ).ready(function() {
 	var selPeriode = $('#tahun').val();
     
     $( ".title-periode1" ).html($(".title-periode1").html()+"<br><span style='font-size: 12px;color:red'>"+selPeriode+"<span>");
+	
+	audiencebar_view2();
    
 });
 

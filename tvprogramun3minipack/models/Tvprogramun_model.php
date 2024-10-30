@@ -92,4 +92,88 @@ class Tvprogramun_model extends CI_Model {
 		
 	}
 	
+	public function get_curr_month($tgl) {  
+			
+			$first_date = strtotime(date("Y-m-d"));
+			$today = strtotime('-1 day', $first_date);
+			$today = date('Y-m-d', $today);
+
+					$sql = "
+						SELECT 
+						DATE_FORMAT(START_DATE,'%b-%y') AS PERIODE,
+						DATE_FORMAT(START_DATE,'%Y-%M') AS PERIODE_FULL FROM WEEK_PARAM_DATE
+						WHERE `YEAR` = '".$tgl."'
+						AND START_DATE < '".date("Y-m-d")."'
+						AND START_DATE > '".date($tgl."-01-01")."'
+						GROUP BY DATE_FORMAT(START_DATE,'%b-%y')
+						ORDER BY START_DATE
+					";
+					
+
+		$out		= array();
+		$query		= $this->db->query($sql);
+		$result = $query->result_array();
+			
+		return $result;
+	}	
+	
+	public function get_sel_month_all($first_day,$this_day) {  
+
+
+
+			
+			$sql = "
+						SELECT 
+						DATE_FORMAT(START_DATE,'%b-%y') AS PERIODE,
+						DATE_FORMAT(START_DATE,'%Y-%M') AS PERIODE_FULL FROM WEEK_PARAM_DATE
+						WHERE DATE_FORMAT(START_DATE,'%Y') = '".$first_day."'
+						AND START_DATE <= '".date("Y-m-d")."'
+						GROUP BY DATE_FORMAT(START_DATE,'%b-%y')
+						ORDER BY START_DATE
+					";
+		
+		$out		= array();
+		$query		= $this->db->query($sql);
+		$result = $query->result_array();
+			
+		return $result;
+	}
+	
+	
+	public function list_data_month($params = array(),$where) {
+			
+				
+			$sql = "
+			SELECT * FROM M_SUM_TV_DASH_MINIPACK_AREA_PTV
+			WHERE TYPE_PERIODE IN ('MONTHLY','YEARLY') 
+			AND PERIODE LIKE '%".$params['start_date']."%'
+			AND TYPE_VALUE = '".$params['type']."'
+			AND AREA = '".$params['tipe_area']."'
+			AND REGIONAL = 'ALL'
+			AND BRANCH = 'ALL'
+			AND TYPE_DATA = '".$params['tipe_filter']."'
+			AND MINIPACK <> 'BASIC'
+			ORDER BY PERIODE,VIEWERS DESC
+			";
+
+	
+		$db = $this->clickhouse->db();
+		$out		= array();
+		$resultS = $db->select($sql);
+		$result = $resultS->rows();	  
+    
+		$total_filtered['ROWS'] = count($result);
+		$total 			= count($result);
+		
+					    
+		$return = array(
+			'data' => $result,
+			'total_filtered' => $total_filtered['ROWS'],
+			'total' => $total,
+		);
+    
+		return $return;
+  
+	}
+	
 }	
