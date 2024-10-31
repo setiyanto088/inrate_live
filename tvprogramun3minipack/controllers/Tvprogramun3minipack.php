@@ -243,6 +243,10 @@ class Tvprogramun3minipack extends JA_Controller {
 			
 			
 			
+		}else{
+			
+			
+			
 		}
 		
 		$data_return['table'] = $html_table;
