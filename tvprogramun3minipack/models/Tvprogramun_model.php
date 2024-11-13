@@ -60,6 +60,49 @@ class Tvprogramun_model extends CI_Model {
 		$result = $db->select($query);
 		return $result->rows();			
 	}
+	
+	public function get_sel_week($first_day,$this_day) {  
+
+			
+			$sql = "
+						
+						SELECT * FROM (
+							SELECT *,CONCAT(DATE_FORMAT(START_DATE,'%d%b'),' - ',DATE_FORMAT(EMD_DATE,'%d%b')) AS PER FROM `WEEK_PARAM_DATE`
+							WHERE `YEAR` ='".$first_day."'
+							AND DATE_FORMAT(START_DATE,'%Y-%m') = '".$first_day."-".$this_day."'
+							ORDER BY START_DATE DESC
+							#LIMIT 4
+						) A ORDER BY START_DATE ASC
+						
+						
+					";
+					
+		$out		= array();
+		$query		= $this->db->query($sql);
+		$result = $query->result_array();
+			
+		return $result;
+	}	
+	
+		public function get_sel_week_month($first_day,$this_day) {  
+
+			
+			$sql = "
+					SELECT *,CONCAT(DATE_FORMAT(START_DATE,'%d%b'),' - ',DATE_FORMAT(EMD_DATE,'%d%b')) AS PER FROM `WEEK_PARAM_DATE`
+							WHERE DATE_FORMAT(START_DATE,'%Y-%m') = '".$first_day."-".$this_day."'
+							AND (START_DATE < '".date("Y-m-d")."'
+							OR EMD_DATE <= '".date("Y-m-d")."' )
+							AND `YEAR` = '".$first_day."' 
+							ORDER BY START_DATE ASC
+					";
+//echo $sql;die;
+
+		$out		= array();
+		$query		= $this->db->query($sql);
+		$result = $query->result_array();
+			
+		return $result;
+	}	
 
  	public function list_spot_by_program_all_bar($field,$where,$periode,$type,$profile,$check,$tipe_area) {
 		$db = $this->clickhouse->db();
@@ -154,6 +197,183 @@ class Tvprogramun_model extends CI_Model {
 			AND TYPE_DATA = '".$params['tipe_filter']."'
 			AND MINIPACK <> 'BASIC'
 			ORDER BY PERIODE,VIEWERS DESC
+			";
+
+	
+		$db = $this->clickhouse->db();
+		$out		= array();
+		$resultS = $db->select($sql);
+		$result = $resultS->rows();	  
+    
+		$total_filtered['ROWS'] = count($result);
+		$total 			= count($result);
+		
+					    
+		$return = array(
+			'data' => $result,
+			'total_filtered' => $total_filtered['ROWS'],
+			'total' => $total,
+		);
+    
+		return $return;
+  
+	}
+	
+	public function list_data_month_ch($params = array(),$where) {
+			
+				
+			$sql = "
+			SELECT * FROM M_SUM_TV_DASH_CHANNEL_MINIPACK_AREA_PTV
+			WHERE TYPE_PERIODE IN ('MONTHLY','YEARLY') 
+			AND PERIODE LIKE '%".$params['start_date']."%'
+			AND TYPE_VALUE = '".$params['type']."'
+			AND AREA = '".$params['tipe_area']."'
+			AND REGIONAL = 'ALL'
+			AND BRANCH = 'ALL'
+			AND TYPE_DATA = '".$params['tipe_filter']."'
+			AND MINIPACK <> 'BASIC'
+			ORDER BY PERIODE,VIEWERS DESC
+			";
+
+		$db = $this->clickhouse->db();
+		$out		= array();
+		$resultS = $db->select($sql);
+		$result = $resultS->rows();	  
+    
+		$total_filtered['ROWS'] = count($result);
+		$total 			= count($result);
+		
+					    
+		$return = array(
+			'data' => $result,
+			'total_filtered' => $total_filtered['ROWS'],
+			'total' => $total,
+		);
+    
+		return $return;
+  
+	}
+	
+	public function list_data_weekly($params = array(),$where) {
+			
+				
+			$sql = "
+			SELECT * FROM M_SUM_TV_DASH_MINIPACK_AREA_PTV
+			WHERE TYPE_PERIODE IN ('WEEKLY') 
+			AND PERIODE LIKE '%".$params['start_date']."%'
+			AND TYPE_VALUE = '".$params['type']."'
+			AND AREA = '".$params['tipe_area']."'
+			AND REGIONAL = 'ALL'
+			AND BRANCH = 'ALL'
+			AND TYPE_DATA = '".$params['tipe_filter']."'
+			AND MINIPACK <> 'BASIC'
+			ORDER BY PERIODE,VIEWERS DESC
+			";
+
+	
+		$db = $this->clickhouse->db();
+		$out		= array();
+		$resultS = $db->select($sql);
+		$result = $resultS->rows();	  
+    
+		$total_filtered['ROWS'] = count($result);
+		$total 			= count($result);
+		
+					    
+		$return = array(
+			'data' => $result,
+			'total_filtered' => $total_filtered['ROWS'],
+			'total' => $total,
+		);
+    
+		return $return;
+  
+	}
+	
+	public function list_data_weekly_ch($params = array(),$where) {
+			
+				
+			$sql = "
+			SELECT * FROM M_SUM_TV_DASH_CHANNEL_MINIPACK_AREA_PTV
+			WHERE TYPE_PERIODE IN ('WEEKLY') 
+			AND PERIODE LIKE '%".$params['start_date']."%'
+			AND TYPE_VALUE = '".$params['type']."'
+			AND AREA = '".$params['tipe_area']."'
+			AND REGIONAL = 'ALL'
+			AND BRANCH = 'ALL'
+			AND TYPE_DATA = '".$params['tipe_filter']."'
+			AND MINIPACK <> 'BASIC'
+			ORDER BY PERIODE,VIEWERS DESC
+			";
+
+	
+		$db = $this->clickhouse->db();
+		$out		= array();
+		$resultS = $db->select($sql);
+		$result = $resultS->rows();	  
+    
+		$total_filtered['ROWS'] = count($result);
+		$total 			= count($result);
+		
+					    
+		$return = array(
+			'data' => $result,
+			'total_filtered' => $total_filtered['ROWS'],
+			'total' => $total,
+		);
+    
+		return $return;
+  
+	}
+	
+	public function list_data_count($params = array(),$where) {
+			
+				
+			$sql = "
+			SELECT DISTINCT MINIPACK FROM M_SUM_TV_DASH_CHANNEL_MINIPACK_AREA_PTV
+			WHERE TYPE_PERIODE IN ('WEEKLY') 
+			AND PERIODE LIKE '%".$params['start_date']."%'
+			AND TYPE_VALUE = '".$params['type']."'
+			AND AREA = '".$params['tipe_area']."'
+			AND REGIONAL = 'ALL'
+			AND BRANCH = 'ALL'
+			AND TYPE_DATA = '".$params['tipe_filter']."'
+			AND MINIPACK <> 'BASIC'
+			";
+
+	
+		$db = $this->clickhouse->db();
+		$out		= array();
+		$resultS = $db->select($sql);
+		$result = $resultS->rows();	  
+    
+		$total_filtered['ROWS'] = count($result);
+		$total 			= count($result);
+		
+					    
+		$return = array(
+			'data' => $result,
+			'total_filtered' => $total_filtered['ROWS'],
+			'total' => $total,
+		);
+    
+		return $return;
+  
+	}
+	
+	public function list_data_count_ch($params = array(),$where) {
+			
+				
+			$sql = "
+			SELECT DISTINCT MINIPACK,CHANNEL FROM M_SUM_TV_DASH_CHANNEL_MINIPACK_AREA_PTV
+			WHERE TYPE_PERIODE IN ('WEEKLY') 
+			AND PERIODE LIKE '%".$params['start_date']."%'
+			AND TYPE_VALUE = '".$params['type']."'
+			AND AREA = '".$params['tipe_area']."'
+			AND REGIONAL = 'ALL'
+			AND BRANCH = 'ALL'
+			AND TYPE_DATA = '".$params['tipe_filter']."'
+			AND MINIPACK <> 'BASIC'
 			";
 
 	

@@ -211,6 +211,8 @@ class Tvprogramun3minipack extends JA_Controller {
 				$bulan_label[] = $monthdts['PERIODE'];
 			}			
 			
+			
+			
 			$scama42 = array();
 			$scama42 = array();
 			$rkn2 = 1;
@@ -239,22 +241,304 @@ class Tvprogramun3minipack extends JA_Controller {
 			}
 												
 			$html_table .= '<th scope="row">Total</th></thead></table>';
-			
+			$data_chart = $scama42;
 			
 			
 			
 		}else{
 			
+			$data_vol = $this->tvprogramun_model->list_data_weekly($data);
+			$data_vol_count = $this->tvprogramun_model->list_data_count($data);
 			
+
+			$cnt = $data_vol_count['total'];
+
+			$data_array = [];
+			$data_array2 = [];
+						
+			foreach($data_vol['data'] as $datas){
+				$data_arrays = [];
+				$data_arrays['PERIODE'] = $datas['PERIODE'];
+				$data_arrays['MINIPACK'] = $datas['MINIPACK'];
+				$data_arrays['VIEWERS'] = $datas['VIEWERS'];
+				$data_array[$data_arrays['PERIODE']][] = $data_arrays;
+				$data_array2[$data_arrays['PERIODE']][$datas['MINIPACK']] = $data_arrays;
+			}
+			
+			$scam42 = array();
+			$scama42 = array();
+			$scam42c = array();
+			$scama42c = array();
+						
+			foreach($data_vol_count['data'] as $mpack){
+				$scam42c['channel'] = $mpack['MINIPACK'];
+				$sq = 1;
+				FOREACH($data_array2 as $minipack_name){
+					if(isset($minipack_name[$mpack['MINIPACK']])){
+						$scam42c['AV'.$sq] = $minipack_name[$mpack['MINIPACK']]['VIEWERS'];
+					}else{
+						$scam42c['AV'.$sq] = 0;
+					}
+					$sq++;
+				}
+				array_push($scama42c, $scam42c); 
+			}
+			
+			for($i=0;$i < $cnt;$i++){
+				$sq = 1;
+				FOREACH($data_array as $minipack_name){
+					
+					if(isset($minipack_name[$i])){
+						$scam42['V'.$sq] = number_format($minipack_name[$i]['VIEWERS'],0,',','.');
+						$scam42['Vs'.$sq] = $minipack_name[$i]['MINIPACK'];
+						$scam42['AV'.$sq] = $minipack_name[$i]['VIEWERS'];
+						$scam42['Rangking'] = $i+1;
+						$scam42['channel'] = $minipack_name[$i]['MINIPACK'];
+					}else{
+						$scam42['V'.$sq] = '';
+						$scam42['Vs'.$sq] = '';
+						$scam42['AV'.$sq] = 0;
+						$scam42['Rangking'] = $i+1;
+						$scam42['channel'] = $minipack_name[$i]['MINIPACK'];
+					}
+					
+					$sq++;
+				}
+				array_push($scama42, $scam42); 
+				
+			}
+			
+			$html_table_body = '';
+			$html_table_body_total = '';			
+			
+			$rnk = 1;
+			$th_tb = "";
+			$th_tbs = "<tr>";
+			$ri = 1;
+			$data_return['monthdt'] = $this->tvprogramun_model->get_sel_week($data['start_date'],$data['end_date']);
+			
+			$bulan_label = [];
+			foreach($data_return['monthdt'] as $wkwk){
+					
+				$th_tb = $th_tb."<th colspan = '2' >Week ".$ri." (".$wkwk['PER'].")</th>";
+				$th_tbs = $th_tbs."<td>Minipack</td><td>".$data['type']."</td>";
+				$bulan_label[] = $wkwk['PER'];
+				$ri++;
+			}
+
+			
+			$th_tbs = $th_tbs."</tr>";
+			
+			$html_table = '
+			<table id="example42" class="table table-striped example" style="width: 100%">
+								<thead style="color:red">
+									<tr>
+										<th rowspan = "2" >Rank </th>
+										'.$th_tb.'
+									</tr>
+										'.$th_tbs.'
+								</thead>
+							</table>
+			';
+			$data_chart = $scama42c;
 			
 		}
+				
+		$data_return['table'] = $html_table;
+		$data_return['data'] = $scama42;
+		$data_return['data_chart'] = $data_chart;
+		$data_return['bulan_label'] = $bulan_label;
+		echo json_encode($data_return,true);
 		
+	}
+	
+	function audiencebar_by_channel43(){
+		
+		$userid = $this->session->userdata('user_id');
+		$params['user_id'] = $userid;
+		
+		
+		$data['where'] =  $this->Anti_si($this->input->post('cond',true));
+		$data['type'] =  $this->Anti_si($this->input->post('type',true));
+		//$data['type'] =  'UV';
+		$data['tahun']=$this->Anti_si($this->input->post('tahun',true));
+		$data['bulan']=$this->Anti_si($this->input->post('bulan',true));
+		$data['profile']=$this->Anti_si($this->input->post('profile',true));
+		$data['week']=$this->Anti_si($this->input->post('week',true));
+		$data['start_date']=$this->Anti_si($this->input->post('start_date',true));
+		$data['end_date']=$this->Anti_si($this->input->post('end_date',true));
+		$data['check']=$this->Anti_si($this->input->post('check',true));
+		$data['tipe_filter']=$this->Anti_si($this->input->post('tipe_filter',true));
+		$data['channel'] = $this->Anti_si($this->input->post('channel',true));
+		$data['preset'] = $this->Anti_si($this->input->post('preset',true));
+		$data['tipe_area'] = $this->Anti_si($this->input->post('tipe_area',true));
+		
+		if($data['end_date'] == 'All'){
+			
+			$data_vol = $this->tvprogramun_model->list_data_month_ch($data);
+			
+			$data_array = [];
+			
+			foreach($data_vol['data'] as $datas){
+				$data_arrays = [];
+				$data_arrays['PERIODE'] = $datas['PERIODE'];
+				$data_arrays['MINIPACK'] = $datas['MINIPACK'];
+				$data_arrays['CHANNEL'] = $datas['CHANNEL'];
+				$data_arrays['VIEWERS'] = $datas['VIEWERS'];
+				$data_array[$data_arrays['PERIODE']][$datas['CHANNEL'].'-'.$datas['MINIPACK']] = $data_arrays;
+
+			}
+						
+			$data_return['monthdt'] = $this->tvprogramun_model->get_sel_month_all($data['start_date'],$data['end_date']);
+			
+			$html_table = '<table aria-describedby="table" id="example43" class="table table-striped example" style="width: 100%;">
+										<thead style="color:red">
+												<th scope="row">Ranks </th>
+												<th scope="row">Channel </th>
+												<th scope="row">Minipack </th>';
+			
+			$html_table_body = '';
+			$html_table_body_total = '';			
+			
+			$rnk = 1;
+			
+			$bulan_label = [];
+			foreach($data_return['monthdt'] as $monthdts){
+				$html_table .= '<th scope="row" >'.$monthdts['PERIODE'].'</th>';
+				$bulan_label[] = $monthdts['PERIODE'];
+			}			
+			
+			
+			
+			$scama42 = array();
+			$scama42 = array();
+			$rkn2 = 1;
+			foreach($data_array[$data['start_date']] as $minipack_name ){
+								
+				$scam42['Rangking'] = $rkn2; 
+				$scam42['channel'] = $minipack_name['CHANNEL'];
+				$scam42['minipack'] = $minipack_name['MINIPACK'];
+				$sq = 1;
+				foreach($data_return['monthdt'] as $ssss){
+										
+					if(isset($data_array[$ssss['PERIODE_FULL']][$minipack_name['CHANNEL'].'-'.$minipack_name['MINIPACK']])){
+						$scam42['V'.$sq] = number_format($data_array[$ssss['PERIODE_FULL']][$minipack_name['CHANNEL'].'-'.$minipack_name['MINIPACK']]['VIEWERS'],0,',','.');
+					}else{
+						$scam42['V'.$sq] = 0;
+					}
+					
+					$sq++;
+				}
+				$scam42['TOTAL'] = number_format($data_array[$data['start_date']][$minipack_name['CHANNEL'].'-'.$minipack_name['MINIPACK']]['VIEWERS'],0,',','.');
+				
+				array_push($scama42, $scam42); 
+				
+				$rkn2++;
+			}
+															
+			$html_table .= '<th scope="row">Total</th></thead></table>';
+			$data_chart = $scama42;
+			
+			
+			
+		}else{
+			
+			$data_vol = $this->tvprogramun_model->list_data_weekly_ch($data);
+			$data_vol_count = $this->tvprogramun_model->list_data_count_ch($data);
+			
+
+			$cnt = $data_vol_count['total'];
+
+			$data_array = [];
+			$data_array2 = [];
+						
+			foreach($data_vol['data'] as $datas){
+				$data_arrays = [];
+				$data_arrays['PERIODE'] = $datas['PERIODE'];
+				$data_arrays['MINIPACK'] = $datas['MINIPACK'];
+				$data_arrays['CHANNEL'] = $datas['CHANNEL'];
+				$data_arrays['VIEWERS'] = $datas['VIEWERS'];
+				$data_array[$data_arrays['PERIODE']][] = $data_arrays;
+				$data_array2[$data_arrays['PERIODE']][$datas['CHANNEL'].'-'.$datas['MINIPACK']] = $data_arrays;
+			}
+			
+			$scam42 = array();
+			$scama42 = array();
+			$scam42c = array();
+			$scama42c = array();
+						
+
+			for($i=0;$i < $cnt;$i++){
+				$sq = 1;
+				FOREACH($data_array as $minipack_name){
+					
+					if(isset($minipack_name[$i])){
+						$scam42['V'.$sq] = number_format($minipack_name[$i]['VIEWERS'],0,',','.');
+						$scam42['Vs'.$sq] = $minipack_name[$i]['MINIPACK'];
+						$scam42['Vsc'.$sq] = $minipack_name[$i]['CHANNEL'];
+						$scam42['AV'.$sq] = $minipack_name[$i]['VIEWERS'];
+						$scam42['Rangking'] = $i+1;
+						$scam42['channel'] = $minipack_name[$i]['CHANNEL'];
+						$scam42['minipack'] = $minipack_name[$i]['MINIPACK'];
+					}else{
+						$scam42['V'.$sq] = '';
+						$scam42['Vs'.$sq] = '';
+						$scam42['Vsc'.$sq] = '';
+						$scam42['AV'.$sq] = 0;
+						$scam42['Rangking'] = $i+1;
+						$scam42['channel'] = $minipack_name[$i]['CHANNEL'];
+						$scam42['minipack'] = $minipack_name[$i]['MINIPACK'];
+					}
+					
+					$sq++;
+				}
+				array_push($scama42, $scam42); 
+				
+			}
+			
+			$html_table_body = '';
+			$html_table_body_total = '';			
+			
+			$rnk = 1;
+			$th_tb = "";
+			$th_tbs = "<tr>";
+			$ri = 1;
+			$data_return['monthdt'] = $this->tvprogramun_model->get_sel_week($data['start_date'],$data['end_date']);
+			
+			$bulan_label = [];
+			foreach($data_return['monthdt'] as $wkwk){
+					
+				$th_tb = $th_tb."<th colspan = '3' >Week ".$ri." (".$wkwk['PER'].")</th>";
+				$th_tbs = $th_tbs."<td>Channel</td><td>Minipack</td><td>".$data['type']."</td>";
+				$bulan_label[] = $wkwk['PER'];
+				$ri++;
+			}
+
+			
+			$th_tbs = $th_tbs."</tr>";
+			
+			$html_table = '
+			<table id="example43" class="table table-striped example" style="width: 100%">
+								<thead style="color:red">
+									<tr>
+										<th rowspan = "2" >Rank </th>
+										'.$th_tb.'
+									</tr>
+										'.$th_tbs.'
+								</thead>
+							</table>
+			';
+			$data_chart = $scama42c;
+			
+		}
+				
 		$data_return['table'] = $html_table;
 		$data_return['data'] = $scama42;
 		$data_return['bulan_label'] = $bulan_label;
 		echo json_encode($data_return,true);
 		
 	}
+	
 
 	function days_in_month($month, $year) 
 	{ 

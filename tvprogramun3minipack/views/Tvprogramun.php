@@ -79,6 +79,9 @@
 		color: #4a4d54 !important; 
 	}
 	
+
+
+	
 	
 	
   </style>
@@ -303,7 +306,7 @@
             data-gs-auto-position="1">
             <div class="panel urate-panel row" style="border:1px solid #efefef;padding:10px;margin:10px;border-radius: 25px;">
                 <div class="navbar-left" style="padding-left:10px;">
-				  <h4 class="title-periode1"><strong>Audience By Minipack Monthly</strong></h4>
+				  <h4 class="title-periode2" style="font-weight: bold;"><strong>Audience By Minipack Monthly</strong></h4>
                 </div>
 				<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
 						<button onClick="filter_panel('channels')" class="button_white" id="filter_channels"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
@@ -415,12 +418,6 @@
 					</div>
 				</div>
 				
-				<div class="row" id="loader_area2" style="">
-					<div class="col-md-12" style="margin:auto">
-						<img alt="img" class="gambar"  src="<?php echo $path; ?>assets/images/icon_loader.gif" style="display: none;margin-left: auto;margin-right: auto;">
-					</div>
-				</div>
-				
 				<div class="panel-body" id="tab-contents-result2" style="">
               <!-- Nav tabs -->
 					<div class="col-md-2">
@@ -500,6 +497,164 @@
                   <canvas id="widget-spot-channel" height="100"></canvas>
 			  
             </div>
+			
+			
+			<div class="grid-stack-item" data-gs-min-width="6" data-gs-min-height="1" data-gs-x="3" data-gs-y="0" data-gs-width="12" data-gs-height="2"
+            data-gs-auto-position="1">
+            <div class="panel urate-panel row" style="border:1px solid #efefef;padding:10px;margin:10px;border-radius: 25px;">
+                <div class="navbar-left" style="padding-left:10px;">
+				  <h4 class="title-periode3" style="font-weight: bold;"><strong>Audience By Channel Minipack</strong></h4>
+                </div>
+				<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
+						<button onClick="filter_panel('channelss')" class="button_white" id="filter_channelss"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
+				</div>
+
+                <div class="widget-content">
+				
+					<div class="col-lg-12 filter_panel" id="filter_panel_channelss" style="display:none">	
+						<div class="col-lg-12">	
+							<div class="navbar-left">
+								<h6 class="" style="font-weight: bold;">Filter</h6>
+							</div>
+							 <div class="navbar-right" style="padding:10px" >
+								<button onClick="audiencebar_view3()" class="button_red">Apply Filter</button>
+							 </div>
+						 </div>
+						 
+						  <div class="col-lg-12">
+							
+							<div class="col-lg-3">	
+								<div class="form-group">
+									<label>Year</label>	
+									 <select class="form-control" name="start_date43" id="start_date43" class="preset2" >  
+										<option value="2024" selected>2024</option>
+										<option value="2023"  >2023</option>
+										<option value="2022"  >2022</option>
+										<option value="2021"  >2021</option>
+										<option value="2020"  >2020</option>
+										<option value="2019"  >2019</option>
+										<option value="2018"  >2018</option>
+										<option value="2017"  >2017</option>
+									</select> 
+								</div>
+							</div>
+							
+							<div class="col-lg-3">	
+								<div class="form-group">
+									<label>Month</label>	
+									<select class="form-control" name="end_date43" id="end_date43" class="preset2" >  
+										<option value="All" Selected >All Month</option>
+										<option value="01"  >January</option>
+										<option value="02"  >February</option>
+										<option value="03"  >March</option>
+										<option value="04"  >April</option>
+										<option value="05"  >May</option>
+										<option value="06"  >June</option>
+										<option value="07"  >July</option>
+										<option value="08"  >August</option>
+										<option value="09"  >September</option>
+										<option value="10"  >October</option>
+										<option value="11"  >November</option>
+										<option value="12"  >December</option>
+									</select> 
+								</div>
+							</div>
+							
+							<div class="col-lg-3">	
+								<div class="form-group">
+									<label>Data</label>	
+									<select class="form-control" name="audiencebar3" id="audiencebar3" required >
+										<option value="AUDIENCE" selected >Audience</option>
+										<option value="VIEWERS" >Total Views</option>
+										<option value="DURATION" >Duration</option>
+									</select> 
+							
+								</div>
+							</div>
+							
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label>Type</label>	
+									<select class="form-control" name="tipe_filter3" id="tipe_filter3" required >
+										<option value="LIVE" selected >Live</option>
+										<option value="ALL" >All</option> 
+										<option value="TVOD" >TVOD</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="col-lg-3">
+								<div class="form-group">
+										<label>Area</label>
+										<select class="form-control" name="tipe_area3" id="tipe_area3" required >
+											<option value="ALL" selected >All Area</option>
+											<option value="01" >Area 01</option>
+											<option value="02" >Area 02</option>
+											<option value="03" >Area 03</option>
+											<option value="04" >Area 04</option>
+										</select> 
+								</div>
+							</div>
+							
+						  </div>
+						 
+					</div>
+				
+					<div class="col-lg-12">	
+						
+					
+					</div>
+						 
+				</div>
+				
+				<div class="panel-headings" id="result_header" style="">
+					<div class="col-lg-12">	
+						<div class="navbar-left" style="padding-left:10px;">
+						  <h4 class="title-periode2" style="font-weight: bold;">Result</h4>
+						</div>
+					</div>
+				</div>
+				
+				<div class="panel-body" id="tab-contents-result2" style="">
+              <!-- Nav tabs -->
+
+					 <div class="tab-content" >
+                  <!-- Tab Table -->
+                         
+                          <div class="row">
+							<div class="col-lg-12">	
+								 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
+									<button class="button_black export_area_month" onClick="print_area_month('All','All')" id=''><em class="fa fa-download"></em> &nbsp Export</button>
+								</div>
+							</div>
+							  <div class="col-md-12">													
+								<div id="table_program43" >
+								
+									<table aria-describedby="table" id="example43" class="table table-striped example" style="width: 100%">
+										<thead style="color:red">
+												<th rowspan = "0" scope="row">Ranks <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+												<th rowspan = "0" scope="row">Channel <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+												<th rowspan = "0" scope="row">Minipack <img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+												<?php $k = 1; foreach($monthdt as $monthdts){ ?>
+												<th scope="row" ><?php echo $monthdts['PERIODE']; ?></th>
+												<?php  $k++; } ?>
+												<th rowspan = "0" scope="row">Total<img alt="image" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"></th>
+										</thead>
+									</table>
+								</div> 
+							  </div>
+							 
+						</div>
+                  <!-- / Tab Table -->
+              </div>
+              <!-- / Tab panes -->
+          </div>
+					
+					
+				</div>
+                  <canvas id="widget-spot-channel" height="100"></canvas>
+			  
+            </div>
   
         </div>
         <!-- / Dashboard Widget -->
@@ -570,6 +725,28 @@
 				$('#tabs_table2').css('background-color','#fff');
 				$('#tab_chart2').css('background-color','#F2F2F2');
 				$('#tabs_chart2').css('background-color','#F2F2F2');
+				
+			
+			}
+			
+		 }
+		 
+		 
+		  function tab_filter3(tabs){
+	
+			if(tabs == 'chart'){
+			
+				$('#tab_table3').css('background-color','#F2F2F2');
+				$('#tabs_table3').css('background-color','#F2F2F2');
+				$('#tab_chart3').css('background-color','#fff');
+				$('#tabs_chart3').css('background-color','#fff');
+			
+			}else{
+				
+				$('#tab_table3').css('background-color','#fff');
+				$('#tabs_table3').css('background-color','#fff');
+				$('#tab_chart3').css('background-color','#F2F2F2');
+				$('#tabs_chart3').css('background-color','#F2F2F2');
 				
 			
 			}
@@ -880,7 +1057,7 @@ function getNest(){
 
 function viewall(){
 	
-		var url = '<?php echo base_url(); ?>tvprogramun3'; 
+		var url = '<?php echo base_url(); ?>tvprogramun3minipack'; 
 		var tahun = $('#tahun').val();
 		var bulan = $('#bulan').val();
  		  
@@ -1135,7 +1312,6 @@ function audiencebar_view(){
 	});	
 }
 
-
 function audiencebar_view2(){
 
 	var check = "True";
@@ -1177,7 +1353,7 @@ function audiencebar_view2(){
 	form_data.append('tipe_area', tipe_area2);
 
   
-  $("#example42_wrapper").append('<div class="datatable-loading" style="position: absolute; background-color: rgb(255, 255, 255); opacity: 0.75; text-align: center; z-index: 10; left: 0px; top: 750px; width: 100%; height: 520px;"><span class="datatable-loading-inner" style="font-weight: bold; position: relative; top: 45%;"><img id="loading2" src="<?php echo base_url();?>assets/urate-frontend-master/assets/images/icon_loader.gif"></span></div>');
+  $("#example42_wrapper").append('<div class="datatable-loading" id="loading1" style="position: absolute; background-color: rgb(255, 255, 255); opacity: 0.75; text-align: center; z-index: 10; top: -20px;left: 0px;  width: 100%; height: 520px;"><span class="datatable-loading-inner" style="font-weight: bold; position: relative; top: 45%;"><img  src="<?php echo base_url();?>assets/urate-frontend-master/assets/images/icon_loader.gif"></span></div>');
 			
 	$.ajax({
 		url: "<?php echo base_url().'tvprogramun3minipack/audiencebar_by_channel42'; ?>", 
@@ -1196,20 +1372,30 @@ function audiencebar_view2(){
 			$('#table_program42').html("");
 						
 			var column = [];
+			
+			if(end_date == 'All'){
 				column[0] = { data: 'Rangking' };
 				column[1] = { data: 'channel' };
-
-
 				var i_d = 2;
 				for(i=1;i<=obj['monthdt'].length;i++){
-					
-									 
 					 column[i_d] =  {data: "V"+i,"sClass": "right" };
-					 
 					 i_d++;
-					 
 				}
+				
 				column[i_d] = { data: 'TOTAL',"sClass": "right" };
+				
+			}else{
+				column[0] = { data: 'Rangking' };
+				var i_d = 1;
+				for(i=1;i<=obj['monthdt'].length;i++){
+					 column[i_d] =  {data: "Vs"+i,"sClass": "right" };
+					 i_d++;
+					  column[i_d] =  {data: "V"+i,"sClass": "right" };
+					 i_d++;
+				}
+			}
+			
+
 			
 			$('#table_program42').html(obj['table']);		
 			// refresh_chart_line_area(data_alls,type,obj.bulan_label);
@@ -1234,9 +1420,8 @@ function audiencebar_view2(){
 					});	
 					
 					var data_array = [];
-					for (const elementd of obj['data']) {
+					for (const elementd of obj['data_chart']) {
 						
-						console.log(elementd);
 						
 						const data_rr = {};
 						data_rr.name = elementd['channel'];
@@ -1340,7 +1525,119 @@ function audiencebar_view2(){
 		
 		
 			
-			$('#loader_area2').hide();
+			$('#loading1').hide();
+			
+				
+		}
+	});	
+}
+
+function audiencebar_view3(){
+
+	var check = "True";
+
+	//$('#tab-contents-result2').hide();
+	
+	var form_data = new FormData();  
+	var type = $('#audiencebar3').val();
+	var tahun = $('#tahun').val();
+	var bulan = "";
+
+	var week = "";
+	var start_date = $('#start_date43').val();
+	var end_date = $('#end_date43').val();
+	var tipe_filter = $('#tipe_filter3').val();
+	var tipe_area2 = $('#tipe_area3').val();
+	var preset = 0;
+	var check = check;
+	var profile_chan = 0;
+
+
+	form_data.append('cond',"<?php echo $cond; ?>");
+	form_data.append('type', type);
+	form_data.append('tahun', tahun);
+	form_data.append('bulan', bulan);
+	form_data.append('week', week);
+	form_data.append('check', check); 
+	form_data.append('start_date', start_date);
+	form_data.append('end_date', end_date);
+	form_data.append('tipe_filter', tipe_filter);
+	form_data.append('profile', profile_chan);
+	form_data.append('preset', preset);
+	form_data.append('tipe_area', tipe_area2);
+
+  
+  $("#example43_wrapper").append('<div class="datatable-loading" id="loading2"  style="position: absolute; background-color: rgb(255, 255, 255); opacity: 0.75; text-align: center; z-index: 10; top: -20px; left: 0px; width: 100%; height: 520px;font-size: 14px"><span class="datatable-loading-inner" style="font-weight: bold; position: relative; top: 45%;"><img src="<?php echo base_url();?>assets/urate-frontend-master/assets/images/icon_loader.gif"></span></div>');
+			
+	$.ajax({
+		url: "<?php echo base_url().'tvprogramun3minipack/audiencebar_by_channel43'; ?>", 
+		dataType: 'text',  // what to expect back from the PHP script, if anything
+		cache: false,
+		contentType: false,
+		processData: false,
+		data: form_data,                         
+		type: 'post',
+		success: function(data){
+			
+			
+			obj = jQuery.parseJSON(data);
+			
+		//	const data_alls = Object.entries(obj['data_all']);
+			
+			$('#table_program43').html("");
+						
+			var column = [];
+			
+			if(end_date == 'All'){
+				column[0] = { data: 'Rangking' };
+				column[1] = { data: 'channel',"sClass": "left" };
+				column[2] = { data: 'minipack',"sClass": "left" };
+				var i_d = 3;
+				for(i=1;i<=obj['monthdt'].length;i++){
+					 column[i_d] =  {data: "V"+i,"sClass": "right" };
+					 i_d++;
+				}
+				
+				column[i_d] = { data: 'TOTAL',"sClass": "right" };
+				
+			}else{
+				column[0] = { data: 'Rangking' };
+				var i_d = 1;
+				for(i=1;i<=obj['monthdt'].length;i++){
+					 column[i_d] =  {data: "Vsc"+i,"sClass": "left" };
+					 i_d++;
+					 column[i_d] =  {data: "Vs"+i,"sClass": "left" };
+					 i_d++;
+					  column[i_d] =  {data: "V"+i,"sClass": "right" };
+					 i_d++;
+				}
+			}
+			
+			
+			$('#table_program43').html(obj['table']);		
+			// refresh_chart_line_area(data_alls,type,obj.bulan_label);
+			
+					$('#example43').DataTable({
+						"bFilter": false,
+						"aaSorting": [],
+						"bLengthChange": false,
+						'iDisplayLength': 10,
+						"sPaginationType": "simple_numbers",
+						"Info" : false,
+						
+						"searching": false,
+						data: obj['data'], 
+						"language": {
+							"decimal": ",",
+							"thousands": "."
+						},
+						"scrollX": true,
+						"sScrollXInner": "100%",
+						columns: column
+					});	
+					
+					//$('#loading2').hide();
+					
 			
 				
 		}
@@ -1425,6 +1722,7 @@ $( document ).ready(function() {
     $( ".title-periode1" ).html($(".title-periode1").html()+"<br><span style='font-size: 12px;color:red'>"+selPeriode+"<span>");
 	
 	audiencebar_view2();
+	audiencebar_view3();
    
 });
 

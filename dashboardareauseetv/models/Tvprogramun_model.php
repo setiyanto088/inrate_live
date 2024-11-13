@@ -1016,8 +1016,8 @@ ORDER BY CHANNEL_NAME";
 		AND `AREA` = '".$regional."'
 		AND `REGIONAL` = '".$witel['REGIONAL']."'
 		AND BRANCH = '".$witel['BRANCH']."'
-		ORDER BY VIEWERS DESC
 		AND TYPE_VALUE = 'AUDIENCE'
+		ORDER BY VIEWERS DESC
 		LIMIT 10
 		";
 		

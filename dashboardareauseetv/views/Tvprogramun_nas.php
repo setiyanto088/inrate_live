@@ -1661,7 +1661,7 @@ function regional(reg){
 
 function filter_period(regional){
 	
-		var url = '<?php echo base_url(); ?>dashboarduseetv';
+		var url = '<?php echo base_url(); ?>dashboardareauseetv';
  		var tahun = $('#periode_head').val();
 		
  		
