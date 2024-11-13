@@ -2884,7 +2884,7 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 	
 	public function list_spot_by_date_all2_preset($where,$periode,$start_date,$end_date,$preset) {
 		$query = "
-		SELECT COUNT(DISTINCT(CARDNO)) AS `spot`, DATE_FORMAT(`USER_BEGIN_SESSION`,'%Y-%m-%d') AS `date` FROM `NEW_CDR_LIVE_CLEAN_CS` A
+		SELECT COUNT(DISTINCT(CARDNO)) AS `spot`, DATE_FORMAT(`USER_BEGIN_SESSION`,'%Y-%m-%d') AS `date` FROM `NEW_CDR_LIVE_CLEAN_CS_CURR_MONTH` A
 		LEFT JOIN `CHANNEL_PARAM_FINAL` B ON A.CHANNEL = B.`CHANNEL_NAME`
 		WHERE `USER_BEGIN_SESSION` BETWEEN '".$start_date." 00:00:00' AND '".$end_date." 23:59:59'
 		".$preset."
