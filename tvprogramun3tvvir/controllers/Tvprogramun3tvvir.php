@@ -4008,7 +4008,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 
 				$where_periode = substr($where_periode, 0, -1);
 				
-				if($type == 'ALL'){
+				if($tipe_filter == 'ALL'){
 
 							
 						IF($type == 'AUDIENCE'){
