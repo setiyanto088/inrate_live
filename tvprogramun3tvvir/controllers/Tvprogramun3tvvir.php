@@ -4125,7 +4125,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 			}
 			
 			// echo '<pre>';
-			// echo $query_qr2;die; 
+			//echo $query_qr2;die; 
 			
 			$data['years'] = $this->tvprogramun_model->list_spot_by_program_all_bar42($query_qr2,$where,$periode,$pilihaudiencebar,"0","True"); 
 			//echo $query_qr2;die;
@@ -4160,19 +4160,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 				array_push($scama42, $scam42); 
 				
 				$rkn2++;
-			}
-			
-			// if($tipe_filter == 'live'){
-			
-				// $data['channels'] = $this->tvprogramun_model->list_spot_by_program_all_bar_fix($query_qr); 
-			
-			// }else{
-				
-				// $data['channels'] = $this->tvprogramun_model->list_spot_by_program_all_bar_tvod("channel_name",$where,$periode,$type,$profile,$check,$tipe_filter,$first_day,$this_day); 
-				
-			// }
-			//print_r($data['channels']);die;
-			
+			}			
 			
 			$pathx = base_url() . 'assets/urate-frontend-master/';
 			
@@ -4192,6 +4180,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 							
 			$data['table'] = $table_html;
 			$data['data'] = $scama42;
+			
 		
 		$array_cell = ['B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
 	   'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK'];
