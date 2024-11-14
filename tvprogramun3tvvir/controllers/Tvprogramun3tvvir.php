@@ -4128,7 +4128,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 			//echo $query_qr2;die; 
 			
 			$data['years'] = $this->tvprogramun_model->list_spot_by_program_all_bar42($query_qr2,$where,$periode,$pilihaudiencebar,"0","True"); 
-			//echo $query_qr2;die;
+			echo $query_qr2;die;
 
 			$array_channel = array();
 
