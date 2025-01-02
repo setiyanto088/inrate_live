@@ -579,6 +579,10 @@ class Audiencemeasurement extends JA_Controller {
 		
 		$channel = str_replace("\'","'",$channel);
 		
+		$channel = str_replace("Crime  Investigation","Crime+ Investigation",$channel);
+
+		//echo $channel;die;
+		
 		if( ! empty($this->Anti_si($_GET['daypart'])) ) {
 			$daypart = $this->Anti_si($_GET['daypart']);
 		} else {
@@ -663,6 +667,7 @@ class Audiencemeasurement extends JA_Controller {
 		$params['layout2']		= $layout2;
 		$params['genre']		= str_replace("AND","&",$genre);
 		$params['channel']		= str_replace("AND","&",$channel);
+		
 		
 		$list = $this->tvpc_model->list_tvpc($params);
 		

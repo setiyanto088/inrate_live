@@ -35,7 +35,7 @@ class Dashboarddata extends JA_Controller {
 		$data['file_date'] = $this->tvprogramun_model->get_file_date();
 		
 		
-		if(!$this->session->userdata('user_id') || $this->session->userdata('role_id') <> 41) {
+		if(!$this->session->userdata('user_id') || $this->session->userdata('role_id') <> 878) {
 			redirect ('/login');
 		}
 		

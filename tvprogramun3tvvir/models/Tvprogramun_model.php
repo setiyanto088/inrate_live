@@ -10,7 +10,8 @@ class Tvprogramun_model extends CI_Model {
 	}
 	
 	  public function channelsearch($strSearch,$strGenre,$role){
-    
+		$db = $this->clickhouse->db();
+		
       if($strGenre == "0"){
           $strWhere = "AND CHANNEL_NAME_PROG LIKE '%".strtoupper($strSearch)."%' ";
       }ELSE if($strGenre == ""){
@@ -25,8 +26,11 @@ class Tvprogramun_model extends CI_Model {
 	  WHERE B.`F2A_STATUS` in (0,-99) ".$strWhere."   ORDER BY CHANNEL_NAME_PROG ";  
 	  
       $out		= array();
-      $query		= $this->db2->query($sql);
-      $result = $query->result_array();
+      // $query		= $this->db2->query($sql);
+      // $result = $query->result_array();
+	  
+	  	$sql	= $db->select($sql);
+		return $sql->rows();		  
       
       return $result;
   }       
