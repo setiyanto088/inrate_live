@@ -131,6 +131,7 @@
 					<option value='2021' <?php  if ($tahunselected=='2021') { echo 'selected'; } ?> >2021</option>
 					<option value='2022' <?php  if ($tahunselected=='2022') { echo 'selected'; } ?> >2022</option>
 					<option value='2023' <?php  if ($tahunselected=='2023') { echo 'selected'; } ?> >2023</option>	
+					<option value='2024' <?php  if ($tahunselected=='2024') { echo 'selected'; } ?> >2024</option>	
 					<?php 
 						//print_r($thn);
 							foreach($thn as $periode){
