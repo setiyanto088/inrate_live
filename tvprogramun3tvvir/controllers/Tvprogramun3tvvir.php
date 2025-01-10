@@ -3003,10 +3003,10 @@ class Tvprogramun3tvvir extends JA_Controller {
 			$drag = 'SUM';
 			$w_week = 1;
 		}
-		
+
 		//
 		$data['weekdt'] = $this->tvprogramun_model->get_sel_week($first_day,$this_day);
-		
+			
 		//print_r($data['weekdt']);die;  
 		
 			$bulan['01'] = 'January';
@@ -3126,9 +3126,9 @@ class Tvprogramun3tvvir extends JA_Controller {
 				
 			}
 
-			
+		
 		}
-		// echo $query_qr;die; 
+		//echo $query_qr;die; 
 		// die;
 		//print_r($data['weekdt']);die;
 		
