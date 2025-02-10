@@ -24,12 +24,12 @@ class Api_auth_model extends CI_Model {
 			
 			
 			
-			
+		
 			
 			$sql 	= 'SELECT id, pwd , ctr 
 						FROM hrd_profile
 						WHERE username = ?
-						AND id_unit <> 87';
+						AND id_unit <> 87 and id_role not in (3,6) ';
 			
 			$query 	=  $this->db->query($sql,
 				array(
