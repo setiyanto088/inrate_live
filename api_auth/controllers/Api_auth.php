@@ -45,7 +45,7 @@ class Api_auth extends CI_Controller {
                  
                 if(isset($hasilnya[0])){
                   
-                    if($hasilnya[0]['role_id'] == 1 || $hasilnya[0]['role_id'] == 3 || $hasilnya[0]['role_id'] == 6 || $hasilnya[0]['role_id'] == 19 || $hasilnya[0]['role_id'] == 79 || $hasilnya[0]['role_id'] == 90 || $hasilnya[0]['role_id'] == 40 || $hasilnya[0]['role_id'] == 999 || $hasilnya[0]['role_id'] == 74 ){
+                    if($hasilnya[0]['role_id'] == 1 || $hasilnya[0]['role_id'] == 3 || $hasilnya[0]['role_id'] == 19 || $hasilnya[0]['role_id'] == 79 || $hasilnya[0]['role_id'] == 90 || $hasilnya[0]['role_id'] == 40 || $hasilnya[0]['role_id'] == 999 || $hasilnya[0]['role_id'] == 74 ){
                         
                             foreach($hasilnya as $newhasil){
                                 $newdata = array

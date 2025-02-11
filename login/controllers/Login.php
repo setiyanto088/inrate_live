@@ -39,7 +39,7 @@ class Login extends MX_Controller {
 							if ($role == 10 ){
 								redirect(base_url().'dashboardfreetoair'); 
 							}
-							elseif ($role == 1  ||$role == 6 ||$role == 19  ){
+							elseif ($role == 1 ||$role == 19  ){
 								redirect(base_url().'dashboard');
 							}
 							elseif ($role == 3 ){
