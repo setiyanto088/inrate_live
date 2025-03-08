@@ -285,7 +285,7 @@ class Dashboarddata extends JA_Controller {
 							}
 						}
 					}else{
-						$scamud['SUCC'] = "Process Complete";
+						$scamud['SUCC'] = "Process Complete<br><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",1)' >Reprocess</button>";
 					}
 					
 				}
@@ -625,76 +625,90 @@ class Dashboarddata extends JA_Controller {
 	function checkdata_day(){
 		
 			
-		$type =  $this->input->post('type');
-		$date_file = $this->input->post('date_file');
-		$token = $this->input->post('token');
+		$params['type'] =  $this->input->post('type');
+		$params['date_file'] = $this->input->post('date_file');
+		$params['token'] = $this->input->post('token');
 		
 		$params['token']= $token;
 		$params['uid']= $this->session->userdata('user_id');
-
-		$validate = $this->tvprogramun_model->validate_password($params);
-
-		if($validate['status'] == 0){
+		$tahun = $date_file;
+		//print_r($params);die;
 			
-			$res = array(
-					'status' => 'error',
-					'message' => $validate['message']
+			if($params['type'] == "5"){
+			
+				// $queue_id = 6;
+				// $sc_duplicate = "php /data/opep/srcs/jobs/check_epg_file.php ".$tahun." ";
+				// $tbs = 'DAILY_CHECK_REPORT';
+				
+				$raw_epg = $this->tvprogramun_model->get_epg_raw($params);
+				$cnt_raw_epg = count($raw_epg);
+				
+				$epg_click = $this->tvprogramun_model->epg_click($params);
+				$cnt_epg_click = count($epg_click);
+				
+				if($raw_epg == $epg_click){
+					if($cnt_raw_epg == $cnt_epg_click){
+						
+						$nerr = 0;
+						for($is = 0; $is < $cnt_raw_epg ;$is++){
+							if($raw_epg[$is]['CHANNEL'] == $epg_click[$is]['CHANNEL'] && $raw_epg[$is]['PROGRAM'] == $epg_click[$is]['PROGRAM'] && $raw_epg[$is]['BEGIN_PROGRAM'] == $epg_click[$is]['BEGIN_PROGRAM'] && $raw_epg[$is]['END_PROGRAM'] == $epg_click[$is]['END_PROGRAM'] && $raw_epg[$is]['KATEGORI_CHANNEL'] == $epg_click[$is]['KATEGORI_CHANNEL'] && $raw_epg[$is]['GENRE_PROGRAM'] == $epg_click[$is]['GENRE_PROGRAM'] ){
+								
+								$button_process = '';
+								$button_check = 1;
+								
+								$nerr++;
+							}else{ 
+								$button_check = 2;
+								
+								$button_process = "<div id='note_div_".$params['date_file']."'>File Ready to Process<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='process_btn_".$params['date_file']."' data-id='".$params['date_file']."' onclick='onqueue(\"".$params['date_file']."\",".$params['type'].")' >Process</button></div>";
+								$this->tvprogramun_model->update_epg_process($params);
+								break; 
+							}
+						}
+					}else{
+						//$button_check = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$params['date_file']."' onclick='checkdata_day(\"".$params['date_file']."\",".$params['type'].")' >Check Data</button>";
+						$button_process = "<div id='note_div_".$params['date_file']."'>Process Success<br><br></div>";
+						$button_check = 1;
+						$this->tvprogramun_model->update_epg_process($params);
+					}
+				}
+
+
+			}elseif($params['type'] == "1"){
+			
+
+						
+				$res = array(
+						'status' => 'success',
+						'message' => 'Success Process',
+						'btn' => $button_process,
+						'btn_check' => $button_check
 				);
 			
-		}else{
 		
-			$tahun = $date_file;
-			
-			if($type == "4"){
-			
-				$queue_id = 7;
-				$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_u_".$tahun." & ";
-				$tbs = 'DAILY_LOGPROOF_U_CHECK';
 
-			}elseif($type == "2"){
-			
-				$queue_id = 10;
-				$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_cim_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_cim_u_".$tahun." & ";
-				$tbs = 'DAILY_CIM_CHECK';
 
-			}elseif($type == "3"){
-			
-				$queue_id = 9;
-				$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_rc_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_rc_u_".$tahun." & ";
-				$tbs = 'DAILY_RATECARD_CHECK';
-
-			}elseif($type == "6"){
-			
-				$queue_id = 8;
-				$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_m.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_m_".$tahun." & ";
-				$tbs = 'DAILY_LOGPROOF_M_CHECK';
-
-			}elseif($type == "1"){
-			
-				$queue_id = 6;
-				$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_daily_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_daily_u_".$tahun." & ";
-				$tbs = 'DAILY_CHECK_REPORT';
-
-			}elseif($type == "5"){
-			
-				$queue_id = 6;
-				$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_daily_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_daily_u_".$tahun." & ";
-				$tbs = 'DAILY_CHECK_REPORT';
-
-			}
-			
-			//$this->tvprogramun_model->insert_queue_check($tahun,$queue_id,$sc_duplicate,$tbs);
+						$data_ch[$ik]['file_type'] = $ft;
 						
-			$res = array(
-					'status' => 'success',
-					'message' => 'Success Process'
-			);
-			
-		
-		}
-		
-		$this->output->set_content_type('application/json')->set_output(json_encode($res));
-		
+						if($datax['STATUS_FILE'] == 3){
+
+							$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='process_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='onqueue(\"".$datax['LOG_DATE']."\",".$type.")' >Process</button>".'<br>'.$datax['CHANNEL'].'</div>';
+						}else{
+							$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br>".$datax['NOTE'].'<br>'.$datax['CHANNEL'].'</div>';
+						}
+						
+							if($datax['STATUS_FILE'] == 1){
+
+								
+							}else{
+							
+								$data_ch[$ik]['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='chek_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type.")' >Check Data</button>";
+							}
+			} else {
+				$data_ch = null;
+			}
+
+			echo json_encode($data_ch,true);
 		
 	}
 	
@@ -860,7 +874,7 @@ class Dashboarddata extends JA_Controller {
 							}
 						}
 					}else{
-						$scamud['SUCC'] = "Process Complete";
+						$scamud['SUCC'] = "Process Complete<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",".$type.")' >Reprocess</button>";
 					}
 					
 				}

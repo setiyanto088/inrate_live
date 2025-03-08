@@ -59,6 +59,55 @@ class Tvprogramun_model extends CI_Model {
 			return $res;
 	}
 	
+		public function get_epg_raw($params) {
+		
+		$query = "
+		SELECT A.CHANNEL,PROGRAM,DATE_FORMAT(START_TIME,'%Y-%m-%d %H:%i:%s') AS BEGIN_PROGRAM,DATE_FORMAT(END_TIME,'%Y-%m-%d %H:%i:%s') AS END_PROGRAM,KATEGORI AS KATEGORI_CHANNEL,
+		GENRE AS GENRE_PROGRAM FROM `EPG_RAW1_TEST` A 
+		LEFT JOIN `MR_KAT_CHANNEL` C ON A.CHANNEL = C.`CHANNEL`
+		WHERE (START_TIME BETWEEN '".$params['date_file']." 00:00:00' AND '".$params['date_file']." 23:59:59'
+		OR END_TIME BETWEEN '".$params['date_file']." 00:00:00' AND '".$params['date_file']." 23:59:59'
+		) AND A.CHANNEL <> '' 
+		GROUP BY A.CHANNEL,PROGRAM,START_TIME,END_TIME
+		 ORDER BY A.CHANNEL,START_TIME
+		";
+		
+		
+		$sql	= $this->db->query($query);
+		$this->db->close();
+		$this->db->initialize(); 	
+		return $sql->result_array();	   
+	}	
+	
+	public function epg_click($params) {
+		
+ 		$db = $this->clickhouse->db();
+		$query = "
+			SELECT CHANNEL,PROGRAM,BEGIN_PROGRAM,END_PROGRAM,KATEGORI_CHANEL as KATEGORI_CHANNEL,GENRE_PROGRAM FROM EPG_CLEAN A 
+			WHERE (BEGIN_PROGRAM  BETWEEN '".$params['date_file']." 00:00:00' AND '".$params['date_file']." 23:59:59'
+				OR END_PROGRAM BETWEEN '".$params['date_file']." 00:00:00' AND '".$params['date_file']." 23:59:59'
+			)
+			GROUP BY CHANNEL,PROGRAM,BEGIN_PROGRAM,END_PROGRAM,KATEGORI_CHANEL,GENRE_PROGRAM
+			ORDER BY CHANNEL,BEGIN_PROGRAM
+		";
+		
+		$sql	= $db->select($query);
+		return $sql->rows();			   
+	}	
+	
+	public function update_epg_process($params) {
+	
+		$query = "	update 	`DATASOURCE_CDR`
+		set 
+		FILE_TYPE = FILE_TYPE+1, STATUS_FILE = 3, `NOTE` = 'EPG File Has Been Updated'
+		where `LOG_DATE` = '".$params['date_file']."'
+		AND `DATA_TYPE` = 5 ";	
+
+			$sql	= $this->db->query($query);
+			$this->db->close();
+			$this->db->initialize(); 
+	}
+	
 	public function get_profile($iduser,$idrole) {  
 
 			$sql = "SELECT a.id, `name`, grouping, postbuy_status FROM t_profiling_ub a INNER JOIN hrd_profile b ON a.user_id_profil=b.id WHERE (STATUS = 1 OR STATUS = 3)  AND user_id_profil=".$iduser."  and status_dash_str = 'Done' order by `name` "; 

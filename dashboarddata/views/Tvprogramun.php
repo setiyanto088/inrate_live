@@ -1409,7 +1409,8 @@ function checkdata_day(date_file,type){
 		success: function(response){
 			if (response.status == "success") {
 								
-				window.location.href = "<?php echo base_url();?>dashboarddata/";
+				//window.location.href = "<?php echo base_url();?>dashboarddata/";
+				table2_view();
 							  
 			} else{
 				$('#ceksas_'+date_file).html('<h6 style="color: red">'+response.message+'</h6>');
