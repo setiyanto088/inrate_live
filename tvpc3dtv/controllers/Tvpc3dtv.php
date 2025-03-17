@@ -65,18 +65,6 @@ class Tvpc3dtv extends JA_Controller {
 						
 			$params['channel']	= rtrim($txt_channel,",");
 		}else{			
-			// $channel =   str_replace("AND","&",str_replace("  AND  "," & ",$this->Anti_si($this->input->post('channel', TRUE))));
-			// $channel = explode(',',$channel);
-			// $ccc = '';
-			
-			// foreach($channel as $chn){
-				
-				// $ccc .= "'".$chn."',";
-				
-			// }
-			
-			
-			// $params['channel'] = substr($ccc,0,-1);
 			$params['channel']		= str_replace("AND","&",str_replace("  AND  "," & ",$channel));
 		}
 		
@@ -84,6 +72,8 @@ class Tvpc3dtv extends JA_Controller {
  	
  		
 		$list = $this->tvpc_model->list_tvpc_export($params);
+		
+		//print_r($list);die;
 		
 		$this->load->library('excel');
 	   
