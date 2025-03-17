@@ -45,13 +45,14 @@ class Tvpc3dtv extends JA_Controller {
 		$date = $dt->createFromFormat('d/m/Y', $this->Anti_si($this->input->post('end_date', TRUE)));
 		$params['end_date'] = $date->format('Y-m-d');
 		
+		$channel =   $this->Anti_si($this->input->post('channel', TRUE));
 		$params['starttime'] =   $this->Anti_si($this->input->post('start_time', TRUE));
 		$params['endtime'] =   $this->Anti_si($this->input->post('end_time', TRUE));
 		$params['profile'] =   $this->Anti_si($this->input->post('profile', TRUE));
 		$params['genre'] =   str_replace("AND","&",$this->Anti_si($this->input->post('genre', TRUE)));
 		$params['daypart'] =   $this->Anti_si($this->input->post('daypart', TRUE));
 		
-		if($channel == "'0'"){
+		if($channel == "'0'" || $channel == "\'0\'" ){
 			
 						
 			$get_channel = $this->tvpc_model->list_channel();
@@ -64,18 +65,19 @@ class Tvpc3dtv extends JA_Controller {
 						
 			$params['channel']	= rtrim($txt_channel,",");
 		}else{			
-			$channel =   str_replace("AND","&",str_replace("  AND  "," & ",$this->Anti_si($this->input->post('channel', TRUE))));
-			$channel = explode(',',$channel);
-			$ccc = '';
+			// $channel =   str_replace("AND","&",str_replace("  AND  "," & ",$this->Anti_si($this->input->post('channel', TRUE))));
+			// $channel = explode(',',$channel);
+			// $ccc = '';
 			
-			foreach($channel as $chn){
+			// foreach($channel as $chn){
 				
-				$ccc .= "'".$chn."',";
+				// $ccc .= "'".$chn."',";
 				
-			}
+			// }
 			
 			
-			$params['channel'] = substr($ccc,0,-1);
+			// $params['channel'] = substr($ccc,0,-1);
+			$params['channel']		= str_replace("AND","&",str_replace("  AND  "," & ",$channel));
 		}
 		
 
