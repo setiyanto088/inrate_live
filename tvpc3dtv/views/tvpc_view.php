@@ -731,6 +731,7 @@
               alert('Please, Select End Date');
               return false;
           }
+
           
           var profile = $('#profile').val();
           var genre = $('#genre').val();          
@@ -742,6 +743,22 @@
           var arrDaypart2 = [];
           var listDaypart = [];
           
+		  		  
+		   const myArray1 = start_date.split("/");
+		   const myArray2 = end_date.split("/");
+
+
+			const date1 = new Date(myArray1[1]+'/'+myArray1[0]+'/'+myArray1[2]);
+			const date2 = new Date(myArray2[1]+'/'+myArray2[0]+'/'+myArray2[2]);
+			const diffTime = Math.abs(date2.getTime() - date1.getTime() );
+			const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
+			
+			if(diffDays > 6 && channel == "0" && genre == '0'){
+				alert('Maximum Date for Export All Channel is 7 Days.');
+				return false;
+			}
+				
+				
           if(profile === null || profile === ''){  
         			alert('Please, Select Profile');
         			return false;
