@@ -196,7 +196,7 @@
 					  <h4 class="title-periode2" style="font-weight: bold;">Result</h4>
 					</div>
 					 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
-						<button class="button_black " onclick="excel()" id=''><em class="fa fa-download"></em> &nbsp Export</button>
+						<button class="button_black " id="btn_export" onclick="excel()" id=''><em class="fa fa-download"></em> &nbsp Export</button>
 					</div>
 				</div>
               </div>
@@ -719,6 +719,9 @@
 		 }
 	 
 	  function excel(group=""){
+		  
+		  $("#btn_export").attr('disabled','disabled');
+		  $("#btn_export").css("background-color", "grey");
 		 
 		   var start_date = $('#start_date').val();	
           if(start_date === ''){			
@@ -753,10 +756,10 @@
 			const diffTime = Math.abs(date2.getTime() - date1.getTime() );
 			const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
 			
-			if(diffDays > 6 && channel == "0" && genre == '0'){
-				alert('Maximum Date for Export All Channel is 7 Days.');
-				return false;
-			}
+			// if(diffDays > 6 && channel == "0" && genre == '0'){
+				// alert('Maximum Date for Export All Channel is 7 Days.');
+				// return false;
+			// }
 				
 				
           if(profile === null || profile === ''){  
@@ -871,9 +874,14 @@
 										success: function(data){
 											
 											download_file('<?php echo $donwload_base; ?>tmp_doc/tvpc_dtv_export.xls','TVPC.xls');
+											
+											 $("#btn_export").removeAttr('disabled');
+											 $("#btn_export").css("background-color", "black");
 																
 										}, error: function(obj, response) {
 											console.log('ajax list detail error:' + response);	
+											$("#btn_export").removeAttr('disabled');
+											$("#btn_export").css("background-color", "black");
 										} 
 									});	
 		 
