@@ -65,7 +65,7 @@ class Tvpc3dtv extends JA_Controller {
 						
 			$params['channel']	= rtrim($txt_channel,",");
 		}else{			
-			$params['channel']		= str_replace("AND","&",str_replace("  AND  "," & ",$channel));
+			$params['channel']		=  str_replace("\'","'",str_replace("AND","&",str_replace("  AND  "," & ",$channel)));
 		}
 		
 

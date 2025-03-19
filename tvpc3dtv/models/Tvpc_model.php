@@ -117,7 +117,7 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
 		ORDER BY TOTAL_VIEWS DESC "
 		;
 		 
-		//echo $sql2;die;
+		echo $sql2;die;
 			// $sql = '
 		// SELECT * FROM M_SUMMARY_MEDIA_PLAN_D_PTV_NEW_DTV WHERE CHANNEL IN ('.$params['channel'].') AND DATE BETWEEN "'.$params['start_date'].'" AND "'.$params['end_date'].'"
 		// AND (BEGIN_PROGRAM BETWEEN "'.$params['start_date'].' '.$params['starttime'].':00" AND "'.$params['end_date'].' '.$params['endtime'].':00"
