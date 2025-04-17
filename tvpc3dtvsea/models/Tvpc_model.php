@@ -26,7 +26,7 @@ class Tvpc_model extends CI_Model {
 	}
 	
 	public function list_channel() {
-		$query = 'SELECT CHANNEL_NAME as channel, COLOR FROM CHANNEL_PARAM WHERE CHANNEL_NAME IN ("Al Jazeera","Bloomberg","Channel News Asia","CNBC Asia","CNN International","DW TV","Euronews","France 24","SEA Today","TRT World","TVBS News","CNBC","TV One","CNN Indonesia","Metro TV","Kompas TV","TVRI","Berita Satu","iNews","IDX Channel","MNC News","CNBC Indonesia","MAXStream") GROUP BY CHANNEL_NAME order by CHANNEL_NAME';  	 		
+		$query = 'SELECT CHANNEL_NAME as channel, COLOR FROM CHANNEL_PARAM WHERE CHANNEL_NAME IN ("Al Jazeera","Bloomberg","Channel News Asia","CNBC Asia","CNN International","DW TV","Euronews","France 24","SEA Today","TRT World","TVBS News","CNBC","TV One","CNN Indonesia","Metro TV","Kompas TV","TVRI","Berita Satu","iNews","IDX Channel","MNC News","CNBC Indonesia","MAXStream","Garuda TV") GROUP BY CHANNEL_NAME order by CHANNEL_NAME';  	 		
 		$sql	= $this->db->query($query);
 		$this->db->close();	
 		return $sql->result_array();	   
@@ -345,7 +345,7 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
       
       $sql = "SELECT CHANNEL_NAME AS CHANNEL FROM `CHANNEL_PARAM` C
       WHERE C.`F2A_STATUS` IN (0,-99) ".$strWhere."  
-	  AND CHANNEL_NAME IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','CNBC','TV One','CNN Indonesia','Metro TV','Kompas TV','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream')
+	  AND CHANNEL_NAME IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','CNBC','TV One','CNN Indonesia','Metro TV','Kompas TV','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV')
       ORDER BY C.`CHANNEL_NAME`";
        $out		= array();
       $query		= $this->db->query($sql);

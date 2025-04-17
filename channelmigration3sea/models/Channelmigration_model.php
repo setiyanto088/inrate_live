@@ -11,7 +11,7 @@ class Channelmigration_model extends CI_Model {
     public function get_channel(){ 
 		
 		 $sql = "SELECT CHANNEL_NAME AS CHANNEL_CIM FROM `CHANNEL_PARAM` C
-        WHERE CHANNEL_NAME IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','CNBC','TV One','CNN Indonesia','Metro TV','Kompas TV','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream') GROUP BY CHANNEL_NAME
+        WHERE CHANNEL_NAME IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','CNBC','TV One','CNN Indonesia','Metro TV','Kompas TV','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV') GROUP BY CHANNEL_NAME
         ORDER BY C.`CHANNEL_NAME`";
         
         $out		= array();

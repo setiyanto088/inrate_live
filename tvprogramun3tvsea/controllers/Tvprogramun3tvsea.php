@@ -232,7 +232,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 			$where = $where." AND CHANNEL IN (".$str_channel.")"; 
 		}
  		   
-		  $where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One', 'CNN Indonesia', 'Metro TV', 'Kompas TV', 'TVRI', 'Berita Satu', 'TVRI', 'iNews', 'IDX Channel', 'MNC News', 'CNBC Indonesia','MAXStream')";
+		  $where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One', 'CNN Indonesia', 'Metro TV', 'Kompas TV', 'TVRI', 'Berita Satu', 'TVRI', 'iNews', 'IDX Channel', 'MNC News', 'CNBC Indonesia','MAXStream','Garuda TV')";
 		  
  
 		   
@@ -1006,7 +1006,7 @@ class Tvprogramun3tvsea extends JA_Controller {
  		 
 		if($preset == "0"){
 			
-			$where .= " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One', 'CNN Indonesia', 'Metro TV', 'Kompas TV', 'TVRI', 'Berita Satu', 'TVRI', 'iNews', 'IDX Channel', 'MNC News', 'CNBC Indonesia','MAXStream')";
+			$where .= " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One', 'CNN Indonesia', 'Metro TV', 'Kompas TV', 'TVRI', 'Berita Satu', 'TVRI', 'iNews', 'IDX Channel', 'MNC News', 'CNBC Indonesia','MAXStream','Garuda TV')";
 		}else{
 			
 			$channel_set = $this->tvprogramun_model->channel_set($preset,$userid);
@@ -1022,7 +1022,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 		
 			$str_channel = substr($str_channel, 0, -1);
  			
-			$where .= " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One', 'CNN Indonesia', 'Metro TV', 'Kompas TV', 'TVRI', 'Berita Satu', 'TVRI', 'iNews', 'IDX Channel', 'MNC News', 'CNBC Indonesia','MAXStream') ";
+			$where .= " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One', 'CNN Indonesia', 'Metro TV', 'Kompas TV', 'TVRI', 'Berita Satu', 'TVRI', 'iNews', 'IDX Channel', 'MNC News', 'CNBC Indonesia','MAXStream','Garuda TV') ";
 		}
 		  
 	 
@@ -1917,7 +1917,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 			LEFT JOIN (	
 						SELECT `CHANNEL`,MAX(`VIEWERS`) AS VIEWERS FROM `M_SUM_TV_DASH_CHAN_PTV_WEEK` 
 						WHERE ID_PROFILE = 0 AND SUBSTR(TANGGAL,1,4) = '".$wkwk['YEAR']."' AND `WEEK` = '".$wkwk['WEEK']."'
-						AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream')
+						AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV')
 							GROUP BY CHANNEL
 					
 					) A".$ri." ON CHN.CHANNEL = A".$ri.".CHANNEL 
@@ -1937,7 +1937,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 					FROM (
 						SELECT DISTINCT(CHANNEL) FROM `M_SUM_TV_DASH_CHAN_PTV_WEEK`
 						WHERE SUBSTR(TANGGAL,1,4) = '".$data['weekdt'][0]['YEAR']."' AND `WEEK` IN (".$week_in.")
-						AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream')
+						AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV')
 						AND CHANNEL IS NOT NULL
 					) CHN  ".$join_left." ".$where." ORDER BY A1.`VIEWERS` DESC ";
 		
@@ -1959,7 +1959,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 			$join_left2 = $join_left2." LEFT JOIN (
 						SELECT * FROM M_SUM_TV_DASH_CHAN_PTV
 						WHERE `TANGGAL` = '".$wkwkwk['PERIODE_FULL']."'
-						AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream')
+						AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV')
 						AND ID_PROFILE = 0
 					) A".$ri2." ON CHN.CHANNEL = A".$ri2.".CHANNEL ";
 			
@@ -1971,7 +1971,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 			$query_qr2 = $query_qr2."".$week_in2." FROM (
 						SELECT * FROM M_SUM_TV_DASH_CHAN_PTV
 						WHERE `TANGGAL` = '2020'
-						AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream')
+						AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV')
 						AND ID_PROFILE = 0
 					) CHN ".$join_left2." ORDER BY CHN.VIEWERS DESC ";
 		
@@ -1980,7 +1980,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 			$query_qr2 = $query_qr2."".$week_in2." FROM (
 						SELECT * FROM M_SUM_TV_DASH_CHAN_PTV
 						WHERE `TANGGAL` = '".date('Y')."'
-						AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream')
+						AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV')
 						AND ID_PROFILE = 0
 					) CHN ".$join_left2." ORDER BY CHN.VIEWERS DESC ";
 			 
@@ -2211,7 +2211,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 			$where = "AND CHANNEL IN (".$str_channel.")"; 
 		}
 		
-		$where = " AND CHANNEL IN (''Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream')";
+		$where = " AND CHANNEL IN (''Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV')";
 	 
 		IF($type == 'AUDIENCE'){
 			$tbl_x = 'M_SUM_TV_DASH_CHAN_PTV_WEEK';
@@ -2633,7 +2633,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 			$where = "AND CHANNEL IN (".$str_channel.")"; 
 		}
 		
-		$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream')";
+		$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV')";
 	 
 		
 		IF($type == 'AUDIENCE'){
@@ -2886,7 +2886,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 		
 		if($preset == "0"){
 			
-			$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream') ";
+			$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV') ";
 		}else{
 			
 			$channel_set = $this->tvprogramun_model->channel_set($preset,$userid);
@@ -3468,7 +3468,7 @@ class Tvprogramun3tvsea extends JA_Controller {
 			$where = "AND CHANNEL IN (".$str_channel.")"; 
 		}
 		
-		$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream')";
+		$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA TODAY','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV')";
 		
 		
 			$bulan['01'] = 'January';

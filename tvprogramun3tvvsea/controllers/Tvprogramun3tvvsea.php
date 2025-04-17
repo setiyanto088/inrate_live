@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Asia/Jakarta");
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -19,7 +20,7 @@ class tvprogramun3tvvsea extends JA_Controller {
 		$end_date =  $this->Anti_si($this->input->post('end_date',true));
 		$preset =  $this->Anti_si($this->input->post('preset',true));
 		$channelp =  $this->Anti_si($this->input->post('channelp',true));
-		$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream') ";
+		$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV') ";
 		
  		
 		$date_range = $this->getDatesFromRange($start_date,$end_date);
@@ -191,7 +192,7 @@ class tvprogramun3tvvsea extends JA_Controller {
 		$tipe_filter=$this->Anti_si($this->input->post('tipe_filter',true));
 		  
  		  
-		 $where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream') ";
+		 $where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','MAXStream','Garuda TV') ";
 		
 		  $pilihprog = $type;
 		  		  
@@ -906,7 +907,7 @@ class tvprogramun3tvvsea extends JA_Controller {
 		
 		if($preset == "0"){
 			
-			$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','AL JAZEERA','BLOOMBERG','CHANNEL NEWS ASIA','CNBC','CNN INTERNATIONAL','DW TV','EURONEWS','FRANCE 24','SEA TODAY','TRT WORLD','TVBS NEWS','CNBC','TV ONE','CNN INDONESIA','METRO TV','KOMPAS TV','TVRI','BERITA SATU','TVRI','INEWS','IDX','MNC NEWS','CNBC Indonesia','MAXStream')";
+			$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','AL JAZEERA','BLOOMBERG','CHANNEL NEWS ASIA','CNBC','CNN INTERNATIONAL','DW TV','EURONEWS','FRANCE 24','SEA TODAY','TRT WORLD','TVBS NEWS','CNBC','TV ONE','CNN INDONESIA','METRO TV','KOMPAS TV','TVRI','BERITA SATU','TVRI','INEWS','IDX','MNC NEWS','CNBC Indonesia','MAXStream','Garuda TV')";
 			
 		}else{
 			
@@ -1312,7 +1313,7 @@ class tvprogramun3tvvsea extends JA_Controller {
 		
 		if($preset == "0"){
 			
-			$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','AL JAZEERA','BLOOMBERG','CHANNEL NEWS ASIA','CNBC','CNN INTERNATIONAL','DW TV','EURONEWS','FRANCE 24','SEA TODAY','TRT WORLD','TVBS NEWS','CNBC','TV ONE','CNN INDONESIA','METRO TV','KOMPAS TV','TVRI','BERITA SATU','TVRI','INEWS','IDX','MNC NEWS','CNBC Indonesia','MAXStream')";
+			$where = " AND CHANNEL IN ('Al Jazeera','Bloomberg','Channel News Asia','CNBC Asia','CNN International','DW TV','Euronews','France 24','SEA Today','TRT World','TVBS News','TV One','CNN Indonesia','Metro TV','Kompas TV','TVRI','Berita Satu','TVRI','iNews','IDX Channel','MNC News','CNBC Indonesia','AL JAZEERA','BLOOMBERG','CHANNEL NEWS ASIA','CNBC','CNN INTERNATIONAL','DW TV','EURONEWS','FRANCE 24','SEA TODAY','TRT WORLD','TVBS NEWS','CNBC','TV ONE','CNN INDONESIA','METRO TV','KOMPAS TV','TVRI','BERITA SATU','TVRI','INEWS','IDX','MNC NEWS','CNBC Indonesia','MAXStream','Garuda TV')";
 		}else{
 			
 			$channel_set = $this->tvprogramun_model->channel_set($preset,$userid);
