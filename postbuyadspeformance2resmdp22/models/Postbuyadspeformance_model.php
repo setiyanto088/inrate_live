@@ -1330,7 +1330,7 @@ $db = $this->clickhouse->db();
 	  $sql = "
 		SELECT COUNT(*) AS jumlah FROM (
 			SELECT * FROM PTV_CIM_RATING_RES
-			WHERE ID_PROFILE=0
+			WHERE ID_PROFILE=".$params['profile']."
 			".$l_where_clause_startdate."
 			".$l_where_clause_enddate."
 			".$l_where_clause_kategori."
