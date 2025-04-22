@@ -783,7 +783,7 @@ class Tvprogramun3tvv extends JA_Controller {
 		
 		$total_views_all = $this->tvprogramun_model->get_total_views($periode);
 		$total_views_tvod = $this->tvprogramun_model->get_total_views_tvod($periode);
-		$data['total_views_ssss'] = number_format($total_views_all[0]['TOTAL_VIEWS']+$total_views_tvod[0]['TOTAL_VIEWS'],0,',','.');
+		$data['total_views_ssss'] = ($total_views_all[0]['TOTAL_VIEWS']+$total_views_tvod[0]['TOTAL_VIEWS']);
 		
 		$data['total_views_ss'] = $this->tvprogramun_model->get_total_views_all($periode);
  
@@ -1420,7 +1420,7 @@ class Tvprogramun3tvv extends JA_Controller {
  			$data['total_views'] = number_format($total_views_all[0]['TOTAL_VIEWS']+$total_views_tvod[0]['TOTAL_VIEWS'],0,',','.');
 			
 			$data['duration'] = number_format($data['duration'],0,',','.');
-			$data['durmin'] = number_format($data['duration']/$data['total_views'],2,',','.');
+			$data['durmin'] = number_format(($data['duration']/$data['total_views'])*60,2,',','.');
 			$data['active_user'] = number_format(($active_audience[0]['VIEWERS']/$totpopulasi[0]["tot_pop"])*100,0,',','.');
 			
 			$data['aa'] = number_format($active_audience[0]['VIEWERS'],0,',','.');

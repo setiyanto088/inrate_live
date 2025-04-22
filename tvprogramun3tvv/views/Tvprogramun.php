@@ -275,7 +275,7 @@
               </div>
               <div class="content">
                 <span class="titles">Total Views</span><br>
-                <span class="values" id="tot_viw"><?php echo $total_views_ssss; ?></span>
+                <span class="values" id="tot_viw"><?php echo number_format($total_views_ssss,0,',','.'); ?></span>
               </div>
             </div>
           </div>
@@ -299,7 +299,7 @@
               </div>
               <div class="content">
                 <span class="titles">Dur/Views (Min)</span><br>
-                <span class="values" id="dur_view"><?php echo number_format(($duration_ssss/$total_views[0]["TOTAL_VIEWS"]),2,',','.'); ?>
+                <span class="values" id="dur_view"><?php echo number_format(($duration_ssss/$total_views_ssss)*60,2,',','.'); ?>
                 
                 </span>
               </div>
