@@ -333,7 +333,7 @@ class Tvprogramun3vod extends JA_Controller {
 							WHERE `PERIODE` = '".$tgl."'
 							AND ID_PROFILE = 0
 							AND TYPE_DATA = 'YEARLY_TITLE'
-							AND CONTENT2 IS NOT NULL
+							AND CONTENT2 <> ''
 							".$where."
 							GROUP BY `CONTENT2`,CONTENT1
 						) A ".$join_left2." ORDER BY TOTAL DESC ) z ";
@@ -343,7 +343,7 @@ class Tvprogramun3vod extends JA_Controller {
 							WHERE `PERIODE` IN (".substr($in_month,1).")
 							AND ID_PROFILE = 0
 							AND TYPE_DATA = 'MONTHLY_TITLE_VIEWERS'
-							AND CONTENT2 IS NOT NULL
+							AND CONTENT2 <> ''
 							".$where."
 							GROUP BY `CONTENT2`,CONTENT1
 						) A ".$join_left2." ORDER BY TOTAL DESC ) z ";
@@ -353,7 +353,7 @@ class Tvprogramun3vod extends JA_Controller {
 							WHERE `PERIODE` IN (".substr($in_month,1).")
 							AND ID_PROFILE = 0
 							AND TYPE_DATA = 'MONTHLY_TITLE_DURATION'
-							AND CONTENT2 IS NOT NULL
+							AND CONTENT2 <> ''
 							".$where."
 							GROUP BY `CONTENT2`,CONTENT1
 						) A ".$join_left2." ORDER BY TOTAL DESC ) z ";
@@ -916,7 +916,7 @@ class Tvprogramun3vod extends JA_Controller {
 							WHERE `PERIODE` = '".$tgl."'
 							AND ID_PROFILE = 0
 							AND TYPE_DATA = 'YEARLY_TITLE'
-							AND CONTENT2 IS NOT NULL
+							AND CONTENT2 <> ''
 							".$where."
 							GROUP BY `CONTENT2`,CONTENT1
 						) A ".$join_left2." ORDER BY TOTAL DESC ) z ";
@@ -926,7 +926,7 @@ class Tvprogramun3vod extends JA_Controller {
 							WHERE `PERIODE` IN (".substr($in_month,1).")
 							AND ID_PROFILE = 0
 							AND TYPE_DATA = 'MONTHLY_TITLE_VIEWERS'
-							AND CONTENT2 IS NOT NULL
+							AND CONTENT2 <> ''
 							".$where."
 							GROUP BY `CONTENT2`,CONTENT1
 						) A ".$join_left2." ORDER BY TOTAL DESC ) z ";
@@ -936,7 +936,7 @@ class Tvprogramun3vod extends JA_Controller {
 							WHERE `PERIODE` IN (".substr($in_month,1).")
 							AND ID_PROFILE = 0
 							AND TYPE_DATA = 'MONTHLY_TITLE_DURATION'
-							AND CONTENT2 IS NOT NULL
+							AND CONTENT2 <> ''
 							".$where."
 							GROUP BY `CONTENT2`,CONTENT1
 						) A ".$join_left2." ORDER BY TOTAL DESC ) z ";

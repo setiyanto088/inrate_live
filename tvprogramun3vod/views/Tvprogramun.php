@@ -1935,7 +1935,7 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 	  
  	  
 		$.ajax({
-			url: "<?php echo base_url().'tvprogramun3vod/audiencebar_by_program_export'; ?>", 
+			url: "<?php echo base_url().'tvprogramun3vod/audiencebar_by_program_export'; ?>",  
 			dataType: 'text',   
 			cache: false,
 			contentType: false,
