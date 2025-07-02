@@ -108,12 +108,15 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
 	$db = $this->clickhouse->db();
 	
 		$sql2 = "
-		SELECT * FROM M_SUMMARY_MEDIA_PLAN_D_PTV_NEW_DTV A JOIN CHANNEL_PARAM_FINAL B ON A.CHANNEL = B.CHANNEL_NAME
+		SELECT DATE,PROGRAM,CHANNEL_NAME_PROG,GENRE_PROGRAM , BEGIN_PROGRAM , IF( BEGIN_PROGRAM > END_PROGRAM, date_add(DAY, 1, END_PROGRAM), END_PROGRAM  ) END_PROGRAM ,
+		VIEWERS , TOTAL_VIEWS ,
+		DURATION , AUDIENCE  FROM M_SUMMARY_MEDIA_PLAN_D_PTV_NEW_DTV A JOIN CHANNEL_PARAM_FINAL B ON A.CHANNEL = B.CHANNEL_NAME
 		WHERE B.CHANNEL_NAME_PROG IN (".$params['channel'].") AND DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
 		AND ( BEGIN_PROGRAM BETWEEN '".$params['start_date']." ".$params['starttime']."' AND '".$params['end_date']." ".$params['endtime']."'
 		OR END_PROGRAM BETWEEN '".$params['start_date']." ".$params['starttime']."' AND '".$params['end_date']." ".$params['endtime']."' )
 		AND TIME_PERIODE = 'TVPC' 
 		AND PROFILE_ID = ".$params['profile']."
+		AND AUDIENCE <> 0
 		ORDER BY TOTAL_VIEWS DESC "
 		;
 		 
@@ -139,12 +142,17 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
 		$db = $this->clickhouse->db();
 		
 		$query = "
-		SELECT * FROM M_SUMMARY_MEDIA_PLAN_D_PTV_NEW_DTV A JOIN CHANNEL_PARAM_FINAL B ON A.CHANNEL = B.CHANNEL_NAME 
+		SELECT DATE,PROGRAM,CHANNEL_NAME_PROG,GENRE_PROGRAM , BEGIN_PROGRAM , IF( BEGIN_PROGRAM > END_PROGRAM, date_add(DAY, 1, END_PROGRAM), END_PROGRAM  ) END_PROGRAM ,
+		VIEWERS , TOTAL_VIEWS ,
+		DURATION , AUDIENCE 
+		FROM M_SUMMARY_MEDIA_PLAN_D_PTV_NEW_DTV A JOIN CHANNEL_PARAM_FINAL B ON A.CHANNEL = B.CHANNEL_NAME 
 		WHERE B.CHANNEL_NAME_PROG IN (".$params['channel'].") AND DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
 		AND ( BEGIN_PROGRAM BETWEEN '".$params['start_date']." ".$params['starttime']."' AND '".$params['end_date']." ".$params['endtime']."'
 		OR END_PROGRAM BETWEEN '".$params['start_date']." ".$params['starttime']."' AND '".$params['end_date']." ".$params['endtime']."' )
 		AND TIME_PERIODE = 'TVPC' 
+		AND AUDIENCE <> 0
 		AND PROFILE_ID = ".$params['profile'];
+		
 		//echo $query;die;
 		
 		$sql	= $db->select($query);
@@ -178,12 +186,15 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
 		}
 		 
 		  $sql2 = "
-		SELECT 0 AS rank, * FROM M_SUMMARY_MEDIA_PLAN_D_PTV_NEW_DTV A JOIN CHANNEL_PARAM_FINAL B ON A.CHANNEL = B.CHANNEL_NAME
+		SELECT 0 AS rank, DATE,PROGRAM,CHANNEL_NAME_PROG,GENRE_PROGRAM , BEGIN_PROGRAM , IF( BEGIN_PROGRAM > END_PROGRAM, date_add(DAY, 1, END_PROGRAM), END_PROGRAM  ) END_PROGRAM ,
+		VIEWERS , TOTAL_VIEWS ,
+		DURATION , AUDIENCE  FROM M_SUMMARY_MEDIA_PLAN_D_PTV_NEW_DTV A JOIN CHANNEL_PARAM_FINAL B ON A.CHANNEL = B.CHANNEL_NAME
 		WHERE B.CHANNEL_NAME_PROG IN (".$params['channel'].") AND DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
 		AND ( BEGIN_PROGRAM BETWEEN '".$params['start_date']." ".$params['starttime']."' AND '".$params['end_date']." ".$params['endtime']."'
 		OR END_PROGRAM BETWEEN '".$params['start_date']." ".$params['starttime']."' AND '".$params['end_date']." ".$params['endtime']."' )
 		AND TIME_PERIODE = 'TVPC' 
 		AND PROFILE_ID = ".$params['profile']."
+		AND AUDIENCE <> 0
 		ORDER BY ".$params['order_column']." ".$params['order_dir']."
 						LIMIT ".$params['offset'].",".$limit_data
 		;
@@ -223,7 +234,9 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
 				// LIMIT 4000 ';
 				
 				 $sql = "
-				SELECT 0 AS rank, * FROM M_SUMMARY_MEDIA_PLAN_D_PTV_NEW_DTV WHERE CHANNEL IN (".$params['channel'].") AND DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
+				SELECT 0 AS rank, DATE,PROGRAM,CHANNEL_NAME_PROG,GENRE_PROGRAM , BEGIN_PROGRAM , IF( BEGIN_PROGRAM > END_PROGRAM, date_add(DAY, 1, END_PROGRAM), END_PROGRAM  ) END_PROGRAM ,
+		VIEWERS , TOTAL_VIEWS ,
+		DURATION , AUDIENCE  FROM M_SUMMARY_MEDIA_PLAN_D_PTV_NEW_DTV WHERE CHANNEL IN (".$params['channel'].") AND DATE BETWEEN '".$params['start_date']."' AND '".$params['end_date']."'
 				AND ( BEGIN_PROGRAM BETWEEN '".$params['start_date']." ".$params['starttime']."' AND '".$params['end_date']." ".$params['endtime']."'
 				OR END_PROGRAM BETWEEN '".$params['start_date']." ".$params['starttime']."' AND '".$params['end_date']." ".$params['endtime']."' )
 				AND TIME_PERIODE = 'TVPC' 
