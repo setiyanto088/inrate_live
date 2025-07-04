@@ -224,6 +224,7 @@ class Daypartvir extends JA_Controller {
 				WHERE  ID_PROFILE = 0
 				AND TANGGAL = '".$periode."'
 				AND CHANNEL IN (".$params['channel'].") 
+				GROUP BY CHANNEL, TANGGAL
 			";
 
 
@@ -303,6 +304,7 @@ class Daypartvir extends JA_Controller {
 
 		}
 		
+		//echo $query_s;die;
 		
 		$params['query_s'] = $query_s;
 		
