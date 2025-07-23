@@ -123,12 +123,12 @@ class Audience_model extends CI_Model {
     }	
 	
 	 public function get_profile_detail($id_profile){       
-
+		
 		
 		 $sql = "SELECT * FROM t_profiling_ub_res WHERE id = '".$id_profile."'";
         
         $out		= array();
-        $query		= $this->db2->query($sql);
+        $query		= $this->db->query($sql);
         $result = $query->result_array();
         
         return $result;
@@ -137,7 +137,7 @@ class Audience_model extends CI_Model {
 	
 	public function get_last_param($tag,$dataq){       
 
-		
+		$db = $this->clickhouse->db();
 		 $sql = "  
                     SELECT * FROM `TREE_PROFILING_RES_P22`
                     WHERE `FIELD` = '".$tag."'
@@ -145,11 +145,8 @@ class Audience_model extends CI_Model {
 		
 		";
         
-        $out		= array();
-        $query		= $this->db2->query($sql);
-        $result = $query->result_array();
-        
-        return $result;
+		$result = $db->select($sql);
+		return $result->rows();	  
     }	
 	
 	public function list_profile($id) {
