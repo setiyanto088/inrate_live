@@ -6893,34 +6893,34 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 	
 	//Dashboard Audience by Day
 	public function day_filters($params) {
-		
+		$db = $this->clickhouse->db();
 			if($params['channel_d'] == 'ALL'){
 				IF($params['interval'] == 'day'){
-					$TYPE_FIELD = 'DAYS';
-					$WHERE_DATE = ' AND FIELD BETWEEN "'.$params['start_date_d'].'" AND "'.$params['end_date_d'].'"';
-					$GROUP_BY = ' DATE_FORMAT(SPLIT_MINUTES,"%Y-%m-%d")';
+					$TYPE_FIELD = "DAYS";
+					$WHERE_DATE = " AND FIELD BETWEEN '".$params['start_date_d']."' AND '".$params['end_date_d']."'";
+					$GROUP_BY = " toDate(SPLIT_MINUTES)";
 				}else{
-					$TYPE_FIELD = 'RESP ALL';
-					$WHERE_DATE = ' AND FIELD BETWEEN "'.$params['start_date_d'].' 00:00:00" AND "'.$params['end_date_d'].' 23:59:59"';
-					$GROUP_BY = ' SPLIT_MINUTES';
+					$TYPE_FIELD = "RESP ALL";
+					$WHERE_DATE = " AND FIELD BETWEEN '".$params['start_date_d']." 00:00:00' AND '".$params['end_date_d']." 23:59:59'";
+					$GROUP_BY = " SPLIT_MINUTES";
 				}
 				
-				$WHERE_CH = ' AND CHANNEL = "ALL" ';
-				$WHERE_CH2 = ' ';
+				$WHERE_CH = " AND CHANNEL = 'ALL' ";
+				$WHERE_CH2 = " ";
 			}ELSE{
 				IF($params['interval'] == 'day'){
-					$TYPE_FIELD = 'DAYS CHANNEL';
-					$WHERE_DATE = ' AND FIELD BETWEEN "'.$params['start_date_d'].'" AND "'.$params['end_date_d'].'"';
-					$GROUP_BY = 'DATE_FORMAT(SPLIT_MINUTES,"%Y-%m-%d")';
+					$TYPE_FIELD = "DAYS CHANNEL";
+					$WHERE_DATE = " AND FIELD BETWEEN '".$params['start_date_d']."' AND '".$params['end_date_d']."'";
+					$GROUP_BY = " toDate(SPLIT_MINUTES)";
 				}else{
-					$TYPE_FIELD = 'RESP CHAN';			
-					$WHERE_DATE = ' AND FIELD BETWEEN "'.$params['start_date_d'].' 00:00:00" AND "'.$params['end_date_d'].' 23:59:59"';	
-					$GROUP_BY = ' SPLIT_MINUTES';					
+					$TYPE_FIELD = "RESP CHAN";			
+					$WHERE_DATE = " AND FIELD BETWEEN '".$params['start_date_d']." 00:00:00' AND '".$params['end_date_d']." 23:59:59'";	
+					$GROUP_BY = " SPLIT_MINUTES";					
 				}
 
 				
-				$WHERE_CH = ' AND CHANNEL = "'.$params['channel_d'].'"';
-				$WHERE_CH2 = ' AND CHANNEL = "'.$params['channel_d'].'"';
+				$WHERE_CH = " AND CHANNEL = '".$params['channel_d']."'";
+				$WHERE_CH2 = " AND CHANNEL = '".$params['channel_d']."'";
 			}
 			
  
@@ -6931,29 +6931,29 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 					
 					IF($params['respondent'] == 'RESP'){
 					
-						$query = 'SELECT `FIELD` AS `date`, RESP AS spot FROM '.$params['tbl'].'
-						  WHERE 1=1 AND TYPE_FIELD = "'.$TYPE_FIELD.'" AND `STATUS` = 1 
-						 '.$WHERE_CH.'
-						 '.$WHERE_DATE.'
-						  ORDER BY `FIELD`';
+						$query = "SELECT `FIELD` AS `date`, RESP AS spot FROM ".$params['tbl']."
+						  WHERE 1=1 AND TYPE_FIELD = '".$TYPE_FIELD."' AND `STATUS` = '1' 
+						 ".$WHERE_CH."
+						 ".$WHERE_DATE."
+						  ORDER BY `FIELD`";
 				
 					}ELSE IF($params['respondent'] == 'VIEWERS'){
 					
 					
-						$query = 'SELECT `FIELD` AS `date`, VIEWERS AS spot FROM '.$params['tbl'].'
-						  WHERE 1=1 AND TYPE_FIELD = "'.$TYPE_FIELD.'" AND `STATUS` = 1 
-						 '.$WHERE_CH.'
-						  '.$WHERE_DATE.'
-						  ORDER BY `FIELD`';
+						$query = "SELECT `FIELD` AS `date`, VIEWERS AS spot FROM ".$params['tbl']."
+						  WHERE 1=1 AND TYPE_FIELD = '".$TYPE_FIELD."' AND `STATUS` = '1' 
+						 ".$WHERE_CH."
+						  ".$WHERE_DATE."
+						  ORDER BY `FIELD`";
 				
 					}ELSE IF($params['respondent'] == 'VIEWERS2'){
 					
 					
-						$query = 'SELECT `FIELD` AS `date`, VIEWERS2 AS spot FROM '.$params['tbl'].'
-						  WHERE 1=1 AND TYPE_FIELD = "'.$TYPE_FIELD.'" AND `STATUS` = 1 
-						 '.$WHERE_CH.'
-						  '.$WHERE_DATE.'
-						  ORDER BY `FIELD`';
+						$query = "SELECT `FIELD` AS `date`, VIEWERS2 AS spot FROM ".$params['tbl']."
+						  WHERE 1=1 AND TYPE_FIELD = '".$TYPE_FIELD."' AND `STATUS` = '1' 
+						 ".$WHERE_CH."
+						  ".$WHERE_DATE."
+						  ORDER BY `FIELD`";
 				
 					}
 				
@@ -6961,44 +6961,41 @@ SELECT CHANNEL AS channel,VIEWERS AS Spot FROM M_SUM_TV_DASH_CHAN_DURATION_WEEK_
 				
 					IF($params['respondent'] == 'RESP'){
 					
-						$query = 'SELECT `FIELD` AS `date`, RESP AS spot FROM '.$params['tbl'].'
-						  WHERE 1=1 AND TYPE_FIELD = "'.$TYPE_FIELD.'" AND `STATUS` = 1 
-						 '.$WHERE_CH2.'
-						 '.$WHERE_DATE.'
-						  ORDER BY `FIELD`';
+						$query = "SELECT `FIELD` AS `date`, RESP AS spot FROM ".$params['tbl']."
+						  WHERE 1=1 AND TYPE_FIELD = '".$TYPE_FIELD."' AND `STATUS` = '1' 
+						 ".$WHERE_CH2."
+						 ".$WHERE_DATE."
+						  ORDER BY `FIELD`";
 				
 					}ELSE IF($params['respondent'] == 'VIEWERS'){
 					
 					
-					$query = '
-							SELECT '.$GROUP_BY.' AS `date`, AVG(VIEWERS) AS spot FROM `SUMMARY_PER_MINUTES_RES_V2`
-							WHERE SPLIT_MINUTES BETWEEN "'.$params['start_date_d'].' 00:00:00" AND "'.$params['end_date_d'].' 23:59:59"
-							'.$WHERE_CH2.'
-							GROUP BY '.$GROUP_BY.'
-							ORDER BY '.$GROUP_BY.'
-							';
+					$query = "
+							SELECT ".$GROUP_BY." AS `date`, AVG(VIEWERS) AS spot FROM `SUMMARY_PER_MINUTES_RES_V2`
+							WHERE SPLIT_MINUTES BETWEEN '".$params['start_date_d']." 00:00:00' AND '".$params['end_date_d']." 23:59:59'
+							".$WHERE_CH2."
+							GROUP BY ".$GROUP_BY."
+							ORDER BY ".$GROUP_BY."
+							";
 				
 					}ELSE IF($params['respondent'] == 'VIEWERS2'){
 					
 					
-						$query = '
-							SELECT '.$GROUP_BY.' AS `date`, AVG(VIEWERS_A) AS spot FROM `SUMMARY_PER_MINUTES_RES_V2`
-							WHERE SPLIT_MINUTES BETWEEN "'.$params['start_date_d'].' 00:00:00" AND "'.$params['end_date_d'].' 23:59:59"
-							'.$WHERE_CH2.'
-							GROUP BY '.$GROUP_BY.'
-							ORDER BY '.$GROUP_BY.'
-							';
+						$query = "
+							SELECT ".$GROUP_BY." AS `date`, AVG(VIEWERS_A) AS spot FROM `SUMMARY_PER_MINUTES_RES_V2`
+							WHERE SPLIT_MINUTES BETWEEN '".$params['start_date_d']." 00:00:00' AND '".$params['end_date_d']." 23:59:59'
+							".$WHERE_CH2."
+							GROUP BY ".$GROUP_BY."
+							ORDER BY ".$GROUP_BY."
+							";
 				
 					}
 				
 			}
 			
 			 
-				  
-		$sql	= $this->db2->query($query);
-		$this->db2->close();
-		$this->db2->initialize(); 
-		return $sql->result_array();	   
+		$result = $db->select($query);
+		return $result->rows();		  
 		
 	}
 		
