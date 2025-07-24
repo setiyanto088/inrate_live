@@ -22,14 +22,15 @@ class Createuser_model extends CI_Model {
 				));
 			$result = $query->result_array();
 			
-			if($params['token'] <> $result[0]['token']){
+			// if($params['token'] <> $result[0]['token']){
 				
-				$res = array(
-					'status' => 0,
-					'message' => 'Token Not Same!',
-				); 
+				// $res = array(
+					// 'status' => 0,
+					// 'message' => 'Token Not Same!',
+				// ); 
 				
-			}elseif(password_verify($hash, $result[0]['pwd']) == false) {
+			// }else
+				if(password_verify($hash, $result[0]['pwd']) == false) {
 				$res = array(
 					'status' => 0,
 					'message' => 'Old Password is Wrong',
