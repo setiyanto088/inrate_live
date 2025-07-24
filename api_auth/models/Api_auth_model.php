@@ -174,6 +174,10 @@ class Api_auth_model extends CI_Model {
 					SELECT id_profile AS id_profile4 FROM `pmt_menu_profile`
                     WHERE id_menu = "45"
                 ) E ON A.id_role = E.id_profile4
+				left join (
+			select id_profile AS id_profile5, group_concat(id_menu) menuL from `pmt_menu_profile` where statusmenu = 1 
+			group by id_profile
+		) F on A.id_role = F.id_profile5
              ';       
 					
             $hasil = $this->db->query($sql)->result_array();

@@ -21,9 +21,12 @@ class Cprp22 extends JA_Controller {
 		}else{
 			$id = $this->session->userdata('project_id');
 		}
-		//cek session login
-		if(!$this->session->userdata('user_id')) {
-			redirect ('/login');
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		
+		if(!$this->session->userdata('user_id') || in_array("229",$array_menu) == 0) {
+          redirect ('/login');
 		}
 		$data['listprofile'] = $this->createprofileu_model->listprofile($iduser,$idrole);
 		

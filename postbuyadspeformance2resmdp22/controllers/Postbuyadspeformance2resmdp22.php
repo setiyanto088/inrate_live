@@ -16,6 +16,12 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
       $idrole = $this->session->userdata('id_role');
       
       $data['profile'] = $this->postbuyadspeformance_model->get_profile($iduser,$idrole,"");
+	  $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		
+		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+          redirect ('/login');
+		}
        
       $data['channel'] = $this->_list_channel();
       $data['channels'] = $this->postbuyadspeformance_model->get_channel();

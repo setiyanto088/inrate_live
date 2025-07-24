@@ -19,8 +19,11 @@ class Pivotp22 extends JA_Controller {
 		}else{
 			$id = $this->session->userdata('project_id');
 		}
- 		if(!$this->session->userdata('user_id')) {
-			redirect ('/login');
+ 		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		
+		if(!$this->session->userdata('user_id') || in_array("232",$array_menu) == 0) {
+          redirect ('/login');
 		}
 		$data['listprofile'] = $this->createprofileu_model->listprofile($iduser,$idrole);
 		

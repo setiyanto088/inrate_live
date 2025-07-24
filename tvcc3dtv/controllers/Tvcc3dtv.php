@@ -59,6 +59,13 @@ class Tvcc3dtv extends JA_Controller {
 			$id = $this->session->userdata('project_id');
 		}
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+
+		if(!$this->session->userdata('user_id') || in_array("95",$array_menu) == 0) {
+          redirect ('/login');
+		}
+		
 		$data['profile'] = $this->tvcc_model->list_profile($iduser,$idrole,"");
 		$data['channel'] = $this->tvcc_model->list_channel();    
     $data['daypart'] = $this->tvcc_model->list_daypart($iduser);  

@@ -182,7 +182,7 @@
             <div class="panel urate-panel row" style="border:1px solid #efefef;padding:10px;margin:10px;border-radius: 25px;">
                 <div class="col-lg-12">	
 					<div class="navbar-left" style="padding-left:10px;">
-					  <h4 class="title-periode1" style="font-weight: bold;">Data EPG Weekly</h4>
+					  <h4 class="title-periode1" style="font-weight: bold;">Data EPG</h4>
 					</div>
 
 				</div>
@@ -323,6 +323,8 @@ $(document).ready(function(){
 		event.preventDefault();  
 		event.stopPropagation();
 		
+		
+		$('#btn_upload').attr('disabled','disabled');
 		var ext_file = document.getElementById('selectfile').files;
 
 		fileobj = event.originalEvent.dataTransfer.files;
@@ -333,11 +335,11 @@ $(document).ready(function(){
 			var fname = fileobj[f].name;
 			var fsize = fileobj[f].size;
 			if (fname.length > 0) {
-				document.getElementById('file_info').innerHTML += "File name : " + fname +' (<b>' + bytesToSize(fsize) + '</b>)<br>';
+				//document.getElementById('file_info').innerHTML += "File name : " + fname +' (<b>' + bytesToSize(fsize) + '</b>)<p id ='+f+'></p><br>';
 			}
 			
 			arr_data[int_file] = fileobj[f];
-			arr_data_tok += makeid(10)+'|';
+			arr_data_tok += makeid(16)+'|';
 			index_token += int_file+'|';
 			int_file++;
 		}
@@ -366,9 +368,9 @@ $(document).ready(function(){
 			for(var f = 0; f < fileobj.length; f++) { 
 				var fname = fileobj[f].name;
 				var fsize = fileobj[f].size;
-				if (fname.length > 0) {
-				document.getElementById('file_info').innerHTML += "File name : " + fname +' (<b>' + bytesToSize(fsize) + '</b>)<br>';
-				}
+				// if (fname.length > 0) {
+					// document.getElementById('file_info').innerHTML += "File name : " + fname +' (<b>' + bytesToSize(fsize) + '</b>)<br>';
+				// }
 				
 				arr_data[int_file] = fileobj[f];
 				arr_data_tok += makeid(10)+'|';
@@ -396,6 +398,7 @@ function processData(rdn_ar) {
 	var form_data = new FormData();  
 	form_data.append('data_rdn', rdn_ar);
 	var url = '<?php echo base_url(); ?>epg_config'; 
+	$('#btn_upload').attr('disabled','disabled');
 
 	$.ajax({
 		type: 'POST',
@@ -409,9 +412,18 @@ function processData(rdn_ar) {
 			$('#message_info').html("Processing Data, please wait...");
 		},
 		success:function(response) {
-			$('#message_info').html(response);
+			
+			if(response['sts'] == 2){
+				alert(" Session Ended, Please Login Again ");
+				window.location = '<?php echo base_url(); ?>';
+				return false;
+			}
+			
+			
+			$('#message_info').html(response['msg']);
 			//alert(response);
 			$('#selectfile').val('');
+			//$('#btn_upload').removeAttr('disabled');
 			window.location = url;
 			
 		}
@@ -440,11 +452,25 @@ if(file_obj != undefined) {
 		beforeSend:function(response) {
 			//$('#message_info').html("Uploading your file, please wait...");
 			$('#message_info').html("Uploading your file, please wait...");
+			
+			//document.getElementById('file_info').innerHTML += "File name : " + fname +' (<b>' + bytesToSize(fsize) + '</b>)<br>';
 		},
 		success:function(response) {
-			$('#message_info').html(response);
+			console.log(response);
+			if(response['sts'] == 2){
+				alert(" Session Ended, Please Login Again ");
+				window.location = '<?php echo base_url(); ?>';
+				return false;
+			}
+			
+			for(var f = 0; f < response['data'].length; f++) { 
+				document.getElementById('file_info').innerHTML += "<span style='color:"+response['data'][f]['CHANNEL_COLOR']+"'>File name : " + response['data'][f]['FILE_NAME'] +' (<b>' + bytesToSize(response['data'][f]['FILE_SIZE']) + '</b>) '+response['data'][f]['CHANNEL_STATUS']+'</span><br>';
+			}
+			
+			$('#message_info').html(response['msg']);
 			//alert(response);
 			$('#selectfile').val('');
+			$('#btn_upload').removeAttr('disabled');
 		}
 	});
 }

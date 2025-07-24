@@ -19,9 +19,13 @@ class Advancemediaplanningures extends JA_Controller {
 		}else{
 			$id = $this->session->userdata('project_id');
 		}
-		if(!$this->session->userdata('user_id')) {
-			redirect ('/login');
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		
+		if(!$this->session->userdata('user_id') || in_array("169",$array_menu) == 0) {
+          redirect ('/login');
 		}
+		
 		$data['profile'] = $this->mediaplanningu_model->get_profile3($iduser,$idrole,"");
 		$data['channels'] = $this->mediaplanningu_model->get_channel(); 
     $data['currdate'] = $this->mediaplanningu_model->current_date();

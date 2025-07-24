@@ -13,6 +13,14 @@ class Tvpcresp22 extends JA_Controller {
 		$id = $this->session->userdata('project_id');
 		$iduser = $this->session->userdata('user_id');
 		$idrole = $this->session->userdata('id_role');
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		
+		if(!$this->session->userdata('user_id') || in_array("228",$array_menu) == 0) {
+          redirect ('/login');
+		}
+		
 		if($id == null){
 			$id = 0;
 		}else{

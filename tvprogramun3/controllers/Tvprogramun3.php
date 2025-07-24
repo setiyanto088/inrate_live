@@ -1197,8 +1197,13 @@ class Tvprogramun3 extends JA_Controller {
 		
 		//print_r($data['thn']);die;
 	 
-		if(!$this->session->userdata('user_id')) { 
- 		}
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+
+		if(!$this->session->userdata('user_id') || in_array("48",$array_menu) == 0) {
+          redirect ('/login');
+		}
+		
 		
 		
 		if($this->Anti_si($this->input->post('filter_text',true))){

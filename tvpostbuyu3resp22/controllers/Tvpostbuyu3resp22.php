@@ -27,7 +27,12 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 				$mindur = $this->input->post('mindur');
 				$maxdur = $this->input->post('maxdur');
 				
+				$menuL = $this->session->userdata('menuL');
+				$array_menu = explode(',',$menuL);
 				
+				if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
+				  redirect ('/login');
+				}
 				
 				$f_array = json_decode($filter,true);
 				

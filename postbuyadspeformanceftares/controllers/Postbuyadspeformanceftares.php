@@ -14,7 +14,13 @@ class Postbuyadspeformanceftares extends JA_Controller {
       $id = $this->session->userdata('project_id') ? $this->session->userdata('project_id') : 0;
       $iduser = $this->session->userdata('user_id');
       $idrole = $this->session->userdata('id_role');
-      
+      $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		
+		if(!$this->session->userdata('user_id') || in_array("172",$array_menu) == 0) {
+          redirect ('/login');
+		}
+		
       $data['profile'] = $this->postbuyadspeformance_model->get_profile($iduser,$idrole,"");
        
       $data['channel'] = $this->_list_channel();

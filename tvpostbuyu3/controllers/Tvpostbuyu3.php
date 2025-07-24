@@ -12,6 +12,14 @@ class Tvpostbuyu3 extends JA_Controller {
 	
 	public function index()
 	{
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+
+		if(!$this->session->userdata('user_id') || in_array("47",$array_menu) == 0) {
+          redirect ('/login');
+		}
+		
+		
 		if($this->input->post('filter_text')){
 				
 				$filter = $this->input->post('filter_text');

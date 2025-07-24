@@ -1676,18 +1676,21 @@ class dashboardareauseetv extends JA_Controller {
 			$id = $this->session->userdata('project_id');
 		}
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+
+		if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+          redirect ('/login');
+		}
+		
+		
 		$data['bln'] = $this->tvprogramun_model->get_bulan();
 		$data['thn'] = $this->tvprogramun_model->get_tahun();
 		
 		$data['profile'] = $this->tvprogramun_model->get_profile($iduser,$idrole);
 		
 		$data['file_date'] = $this->tvprogramun_model->get_file_date();
-		
-		
-		if(!$this->session->userdata('user_id')) {
-			redirect ('/login');
-		}
-		
+
 		
 		
 		$tahun=$this->input->post('tahun');

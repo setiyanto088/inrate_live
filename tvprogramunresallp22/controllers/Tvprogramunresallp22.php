@@ -521,6 +521,13 @@ class Tvprogramunresallp22 extends JA_Controller {
 			$id = $this->session->userdata('project_id');
 		}
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		
+		if(!$this->session->userdata('user_id') || in_array("225",$array_menu) == 0) {
+          redirect ('/login');
+		}
+		
 		$data['thn'] = $this->tvprogramun_model->get_tahun();
 	
 		if(!$this->session->userdata('user_id')) { 

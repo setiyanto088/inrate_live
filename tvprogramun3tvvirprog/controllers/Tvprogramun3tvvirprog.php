@@ -1747,9 +1747,12 @@ class Tvprogramun3tvvirprog extends JA_Controller {
 		
  		$data['thn'] = $this->tvprogramun_model->get_tahun();
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 
- 		if(!$this->session->userdata('user_id')) {  
- 		}
+		if(!$this->session->userdata('user_id') || in_array("210",$array_menu) == 0) {
+          redirect ('/login');
+		}
 		
 		if($this->input->post('filter_text')){
 				

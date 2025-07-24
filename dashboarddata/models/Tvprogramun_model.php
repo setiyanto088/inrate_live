@@ -17,49 +17,10 @@ class Tvprogramun_model extends CI_Model {
 		$this->db2->close();
 		$this->db2->initialize(); 
 		return $sql->result_array();			
-	}
+	}		
 	
 	
-	public function validate_password($params = array()) {	
-	
-		$sql 	= 'SELECT id,  token 
-						FROM hrd_profile
-						WHERE id = ?
-						AND id_role = 41';
-			
-			$query 	=  $this->db->query($sql,
-				array(
-					$params['uid']
-				));
-			$result = $query->result_array();
-			
-			if(isset($result[0]['token'])){
-			
-				if($params['token'] <> $result[0]['token']){
-					
-					$res = array(
-						'status' => 0,
-						'message' => 'Failed Authentication',
-					); 
-					
-				}else{
-					$res = array(
-						'status' => 1,
-						'message' => 'Success',
-					); 
-				}
-			
-			}else{
-				$res = array(
-						'status' => 0,
-						'message' => 'Failed Authentication',
-					); 
-			}
-			
-			return $res;
-	}
-	
-		public function get_epg_raw($params) {
+	public function get_epg_raw($params) {
 		
 		$query = "
 		SELECT A.CHANNEL,PROGRAM,DATE_FORMAT(START_TIME,'%Y-%m-%d %H:%i:%s') AS BEGIN_PROGRAM,DATE_FORMAT(END_TIME,'%Y-%m-%d %H:%i:%s') AS END_PROGRAM,KATEGORI AS KATEGORI_CHANNEL,
@@ -106,6 +67,45 @@ class Tvprogramun_model extends CI_Model {
 			$sql	= $this->db->query($query);
 			$this->db->close();
 			$this->db->initialize(); 
+	}
+	
+	public function validate_password($params = array()) {	
+	
+		$sql 	= 'SELECT id,  token 
+						FROM hrd_profile
+						WHERE id = ?
+						AND id_role = 41';
+			
+			$query 	=  $this->db->query($sql,
+				array(
+					$params['uid']
+				));
+			$result = $query->result_array();
+			
+			if(isset($result[0]['token'])){
+			
+				if($params['token'] <> $result[0]['token']){
+					
+					$res = array(
+						'status' => 0,
+						'message' => 'Failed Authentication',
+					); 
+					
+				}else{
+					$res = array(
+						'status' => 1,
+						'message' => 'Success',
+					); 
+				}
+			
+			}else{
+				$res = array(
+						'status' => 0,
+						'message' => 'Failed Authentication',
+					); 
+			}
+			
+			return $res;
 	}
 	
 	public function get_profile($iduser,$idrole) {  
@@ -850,45 +850,10 @@ SELECT LOG_DATE AS NLOG_DATE, DATE_FORMAT(LOG_DATE,"%Y-%m") AS LOG_DATE,`FILE_NA
 	public function insert_queue_rep($date_data,$type_jobs){
 		
 		
-		if($type_jobs == 4){
+		if($type_jobs == 1){
 			
-			$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/fta_postbuy_jobs.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/postbuy_'.$date_data.' & ';
-			$tpe_job = 2;
-			$quo_job = 4;
-			
-			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$tpe_job."'  ";	
-
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
-			
-			$query = "	UPDATE `DAILY_LOGPROOF_U_JOBS_REPORT` SET STATUS_J = 3 WHERE LOG_DATE = '".$date_data."' ";	
-
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
-			
-		}elseif($type_jobs == 5){
-			
-			$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/fta_mediaplan_jobs.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/mediaplan_'.$date_data.' & ';
-			$tpe_job = 3;
-			$quo_job = 5;
-			
-			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$tpe_job."'  ";	
-
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
-			
-			$query = "	UPDATE `DAILY_RATECARD_JOBS_REPORT` SET STATUS_J = 3 WHERE LOG_DATE = '".$date_data."' ";	
-
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
-			
-		}elseif($type_jobs == 1){
-			
-			$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/daily_jobs_full.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/daily_jobs_full_'.$date_data.' & ';
+			$desc = ' php /var/www/jobs/daily_jobs_cdr_zte_on_mm.php '.$date_data.' > /var/www/jobs/daily_jobs_cdr_'.$date_data.' & ';
+			//$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/daily_jobs_full.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/daily_jobs_full_'.$date_data.' & ';
 			$tpe_job = 1;
 			$quo_job = 1;
 			
@@ -898,11 +863,22 @@ SELECT LOG_DATE AS NLOG_DATE, DATE_FORMAT(LOG_DATE,"%Y-%m") AS LOG_DATE,`FILE_NA
 			$this->db2->close();
 			$this->db2->initialize(); 
 			
-			$query = "	UPDATE `DAILY_JOBS_REPORT` SET STATUS_J = 3 WHERE LOG_DATE = '".$date_data."' ";	
+			// $query = "	UPDATE `DAILY_JOBS_REPORT` SET STATUS_J = 3 WHERE LOG_DATE = '".$date_data."' ";	
+
+			// $sql	= $this->db2->query($query);
+			// $this->db2->close();
+			// $this->db2->initialize(); 
+			
+			
+			$query = "	UPDATE `DAILY_JOBS_REPORT` SET LOAD_CDR = 0, CLEANSING_CDR = 0, SPLIT_CDR = 0, JOIN_CDR_EPG = 0, RATING_PERMINUTES = 0, TVCC = 0, MEDIAPLAN = 0, AUDIENCE = 0,BEFORE_AFTER = 0, MIGRATION = 0, DASHBOARD = 0, STATUS_J = 0 WHERE LOG_DATE = '".$date_data."' ";	
 
 			$sql	= $this->db2->query($query);
 			$this->db2->close();
 			$this->db2->initialize(); 
+			
+			
+			
+			
 			
 		}elseif($type_jobs == 0){
 			
@@ -960,12 +936,13 @@ SELECT LOG_DATE AS NLOG_DATE, DATE_FORMAT(LOG_DATE,"%Y-%m") AS LOG_DATE,`FILE_NA
 			
 		}
 		
-	
+		$query = "	DELETE FROM  JOBS_QUEUE WHERE JOBS_DATE = '".$date_data."' AND QUEUE = '".$tpe_job."' ";	
+		$sql	= $this->db2->query($query);
+		$this->db2->close();
+		$this->db2->initialize(); 
+		
 		
 		$query = "	INSERT INTO JOBS_QUEUE VALUES('".$date_data."','".$desc."',NULL,NULL,2,'".date("Y-m-d H:i:s")."',".$quo_job.",NULL,NULL,2,'')  ";	
-		
-		
-		
 		$sql	= $this->db2->query($query);
 		$this->db2->close();
 		$this->db2->initialize(); 
@@ -1083,114 +1060,55 @@ SELECT LOG_DATE AS NLOG_DATE, DATE_FORMAT(LOG_DATE,"%Y-%m") AS LOG_DATE,`FILE_NA
 	public function insert_queue($date_data,$type_jobs){
 		
 		
-		if($type_jobs == 2){
+		if($type_jobs == 1){
 			
-			$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/fta_postbuy_jobs.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/postbuy_'.$date_data.' & ';
-			$tpe_job = 2;
-			$quo_job = 4;
-			
-			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$type_jobs."'  ";	
-
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
-			
-		}elseif($type_jobs == 3){
-			
-			$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/fta_mediaplan_jobs.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/mediaplan_'.$date_data.' & ';
-			$tpe_job = 3;
-			$quo_job = 5;
-			
-			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$type_jobs."'  ";	
-
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
-			
-		}elseif($type_jobs == 1){
-			
-		$desc = ' php /var/www/jobs/steve/JOBS/testing/zte/daily_jobs_cdr_zte.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/daily_jobs_cdr_'.$date_data.' & ';
+		$desc = ' php /var/www/jobs/daily_jobs_epg_daily.php '.$date_data.'> /var/www/jobs/daily_jobs_epg_daily_'.$date_data.' &';
 			
 			$tpe_job = 1;
-			$quo_job = 1;
+			$quo_job = 10;
 			
 			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$type_jobs."' ";	
 
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
-			
+			$sql	= $this->db->query($query);
+			$this->db->close();
+			$this->db->initialize(); 
+
 		}elseif($type_jobs == 5){
 			
-			$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/daily_jobs_epg.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/daily_jobs_epg_'.$date_data.' & ';
+			$desc = ' php /var/www/jobs/daily_jobs_epg_daily.php '.$date_data.'> /var/www/jobs/daily_jobs_epg_daily_'.$date_data.' &';
 			$tpe_job = 1;
-			$quo_job = 0;
+			$quo_job = 11;
 			
-			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$type_jobs."'";	
+			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4, NOTE = '' WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$type_jobs."'";	
 
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
+			$sql	= $this->db->query($query);
+			$this->db->close();
+			$this->db->initialize(); 
 			
-		}elseif($type_jobs == 4){
-			
-			$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/ptv_postbuy_jobs.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/ptv_postbuy_'.$date_data.' & ';
-			$tpe_job = 4;
-			$quo_job = 2;
-			
-			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$type_jobs."'";	
+						
+			$query = "	Update DAILY_JOBS_REPORT set LOAD_EPG = 0, SPLIT_EPG = 0 WHERE LOG_DATE = '".$date_data."' ";	
 
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
-			
-		}elseif($type_jobs == 6){
-			
-			$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/ptv_postbuy_mh_jobs.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/ptv_postbuy_mh_'.$date_data.' & ';
-			$tpe_job = 6;
-			$quo_job = 3;
-			
-			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$type_jobs."'";	
-
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
-			
-		}elseif($type_jobs == 7){
-			
-			$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/ptv_postbuy_jobs_month.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/ptv_postbuy_jobs_month_'.$date_data.' & ';
-			$tpe_job = 7;
-			$quo_job = 7;
-			
-			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$type_jobs."'";	
-
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
-			
-		}elseif($type_jobs == 8){
-			
-			$desc = ' php /var/www/jobs/steve/JOBS/fix_jobs/ptv_postbuy_mh_jobs_month.php '.$date_data.' > /var/www/jobs/steve/JOBS/fix_jobs/log_jobs/ptv_postbuy_mh_jobs_month_'.$date_data.' & ';
-			$tpe_job = 8;
-			$quo_job = 8;
-			
-			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$type_jobs."'";	
-
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
+			$sql	= $this->db->query($query);
+			$this->db->close();
+			$this->db->initialize(); 
 			
 		}
 		
+		
+		$query = "	DELETE FROM JOBS_QUEUE WHERE JOBS_DATE = '".$date_data."' AND QUEUE = '".$quo_job."' ";	
+
+			$sql	= $this->db->query($query);
+			$this->db->close();
+			$this->db->initialize(); 
 	
 		
 		$query = "	INSERT INTO JOBS_QUEUE VALUES('".$date_data."','".$desc."',NULL,NULL,2,'".date("Y-m-d H:i:s")."',".$quo_job.",NULL,NULL,2,'')  ";	
 		
 		
 		
-		$sql	= $this->db2->query($query);
-		$this->db2->close();
-		$this->db2->initialize(); 
+		$sql	= $this->db->query($query);
+		$this->db->close();
+		$this->db->initialize(); 
 		
 	}
 	

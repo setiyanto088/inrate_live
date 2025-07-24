@@ -62,16 +62,28 @@ class Tvprogramun_model extends CI_Model {
 	public function get_list_channel($date){
 		
 		$query = "
-		SELECT GROUP_CONCAT(A.CHANNEL SEPARATOR ', ') as CLS,COUNT(A.CHANNEL) SD FROM (
+		SELECT GROUP_CONCAT(A.CHANNEL_ORIGIN ORDER BY A.CHANNEL_ORIGIN ASC SEPARATOR ', ') as CLS,COUNT(A.CHANNEL_ORIGIN) SD FROM (
 		SELECT * FROM CHANNEL_EPG_CONFIG A
 		WHERE A.`STATUS` = 1
 		) A LEFT JOIN (
 			SELECT CHANNEL,COUNT(*) SD, DATE_FORMAT(START_TIME,'%Y-%d-%d') AS DTS FROM (SELECT * FROM EPG_RAW1_TEST GROUP BY `CHANNEL`,`PROGRAM`,`START_TIME`) ec 
 			WHERE START_TIME BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59'
 			GROUP BY CHANNEL,DTS
-		) B ON A.CHANNEL = B.CHANNEL 
+		) B ON A.CHANNEL_CDR = B.CHANNEL 
 		WHERE B.CHANNEL IS NULL OR SD < 8
-		ORDER BY A.CHANNEL
+		ORDER BY A.CHANNEL_ORIGIN
+		";
+		 
+		$sql	= $this->db->query($query);
+		$this->db->close();
+		$this->db->initialize(); 
+		return $sql->result_array();			
+	}
+	
+	public function get_epg_param_file(){
+		
+		$query = "
+		SELECT * FROM `CHANNEL_EPG_CONFIG`
 		";
 		 
 		$sql	= $this->db->query($query);
@@ -113,9 +125,28 @@ class Tvprogramun_model extends CI_Model {
 		";
 		//ECHO $sql;DIE;
         $this->db->query($sql);
+		
+		$sql 	= "
+		DELETE FROM FILE_UPLOAD_EPG_PROCESS 
+		WHERE CHANNEL = '".$lis['CHANNEL']."'
+		AND START_TIME BETWEEN '".$lis['START_TIME']."' AND '".$lis['END_TIME']."'
+		AND TOKEN = '".$params['token']."'
+		";
+		//ECHO $sql;DIE;
+        $this->db->query($sql);
+		
+		$sql 	= "
+		INSERT INTO FILE_UPLOAD_EPG_PROCESS
+		SELECT *,'".date('Y-m-d H:i:s')."' AS PROCESS_TIME FROM FILE_UPLOAD_EPG
+		WHERE CHANNEL = '".$lis['CHANNEL']."'
+		AND START_TIME BETWEEN '".$lis['START_TIME']."' AND '".$lis['END_TIME']."'
+		AND TOKEN = '".$params['token']."'
+		";
+		//ECHO $sql;DIE;
+        $this->db->query($sql);
 
 	}   	
 	
-	
+
 	
 }	

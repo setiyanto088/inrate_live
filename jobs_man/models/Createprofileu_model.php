@@ -512,7 +512,7 @@ class Createprofileu_model extends CI_Model {
 		
 		
 		
-		$query = " UPDATE T_PARAM_UNICS_UNIV SET VAL_INT = '".$set_min."', VAL_STR =  '".$set_min."' WHERE `PERIODE` = 'MIN_ROW' ";
+		$query = " UPDATE T_PARAM_UNICS_UNIV SET VAL_INT = '".$set_min."', VAL_STR =  '".$set_min."', LAST_DATE =  '".date('Y-m-d H:i:s')."' WHERE `PERIODE` = 'MIN_ROW' ";
 		
 		$sql	= $this->db->query($query);
 		$this->db->close();	

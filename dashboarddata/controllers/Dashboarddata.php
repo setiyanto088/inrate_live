@@ -16,6 +16,12 @@ class Dashboarddata extends JA_Controller {
 		$iduser = $this->session->userdata('user_id');
 		$idrole = $this->session->userdata('id_role');
 		$data['token'] = $this->session->userdata('token');
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+
+		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+          redirect ('/login');
+		}
 		
 		$datefg = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"];
 		 
@@ -34,8 +40,9 @@ class Dashboarddata extends JA_Controller {
 		
 		$data['file_date'] = $this->tvprogramun_model->get_file_date();
 		
+		//echo $this->session->userdata('role_id');die;
 		
-		if(!$this->session->userdata('user_id') || $this->session->userdata('role_id') <> 878) {
+		if(!$this->session->userdata('user_id') && $this->session->userdata('role_id') <> 878 && $this->session->userdata('role_id') <> 6) {
 			redirect ('/login');
 		}
 		
@@ -274,18 +281,20 @@ class Dashboarddata extends JA_Controller {
 					$scamud['SUCC'] = "On Progress";
 				}else{
 					
-					if($ssucc < 13){
+					if($ssucc < 13 && $ssucc > 2){
 						if($ssucc == 0){
 							$scamud['SUCC'] = "Process Not Running";
 						}else{
 							if($prog == 0){
-								$scamud['SUCC'] = "Process Not Complete<br><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",1)' >Reprocess</button>";
+								$scamud['SUCC'] = "Process Not Complete<br><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='btn_repro_".$daily[$i]['LOG_DATE']."' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",1)' >Reprocess</button>";
 							}else{
 								$scamud['SUCC'] = "Process Not Complete";
 							}
 						}
+					}elseif($ssucc == 2){
+						$scamud['SUCC'] = "Process Not Complete";
 					}else{
-						$scamud['SUCC'] = "Process Complete<br><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",1)' >Reprocess</button>";
+						$scamud['SUCC'] = "Process Complete<br><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='btn_repro_".$daily[$i]['LOG_DATE']."' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",1)' >Reprocess</button>";
 					}
 					
 				}
@@ -498,18 +507,20 @@ class Dashboarddata extends JA_Controller {
 					$scamud['SUCC'] = "On Progress";
 				}else{
 				
-					if($ssucc < $iii){
+					if($ssucc < $iii && $ssucc > 2){
 						if($ssucc == 0){
 							$scamud['SUCC'] = "Process Not Running";
 						}else{
 							if($prog == 0){
-								$scamud['SUCC'] = "Process Not Complete<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",".$type.")' >Reprocess</button>";
+								$scamud['SUCC'] = "Process Not Complete<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='btn_repro_".$daily[$i]['LOG_DATE']."' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",".$type.")' >Reprocess</button>";
 							}else{
 								$scamud['SUCC'] = "Process Not Complete";
 							}
 						}
+					}elseif($ssucc == 2){
+						$scamud['SUCC'] = "Process Not Complete";
 					}else{
-						$scamud['SUCC'] = "Process Complete";
+						$scamud['SUCC'] = "Process Complete<br><button class='button_black' id='btn_repro_".$daily[$i]['LOG_DATE']."'  style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",1)' >Reprocess</button>";
 					}
 				
 				}
@@ -646,69 +657,54 @@ class Dashboarddata extends JA_Controller {
 				$epg_click = $this->tvprogramun_model->epg_click($params);
 				$cnt_epg_click = count($epg_click);
 				
-				if($raw_epg == $epg_click){
-					if($cnt_raw_epg == $cnt_epg_click){
-						
-						$nerr = 0;
-						for($is = 0; $is < $cnt_raw_epg ;$is++){
-							if($raw_epg[$is]['CHANNEL'] == $epg_click[$is]['CHANNEL'] && $raw_epg[$is]['PROGRAM'] == $epg_click[$is]['PROGRAM'] && $raw_epg[$is]['BEGIN_PROGRAM'] == $epg_click[$is]['BEGIN_PROGRAM'] && $raw_epg[$is]['END_PROGRAM'] == $epg_click[$is]['END_PROGRAM'] && $raw_epg[$is]['KATEGORI_CHANNEL'] == $epg_click[$is]['KATEGORI_CHANNEL'] && $raw_epg[$is]['GENRE_PROGRAM'] == $epg_click[$is]['GENRE_PROGRAM'] ){
-								
-								$button_process = '';
-								$button_check = 1;
-								
-								$nerr++;
-							}else{ 
-								$button_check = 2;
-								
-								$button_process = "<div id='note_div_".$params['date_file']."'>File Ready to Process<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='process_btn_".$params['date_file']."' data-id='".$params['date_file']."' onclick='onqueue(\"".$params['date_file']."\",".$params['type'].")' >Process</button></div>";
-								$this->tvprogramun_model->update_epg_process($params);
-								break; 
-							}
+				if($cnt_raw_epg == $cnt_epg_click){
+					
+					$nerr = 0;
+					for($is = 0; $is < $cnt_raw_epg ;$is++){
+						if($raw_epg[$is]['CHANNEL'] == $epg_click[$is]['CHANNEL'] && $raw_epg[$is]['PROGRAM'] == $epg_click[$is]['PROGRAM'] && $raw_epg[$is]['BEGIN_PROGRAM'] == $epg_click[$is]['BEGIN_PROGRAM'] && $raw_epg[$is]['END_PROGRAM'] == $epg_click[$is]['END_PROGRAM'] && $raw_epg[$is]['KATEGORI_CHANNEL'] == $epg_click[$is]['KATEGORI_CHANNEL'] && $raw_epg[$is]['GENRE_PROGRAM'] == $epg_click[$is]['GENRE_PROGRAM'] ){
+							
+							$button_process = '';
+							$button_check = 1;
+							
+							$nerr++;
+						}else{
+							$button_check = 2;
+							
+							$button_process = "<div id='note_div_".$params['date_file']."'>File Ready to Process<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='process_btn_".$params['date_file']."' data-id='".$params['date_file']."' onclick='onqueue(\"".$params['date_file']."\",".$params['type'].")' >Process</button></div>";
+							$this->tvprogramun_model->update_epg_process($params);
+							break; 
 						}
-					}else{
-						//$button_check = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$params['date_file']."' onclick='checkdata_day(\"".$params['date_file']."\",".$params['type'].")' >Check Data</button>";
-						$button_process = "<div id='note_div_".$params['date_file']."'>Process Success<br><br></div>";
-						$button_check = 1;
-						$this->tvprogramun_model->update_epg_process($params);
 					}
+				}else{
+					//$button_check = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$params['date_file']."' onclick='checkdata_day(\"".$params['date_file']."\",".$params['type'].")' >Check Data</button>";
+					$button_process = "<div id='note_div_".$params['date_file']."'>Process Success<br><br></div>";
+					$button_check = 1;
+					$this->tvprogramun_model->update_epg_process($params);
 				}
 
 
 			}elseif($params['type'] == "1"){
 			
+				$queue_id = 6;
+				$sc_duplicate = "php /data/opep/srcs/jobs/check_cdr_file.php ".$tahun." ";
+				$tbs = 'DAILY_CHECK_REPORT';
 
+			}
+			
+			//$this->tvprogramun_model->insert_queue_check($tahun,$queue_id,$sc_duplicate,$tbs);
 						
-				$res = array(
-						'status' => 'success',
-						'message' => 'Success Process',
-						'btn' => $button_process,
-						'btn_check' => $button_check
-				);
+			$res = array(
+					'status' => 'success',
+					'message' => 'Success Process',
+					'btn' => $button_process,
+					'btn_check' => $button_check
+			);
 			
 		
-
-
-						$data_ch[$ik]['file_type'] = $ft;
-						
-						if($datax['STATUS_FILE'] == 3){
-
-							$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='process_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='onqueue(\"".$datax['LOG_DATE']."\",".$type.")' >Process</button>".'<br>'.$datax['CHANNEL'].'</div>';
-						}else{
-							$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br>".$datax['NOTE'].'<br>'.$datax['CHANNEL'].'</div>';
-						}
-						
-							if($datax['STATUS_FILE'] == 1){
-
-								
-							}else{
-							
-								$data_ch[$ik]['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='chek_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type.")' >Check Data</button>";
-							}
-			} else {
-				$data_ch = null;
-			}
-
-			echo json_encode($data_ch,true);
+		// }
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($res));
+		
 		
 	}
 	
@@ -761,15 +757,7 @@ class Dashboarddata extends JA_Controller {
 		$params['uid']= $this->session->userdata('user_id');
 		
 		$validate = $this->tvprogramun_model->validate_password($params);
-		
-		if($validate['status'] == 0){
-			
-			$res = array(
-					'status' => 'error',
-					'message' => $validate['message']
-				);
-			$this->output->set_content_type('application/json')->set_output(json_encode($res));
-		}else{
+
 		
 			if($type == "1"){
 			
@@ -874,7 +862,7 @@ class Dashboarddata extends JA_Controller {
 							}
 						}
 					}else{
-						$scamud['SUCC'] = "Process Complete<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",".$type.")' >Reprocess</button>";
+						$scamud['SUCC'] = "Process Complete<br><br><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",1)' >Reprocess</button>";
 					}
 					
 				}
@@ -889,7 +877,7 @@ class Dashboarddata extends JA_Controller {
 			$data['daily'] = json_encode($detail_daily,true); 
 			
 			echo $data['daily'];
-		}
+		
 		
 	}
 	
@@ -903,16 +891,7 @@ class Dashboarddata extends JA_Controller {
 		$params['token']= $token;
 		$params['uid']= $this->session->userdata('user_id');
 		
-		$validate = $this->tvprogramun_model->validate_password($params);
 		
-		if($validate['status'] == 0){
-			
-			$res = array(
-					'status' => 'error',
-					'message' => $validate['message']
-				);
-			$this->output->set_content_type('application/json')->set_output(json_encode($res));
-		}else{
 
 			$periode=$tahun; 
 
@@ -949,9 +928,9 @@ class Dashboarddata extends JA_Controller {
 						$data_ch[$ik]['file_type'] = $ft;
 						
 						if($datax['STATUS_FILE'] == 3){
-							$data_ch[$ik]['status'] = $status_array[$datax['STATUS_FILE']]."<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='onqueue(\"".$datax['LOG_DATE']."\",".$type.")' >Process</button>".'<br>'.$datax['CHANNEL'];
+							$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='process_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='onqueue(\"".$datax['LOG_DATE']."\",".$type.")' >Process</button>".'<br>'.$datax['CHANNEL'].'</div>';
 						}else{
-							$data_ch[$ik]['status'] = $status_array[$datax['STATUS_FILE']]."<br>".$datax['NOTE'].'<br>'.$datax['CHANNEL'];
+							$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br>".$datax['NOTE'].'<br>'.$datax['CHANNEL'].'</div>';
 						}
 						
 						if($datax['STATUS_FILE'] == 1){
@@ -968,7 +947,7 @@ class Dashboarddata extends JA_Controller {
 								
 							}else{
 							
-								$data_ch[$ik]['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type.")' >Check Data</button>";
+								$data_ch[$ik]['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='chek_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type.")' >Check Data</button>";
 							}
 							
 						}else{
@@ -985,7 +964,7 @@ class Dashboarddata extends JA_Controller {
 			}
 
 			echo json_encode($data_ch,true);
-		}
+		
 	}
 	
 	function audiencebar_by_channel(){

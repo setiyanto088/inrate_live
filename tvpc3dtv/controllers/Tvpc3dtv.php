@@ -20,6 +20,12 @@ class Tvpc3dtv extends JA_Controller {
 		}else{
 			$id = $this->session->userdata('project_id');
 		}
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+
+		if(!$this->session->userdata('user_id') || in_array("93",$array_menu) == 0) {
+          redirect ('/login');
+		}
 		
 		$data['profile'] = $this->tvpc_model->list_profile($iduser,$idrole,"");
 		$data['channel'] = $this->tvpc_model->list_channel();                   

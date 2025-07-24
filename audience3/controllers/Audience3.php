@@ -51,9 +51,12 @@ class Audience3 extends JA_Controller {
       }else{
           $id = $this->session->userdata('project_id');
       }
-      if(!$this->session->userdata('user_id')) {
+      $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
           redirect ('/login');
-      }
+		}
       
       $data['profile'] = $this->audience_model->list_profile();
       $data['daypart'] = $this->audience_model->list_daypart($iduser);

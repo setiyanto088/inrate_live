@@ -710,11 +710,12 @@ class Summaryvod extends JA_Controller {
 		
  		$data['thn'] = $this->tvprogramun_model->get_tahun();
 		
- 		
-	
-		
- 		if(!$this->session->userdata('user_id')) { 
- 		}
+ 		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+
+		if(!$this->session->userdata('user_id') || in_array("218",$array_menu) == 0) {
+          redirect ('/login');
+		}
 		
 		if($this->input->post('filter_text')){
 				

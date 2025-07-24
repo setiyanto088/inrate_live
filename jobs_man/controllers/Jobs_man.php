@@ -8,6 +8,11 @@ class Jobs_man extends JA_Controller {
 		$this->load->model('createprofileu_model');
 	}
 	
+	public function Anti_sql_injection($string) {
+		$string = strip_tags(trim(addslashes(htmlspecialchars(stripslashes($string)))));
+		return $string;
+	}
+	
 	public function index()
 	{
 		
@@ -15,13 +20,18 @@ class Jobs_man extends JA_Controller {
 		$iduser = $this->session->userdata('user_id');
 		$idrole = $this->session->userdata('id_role');
 		$data['token'] = $this->session->userdata('token');
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+          redirect ('/login');
+		}
 		
 		if($id == null){
 			$id = 0;
 		}else{
 			$id = $this->session->userdata('project_id');
 		}
-		if(!$this->session->userdata('user_id') || $this->session->userdata('role_id') <> 41) {
+		if(!$this->session->userdata('user_id') && $this->session->userdata('role_id') <> 878 && $this->session->userdata('role_id') <> 6) {
 			redirect ('/login');
 		}
 		$data['listprofile'] = $this->createprofileu_model->listprofile($iduser,$idrole);
@@ -113,13 +123,13 @@ class Jobs_man extends JA_Controller {
 				}
 				
 				
-				
+				$expl_arr = explode('/',$v['JOBS_LOC']);
 				
 				$html_sel = 
 				array_push($data, 
 					array(
 						"<p style='text-align:left;vertical-align:middle'>".$v['JOBS_NAME']."</p>",
-						"<p style='text-align:left;vertical-align:middle'>".$v['JOBS_LOC']."</p>",
+						"<p style='text-align:left;vertical-align:middle'>".$expl_arr[count($expl_arr)-1]."</p>",
 						"<p style='text-align:center'>".$done_ph."<p>",
 						"<p style='text-align:center'>".$hl."<p>"
 					)
@@ -226,7 +236,9 @@ class Jobs_man extends JA_Controller {
 		
 		$data = array();			
 		$array_jobs_st = array('DONE','ON PROGRESS','ON QUEQUE');
-		$array_jobs_name = array('DAILY JOBS EPG','DAILY JOBS CDR','LOGPROOF USEETV JOBS','LOGPROOF MEDIAHUB JOBS','POSTBUY JOBS','MEDIAPLAN JOBS','CHECKING DATA DAILY','CHECKING DATA LOGPROOF','CHECKING DATA LOGPROOF MEDIAHUB','CHECKING DATA MEDIAPLAN','CHECKING POSTBUY','PROCESS LOGPROOF USEETV MONTHLY','PROCESS LOGPROOF MEDIAHUB MONTHLY','DAILY PROFILING FTA','DAILY PROFILING PTV','PROFILING FTA','PROFILING PTV','ANALYZE TABLE','EXTERNAL SCRIPT' );
+		$array_jobs_name = array('DAILY JOBS EPG','DAILY JOBS CDR','LOGPROOF USEETV JOBS','LOGPROOF MEDIAHUB JOBS','POSTBUY JOBS','MEDIAPLAN JOBS','CHECKING DATA DAILY',
+		'CHECKING DATA LOGPROOF','CHECKING DATA LOGPROOF MEDIAHUB','CHECKING DATA MEDIAPLAN','PROCESS EPG','PROCESS LOGPROOF USEETV MONTHLY',
+		'PROCESS LOGPROOF MEDIAHUB MONTHLY','DAILY PROFILING FTA','DAILY PROFILING PTV','PROFILING FTA','PROFILING PTV','ANALYZE TABLE','EXTERNAL SCRIPT' );
 		foreach ( $list['data'] as $k => $v ) {
 				$ss = '';
 				
@@ -253,7 +265,7 @@ class Jobs_man extends JA_Controller {
 						$dad,
 						"<p style='text-align:left;vertical-align:middle'>".$array_jobs_name[$v['QUEUE']]."</p>",
 						"<p style='text-align:left;vertical-align:middle'>".$v['JOBS_DATE']."</p>",
-						"<p style='text-align:left'>".$v['JOBS_DESC']."<p>"
+						"<p style='text-align:left'>".$array_jobs_name[$v['QUEUE']]." ".$v['JOBS_DATE']."<p>"
 					)
 				);
 				}
@@ -318,21 +330,10 @@ class Jobs_man extends JA_Controller {
 		
 		$params['token']= $token;
 		$params['uid']= $this->session->userdata('user_id');
-		
-		$validate = $this->tvprogramun_model->validate_password($params);
-		
-		if($validate['status'] == 0){
-			
-			$result = array(
-				'success' => true,
-				'status' => 'error',
-				'message' => $validate['message'],
-				'data' => array('hasil' => 'aaaa')
-			);
-		}else{
+
 			$curr = $this->createprofileu_model->change_min_row($set_min);
 			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
-		}
+	
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		
 	}		
@@ -373,29 +374,30 @@ class Jobs_man extends JA_Controller {
 	
 	public function change_time_jobs(){
 		
-		$str = $_POST['id'];
-		$set_hours = $_POST['set_hours'];
-		$set_min = $_POST['set_min'];
+		//$data_post['str'] = $_POST['id'];
+		$data_post['str'] = $this->Anti_sql_injection($this->input->post('id', TRUE));
+		$data_post['set_hours'] = $_POST['set_hours'];
+		$data_post['set_min'] = $_POST['set_min'];
 		
-		$token = $_POST['tokens'];
-		
+		$data_post['token'] = $_POST['tokens'];
+				
 		$params['token']= $token;
 		$params['uid']= $this->session->userdata('user_id');
 		
-		$validate = $this->tvprogramun_model->validate_password($params);
+		//$validate = $this->tvprogramun_model->validate_password($params);
 		
-		if($validate['status'] == 0){
-			$result = array(
-					 'success' => true,
-					'status' => 'error',
-					'message' => $validate['message'],
-					'data' => array('hasil' => 'aaaa')
-				);
+		// if($validate['status'] == 0){
+			// $result = array(
+					 // 'success' => true,
+					// 'status' => 'error',
+					// 'message' => $validate['message'],
+					// 'data' => array('hasil' => 'aaaa')
+				// );
 		
-		}else{
-			$curr = $this->createprofileu_model->change_jobs_time($str,$set_hours,$set_min);
+		// }else{
+			$curr = $this->createprofileu_model->change_jobs_time($data_post['str'],$data_post['set_hours'],$data_post['set_min']);
 			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
-		}
+		// }
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		
 	}
@@ -409,20 +411,10 @@ class Jobs_man extends JA_Controller {
 		
 		$params['token']= $token;
 		$params['uid']= $this->session->userdata('user_id');
-		$validate = $this->tvprogramun_model->validate_password($params);
-		
-		if($validate['status'] == 0){
-			$result = array(
-				'success' => true,
-				'status' => 'error',
-				'message' => $validate['message'],
-				'data' => array('hasil' => 'aaaa')
-			);
-		}else{
-			$curr = $this->createprofileu_model->change_jobs_univ($str,$set_name,$set_univ);
-			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
-		}
 
+		$curr = $this->createprofileu_model->change_jobs_univ($str,$set_name,$set_univ);
+		$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
+		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		
 	}

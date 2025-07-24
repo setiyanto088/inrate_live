@@ -40,8 +40,7 @@ class Api_auth extends CI_Controller {
 			
          	if ( $login_result['message']== 'Success') {
 			
-				$hasilnya = $this->api_auth_model->get_profile($data);
-              
+				$hasilnya = $this->api_auth_model->get_profile($data);              
                  
                 if(isset($hasilnya[0])){
                   
@@ -68,7 +67,8 @@ class Api_auth extends CI_Controller {
                                             'id_profile'	=> $newhasil['id_profile'],
                                             'id_profile2'	=> $newhasil['id_profile2'],
                                             'id_profile3'	=> $newhasil['id_profile3'],
-											'id_profile4'	=> $newhasil['id_profile4']
+											'id_profile4'	=> $newhasil['id_profile4'],
+											'menuL'	=> $newhasil['menuL']
 
 
                                 );
@@ -111,7 +111,8 @@ class Api_auth extends CI_Controller {
 															'id_profile'	=> $newhasil['id_profile'],
 															'id_profile2'	=> $newhasil['id_profile2'],
 															'id_profile3'	=> $newhasil['id_profile3'],
-															'id_profile4'	=> $newhasil['id_profile4']
+															'id_profile4'	=> $newhasil['id_profile4'],
+															'menuL'	=> $newhasil['menuL']
         
         
                                                 );

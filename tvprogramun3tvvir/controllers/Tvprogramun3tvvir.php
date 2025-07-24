@@ -1951,10 +1951,11 @@ class Tvprogramun3tvvir extends JA_Controller {
 		// $data['bln'] = $this->tvprogramun_model->get_bulan();
 		$data['thn'] = $this->tvprogramun_model->get_tahun();
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 
-		//cek session login
-		if(!$this->session->userdata('user_id')) {  
-			//redirect ('/login');
+		if(!$this->session->userdata('user_id') || in_array("149",$array_menu) == 0) {
+          redirect ('/login');
 		}
 		
 		if($this->input->post('filter_text')){

@@ -1398,6 +1398,12 @@ function checkdata_day(date_file,type){
 	form_data.append('type', type);
 	form_data.append('token', '<?php echo $token; ?>');
 	
+	$('#chek_btn_'+date_file).html('Checking');
+	$('#chek_btn_'+date_file).attr('disabled','disabled');
+	
+	
+	
+	
 	$.ajax({
 		url: "<?php echo base_url().'dashboarddata/checkdata_day'; ?>", 
 		dataType: 'json',  // what to expect back from the PHP script, if anything
@@ -1410,7 +1416,18 @@ function checkdata_day(date_file,type){
 			if (response.status == "success") {
 								
 				//window.location.href = "<?php echo base_url();?>dashboarddata/";
-				table2_view();
+				//table2_view();
+				$('#chek_btn_'+date_file).removeAttr('disabled');
+				$('#chek_btn_'+date_file).html('Check Data');
+				//$('#chek_btn_'+date_file).css("display", "none");
+				
+				if(response.btn_check == 2 ){
+					$('#chek_btn_'+date_file).css("display", "none");
+				}
+				
+				$('#note_div_'+date_file).html("");
+				$('#note_div_'+date_file).html(response.btn);
+				
 							  
 			} else{
 				$('#ceksas_'+date_file).html('<h6 style="color: red">'+response.message+'</h6>');
@@ -1418,6 +1435,9 @@ function checkdata_day(date_file,type){
 					$('#ceksas_'+date_file).html('<h6 style="color: red"></h6>');
 				}, 5000);
 			}
+			
+			$('#chek_btn_'+date_file).removeAttr('disabled');
+			$('#chek_btn_'+date_file).html('Check Data');
 			
 		}
 	});
@@ -2788,6 +2808,10 @@ function onreproc(date_data,type_jobs){
 	form_data.append('date_data', date_data);
 	form_data.append('type_jobs', type_jobs);
 	
+	$('#btn_repro_2025-03-09').html('Loading');
+	$('#btn_repro_2025-03-09').attr('disabled','disabled');
+	
+	
 	var types = type_jobs;
 	
 	$.ajax({
@@ -3675,6 +3699,8 @@ function onreproc(date_data,type_jobs){
 			}
 
 		
+			$('#btn_repro_2025-03-09').removeAttr('disabled');
+			$('#btn_repro_2025-03-09').html('Reprocess');
 			
 		}
 	});	
@@ -3689,7 +3715,8 @@ var tahun = $('#tahun').val();
 	form_data.append('type_jobs', type_jobs);
 	form_data.append('tahun', tahun);
 	
-  $("#example3_wrapper").append('<div class="datatable-loading" style="position: absolute; background-color: rgb(255, 255, 255); opacity: 0.75; text-align: center; z-index: 10; left: 0px; top: 0px; width: 100%; height: 100%;"><span class="datatable-loading-inner" style="font-weight: bold; position: relative; top: 100%;"><img alt="img" id="loading" src="<?php echo base_url();?>assets/urate-frontend-master/assets/images/icon_loader.gif"></span></div>');
+	$('#process_btn_'+date_data).attr('disabled','disabled');
+  //$("#example3_wrapper").append('<div class="datatable-loading" style="position: absolute; background-color: rgb(255, 255, 255); opacity: 0.75; text-align: center; z-index: 10; left: 0px; top: 0px; width: 100%; height: 100%;"><span class="datatable-loading-inner" style="font-weight: bold; position: relative; top: 100%;"><img alt="img" id="loading" src="<?php echo base_url();?>assets/urate-frontend-master/assets/images/icon_loader.gif"></span></div>');
   
 	
 	$.ajax({
@@ -3701,53 +3728,10 @@ var tahun = $('#tahun').val();
 		data: form_data,                         
 		type: 'post',
 		success: function(data){
-			$('#table_program').html("");
-			
-			$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped table-bordered example" style="width: 100%"><thead><tr><th>Date </th><th>File Name </th><th>Size </th><th>Row File Count </th><th>Row Load</th><th>Row Cleansing</th><th>Date Load</th><th>File Type</th><th>Status</th></tr></thead></table>');
-			
-			obj = data;
-
-						
-						$('#example3').DataTable({
-							"bFilter": false,
-							"aaSorting": [],
-							"bLengthChange": false,
-							'iDisplayLength': 16,
-							"sPaginationType": "full_numbers",
-							"Info" : false,
-							"searching": true,
-							data: obj,
-							columns: [
-								{ data: 'Date' },
-								{ data: 'file_name' },
-								{ data: 'file_size' ,"sClass": "right",render: function ( data, type, row ) {
-							  return new Intl.NumberFormat('id-ID').format(parseFloat(data).toFixed(0));            
-										
-									}
-								},
-								{ data: 'row_file' ,"sClass": "right",render: function ( data, type, row ) {
-							  return new Intl.NumberFormat('id-ID').format(parseFloat(data).toFixed(0));            
-										
-									}
-								},
-								{ data: 'row_load' ,"sClass": "right",render: function ( data, type, row ) {
-							  return new Intl.NumberFormat('id-ID').format(parseFloat(data).toFixed(0));            
-										
-									}
-								},
-								{ data: 'row_cleansing' ,"sClass": "right",render: function ( data, type, row ) {
-							  return new Intl.NumberFormat('id-ID').format(parseFloat(data).toFixed(0));            
-										
-									}
-								},
-								{ data: 'date_load' },
-								{ data: 'file_type' },
-								{ data:'status'},
-								{ data:'check_data'}
-							]
-						});	
-
 		
+			table2_view();
+			$('#process_btn_'+date_file).removeAttr('disabled');
+			
 		}
 	});	
 			

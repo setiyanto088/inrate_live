@@ -70,6 +70,8 @@ class Login extends MX_Controller {
 								redirect(base_url().'respondent');
 							}elseif ($role == 969 ){
 								redirect(base_url().'tvprogramunres');
+							}elseif ($role == 5002 ){
+								redirect(base_url().'epg_config');
 							}
 							else{
 								redirect(base_url().'tvprogramun3');

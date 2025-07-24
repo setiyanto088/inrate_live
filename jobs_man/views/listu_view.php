@@ -149,7 +149,7 @@
 					<div class="panel-headings">
 						<h3 class='urate-panel-title'>Jobs Detail</h3>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body" id="table-jobs-time">
 								<table aria-describedby="mydesc"   id="example_h" class="table table-striped">
 								  <thead style="color:red">
 									<tr>
@@ -171,9 +171,9 @@
 								  <thead style="color:red">
 									<tr style="border:none">
 										<th style="border:none;" scope="row"><p style='text-align:left'>Minimum Rows</p></th>
-										<th style="border:none;" colspan="2" scope="row"><p style='text-align:center'><button id="min_rows" type="button" onClick="change_min('<?php echo $min_row[0]['MIN_ROW']; ?>')" class="button_black" ><?php echo number_format($min_row[0]['MIN_ROW'],0,',','.') ?></button></p></th>
+										<th style="border:none;" colspan="2" scope="row" id="min-row-value"><p style='text-align:center'><button id="min_rows" type="button" onClick="change_min('<?php echo $min_row[0]['MIN_ROW']; ?>')" class="button_black" ><?php echo number_format($min_row[0]['MIN_ROW'],0,',','.') ?></button></p></th>
 									</tr>
-									<tr style="background-color:#F3F3F3;">
+									<!--<tr style="background-color:#F3F3F3;">
 										<th style=";background-color:#F3F3F3;" scope="row"><p style='text-align:left'>Smart Offering nba Tools</p></th>
 										<th style="width:20%;background-color:#F3F3F3;" scope="row"><p style='text-align:center'>
 										<select class='sel_set form-control urate-form-input' onchange='' name = 'per_nper' ID = 'per_nper'>
@@ -183,7 +183,7 @@
 										 } ?>
 										</select></p></th>
 										<th style="" scope="row"><p style='text-align:center'><button id="nper" type="button" onClick="process_nper()" class="button_black" >Process</button></p></th>
-									</tr>
+									</tr>-->
 								  </thead>
 								</table>
 					</div>
@@ -193,7 +193,7 @@
 					<div class="panel-headings">
 						<h3 class='urate-panel-title'>Universe</h3>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body" id="table-jobs-universe">
 								<table aria-describedby="mydesc"   id="example_univ" class="table table-striped">
 								  <thead style="color:red">
 									<tr>
@@ -810,7 +810,7 @@
 		
 		var time_split = time.split(":");
 		
-		$('#set_universe').val(time_split[0]);
+		$('#set_hours').val(time_split[0]);
 		$('#set_min').val(time_split[1]);
 		$('#hid_val2').val(id);
 		
@@ -845,24 +845,31 @@
 		
 
 		var set_min = $('#hid_val2min').val();
+		var tokens	= '<?php echo $token; ?>'
 		
-		 var form_data = {
-			set_min	 : set_min,
-			tokens	 : '<?php echo $token; ?>'
-		}
+		var form_data = new FormData();  
+		  	form_data.append('set_min', set_min);
+			form_data.append('tokens', tokens);	
 			   
 		$.ajax({
 			type: "POST",
 			url: "<?php echo base_url();?>jobs_man/change_min_row" + "?sess_user_id=" + user_id + "&sess_token=" + token,
-			data: JSON.stringify(form_data),
- 			dataType: 'json',
-			contentType: 'application/json; charset=utf-8'
+			dataType: 'text', 
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data, 
 		}).done(function(response) {
-		 
-			if (response.success) {
-				location.href = "<?php echo base_url();?>jobs_man/";
-			} else {
-			}
+			
+			$('#min-row-value').html('');
+			
+			let num = parseInt(set_min);
+			let text = num.toLocaleString("id-ID");
+
+			$('#min-row-value').html('<p style="text-align:center"><button id="min_rows" type="button" onClick="change_min('+set_min+')" class="button_black" >'+text+'</button></p>');
+			
+			$('#modalMin').modal('hide');			
+						
 		}).fail(function(xhr, status, message) {
  			console.log('ajax create error:' + message);
 		});
@@ -875,26 +882,47 @@
 		var id = $('#hid_val2').val();
 		var set_hours = $('#set_hours').val();
 		var set_min = $('#set_min').val();
-		
-		 var form_data = {
-			id		 : id,
-			set_hours: set_hours,
-			set_min	 : set_min,
-			tokens	 : '<?php echo $token; ?>'
-		}
+		var tokens	= '<?php echo $token; ?>';
+
+		var form_data = new FormData();  
+		  	form_data.append('id', id);
+			form_data.append('set_hours', set_hours);
+			form_data.append('set_min', set_min);	
+			form_data.append('tokens', tokens);	
 			   
 		$.ajax({
 			type: "POST",
 			url: "<?php echo base_url();?>jobs_man/change_time_jobs" + "?sess_user_id=" + user_id + "&sess_token=" + token,
-			data: JSON.stringify(form_data),
- 			dataType: 'json',
-			contentType: 'application/json; charset=utf-8'
+			dataType: 'text', 
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data, 
 		}).done(function(response) {
-		 
-			if (response.success) {
-				location.href = "<?php echo base_url();?>jobs_man/";
-			} else {
-			}
+		
+				//location.href = "<?php echo base_url();?>jobs_man/";
+				
+				$('#table-jobs-time').html('');
+				
+				$('#table-jobs-time').html('<table aria-describedby="mydesc"   id="example_h" class="table table-striped"><thead style="color:red"><tr><th style="" scope="row"><p style="text-align:left">Jobs Name</p></th><th style="" scope="row"><p style="text-align:left">Jobs File</p></th><th style="" scope="row"><p style="text-align:left">Jobs Status </p></th><th style="" scope="row"><p style="text-align:left">Jobs Time Proccess </p></th></tr></thead></table>');
+				
+				
+				$("#example_h").DataTable({
+					"processing": true,
+					"serverSide": false,
+					destroy: true,
+					"ajax": "<?php echo base_url().'jobs_man/list_job_set'?>" + "?sess_user_id=" + user_id + "&sess_token=" + token,
+					"searchDelay": 700,
+					responsive: true,
+					"bFilter" : false,
+					"bInfo" : false,
+					"bPaginate": false,
+					"bLengthChange": false
+				});	
+			
+				
+				$('#modalChangeTime').modal('hide');
+			
 		}).fail(function(xhr, status, message) {
  			console.log('ajax create error:' + message);
 		});
@@ -906,25 +934,46 @@
 		var id = $('#hid_univ').val();
 		var hid_univ_name = $('#hid_univ_name').val();
 		var set_universe = $('#set_universe').val();
-		
-		 var form_data = {
-			id		 : id,
-			set_name: hid_univ_name,
-			set_univ	 : set_universe,
-			tokens	 : '<?php echo $token; ?>'
-		}
+	
+		var tokens	= '<?php echo $token; ?>'
+		var form_data = new FormData();  
+		  	form_data.append('id', id);
+			form_data.append('set_name', hid_univ_name);
+			form_data.append('set_univ', set_universe);	
+			form_data.append('tokens', tokens);	
 			   
 		$.ajax({
 			type: "POST",
 			url: "<?php echo base_url();?>jobs_man/change_univ_jobs" + "?sess_user_id=" + user_id + "&sess_token=" + token,
-			data: JSON.stringify(form_data),
- 			dataType: 'json',
-			contentType: 'application/json; charset=utf-8'
+			dataType: 'text', 
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data, 
 		}).done(function(response) { 
-			if (response.success) {
-				location.href = "<?php echo base_url();?>jobs_man/";
-			} else {
-			}
+			
+			$('#table-jobs-universe').html('');
+				
+				$('#table-jobs-universe').html('<table aria-describedby="mydesc"   id="example_univ" class="table table-striped"><thead style="color:red"><tr><th style="" scope="row"><p style="text-align:left">Periode</p></th><th style="" scope="row"><p style="text-align:left">Universe</p></th></tr></thead></table>');
+				
+				
+				$("#example_univ").DataTable({
+					"processing": true,
+					"serverSide": true,
+					destroy: true,
+					"ajax": "<?php echo base_url().'jobs_man/list_periode'?>" + "?sess_user_id=" + user_id + "&sess_token=" + token,
+					"searchDelay": 700,
+					responsive: true,
+					"bFilter" : false,
+					"bInfo" : false,
+					"bLengthChange": false,
+					"searching": true,
+					"pageLength": 6
+				});	
+			
+				
+				$('#modalChangeUniv').modal('hide');
+			
 		}).fail(function(xhr, status, message) {
  			console.log('ajax create error:' + message);
 		});
