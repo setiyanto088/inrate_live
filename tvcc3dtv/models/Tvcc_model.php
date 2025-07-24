@@ -320,7 +320,7 @@ ORDER BY `DATE`,M1
  
 	
 	$hhh = explode(",",$new_cin2);
-	
+		
 	$case_max = "SELECT `DATE`,M1, ";
 	
 	$case_str = "( SELECT `DATE`,M1, ";

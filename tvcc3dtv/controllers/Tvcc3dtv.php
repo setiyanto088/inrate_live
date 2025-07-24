@@ -204,8 +204,8 @@ class Tvcc3dtv extends JA_Controller {
       
       $order_fields = ['DATE','M1'];
       
-      if( ! empty($this->Anti_si($_POST['channel'])) ) {
-          $channel = $this->Anti_si($_POST['channel']);
+      if( ! empty($_POST['channel']) ) {
+          $channel = $_POST['channel'];
           
           if($channel == "0"){
               $channel_array = $this->tvcc_model->channelsearch("",$genre);
@@ -388,8 +388,8 @@ class Tvcc3dtv extends JA_Controller {
       $order_fields = ['DATE','M1'];
 	  // $channel = $_POST['channel'];
       
-      if( ! empty($this->Anti_si($_POST['channel'])) ) {
-          $channel = $this->Anti_si($_POST['channel']);
+      if( ! empty($_POST['channel']) ) {
+          $channel = $_POST['channel'];
           
           if($channel == "0"){
               $channel_array = $this->tvcc_model->channelsearch("",$genre);
@@ -447,8 +447,7 @@ class Tvcc3dtv extends JA_Controller {
       $params['cgroup']		= $cgroup;
  
 	    $arr_tvcc = [];
- 
-	  
+ 	  
 	   $list = $this->tvcc_model->list_tvcc($params);
 	   
       $n_a = $list['data'];
@@ -552,8 +551,8 @@ class Tvcc3dtv extends JA_Controller {
           $genre = "0";
       }
       
-      if( ! empty($this->Anti_si($_POST['channel'])) ) {
-          $channel = $this->Anti_si($_POST['channel']);
+      if( ! empty($_POST['channel']) ) {
+          $channel = $_POST['channel'];
       } else {
           $channel = "0";
       }
@@ -592,7 +591,7 @@ class Tvcc3dtv extends JA_Controller {
       $params['genre']		= str_replace("AND","&",$genre);
       $params['channel']		= str_replace("AND","&",$channel);
       $params['cgroup']		= $cgroup;
- 
+ 		
       $arr_tvcc = [];
    
       
