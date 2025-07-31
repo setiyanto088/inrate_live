@@ -107,7 +107,7 @@ $path7 = base_url() . 'assets/urate-frontend-master/';
 
 	
 <!--===============================================================================================-->	
-	<script src="<?php echo $path;?>vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="<?php echo $path;?>vendor/jquery/jquery-3.7.1.min.js"></script>
 <!--===============================================================================================-->
 	<script src="<?php echo $path;?>vendor/bootstrap/js/popper.js"></script>
 	<script src="<?php echo $path;?>vendor/bootstrap/js/bootstrap.min.js"></script>
