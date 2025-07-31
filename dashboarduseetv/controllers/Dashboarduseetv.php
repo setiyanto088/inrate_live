@@ -3179,43 +3179,6 @@ class Dashboarduseetv extends JA_Controller {
 		
 	}
 	
-	function checkdata(){
-		
-		$type =  $this->input->post('type');
-		$tahun = $this->input->post('tahun');
-		$detail_file = $this->input->post('detail_file');
-		
-		
-		if($type == "2"){
-		
-			$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_u_".$tahun." & ";
-			shell_exec($sc_duplicate);
-
-		}elseif($type == "4"){
-		
-			$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_cim_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_cim_u_".$tahun." & ";
-			shell_exec($sc_duplicate); 
-
-		}elseif($type == "5"){
-		
-			$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_rc_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_rc_u_".$tahun." & ";
-			shell_exec($sc_duplicate);
-
-		}elseif($type == "3"){
-		
-			$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_m.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_m_".$tahun." & ";
-			shell_exec($sc_duplicate);
-
-		}elseif($type == "1"){
-		
-			$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_daily_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_daily_u_".$tahun." & ";
-			shell_exec($sc_duplicate);
-
-		}
-		
-		echo true;
-		
-	}
 	
 	function datadash(){
 		

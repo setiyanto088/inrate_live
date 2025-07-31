@@ -79,6 +79,8 @@ class Createuser extends JA_Controller {
 	
 	public function edituser($id)
 	{
+
+		
         $data['id'] = $id;
 		$data['listroleall'] = $this->createuser_model->listroleall();
 		
@@ -89,9 +91,18 @@ class Createuser extends JA_Controller {
 	
 	public function edituserself($id)
 	{
+		
+		$iduser = $this->session->userdata('user_id');
+		$token = $this->session->userdata('token');
+		
+		if(!$this->session->userdata('user_id') || $iduser <> $id ) {
+          redirect ('/login');
+		}
+		
 		$data['token'] = $this->session->userdata('token');
         $data['id'] = $id;
-        $data['detailuser'] = $this->createuser_model->detailuser($id);        
+        $data['detailuser'] = $this->createuser_model->detailuser($id);       
+		
         $this->load->view('edituserself_view', $data );
 		
 	}

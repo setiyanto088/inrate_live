@@ -175,6 +175,9 @@ class Cprp22 extends JA_Controller {
 					$ss = "<a style='color:red'  href='".base_url()."cprp22/detail/".$v['idprofile']."' >".$v['name']."".$strik."</a>";
 			}
 			
+			$dele_brn = '';
+			$dele_brn_cls = 'button_black';
+			
 			if($v['user_id_profil'] == 0){
 				$sss =	"<span>Done</span>";
 			}else{
@@ -184,6 +187,10 @@ class Cprp22 extends JA_Controller {
 					$sss = "<span>In progress</span>";
 				}elseif($v['status_job'] == 3){
 					$sss = "<span>On Queue</span>";
+				}elseif($v['status_job'] == 4){
+					$sss = "<span>On Queue Delete</span>";
+					$dele_brn = "disabled='disabled'";
+					$dele_brn_cls = "";
 				}else{
 					$sss = "<span style='text-align:center;vertical-align:middle'><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$v['idprofile']."' onclick='prerun(".$v['idprofile'].")' >Process</button></span>"; // onclick='run(".$v['idprofile'].")' // data-toggle='modal' data-target='#modalProcessJob'
 				}
@@ -250,7 +257,7 @@ class Cprp22 extends JA_Controller {
 					"<p style='text-align:center;vertical-align:middle'>".$done_ph1."</p>",
 					"<p style='text-align:center;vertical-align:middle'>".$nnn."</p>",
 					"<p style='text-align:center;vertical-align:middle'>".$sss."</p>",
-					"<span style='text-align:center;vertical-align:middle'><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$v['idprofile']."' onclick='predelete(".$v['idprofile'].")' >Delete</button></span>",
+					"<span style='text-align:center;vertical-align:middle'><button class='".$dele_brn_cls."' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$v['idprofile']."' onclick='predelete(".$v['idprofile'].")' ".$dele_brn.">Delete</button></span>",
 					$excel_button
 				)
 			);
@@ -365,10 +372,8 @@ class Cprp22 extends JA_Controller {
 	  
 		$list = $this->Anti_si($_POST['pid']);
 	  
-		$command = 'php /var/www/jobs/profiling/ultimate/delete_profile_res.php '.$list.' > /var/www/jobs/profiling/ultimate/delete_log_profile_res_'.$list.'.log 2>&1 & ';  
-			
-		$pid = shell_exec($command); 
-	  
+		$this->createprofileu_model->inset_queue_del($list);
+		
 	  
 		$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
 			

@@ -987,31 +987,6 @@
           $( "#sumtvr" ).empty();
       }
       
-      function vid_program(video, title, filename, stvid, duration){
-          $.ajax({
-              url:filename,
-              type:'HEAD',
-              error: function()
-              {
-                  $("#video_url").html('<img alt="img" src="img/novid.png" style="display:block; margin-left:auto; margin-right:auto; padding-top:30px;"><p style="text-align:center; font-size:24px; padding-left:100px; padding-right:100px; padding-top:30px; padding-bottom:30px;">Ooppss! Video is unavailable</p>');
-                  $(".urate-download-btn").hide();
-              },
-              success: function()
-              {
-                  $("#video_url").html('<video autoplay  id= "vload0" width="100%" height="240" controls preload="none" data-flname="'+filename+'" data-stvid="'+stvid+'" data-duration="'+duration+'"><source src="'+video+'"> type="video/mp4">Your browser does not support the video tag.</video>');
-                  $(".urate-download-btn").show();
-              }
-          });
- 
-          $("#modal_video_program1").modal();
-          $("#my_program1").html( title );
-          $(".urate-download-btn").attr('href','<?php echo site_url("postbuyadspeformance/download_video/?f='+filename+'&s='+stvid+'&d='+duration+'") ?>');
-          
-          var vids = $("video"); 
-          $.each(vids, function(){
-              this.controls = false; 
-          }); 
-      }
   
       function vid_iklan(id){
           switch (id) {

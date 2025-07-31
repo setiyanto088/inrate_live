@@ -153,7 +153,7 @@ $( document ).ready(function() {
 					<div class="col-lg-12">
 					<form class="form-horizontal" id="form_login" name="form_login" method="POST" >
 						<div class="form-group">
-							<label class="col-sm-2 control-label">Name </label>
+							<label class="col-sm-2 control-label">Name</label>
 							  <div class="col-sm-10" style="margin-top: 7px">
 							   <?php echo $detailuser[0]['nama']; ?>
 								

@@ -636,14 +636,13 @@ class Dashboarddata extends JA_Controller {
 	function checkdata_day(){
 		
 			
-		$params['type'] =  $this->input->post('type');
-		$params['date_file'] = $this->input->post('date_file');
-		$params['token'] = $this->input->post('token');
+		$params['type'] =  $this->Anti_si($this->input->post('type'));
+		$params['date_file'] = $this->Anti_si($this->input->post('date_file'));
+		$params['token'] = $this->Anti_si($this->input->post('token'));
 		
 		$params['token']= $token;
 		$params['uid']= $this->session->userdata('user_id');
 		$tahun = $date_file;
-		//print_r($params);die;
 			
 			if($params['type'] == "5"){
 			
@@ -708,43 +707,6 @@ class Dashboarddata extends JA_Controller {
 		
 	}
 	
-	function checkdata(){
-		
-		$type =  $this->input->post('type');
-		$tahun = $this->input->post('tahun');
-		$detail_file = $this->input->post('detail_file');
-		
-		
-		if($type == "2"){
-		
-			$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_u_".$tahun." & ";
-			shell_exec($sc_duplicate);
-
-		}elseif($type == "4"){
-		
-			$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_cim_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_cim_u_".$tahun." & ";
-			shell_exec($sc_duplicate); 
-
-		}elseif($type == "5"){
-		
-			$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_rc_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_rc_u_".$tahun." & ";
-			shell_exec($sc_duplicate);
-
-		}elseif($type == "3"){
-		
-			$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_m.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_loogproof_m_".$tahun." & ";
-			shell_exec($sc_duplicate);
-
-		}elseif($type == "1"){
-		
-			$sc_duplicate = "php /var/www/jobs/steve/JOBS/fix_jobs/check_daily_u.php ".$tahun." > /var/www/jobs/steve/JOBS/fix_jobs/check_daily_u_".$tahun." & ";
-			shell_exec($sc_duplicate);
-
-		}
-		
-		echo true;
-		
-	}
 	
 	function datadash(){
 		

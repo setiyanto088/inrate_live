@@ -1444,32 +1444,6 @@ function checkdata_day(date_file,type){
 	
 }
 
-function check(){
-	
-	var form_data = new FormData();  
-	var types = $('#product_program2').val();
-	var tahun = $('#periode_nn').val();
-	var detail_file = $('#detail_file').val();
-	
-	form_data.append('tahun', tahun);
-	form_data.append('type', types);
-	form_data.append('detail_file', detail_file);
-	
-	$.ajax({
-		url: "<?php echo base_url().'dashboarddata/checkdata'; ?>", 
-		dataType: 'json',  // what to expect back from the PHP script, if anything
-		cache: false,
-		contentType: false,
-		processData: false,
-		data: form_data,                         
-		type: 'post',
-		success: function(data){
-			window.location.href = "<?php echo base_url();?>dashboarddata/";
-		}
-	});
-	
-}
-
 function table2_view2(){
 	
 	var form_data = new FormData();  

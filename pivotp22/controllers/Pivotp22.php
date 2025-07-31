@@ -330,22 +330,7 @@ class Pivotp22 extends JA_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}
 	}
-	
-  public function del_jobs(){
-	  
-	  $_POST = json_decode(file_get_contents("php://input"), true);
- 	  
-		$list = $_POST['pid'];
-	  
-		$command = 'php /var/www/jobs/profiling/ultimate/delete_profile_res.php '.$list.' > /var/www/jobs/profiling/ultimate/delete_log_profile_res_'.$list.'.log 2>&1 & ';  
-			
- 		$pid = shell_exec($command); 
-	  
- 	  
-		$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
-			
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
-  }
+
 	
 	public function create_pivot(){
 		

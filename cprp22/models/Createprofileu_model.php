@@ -789,6 +789,25 @@ public function create1($data) {
 		
 	}
 	
+	
+	public function inset_queue_del($list){
+		
+		$command = 'php /var/www/jobs/profiling/ultimate/delete_profile_res.php '.$list.' > /var/www/jobs/profiling/ultimate/delete_log_profile_res_'.$list.'.log 2>&1 & ';  
+		$script_check_date = "	INSERT INTO JOBS_QUEUE VALUES('".date("Y-m-d")."','".$command."',NULL,NULL,1,'".date("Y-m-d H:i:s")."',18,NULL,NULL,2,'')  ";	
+		
+		$sql	= $this->db->query($script_check_date);
+		$this->db->close();	
+		
+		
+		$query = " update t_profiling_ub_res set status_job = 4 where `id` ='".$list."' ";
+		$sql	= $this->db->query($query);
+		$this->db->close();	
+		
+								
+
+		
+	}
+	
 	public function inset_queue($list_id,$periode_list){
 				
 		$id_user = $this->session->userdata('user_id');
