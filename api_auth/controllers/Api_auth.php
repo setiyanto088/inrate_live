@@ -28,10 +28,10 @@ class Api_auth extends CI_Controller {
 		$this->form_validation->set_rules('username', 'Username', 'required');
 		
 		$newdata = array();
-		// if ($this->form_validation->run() == FALSE)  {
-			// $result = array( 'success' => false, 'message' => validation_errors() );
-			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
-		// } else if ($this->form_validation->run() == TRUE)  {
+		if ($this->form_validation->run() == FALSE)  {
+			$result = array( 'success' => false, 'message' => validation_errors() );
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		} else if ($this->form_validation->run() == TRUE)  {
 			$data = array (
 				'username' 		=> $this->Anti_si($this->input->post('username', true)),
 				'password' 		=> $this->Anti_si($this->input->post('password', true)),
@@ -148,7 +148,7 @@ class Api_auth extends CI_Controller {
 
 			$this->output->set_content_type('application/json')->set_output(json_encode($return));
 			
-		//}
+		}
 	}
 	
 	public function check_user($id){
