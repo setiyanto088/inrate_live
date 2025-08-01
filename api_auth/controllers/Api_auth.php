@@ -24,10 +24,6 @@ class Api_auth extends CI_Controller {
 		
 		$_POST = json_decode(file_get_contents("php://input"), true);
 		
-		$data = array (
-				'username' 		=> $this->Anti_si($this->input->post('username', true)),
-				'password' 		=> $this->Anti_si($this->input->post('password', true)),
-			);
 		
 		// $this->load->library('form_validation');
 		// $this->form_validation->set_rules('username', 'Username', 'required');
@@ -41,6 +37,8 @@ class Api_auth extends CI_Controller {
 				'username' 		=> $this->Anti_si($this->input->post('username', true)),
 				'password' 		=> $this->Anti_si($this->input->post('password', true)),
 			);
+			
+			print_r($data);die;
 			$login_result = $this->api_auth_model->login($data);
 			
          	if ( $login_result['message']== 'Success') {
