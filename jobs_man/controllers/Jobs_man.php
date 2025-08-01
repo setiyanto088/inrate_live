@@ -346,8 +346,10 @@ class Jobs_man extends JA_Controller {
 				$curr = $this->createprofileu_model->change_min_row($set_min);
 				$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
 		
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			
 		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}		
 	
 	public function change_npr(){
