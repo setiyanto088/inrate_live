@@ -330,7 +330,8 @@ class Jobs_man extends JA_Controller {
 	}
 	
 	public function change_min_row(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
@@ -387,7 +388,8 @@ class Jobs_man extends JA_Controller {
 	
 	
 	public function change_time_jobs(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
@@ -424,7 +426,8 @@ class Jobs_man extends JA_Controller {
 	}
 	
 	public function change_univ_jobs(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');

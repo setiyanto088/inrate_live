@@ -2792,7 +2792,8 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
 	  public function save_channels()
 	{
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("149",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
@@ -2835,6 +2836,8 @@ class Tvprogramun3tvvir extends JA_Controller {
 	public function delete_channels()
 	{
 		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("149",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');

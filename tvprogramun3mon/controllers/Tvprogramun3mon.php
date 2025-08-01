@@ -84,10 +84,13 @@ class Tvprogramun3mon extends JA_Controller {
 	
 	
 	function get_data_last(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("255",$array_menu) == 0) {
+			
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			
 		}else{
 		
 			$types =  $this->input->post('types',true);

@@ -941,6 +941,8 @@ class Daypartvir extends JA_Controller {
   
   public function setdaypart(){
 	  
+	   $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 	  if(!$this->session->userdata('user_id') || in_array("152",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');

@@ -187,7 +187,8 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 	}
 	
 	function cost_by_channel(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -286,7 +287,8 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 	}
 	
 	function ads_view(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -340,7 +342,8 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 	}
 	
 	function day_view(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -389,7 +392,8 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 	}
 	
 	function daypart_view(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -437,6 +441,8 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 	
 	function prime_view(){
 		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -499,6 +505,8 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 	
 	function cost_by_program2nn(){
 		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -544,6 +552,8 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 	
 	function cost_by_program2(){
 		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));

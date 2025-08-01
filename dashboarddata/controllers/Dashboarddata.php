@@ -709,7 +709,8 @@ class Dashboarddata extends JA_Controller {
 	
 	
 	function datadash(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -849,7 +850,8 @@ class Dashboarddata extends JA_Controller {
 	}
 	
 	function cost_by_program(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));

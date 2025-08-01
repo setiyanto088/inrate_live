@@ -59,7 +59,8 @@ class Channel_config extends JA_Controller {
 	
 	public function edit_channel() {
 		
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("249",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');

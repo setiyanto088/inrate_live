@@ -64,7 +64,8 @@ class logproof_load extends JA_Controller {
 	}	
 	
 	function audiencebar_by_channel_file(){
-		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("254",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));

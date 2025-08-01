@@ -19,6 +19,8 @@ class Tvcc extends CI_Controller {
 			$id = $this->session->userdata('project_id');
 		}
 		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("152",$array_menu) == 0) {
           redirect ('/login');
 		}
