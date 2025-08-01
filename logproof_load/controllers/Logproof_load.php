@@ -65,65 +65,71 @@ class logproof_load extends JA_Controller {
 	
 	function audiencebar_by_channel_file(){
 		
-		$param['start_date'] =  $this->Anti_si($this->input->post('start_date',true));
-		$param['end_date'] =  $this->Anti_si($this->input->post('end_date',true));
+		if(!$this->session->userdata('user_id') || in_array("254",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		
-		$s_date = explode('/',$param['start_date']);
-		$s_date_f = $s_date[2].'-'.$s_date[1].'-'.$s_date[0];
-		
-		$e_date = explode('/',$param['end_date']);
-		$e_date_f = $e_date[2].'-'.$e_date[1].'-'.$e_date[0];
-				
-		$where = " WHERE A.UPLOAD_DATE BETWEEN '".$s_date_f." 00:00:00' AND '".$e_date_f." 23:59:59'  ";
-		
-		$list_us = $this->tvprogramun_model->get_profile($params);
-		$arr_uss = [];
-		
-		foreach($list_us as $uss){
-			$arr_uss[$uss['id']] = $uss['nama'];
-		}
-				  
-		 $channel = $this->tvprogramun_model->list_epg_fil_his($where); 
-		 
-		 
-		 
-		 $arr_uss_file = [];
-		 foreach($channel as  $channels){
-			 $data_sds = [];
-			 $data_sds['FILENAME'] = $channels['FILENAME'];
-			 $data_sds['PERIODE'] = $channels['START_DATE'].' - '.$channels['END_DATE'];
-			 $data_sds['ERROR'] = $channels['ERROR'];
-			 $data_sds['UPLOAD_DATE'] = $channels['UPLOAD_DATE'];
-			 $data_sds['PROCESS_DATE'] = $channels['PROCESS_DATE'];
-			 $data_sds['USER'] = $arr_uss[$channels['ID_USER']];
-			 $data_sds['ROW_TOTAL'] = $channels['ROW_TOTAL'];
-			 $data_sds['TOKEN'] = $channels['TOKEN'];
-			 $data_sds['TYPE'] = $channels['TPE'];
-			 if($channels['PROCESS_DATE'] == null){
-				$data_sds['STATUS'] = 'File Uploaded';
-				$data_sds['BTN'] = '';
-			 }else{
-				 if($channels['ERROR'] <> ''){
-					$data_sds['STATUS'] = 'File Failed to Uploaded';
+			$param['start_date'] =  $this->Anti_si($this->input->post('start_date',true));
+			$param['end_date'] =  $this->Anti_si($this->input->post('end_date',true));
+			
+			$s_date = explode('/',$param['start_date']);
+			$s_date_f = $s_date[2].'-'.$s_date[1].'-'.$s_date[0];
+			
+			$e_date = explode('/',$param['end_date']);
+			$e_date_f = $e_date[2].'-'.$e_date[1].'-'.$e_date[0];
+					
+			$where = " WHERE A.UPLOAD_DATE BETWEEN '".$s_date_f." 00:00:00' AND '".$e_date_f." 23:59:59'  ";
+			
+			$list_us = $this->tvprogramun_model->get_profile($params);
+			$arr_uss = [];
+			
+			foreach($list_us as $uss){
+				$arr_uss[$uss['id']] = $uss['nama'];
+			}
+					  
+			 $channel = $this->tvprogramun_model->list_epg_fil_his($where); 
+			 
+			 
+			 
+			 $arr_uss_file = [];
+			 foreach($channel as  $channels){
+				 $data_sds = [];
+				 $data_sds['FILENAME'] = $channels['FILENAME'];
+				 $data_sds['PERIODE'] = $channels['START_DATE'].' - '.$channels['END_DATE'];
+				 $data_sds['ERROR'] = $channels['ERROR'];
+				 $data_sds['UPLOAD_DATE'] = $channels['UPLOAD_DATE'];
+				 $data_sds['PROCESS_DATE'] = $channels['PROCESS_DATE'];
+				 $data_sds['USER'] = $arr_uss[$channels['ID_USER']];
+				 $data_sds['ROW_TOTAL'] = $channels['ROW_TOTAL'];
+				 $data_sds['TOKEN'] = $channels['TOKEN'];
+				 $data_sds['TYPE'] = $channels['TPE'];
+				 if($channels['PROCESS_DATE'] == null){
+					$data_sds['STATUS'] = 'File Uploaded';
 					$data_sds['BTN'] = '';
 				 }else{
-					$data_stat = $this->tvprogramun_model->data_stat($channels); 
-					$data_sds['STATUS'] = 'File Proccesed';
-					if($data_stat[0]['AVA'] == 'Data Available'){
-						$data_sds['ERROR'] = '<span style="color:green">Data Viewers Available</span>';
-					}else{
-						$data_sds['ERROR'] = '<span style="color:red">Data Viewers Not Available</span>';
-					}
-					$data_sds['BTN'] = '<button id="'.$data_sds['TOKEN'].'" onClick="download_file_exs(\''.$data_sds['TOKEN'].'\')" class="button_black">Download</button>';
+					 if($channels['ERROR'] <> ''){
+						$data_sds['STATUS'] = 'File Failed to Uploaded';
+						$data_sds['BTN'] = '';
+					 }else{
+						$data_stat = $this->tvprogramun_model->data_stat($channels); 
+						$data_sds['STATUS'] = 'File Proccesed';
+						if($data_stat[0]['AVA'] == 'Data Available'){
+							$data_sds['ERROR'] = '<span style="color:green">Data Viewers Available</span>';
+						}else{
+							$data_sds['ERROR'] = '<span style="color:red">Data Viewers Not Available</span>';
+						}
+						$data_sds['BTN'] = '<button id="'.$data_sds['TOKEN'].'" onClick="download_file_exs(\''.$data_sds['TOKEN'].'\')" class="button_black">Download</button>';
+					 }
 				 }
+				  
+				 $arr_uss_file[] = $data_sds;
 			 }
-			  
-			 $arr_uss_file[] = $data_sds;
-		 }
-		 
-		 //print_r($arr_uss_file);die;
-		 echo json_encode($arr_uss_file,true);
-		
+			 
+			 //print_r($arr_uss_file);die;
+			 echo json_encode($arr_uss_file,true);
+		}
 	} 
 	
 	public function audiencebar_by_program_export(){

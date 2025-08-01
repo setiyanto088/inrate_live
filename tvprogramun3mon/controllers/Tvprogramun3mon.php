@@ -85,20 +85,26 @@ class Tvprogramun3mon extends JA_Controller {
 	
 	function get_data_last(){
 		
-		$types =  $this->input->post('types',true);
-		$periode =  $this->input->post('periode',true);
-		//print_r($types);die;
-		$data = $this->tvprogramun_model->get_curr_data($periode);
-		//print_r($data);die;
-		if($types == 1){
-			$array_file_s['dataw'] = $data[0];
-			$array_file_s['datawm'] = $data[1];
+		if(!$this->session->userdata('user_id') || in_array("255",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}else{
-			$array_file_s['dataw'] = $data[2];
-			$array_file_s['datawm'] = $data[3];
+		
+			$types =  $this->input->post('types',true);
+			$periode =  $this->input->post('periode',true);
+			//print_r($types);die;
+			$data = $this->tvprogramun_model->get_curr_data($periode);
+			//print_r($data);die;
+			if($types == 1){
+				$array_file_s['dataw'] = $data[0];
+				$array_file_s['datawm'] = $data[1];
+			}else{
+				$array_file_s['dataw'] = $data[2];
+				$array_file_s['datawm'] = $data[3];
+			}
+		
+			$this->output->set_content_type('application/json')->set_output(json_encode($array_file_s));
 		}
-	
-		$this->output->set_content_type('application/json')->set_output(json_encode($array_file_s));
 		
 	}
 

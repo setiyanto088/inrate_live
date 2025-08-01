@@ -188,49 +188,54 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 	
 	function cost_by_channel(){
 		
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		$type =  $this->Anti_si($this->input->post('type',true));
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$user=$this->Anti_si($this->input->post('user',true));
-		$periode=$tahun;
- 		
-		if($type == "Cost"){
-			$data['channel'] = $this->Tvpostbuyu_model->list_spot_by_chanel_all('COST',$where,$periode,$user);
+		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 			
-			foreach($data['channel'] as $datax){
-				$data_ch['cat'][] = $datax['CHANNEL'];
-				$data_ch['data'][] = $datax['COST'];
-			}
-		 
+			$where =  $this->Anti_si($this->input->post('cond',true));
+			$type =  $this->Anti_si($this->input->post('type',true));
+			$tahun=$this->Anti_si($this->input->post('tahun',true));
+			$bulan=$this->Anti_si($this->input->post('bulan',true));
+			$user=$this->Anti_si($this->input->post('user',true));
+			$periode=$tahun;
 			
-			
-		}elseif($type == "Spot"){
-			$data['channel'] = $this->Tvpostbuyu_model->list_spot_by_chanel_all('SPOT',$where,$periode,$user);
-			
-			foreach($data['channel'] as $datax){
-				$data_ch['cat'][] = $datax['CHANNEL'];
-				$data_ch['data'][] = $datax['SPOT'];
-			}
-		 
-		}elseif($type == "GRP"){
-			$data['channel'] = $this->Tvpostbuyu_model->list_spot_by_chanel_all('VIEWERS',$where,$periode,$user);
-			if ($data['channel'] == null){
-				$data_ch['cat'][] = 0;
-				$data_ch['data'][] = 0;
-			} else {
+			if($type == "Cost"){
+				$data['channel'] = $this->Tvpostbuyu_model->list_spot_by_chanel_all('COST',$where,$periode,$user);
+				
 				foreach($data['channel'] as $datax){
 					$data_ch['cat'][] = $datax['CHANNEL'];
-					$data_ch['data'][] = $datax['VIEWERS'];
+					$data_ch['data'][] = $datax['COST'];
 				}
 			 
+				
+				
+			}elseif($type == "Spot"){
+				$data['channel'] = $this->Tvpostbuyu_model->list_spot_by_chanel_all('SPOT',$where,$periode,$user);
+				
+				foreach($data['channel'] as $datax){
+					$data_ch['cat'][] = $datax['CHANNEL'];
+					$data_ch['data'][] = $datax['SPOT'];
+				}
+			 
+			}elseif($type == "GRP"){
+				$data['channel'] = $this->Tvpostbuyu_model->list_spot_by_chanel_all('VIEWERS',$where,$periode,$user);
+				if ($data['channel'] == null){
+					$data_ch['cat'][] = 0;
+					$data_ch['data'][] = 0;
+				} else {
+					foreach($data['channel'] as $datax){
+						$data_ch['cat'][] = $datax['CHANNEL'];
+						$data_ch['data'][] = $datax['VIEWERS'];
+					}
+				 
+				}
+				
 			}
-			
+
+			echo json_encode($data_ch,true);
+		
 		}
-		
-		
-		
-		echo json_encode($data_ch,true);
 	}
 	
 	function cost_by_channelASAS(){
@@ -282,266 +287,302 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 	
 	function ads_view(){
 		
-		$type =  $this->Anti_si($this->input->post('type',true));
-		$field =  $this->Anti_si($this->input->post('field',true));
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$periode=$tahun;
-	 
+		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 			
-		if($type == "Cost"){
-			$data['programs'] = $this->Tvpostbuyu_model->proc_get_cost_by_program_all($field,$where,$periode);
 			
-			foreach($data['programs'] as $datax){
-				$data_ch['cat'][] = $datax['type'];
-				$data_ch['data'][] = $datax['Cost'];
-			}
-		
-		}elseif($type == "Spot"){
-			$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all($field,$where,$periode);
+			$type =  $this->Anti_si($this->input->post('type',true));
+			$field =  $this->Anti_si($this->input->post('field',true));
+			$where =  $this->Anti_si($this->input->post('cond',true));
 			
-			foreach($data['programs'] as $datax){
-				$data_ch['cat'][] = $datax['type'];
-				$data_ch['data'][] = $datax['Spot'];
-			}
-		}
-		elseif($type == "GRP"){
-			$data['programs'] = $this->Tvpostbuyu_model->list_grp_by_program_all('type',$where,$periode);
-			if ($data['programs'] == null){
-				$data_ch['cat'][] = 0;
-				$data_ch['data'][] = 0;
-			} else {
+			$tahun=$this->Anti_si($this->input->post('tahun',true));
+			$bulan=$this->Anti_si($this->input->post('bulan',true));
+			$periode=$tahun;
+		 
+				
+			if($type == "Cost"){
+				$data['programs'] = $this->Tvpostbuyu_model->proc_get_cost_by_program_all($field,$where,$periode);
+				
 				foreach($data['programs'] as $datax){
-				$data_ch['cat'][] = $datax['type'];
-				$data_ch['data'][] = $datax['GRP'];
+					$data_ch['cat'][] = $datax['type'];
+					$data_ch['data'][] = $datax['Cost'];
+				}
+			
+			}elseif($type == "Spot"){
+				$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all($field,$where,$periode);
+				
+				foreach($data['programs'] as $datax){
+					$data_ch['cat'][] = $datax['type'];
+					$data_ch['data'][] = $datax['Spot'];
 				}
 			}
+			elseif($type == "GRP"){
+				$data['programs'] = $this->Tvpostbuyu_model->list_grp_by_program_all('type',$where,$periode);
+				if ($data['programs'] == null){
+					$data_ch['cat'][] = 0;
+					$data_ch['data'][] = 0;
+				} else {
+					foreach($data['programs'] as $datax){
+					$data_ch['cat'][] = $datax['type'];
+					$data_ch['data'][] = $datax['GRP'];
+					}
+				}
+				
+			}
 			
+			
+			
+			echo json_encode($data_ch,true);
+		
 		}
-		
-		
-		
-		echo json_encode($data_ch,true);
 	}
 	
 	function day_view(){
 		
-		$type =  $this->Anti_si($this->input->post('type',true));
-		$field =  $this->Anti_si($this->input->post('field',true));
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$user=$this->Anti_si($this->input->post('user',true));
-		$periode=$tahun;
-		
-		if($type == "Cost"){
-			$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_date_all('COST',$where,$periode,$user);
+		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+				
+			$type =  $this->Anti_si($this->input->post('type',true));
+			$field =  $this->Anti_si($this->input->post('field',true));
+			$where =  $this->Anti_si($this->input->post('cond',true));
+			$tahun=$this->Anti_si($this->input->post('tahun',true));
+			$bulan=$this->Anti_si($this->input->post('bulan',true));
+			$user=$this->Anti_si($this->input->post('user',true));
+			$periode=$tahun;
 			
-			foreach($data['daytime'] as $datass){
-				$data_ch['cat'][] = $datass['DATE'];
-				$data_ch['data'][] = $datass['spot'];
-			}
-		
-		}elseif($type == "Spot"){
-			$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_date_all('SPOT',$where,$periode,$user);
-			
-				foreach($data['daytime'] as $datasss){
-				$data_ch['cat'][] = $datasss['DATE'];
-				$data_ch['data'][] = $datasss['spot'];
-			}
-		}elseif($type == "GRP"){
-			$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_date_all('VIEWERS',$where,$periode,$user);
-				if ($data['daytime'] == null) {
-					$data_ch['cat'][] = 0;
-					$data_ch['data'][] = 0;
-				} else {
-					foreach($data['daytime'] as $datasss){
-						$data_ch['cat'][] = $datasss['DATE'];
-						$data_ch['data'][] = $datasss['spot'];
-					}
+			if($type == "Cost"){
+				$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_date_all('COST',$where,$periode,$user);
+				
+				foreach($data['daytime'] as $datass){
+					$data_ch['cat'][] = $datass['DATE'];
+					$data_ch['data'][] = $datass['spot'];
 				}
+			
+			}elseif($type == "Spot"){
+				$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_date_all('SPOT',$where,$periode,$user);
+				
+					foreach($data['daytime'] as $datasss){
+					$data_ch['cat'][] = $datasss['DATE'];
+					$data_ch['data'][] = $datasss['spot'];
+				}
+			}elseif($type == "GRP"){
+				$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_date_all('VIEWERS',$where,$periode,$user);
+					if ($data['daytime'] == null) {
+						$data_ch['cat'][] = 0;
+						$data_ch['data'][] = 0;
+					} else {
+						foreach($data['daytime'] as $datasss){
+							$data_ch['cat'][] = $datasss['DATE'];
+							$data_ch['data'][] = $datasss['spot'];
+						}
+					}
+			}
+			
+			
+			
+			echo json_encode($data_ch,true);
 		}
-		
-		
-		
-		echo json_encode($data_ch,true);
-		
 	}
 	
 	function daypart_view(){
 		
-		$type =  $this->Anti_si($this->input->post('type',true));
-		$field =  $this->Anti_si($this->input->post('field',true));
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$user=$this->Anti_si($this->input->post('user',true));
-		$periode=$tahun;
-		
-		if($type == "Cost"){
-			$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_daytime_all('COST',$where,$periode,$user);
+		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 			
-			foreach($data['daytime'] as $datass){
-				$data_ch['cat'][] = $datass['DAYPART'];
-				$data_ch['data'][] = $datass['spot'];
-			}
-		
-		}elseif($type == "Spot"){
-			$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_daytime_all('SPOT',$where,$periode,$user);
+				
+			$type =  $this->Anti_si($this->input->post('type',true));
+			$field =  $this->Anti_si($this->input->post('field',true));
+			$where =  $this->Anti_si($this->input->post('cond',true));
+			$tahun=$this->Anti_si($this->input->post('tahun',true));
+			$bulan=$this->Anti_si($this->input->post('bulan',true));
+			$user=$this->Anti_si($this->input->post('user',true));
+			$periode=$tahun;
 			
-			foreach($data['daytime'] as $datass){
-				$data_ch['cat'][] = $datass['DAYPART'];
-				$data_ch['data'][] = $datass['spot'];
-			}
-		}elseif($type == "GRP"){
-			$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_daytime_all('VIEWERS',$where,$periode,$user);
-			if ($data['daytime'] == null) {
-				$data_ch['cat'][] = 0;
-				$data_ch['data'][] = 0;
-			} else {
+			if($type == "Cost"){
+				$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_daytime_all('COST',$where,$periode,$user);
+				
 				foreach($data['daytime'] as $datass){
 					$data_ch['cat'][] = $datass['DAYPART'];
 					$data_ch['data'][] = $datass['spot'];
 				}
+			
+			}elseif($type == "Spot"){
+				$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_daytime_all('SPOT',$where,$periode,$user);
+				
+				foreach($data['daytime'] as $datass){
+					$data_ch['cat'][] = $datass['DAYPART'];
+					$data_ch['data'][] = $datass['spot'];
+				}
+			}elseif($type == "GRP"){
+				$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_daytime_all('VIEWERS',$where,$periode,$user);
+				if ($data['daytime'] == null) {
+					$data_ch['cat'][] = 0;
+					$data_ch['data'][] = 0;
+				} else {
+					foreach($data['daytime'] as $datass){
+						$data_ch['cat'][] = $datass['DAYPART'];
+						$data_ch['data'][] = $datass['spot'];
+					}
+				}
 			}
+			echo json_encode($data_ch,true);
 		}
-		echo json_encode($data_ch,true);
 	}
 	
 	function prime_view(){
 		
-		$type =  $this->Anti_si($this->input->post('type',true));
-		$field =  $this->Anti_si($this->input->post('field',true));
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$periode=$tahun;
-		
-		$prime = 0;
-		$nprime = 0;
-		
-		if($type == "Cost"){
-			$data['daytime'] = $this->Tvpostbuyu_model->list_cost_by_daytime_all($where,$periode);
+		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 			
-			foreach($data['daytime'] as $datass){
-				if($datass['htype'] == "18:00 - 22:00"){
-					$prime = $prime + $datass['cost'];
-				}else{
-					$nprime = $nprime + $datass['cost'];
+			$type =  $this->Anti_si($this->input->post('type',true));
+			$field =  $this->Anti_si($this->input->post('field',true));
+			$where =  $this->Anti_si($this->input->post('cond',true));
+			$tahun=$this->Anti_si($this->input->post('tahun',true));
+			$bulan=$this->Anti_si($this->input->post('bulan',true));
+			$periode=$tahun;
+			
+			$prime = 0;
+			$nprime = 0;
+			
+			if($type == "Cost"){
+				$data['daytime'] = $this->Tvpostbuyu_model->list_cost_by_daytime_all($where,$periode);
+				
+				foreach($data['daytime'] as $datass){
+					if($datass['htype'] == "18:00 - 22:00"){
+						$prime = $prime + $datass['cost'];
+					}else{
+						$nprime = $nprime + $datass['cost'];
+					}
+				}
+				
+			
+			}elseif($type == "Spot"){
+				$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_daytime_all($where,$periode);
+				
+				foreach($data['daytime'] as $datass){
+					if($datass['htype'] == "18:00 - 22:00"){
+						$prime = $prime + $datass['spot'];
+					}else{
+						$nprime = $nprime + $datass['spot'];
+					}
+				}
+			}elseif($type == "GRP"){
+				$data['daytime'] = $this->Tvpostbuyu_model->list_grp_by_daytime_all($where,$periode);
+				
+				foreach($data['daytime'] as $datass){
+					if($datass['htype'] == "18:00 - 22:00"){
+						$prime = $prime + $datass['grp'];
+					}else{
+						$nprime = $nprime + $datass['grp'];
+					}
 				}
 			}
 			
-		
-		}elseif($type == "Spot"){
-			$data['daytime'] = $this->Tvpostbuyu_model->list_spot_by_daytime_all($where,$periode);
-			
-			foreach($data['daytime'] as $datass){
-				if($datass['htype'] == "18:00 - 22:00"){
-					$prime = $prime + $datass['spot'];
-				}else{
-					$nprime = $nprime + $datass['spot'];
-				}
-			}
-		}elseif($type == "GRP"){
-			$data['daytime'] = $this->Tvpostbuyu_model->list_grp_by_daytime_all($where,$periode);
-			
-			foreach($data['daytime'] as $datass){
-				if($datass['htype'] == "18:00 - 22:00"){
-					$prime = $prime + $datass['grp'];
-				}else{
-					$nprime = $nprime + $datass['grp'];
-				}
-			}
-		}
-		
-		$data_ch['prime'] = $prime;
-		$data_ch['nprime'] = $nprime;
-		$data_ch['Prime_Time'] = "Prime_Time";
-		$data_ch['Non_prime_Time'] = "Non_prime_Time";
+			$data_ch['prime'] = $prime;
+			$data_ch['nprime'] = $nprime;
+			$data_ch['Prime_Time'] = "Prime_Time";
+			$data_ch['Non_prime_Time'] = "Non_prime_Time";
 
+			echo json_encode($data_ch,true);
 		
-		
-		
-		echo json_encode($data_ch,true);
+		}
 	}
 	
 	
 	function cost_by_program2nn(){
 		
-		$type =  $this->Anti_si($this->input->post('type',true));
-		$field =  $this->Anti_si($this->input->post('field',true));
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$user=$this->Anti_si($this->input->post('user',true));
-		$periode=$tahun;
+		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			$type =  $this->Anti_si($this->input->post('type',true));
+			$field =  $this->Anti_si($this->input->post('field',true));
+			$where =  $this->Anti_si($this->input->post('cond',true));
+			
+			$tahun=$this->Anti_si($this->input->post('tahun',true));
+			$bulan=$this->Anti_si($this->input->post('bulan',true));
+			$user=$this->Anti_si($this->input->post('user',true));
+			$periode=$tahun;
+		 
+			
+			if($type == "Cost"){			
+				$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all2n($field,"COST",$where,$periode,$user);
+				
+			}elseif($type == "Spot"){
+				$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all2n($field,"SPOT",$where,$periode,$user);
+
+			}elseif($type == "GRP"){
+				$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all2n($field,"VIEWERS",$where,$periode,$user);
+
+			}
+			
+			
+			$arr_data = [];
+			$ii=0;
+			foreach($data['programs'] as $ddd){
+				
+				$arr_data[$ii][] = $ddd['CHANNEL'];
+				$arr_data[$ii][] = $ddd['NAME'];
+				$arr_data[$ii][] = $ddd['spots'];
+				
+				$ii++;
+			}
 	 
-		
-		if($type == "Cost"){			
-			$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all2n($field,"COST",$where,$periode,$user);
-			
-		}elseif($type == "Spot"){
-			$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all2n($field,"SPOT",$where,$periode,$user);
-
-		}elseif($type == "GRP"){
-			$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all2n($field,"VIEWERS",$where,$periode,$user);
-
+			echo json_encode(json_encode($arr_data,true),true);
 		}
-		
- 		
-		$arr_data = [];
-		$ii=0;
-		foreach($data['programs'] as $ddd){
-			
-			$arr_data[$ii][] = $ddd['CHANNEL'];
-			$arr_data[$ii][] = $ddd['NAME'];
-			$arr_data[$ii][] = $ddd['spots'];
-			
-			$ii++;
-		}
- 
-		echo json_encode(json_encode($arr_data,true),true);
 		
 	}
 	
 	function cost_by_program2(){
 		
-		$type =  $this->Anti_si($this->input->post('type',true));
-		$field =  $this->Anti_si($this->input->post('field',true));
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$user=$this->Anti_si($this->input->post('user',true));
-		$periode=$tahun;
-	 
-		if($type == "Cost"){			
-			$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all($field,"COST",$where,$periode,$user);
-		
-		}elseif($type == "Spot"){
-			$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all($field,"SPOT",$where,$periode,$user);
-
-		}elseif($type == "GRP"){
-			$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all($field,"VIEWERS",$where,$periode,$user);
-
-		}
- 		
-		$arr_data = [];
-		$ii=0;
-		foreach($data['programs'] as $ddd){
+		if(!$this->session->userdata('user_id') || in_array("234",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 			
-			$arr_data[$ii][] = $ddd['NAME'];
-			$arr_data[$ii][] = $ddd['spots'];
+				
+			$type =  $this->Anti_si($this->input->post('type',true));
+			$field =  $this->Anti_si($this->input->post('field',true));
+			$where =  $this->Anti_si($this->input->post('cond',true));
 			
-			$ii++;
+			$tahun=$this->Anti_si($this->input->post('tahun',true));
+			$bulan=$this->Anti_si($this->input->post('bulan',true));
+			$user=$this->Anti_si($this->input->post('user',true));
+			$periode=$tahun;
+		 
+			if($type == "Cost"){			
+				$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all($field,"COST",$where,$periode,$user);
+			
+			}elseif($type == "Spot"){
+				$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all($field,"SPOT",$where,$periode,$user);
+
+			}elseif($type == "GRP"){
+				$data['programs'] = $this->Tvpostbuyu_model->list_spot_by_program_all($field,"VIEWERS",$where,$periode,$user);
+
+			}
+			
+			$arr_data = [];
+			$ii=0;
+			foreach($data['programs'] as $ddd){
+				
+				$arr_data[$ii][] = $ddd['NAME'];
+				$arr_data[$ii][] = $ddd['spots'];
+				
+				$ii++;
+			}
+			
+			
+			echo json_encode(json_encode($arr_data,true),true);
 		}
-		
- 		
-		echo json_encode(json_encode($arr_data,true),true);
-		
 	}
 	
 	

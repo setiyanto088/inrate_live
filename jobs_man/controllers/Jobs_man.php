@@ -22,7 +22,7 @@ class Jobs_man extends JA_Controller {
 		$data['token'] = $this->session->userdata('token');
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
-		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+		if(!$this->session->userdata('user_id') || in_array("91",$array_menu) == 0) {
           redirect ('/login');
 		}
 		
@@ -202,82 +202,89 @@ class Jobs_man extends JA_Controller {
 	
 	public function list_profile() 
 	 {
-		if( $this->input->get_post('draw') != FALSE )   {$draw   = $this->input->get_post('draw');}   else{$draw   = 1;}; 
-		if( $this->input->get_post('length') != FALSE ) {$length = $this->input->get_post('length');} else{$length = 10;}; 
-		if( $this->input->get_post('start') != FALSE )  {$start  = $this->input->get_post('start');}  else{$start  = 0;}; 		
-		
-		$order = $this->input->get_post('order');
-		if( ! empty($order[0]['dir']))    {$order_dir    = $order[0]['dir'];}    else{$order_dir    = 'asc';}; 
-		if( ! empty($order[0]['column'])) {$order_column = $order[0]['column'];} else{$order_column = 0;}; 
-		$order_fields = array('a.id', 'name', 'people');
-		
-		$search = $this->input->get_post('search');
-		
-		if( ! empty($search['value']) ) {
-			$search_value = $search['value'];
-		} else {
-			$search_value = null;
-		}
-		
-		$params['limit'] 		= (int) $length;
-		$params['offset'] 		= (int) $start;
-		$params['order_column'] = $order_fields[$order_column];
-		$params['order_dir'] 	= $order_dir;
-		$params['filter'] 		= $search_value;
-		$iduser = $this->session->userdata('user_id');
-		$idrole = $this->session->userdata('id_role');
-		$params['iduser'] 		= $iduser;
-		$params['idrole'] 		= $idrole;
-		$list = $this->createprofileu_model->list_profile($params);
-				
-		$result["recordsTotal"] = $list['total'];
-		$result["recordsFiltered"] = $list['total_filtered'];
-		$result["draw"] = $draw;
-		
-		$data = array();			
-		$array_jobs_st = array('DONE','ON PROGRESS','ON QUEQUE');
-		$array_jobs_name = array('DAILY JOBS EPG','DAILY JOBS CDR','LOGPROOF USEETV JOBS','LOGPROOF MEDIAHUB JOBS','POSTBUY JOBS','MEDIAPLAN JOBS','CHECKING DATA DAILY',
-		'CHECKING DATA LOGPROOF','CHECKING DATA LOGPROOF MEDIAHUB','CHECKING DATA MEDIAPLAN','PROCESS EPG','PROCESS LOGPROOF USEETV MONTHLY',
-		'PROCESS LOGPROOF MEDIAHUB MONTHLY','DAILY PROFILING FTA','DAILY PROFILING PTV','PROFILING FTA','PROFILING PTV','ANALYZE TABLE','EXTERNAL SCRIPT' );
-		foreach ( $list['data'] as $k => $v ) {
-				$ss = '';
-				
-				if($v['STATUS_JOBS'] == 1){
-					
-					$dad = "<p style='text-align:left;vertical-align:middle;color:green'>".$array_jobs_st[$v['STATUS_JOBS']]."</p>";
-					
-				}else{
-					$dad = "<p style='text-align:left;vertical-align:middle;color:red'>".$array_jobs_st[$v['STATUS_JOBS']]."</p>";
-				}
-				
-				if($v['QUEUE'] == 66 || $v['QUEUE'] == 61){
-					array_push($data, 
-					array(
-						$dad,
-						"<p style='text-align:left;vertical-align:middle'>Treg Jobs</p>",
-						"<p style='text-align:left;vertical-align:middle'>".$v['JOBS_DATE']."</p>",
-						"<p style='text-align:left'>".$v['JOBS_DESC']."<p>"
-					)
-				);
-				}else{
-					array_push($data, 
-					array(
-						$dad,
-						"<p style='text-align:left;vertical-align:middle'>".$array_jobs_name[$v['QUEUE']]."</p>",
-						"<p style='text-align:left;vertical-align:middle'>".$v['JOBS_DATE']."</p>",
-						"<p style='text-align:left'>".$array_jobs_name[$v['QUEUE']]." ".$v['JOBS_DATE']."<p>"
-					)
-				);
-				}
-				
-				
-				
-
+		 
+		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 			
+			if( $this->input->get_post('draw') != FALSE )   {$draw   = $this->input->get_post('draw');}   else{$draw   = 1;}; 
+			if( $this->input->get_post('length') != FALSE ) {$length = $this->input->get_post('length');} else{$length = 10;}; 
+			if( $this->input->get_post('start') != FALSE )  {$start  = $this->input->get_post('start');}  else{$start  = 0;}; 		
+			
+			$order = $this->input->get_post('order');
+			if( ! empty($order[0]['dir']))    {$order_dir    = $order[0]['dir'];}    else{$order_dir    = 'asc';}; 
+			if( ! empty($order[0]['column'])) {$order_column = $order[0]['column'];} else{$order_column = 0;}; 
+			$order_fields = array('a.id', 'name', 'people');
+			
+			$search = $this->input->get_post('search');
+			
+			if( ! empty($search['value']) ) {
+				$search_value = $search['value'];
+			} else {
+				$search_value = null;
+			}
+			
+			$params['limit'] 		= (int) $length;
+			$params['offset'] 		= (int) $start;
+			$params['order_column'] = $order_fields[$order_column];
+			$params['order_dir'] 	= $order_dir;
+			$params['filter'] 		= $search_value;
+			$iduser = $this->session->userdata('user_id');
+			$idrole = $this->session->userdata('id_role');
+			$params['iduser'] 		= $iduser;
+			$params['idrole'] 		= $idrole;
+			$list = $this->createprofileu_model->list_profile($params);
+					
+			$result["recordsTotal"] = $list['total'];
+			$result["recordsFiltered"] = $list['total_filtered'];
+			$result["draw"] = $draw;
+			
+			$data = array();			
+			$array_jobs_st = array('DONE','ON PROGRESS','ON QUEQUE');
+			$array_jobs_name = array('DAILY JOBS EPG','DAILY JOBS CDR','LOGPROOF USEETV JOBS','LOGPROOF MEDIAHUB JOBS','POSTBUY JOBS','MEDIAPLAN JOBS','CHECKING DATA DAILY',
+			'CHECKING DATA LOGPROOF','CHECKING DATA LOGPROOF MEDIAHUB','CHECKING DATA MEDIAPLAN','PROCESS EPG','PROCESS LOGPROOF USEETV MONTHLY',
+			'PROCESS LOGPROOF MEDIAHUB MONTHLY','DAILY PROFILING FTA','DAILY PROFILING PTV','PROFILING FTA','PROFILING PTV','ANALYZE TABLE','EXTERNAL SCRIPT' );
+			foreach ( $list['data'] as $k => $v ) {
+					$ss = '';
+					
+					if($v['STATUS_JOBS'] == 1){
+						
+						$dad = "<p style='text-align:left;vertical-align:middle;color:green'>".$array_jobs_st[$v['STATUS_JOBS']]."</p>";
+						
+					}else{
+						$dad = "<p style='text-align:left;vertical-align:middle;color:red'>".$array_jobs_st[$v['STATUS_JOBS']]."</p>";
+					}
+					
+					if($v['QUEUE'] == 66 || $v['QUEUE'] == 61){
+						array_push($data, 
+						array(
+							$dad,
+							"<p style='text-align:left;vertical-align:middle'>Treg Jobs</p>",
+							"<p style='text-align:left;vertical-align:middle'>".$v['JOBS_DATE']."</p>",
+							"<p style='text-align:left'>".$v['JOBS_DESC']."<p>"
+						)
+					);
+					}else{
+						array_push($data, 
+						array(
+							$dad,
+							"<p style='text-align:left;vertical-align:middle'>".$array_jobs_name[$v['QUEUE']]."</p>",
+							"<p style='text-align:left;vertical-align:middle'>".$v['JOBS_DATE']."</p>",
+							"<p style='text-align:left'>".$array_jobs_name[$v['QUEUE']]." ".$v['JOBS_DATE']."<p>"
+						)
+					);
+					}
+					
+					
+					
 
+				
+
+			}
+			$result["data"] = $data;
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}
-		$result["data"] = $data;
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
     }
 	
 	public function fe_view($kkk){
