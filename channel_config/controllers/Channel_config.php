@@ -59,40 +59,51 @@ class Channel_config extends JA_Controller {
 	
 	public function edit_channel() {
 		
-		$userid = $this->session->userdata('user_id');
+		
+		if(!$this->session->userdata('user_id') || in_array("249",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+         // redirect ('/login');
+		}else{
+		
+		
+			$userid = $this->session->userdata('user_id');
 
 
-		$data_post['channel_name'] = $this->Anti_sql_injection($this->input->post('channel_name', TRUE));
-		$data_post['userid'] = $userid;
-		$data_post['channel_fe'] = $this->Anti_sql_injection($this->input->post('channel_fe', TRUE));
-		$data_post['genre'] = $this->Anti_sql_injection($this->input->post('genre', TRUE));
-		$data_post['number'] = $this->Anti_sql_injection($this->input->post('number', TRUE));
-		$data_post['regional'] = $this->Anti_sql_injection($this->input->post('regional', TRUE));
-		$data_post['category'] = $this->Anti_sql_injection($this->input->post('category', TRUE));
-		$data_post['uri'] = $this->Anti_sql_injection($this->input->post('uri', TRUE));
-		$data_post['color'] = strtoupper(substr($this->Anti_sql_injection($this->input->post('color', TRUE)), 1));
-		$data_post['status'] = $this->Anti_sql_injection($this->input->post('status', TRUE));
-		$data_post['cdr_edit_data'] = $this->Anti_sql_injection($this->input->post('cdr_edit_data', TRUE));
-		
-		$epg_edit_data = explode("|",$data_post['cdr_edit_data']);
-		$data_post['edit_data'] = $epg_edit_data;
-						
-		$result = array('success' => true, 'message' => "");
-		$cnt = 0;
-		
-		if($cnt == 0){
+			$data_post['channel_name'] = $this->Anti_sql_injection($this->input->post('channel_name', TRUE));
+			$data_post['userid'] = $userid;
+			$data_post['channel_fe'] = $this->Anti_sql_injection($this->input->post('channel_fe', TRUE));
+			$data_post['genre'] = $this->Anti_sql_injection($this->input->post('genre', TRUE));
+			$data_post['number'] = $this->Anti_sql_injection($this->input->post('number', TRUE));
+			$data_post['regional'] = $this->Anti_sql_injection($this->input->post('regional', TRUE));
+			$data_post['category'] = $this->Anti_sql_injection($this->input->post('category', TRUE));
+			$data_post['uri'] = $this->Anti_sql_injection($this->input->post('uri', TRUE));
+			$data_post['color'] = strtoupper(substr($this->Anti_sql_injection($this->input->post('color', TRUE)), 1));
+			$data_post['status'] = $this->Anti_sql_injection($this->input->post('status', TRUE));
+			$data_post['cdr_edit_data'] = $this->Anti_sql_injection($this->input->post('cdr_edit_data', TRUE));
+			
+			$epg_edit_data = explode("|",$data_post['cdr_edit_data']);
+			$data_post['edit_data'] = $epg_edit_data;
+							
+			$result = array('success' => true, 'message' => "");
+			$cnt = 0;
+			
+			if($cnt == 0){
 
 	
-			$this->tvprogramun_model->add_new_channel_param($data_post);
-			$this->tvprogramun_model->add_new_channel_param_final($data_post);
-			$this->tvprogramun_model->add_new_channel_param_final_res($data_post);
-			$this->tvprogramun_model->add_new_channel_param_final_eval($data_post);
+				$this->tvprogramun_model->add_new_channel_param($data_post);
+				$this->tvprogramun_model->add_new_channel_param_final($data_post);
+				$this->tvprogramun_model->add_new_channel_param_final_res($data_post);
+				$this->tvprogramun_model->add_new_channel_param_final_eval($data_post);
+				
+				
+			}
 			
-			$list = $this->tvprogramun_model->get_list_channel();
-			$status_tpe[0] = 'Not Active';
-			$status_tpe[1] = 'Active';
-			
-			$html = '
+				$list = $this->tvprogramun_model->get_list_channel();
+				$status_tpe[0] = 'Not Active';
+				$status_tpe[1] = 'Active';
+				
+				$html = '
 				<table aria-describedby="table" id="example4" class="table table-striped example" style="width: 100%">
 								<thead style="color:red">
 									<tr>
@@ -132,12 +143,15 @@ class Channel_config extends JA_Controller {
 								}
 								
 								$html .= '</tbody></table>';
-								
-								$result = array('success' => true, 'message' => "", 'html' => $html);
+			
+			$result = array('success' => true, 'message' => "Success", 'html' => $html);
 		}
 		
-		
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	
+								
+								
+		$results = array('success' => $result['success'], 'message' => $result['message'], 'html' => $html);
+		$this->output->set_content_type('application/json')->set_output(json_encode($results));
 		
 		
 	}

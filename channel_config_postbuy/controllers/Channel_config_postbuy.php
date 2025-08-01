@@ -100,6 +100,12 @@ class Channel_config_postbuy extends JA_Controller {
 	
 	public function edit_channel() {
 		
+		if(!$this->session->userdata('user_id') || in_array("250",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+         // redirect ('/login');
+		}else{
+			
 		$userid = $this->session->userdata('user_id');
 
 
@@ -156,7 +162,7 @@ class Channel_config_postbuy extends JA_Controller {
 								
 								$result = array('success' => true, 'message' => "", 'html' => $html);
 		}
-		
+		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		

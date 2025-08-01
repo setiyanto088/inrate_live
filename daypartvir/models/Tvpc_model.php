@@ -116,7 +116,14 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
 	public function list_tvpc2($param) {
 		
 		
-		
+		// $result = $db->select(
+			// 'SELECT 12 as {key} WHERE {key} = :value',
+			// ['key' => 'ping', 'value' => 12]
+		// );
+
+
+
+
 		if($param['datatp'] == 'audience') {
 			$huk = "COUNT(DISTINCT(CARDNO))";
 		}elseif($param['datatp'] == 'total_views') {
@@ -136,6 +143,21 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
 				ORDER BY B.TEXT
 				
 			";
+			
+			
+			// $query = "
+			
+				// SELECT A.DAYPART, B.TEXT, ".$huk." AS VIEWERS FROM 
+				// CARDNO_DAYPART A JOIN RIS_DAYPART B ON A.DAYPART = B.DAYPART
+				// WHERE `DATE` BETWEEN :start_date AND :end_date
+				// AND CHANNEL IN (:channel)
+				// GROUP BY A.DAYPART,B.TEXT
+				// ORDER BY B.TEXT,
+				// ['start_date' => '".$param['start_date']."', 'end_date' => ".$param['end_date'].", 'channel' => ".$param['channel']."]
+				
+			// ";
+			
+			
 		}else{
 			
 			$dt = explode('-',$param['daypart']);
@@ -158,9 +180,7 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
 		$db = $this->clickhouse->db();
 		
 		$out		= array();
-		
-		
-		
+				
 		$result = $db->select($query);
 		
 		

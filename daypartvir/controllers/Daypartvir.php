@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set("Asia/Jakarta");
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Daypartvir extends JA_Controller {
@@ -6,6 +8,12 @@ class Daypartvir extends JA_Controller {
 	{
 		parent::__construct();			
 		$this->load->model('tvpc_model');
+	}
+	
+	
+	public function Anti_sql_injection($string) {
+		$string = strip_tags(trim(addslashes(htmlspecialchars(stripslashes($string)))));
+		return $string;
 	}
 	
 	public function index()
@@ -164,8 +172,8 @@ class Daypartvir extends JA_Controller {
 		  $genre = "0";
 		}
 
-		if( ! empty($this->Anti_si($_GET['channel'])) ) {
-			$channel = $this->Anti_si($_GET['channel']);
+		if( ! empty($this->Anti_sql_injection($_GET['channel'])) ) {
+			$channel = $this->Anti_sql_injection($_GET['channel']);
 		} else {
 			$channel = NULL;
 		}	
@@ -178,9 +186,11 @@ class Daypartvir extends JA_Controller {
 		$params['start_date'] 	= $start_date;
 		$params['daypart'] 		= $daypart;
 		$params['end_date']		= $end_date;
-		$params['profile']		= $profile;
+		$params['profile']		= $this->db->escape($profile);
 		$params['genre']		= str_replace("AND","&",$genre);
-		$params['channel']		= str_replace("AND","&",str_replace("  AND  "," & ",$channel));
+		$params['channel']		= "'".$this->Anti_sql_injection(str_replace("AND","&",str_replace("  AND  "," & ",$channel)))."'";
+		
+		print_r($params);die;
 		
 		$channel_cnt = explode(',',$params['channel']);
 		$array_date = $this->getDatesFromRange($start_date,$end_date);
@@ -317,6 +327,7 @@ class Daypartvir extends JA_Controller {
 		
 		
 		$list = $this->tvpc_model->list_tvpc2($params);
+		print_r($list);die;
 		
 		
 		$list_all = $this->tvpc_model->list_tvpc_all($params);
