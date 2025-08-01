@@ -19,6 +19,10 @@ class Tvcc extends CI_Controller {
 			$id = $this->session->userdata('project_id');
 		}
 		
+		if(!$this->session->userdata('user_id') || in_array("152",$array_menu) == 0) {
+          redirect ('/login');
+		}
+		
 		$data['profile'] = $this->tvcc_model->list_profile($iduser,$idrole,"");
 		$data['channel'] = $this->tvcc_model->list_channelas();
     		$data['daypart'] = $this->tvcc_model->list_daypart($iduser);
@@ -409,6 +413,16 @@ class Tvcc extends CI_Controller {
   }
   
   public function setdaypart(){
+	  
+	   if(!$this->session->userdata('user_id') || in_array("8",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+         // redirect ('/login');
+		}else{
+			
+			
+			
       $typerole = $this->session->userdata('type_role');
       $userid = $this->session->userdata('user_id');
       
@@ -432,5 +446,7 @@ class Tvcc extends CI_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+	  
+		}
   }
 }

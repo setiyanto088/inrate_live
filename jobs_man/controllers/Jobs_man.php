@@ -324,18 +324,23 @@ class Jobs_man extends JA_Controller {
 	
 	public function change_min_row(){
 		
+		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+         // redirect ('/login');
+		}else{
+			
+			$set_min = $_POST['set_min'];
+			$token = $_POST['tokens'];
+			
+			$params['token']= $token;
+			$params['uid']= $this->session->userdata('user_id');
 
-		$set_min = $_POST['set_min'];
-		$token = $_POST['tokens'];
+				$curr = $this->createprofileu_model->change_min_row($set_min);
+				$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
 		
-		$params['token']= $token;
-		$params['uid']= $this->session->userdata('user_id');
-
-			$curr = $this->createprofileu_model->change_min_row($set_min);
-			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
-	
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}
 	}		
 	
 	public function change_npr(){
@@ -374,15 +379,20 @@ class Jobs_man extends JA_Controller {
 	
 	public function change_time_jobs(){
 		
+		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+         // redirect ('/login');
+		}else{
 		//$data_post['str'] = $_POST['id'];
-		$data_post['str'] = $this->Anti_sql_injection($this->input->post('id', TRUE));
-		$data_post['set_hours'] = $_POST['set_hours'];
-		$data_post['set_min'] = $_POST['set_min'];
-		
-		$data_post['token'] = $_POST['tokens'];
-				
-		$params['token']= $token;
-		$params['uid']= $this->session->userdata('user_id');
+			$data_post['str'] = $this->Anti_sql_injection($this->input->post('id', TRUE));
+			$data_post['set_hours'] = $_POST['set_hours'];
+			$data_post['set_min'] = $_POST['set_min'];
+			
+			$data_post['token'] = $_POST['tokens'];
+					
+			$params['token']= $token;
+			$params['uid']= $this->session->userdata('user_id');
 		
 		//$validate = $this->tvprogramun_model->validate_password($params);
 		
@@ -398,22 +408,31 @@ class Jobs_man extends JA_Controller {
 			$curr = $this->createprofileu_model->change_jobs_time($data_post['str'],$data_post['set_hours'],$data_post['set_min']);
 			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
 		// }
+		
+		}
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		
 	}
 	
 	public function change_univ_jobs(){
 		
-		$str = $_POST['id'];
-		$set_name = $_POST['set_name'];
-		$set_univ = $_POST['set_univ'];
-		$token = $_POST['tokens'];
-		
-		$params['token']= $token;
-		$params['uid']= $this->session->userdata('user_id');
+		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+         // redirect ('/login');
+		}else{
+			
+			$str = $_POST['id'];
+			$set_name = $_POST['set_name'];
+			$set_univ = $_POST['set_univ'];
+			$token = $_POST['tokens'];
+			
+			$params['token']= $token;
+			$params['uid']= $this->session->userdata('user_id');
 
-		$curr = $this->createprofileu_model->change_jobs_univ($str,$set_name,$set_univ);
-		$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
+			$curr = $this->createprofileu_model->change_jobs_univ($str,$set_name,$set_univ);
+			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
+		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		

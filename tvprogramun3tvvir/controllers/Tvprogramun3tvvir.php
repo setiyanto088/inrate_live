@@ -2792,6 +2792,14 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
 	  public function save_channels()
 	{
+		
+		if(!$this->session->userdata('user_id') || in_array("149",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+         // redirect ('/login');
+		}else{
+			
 		$userid = $this->session->userdata('user_id');
 		//$params['sess_user_id'] = $_POST['sess_user_id'];
 		$params['save_channel_name'] = $this->Anti_si($_POST['save_channel_name']);
@@ -2819,12 +2827,22 @@ class Tvprogramun3tvvir extends JA_Controller {
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
 		
+		}
 		
 		
 	}	 
 
 	public function delete_channels()
 	{
+		
+		if(!$this->session->userdata('user_id') || in_array("149",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+         // redirect ('/login');
+		}else{
+			
+			
 		$userid = $this->session->userdata('user_id');
 		//$params['sess_user_id'] = $_POST['sess_user_id'];
 		$params['save_channel_name'] = $_POST['save_channel_name'];
@@ -2843,7 +2861,7 @@ class Tvprogramun3tvvir extends JA_Controller {
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
 		
-		
+		}
 		
 	}
 	

@@ -334,6 +334,10 @@ class Pivotp22 extends JA_Controller {
 	
 	public function create_pivot(){
 		
+		if(!$this->session->userdata('user_id') || in_array("232",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 		
 		$_POST = json_decode(file_get_contents("php://input"), true);
 		
@@ -774,6 +778,7 @@ class Pivotp22 extends JA_Controller {
 			
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		
+		}
 		
 	}
 	

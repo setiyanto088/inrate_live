@@ -940,6 +940,15 @@ class Daypartvir extends JA_Controller {
   }              
   
   public function setdaypart(){
+	  
+	  if(!$this->session->userdata('user_id') || in_array("152",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+         // redirect ('/login');
+		}else{
+			
+			
       $typerole = $this->session->userdata('type_role');
       $userid = $this->session->userdata('user_id');
       
@@ -963,5 +972,6 @@ class Daypartvir extends JA_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+		}
   }
 }
