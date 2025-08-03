@@ -650,6 +650,17 @@ class Viewpattern extends JA_Controller {
   
   public function list_charttvcc()
 	{	                
+	
+	$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("151",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
     if( ! empty($this->Anti_si($_POST['start_date'])) ) {
           $start_date = $this->Anti_si($_POST['start_date']);
       } else {
@@ -889,6 +900,8 @@ class Viewpattern extends JA_Controller {
       $result["data"] = $all_data_all;	 	
 	  $result["date"] = $start_date;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
   }  
   
   function generateColor($tr) {

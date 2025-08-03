@@ -61,6 +61,14 @@ class Channelmigration3sea extends JA_Controller {
     }
 	
   	public function list_migration(){
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("182",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
         if( !empty($this->Anti_si($_GET['start_date'])) ) {
             $dt   = new DateTime();
             $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -135,7 +143,18 @@ class Channelmigration3sea extends JA_Controller {
         $params['channel']	= $_GET['channel'];
         $params['program']	= $program;
         $params['begin_program']	= $begin_program;
-        
+        		
+		$get_list_channel = $this->channelmigration_model->get_list_channel();
+		$arr_chnel_l = [];
+		foreach($get_list_channel as $get_list_channelsa){
+			$arr_chnel_l[] = $get_list_channelsa['CHANNEL_NAME'];
+		}
+		
+		if(in_array(str_replace("'","",$params['channel']),$arr_chnel_l) == 0){
+			$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
         $list = $this->channelmigration_model->list_migration($params);
         
         $result["recordsTotal"] = $list['total'];
@@ -171,9 +190,22 @@ class Channelmigration3sea extends JA_Controller {
         
         $result["data"] = $data;
         $this->json_result($result);	
+		
+		}
+		
+		}
   	}	
   
     public function list_chartcm(){	
+	
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("182",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
         if( !empty($this->Anti_si($_GET['start_date'])) ) {
             $dt   = new DateTime();
             $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -233,9 +265,20 @@ class Channelmigration3sea extends JA_Controller {
         $result["data"] = $data;
         $result['st_rt'] = $st_rt;
         $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+		
+		}
   	}
   
     public function list_summarycm(){	
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("182",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
         if( !empty($this->Anti_si($_GET['start_date'])) ) {
             $dt   = new DateTime();
             $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -290,6 +333,8 @@ class Channelmigration3sea extends JA_Controller {
         $result["data"] = $data;
 		
         $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+		
+		}
     }
   
     public function list_migration_sub(){	

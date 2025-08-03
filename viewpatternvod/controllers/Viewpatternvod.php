@@ -579,6 +579,15 @@ class Viewpatternvod extends JA_Controller {
   
   public function list_charttvcc()
 	{	                
+	
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("220",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
     if( ! empty($_POST['start_date']) ) {
           $start_date = $_POST['start_date'];
       } else {
@@ -606,9 +615,22 @@ class Viewpatternvod extends JA_Controller {
           $data = NULL; 
       }
       
-      
+      $channel_error = 0;
       if( ! empty($_POST['genre']) ) {
           $genre = str_replace("AND","&",$_POST['genre']);
+		  
+		  if($genre !== "0"){
+
+				$get_list_channel = $this->tvcc_model->list_channel_genre();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['GENRE'];
+				}
+								
+				if(in_array(str_replace("'","",$genre),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+		  }
       } else {
           $genre = "0";
       }
@@ -666,7 +688,10 @@ class Viewpatternvod extends JA_Controller {
           $search_value = null;
       }
 	  
-			
+		if($channel_error > 0){
+				$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{	
 	  
 	   if($_POST['channel'] == "0"){
 		   
@@ -785,6 +810,10 @@ class Viewpatternvod extends JA_Controller {
     	
 	  $result["date"] = $start_date;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
+		
+		}
   }  
   
   function generateColor($tr) {
@@ -973,17 +1002,28 @@ class Viewpatternvod extends JA_Controller {
   }  
 	
   public function channelsearch(){
-       $genre = str_replace("AND","&",$_GET['g']);
-      $start_date = $_GET['start_date'];
-      $end_date = $_GET['end_date'];
-      $list = $this->tvcc_model->channelsearch($_GET['q'],$genre, $start_date , $end_date);
-      
-      if ( $list ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($list));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
+	  
+	   $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("220",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
+		   $genre = str_replace("AND","&",$_GET['g']);
+		  $start_date = $_GET['start_date'];
+		  $end_date = $_GET['end_date'];
+		  $list = $this->tvcc_model->channelsearch($_GET['q'],$genre, $start_date , $end_date);
+		  
+		  if ( $list ) {			
+			  $this->output->set_content_type('application/json')->set_output(json_encode($list));
+		  } else {
+			  $result = array( 'Value not found!' );
+			  $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		  }
+	  
+		}
   }          
   
   public function checkdaypart(){

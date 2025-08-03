@@ -69,6 +69,15 @@ class Channelevaluation extends JA_Controller {
     }
 	
   	public function list_migration(){
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("96",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
         if( !empty($this->Anti_si($_GET['start_date'])) ) {
             $dt   = new DateTime();
             $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -172,6 +181,8 @@ class Channelevaluation extends JA_Controller {
         
         $result["data"] = $data;
         $this->json_result($result);	
+		
+		}
   	}	
   
     public function list_chartcm(){	

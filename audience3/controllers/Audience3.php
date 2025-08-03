@@ -71,6 +71,15 @@ class Audience3 extends JA_Controller {
 	
 	
 	public function list_audience(){	
+	
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -153,9 +162,19 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 
-	public function list_audience_city(){	
+	public function list_audience_city(){
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{	
+		
      if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -240,9 +259,19 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
-	public function list_audience_comm(){	
+	public function list_audience_comm(){
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
      if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -327,11 +356,21 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+		}
 	}
 	
 	
 	
 		public function list_audience_web(){	
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -415,10 +454,22 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
 	
 	public function list_audience_ses(){	
+	
+	$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -502,10 +553,21 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
 	
-	public function list_audience_arpu(){	
+	public function list_audience_arpu(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
      if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -589,9 +651,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
-	public function list_audience_house(){	
+	public function list_audience_house(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -675,9 +748,21 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
+		
 	}
 	
-	public function list_audience_digi(){	
+	public function list_audience_digi(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -761,9 +846,21 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
+		
 	}
 	
-	public function list_audience_age(){	
+	public function list_audience_age(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -847,11 +944,22 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
 	
 	
-	public function list_audience_gender(){	
+	public function list_audience_gender(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -935,9 +1043,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+		}
+		
 	}
 	
 	public function list_audience_persona(){	
+	
+	$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1021,6 +1140,8 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
 	
@@ -1028,6 +1149,15 @@ class Audience3 extends JA_Controller {
 	
 	
 	public function list_chart_audience_web(){	
+	
+	$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
      if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1107,9 +1237,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
 				public function list_chart_audience_ses(){	
+				
+				$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1189,9 +1330,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
-			public function list_chart_audience_arpu(){	
+			public function list_chart_audience_arpu(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1271,9 +1423,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
-		public function list_chart_audience_house(){	
+		public function list_chart_audience_house(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
      if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1354,9 +1517,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
-	public function list_chart_audience_digi(){	
+	public function list_chart_audience_digi(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1437,9 +1611,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
-		public function list_chart_audience_age(){	
+		public function list_chart_audience_age(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
      if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1519,9 +1704,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
-	public function list_chart_audience_gender(){	
+	public function list_chart_audience_gender(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
      if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1601,9 +1797,19 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+		}
 	}
 	
-	public function list_chart_audience_personas(){	
+	public function list_chart_audience_personas(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1684,9 +1890,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
-		public function list_chart_audience_comm(){	
+		public function list_chart_audience_comm(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1767,9 +1984,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
-	public function list_chart_audience_city(){	
+	public function list_chart_audience_city(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1850,9 +2078,20 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
 	}
 	
-	public function list_chart_audience(){	
+	public function list_chart_audience(){
+
+$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("61",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       if( ! empty($this->Anti_si($_GET['start_date'])) ) {
           $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1933,6 +2172,9 @@ class Audience3 extends JA_Controller {
 	  
       $result["data"] = $data;	
       $this->output->set_content_type('Application/json')->set_output(json_encode($result));
+	  
+		}
+		
 	}
 	
 	

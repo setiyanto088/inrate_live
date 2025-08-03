@@ -9,6 +9,30 @@ class Tvprogramun_model extends CI_Model {
 		
 	}
 	
+	public function get_list_channel(){
+
+		 $db = $this->clickhouse->db();
+
+		$query = " SELECT DISTINCT CHANNEL_NAME_PROG FROM CHANNEL_PARAM_FINAL WHERE CHANNEL_NAME_PROG <> '' ";
+	  
+		
+		$result = $db->select($query);
+		return $result->rows();	 
+
+	}	
+	
+	public function get_list_periode(){
+
+		 $db = $this->clickhouse->db();
+
+		$query = " SELECT DISTINCT TANGGAL FROM M_SUM_TV_DASH_ACTIVE_PTV WHERE TANGGAL <> '' ";
+	  
+		
+		$result = $db->select($query);
+		return $result->rows();	 
+
+	}	
+
 	public function get_profile($iduser,$idrole,$periode) {  
  
 		

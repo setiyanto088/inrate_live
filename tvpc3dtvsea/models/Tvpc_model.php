@@ -31,6 +31,18 @@ class Tvpc_model extends CI_Model {
 		$this->db->close();	
 		return $sql->result_array();	   
 	}          
+	
+	public function get_list_channel(){
+
+		 $db = $this->clickhouse->db();
+
+		$query = " SELECT DISTINCT CHANNEL_NAME FROM CHANNEL_PARAM_FINAL WHERE CHANNEL_NAME <> '' ";
+	  
+		
+		$result = $db->select($query);
+		return $result->rows();	 
+
+	}
   
   public function list_channel_by_genre($strGenre) {     
     if($strGenre == "0"){

@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Audiencevir extends JA_Controller {
@@ -115,6 +116,13 @@ class Audiencevir extends JA_Controller {
   
 	public function cr_pp(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("150",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$_POST = json_decode(file_get_contents("php://input"), true);
 		
 		
@@ -513,7 +521,7 @@ class Audiencevir extends JA_Controller {
 		 $result["data"]["table"] = $table_html2;	
 		 $result["data"]["data"] = $data_srs;	
 		$this->output->set_content_type('Application/json')->set_output(json_encode($result)); 
-		
+		}
 	}
   
   	  public function save_channels()
@@ -611,6 +619,16 @@ class Audiencevir extends JA_Controller {
 	}
   
       public function list_program(){
+		  
+		  $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		  if(!$this->session->userdata('user_id') || in_array("159",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
         $_POST = json_decode(file_get_contents("php://input"), true);
         
         if(empty($_POST)){
@@ -651,7 +669,7 @@ class Audiencevir extends JA_Controller {
         } 
         
 		 $this->output->set_content_type('application/json')->set_output(json_encode($result));
-        
+        }
     }
   
   

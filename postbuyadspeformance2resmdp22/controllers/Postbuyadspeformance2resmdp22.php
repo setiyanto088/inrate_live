@@ -59,6 +59,16 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
   
   public function list_product()
 	{			
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       $_POST = json_decode(file_get_contents("php://input"), true);
       
       if(empty($_POST))
@@ -115,6 +125,8 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
       } 
       
       $this->json_result($result);
+	  
+		}
 	}
 	
 	
@@ -183,6 +195,16 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
   
 	public function list_subkategori()
 	{			
+	
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
       $_POST = json_decode(file_get_contents("php://input"), true);
       
       if(empty($_POST))
@@ -229,6 +251,8 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
       } 
       
       $this->json_result($result);
+	  
+		}
 	}	
   
 	/* get load first list ads performance */
@@ -1535,6 +1559,17 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 	
 	
 	public function get_filter_adspeformance2(){
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
+		
       if( !empty($this->Anti_si($_GET['start_date'])) ) {
            $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -1740,9 +1775,21 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
       $result["data"] = $data;
        
       $this->json_result($result);
+	  
+		}
 	}
   
 	public function get_filter_grandtotal_adspeformance_summ2(){
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
       if( !empty($this->Anti_si($_GET['start_date'])) ) {
            $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -2108,6 +2155,8 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
  
       
       $this->json_result($result);
+	  
+		}
 	}
   
   
@@ -2257,6 +2306,17 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 	}
   
 	public function get_filter_grandtotal_adspeformance_summ(){
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
+		
        if( !empty($this->Anti_si($_GET['start_date'])) ) {
            $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -2381,6 +2441,8 @@ $params['get_program']	= $get_program;
 	  }
  
       $this->output->set_content_type('Application/json')->set_output(json_encode($result,true));
+	  
+		}
   }                                       
     
   public function listsearch(){

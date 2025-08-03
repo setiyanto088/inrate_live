@@ -194,6 +194,14 @@ class Tvpc3dtv extends JA_Controller {
 	}
 	public function list_tvpc()
 	{	        
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("93",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		if( ! empty($this->Anti_si($_GET['start_date'])) ) {
 			$dt   = new DateTime();
 			$date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -273,6 +281,22 @@ class Tvpc3dtv extends JA_Controller {
 			$params['channel']	= rtrim($txt_channel,",");
 		}else{			
 			$params['channel']		= str_replace("AND","&",str_replace("  AND  "," & ",$channel));
+			
+			$channel_cnt = explode(',',$params['channel']);
+		
+			$get_list_channel = $this->tvpc_model->get_list_channel();
+			$arr_chnel_l = ["'0'"];
+			foreach($get_list_channel as $get_list_channelsa){
+				$arr_chnel_l[] = $get_list_channelsa['CHANNEL_NAME_PROG'];
+			}
+
+			$channel_error = 0;
+			foreach($channel_cnt as $channel_cnts){
+				if(in_array(str_replace("'","",$channel_cnts),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+			}
+		
 		}
 		
  		$params['starttime'] 	= $start_time;
@@ -287,7 +311,13 @@ class Tvpc3dtv extends JA_Controller {
 		$params['profile']		= $profile;
 		$params['genre']		= str_replace("AND","&",$genre);
 		
- 		
+
+		
+		if($channel_error > 0){
+			$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 		$list = $this->tvpc_model->list_tvpc($params);
 		
 		//print_r($list);die;
@@ -329,6 +359,10 @@ class Tvpc3dtv extends JA_Controller {
     
 		$result["data"] = $data;
 		$this->output->set_content_type('Application/json')->set_output(json_encode($result));
+		
+		}
+		
+		}
 	}
 
   public function listchart_tvpc()

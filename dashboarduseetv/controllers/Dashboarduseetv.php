@@ -13,10 +13,33 @@ class Dashboarduseetv extends JA_Controller {
 	
 	public function filter_program(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(in_array("0",$array_menu) == 1) {
+		//if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 			$periode = $this->input->post('tahun');
 			$check = $this->input->post('check');
 			$regional = $this->input->post('reg');
 			
+			$channel_error = 0;
+				$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$periode),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+			
+			if($channel_error > 0){
+				$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
 			
 			if($check == "False"){
 				
@@ -80,6 +103,9 @@ class Dashboarduseetv extends JA_Controller {
 			
 			echo json_encode($data,true);
 			
+		}
+		
+		}
 		
 	}
 	
@@ -157,11 +183,34 @@ class Dashboarduseetv extends JA_Controller {
 	
 	public function filter_program_detail(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
 			$periode = $this->input->post('tahun');
 			$check = $this->input->post('check');
 			$regional = $this->input->post('reg');
 			$tipe_table = $this->input->post('tipe_table');
 			
+			$channel_error = 0;
+				$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$periode),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+				
+				if($channel_error > 0){
+				$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
 			
 			if($check == "False"){
 				
@@ -192,17 +241,47 @@ class Dashboarduseetv extends JA_Controller {
 							
 				echo json_encode($array_view,true);
 				
-
+			}
+		}
 		
 	}	
 	
 	public function filter_program_detail_a(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 			$periode = $this->input->post('tahun');
 			$check = $this->input->post('check');
 			$regional = $this->input->post('reg');
 			$tipe_table = $this->input->post('tipe_table');
 			
+			$arr_regs = ['0','01','02','03','04','05','06','07'];
+			$channel_error = 0;
+				$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$periode),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+				
+				if(in_array(str_replace("'","",$regional),$arr_regs) == 0){
+					$channel_error++;
+				}
+				
+				
+			
+			if($channel_error > 0){
+				$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
 			
 			if($check == "False"){
 				
@@ -298,7 +377,8 @@ class Dashboarduseetv extends JA_Controller {
 				echo json_encode($array_view,true);
 			
 			}
-
+			}
+		}
 		
 	}
 	
@@ -383,6 +463,15 @@ class Dashboarduseetv extends JA_Controller {
 	
 	public function filter_channel_detail(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 			$periode = $this->input->post('tahun');
 			$check = $this->input->post('check');
 			$regional = $this->input->post('reg');
@@ -425,7 +514,7 @@ class Dashboarduseetv extends JA_Controller {
 					
 		
 			
-		
+		}
 			
 		
 	}	
@@ -643,10 +732,33 @@ class Dashboarduseetv extends JA_Controller {
 	
 	public function filter_channel(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
 			$periode = $this->input->post('tahun');
 			$check = $this->input->post('check');
 			$regional = $this->input->post('reg');
 			
+			$channel_error = 0;
+				$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$periode),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+				
+				if($channel_error > 0){
+					$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+					$this->output->set_content_type('application/json')->set_output(json_encode($result));
+				}else{
 			
 			if($check == "False"){
 				
@@ -709,7 +821,8 @@ class Dashboarduseetv extends JA_Controller {
 			
 			echo json_encode($data,true);
 			
-		
+				}
+		}
 	}	
 	
 	public function filter_channel_nas(){
@@ -786,7 +899,14 @@ class Dashboarduseetv extends JA_Controller {
 	
 	public function detail(){
 		
-	
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			redirect ('/login');
+		}else{
+			
 		$id = $this->session->userdata('project_id');
 		$iduser = $this->session->userdata('user_id');
 		$idrole = $this->session->userdata('id_role');
@@ -880,11 +1000,26 @@ class Dashboarduseetv extends JA_Controller {
 		$pilihprog=$this->input->post('product_program');
 		
 		
+		$channel_error = 0;
 		if (!isset($tahun)){ 
-		
-			
 			$tahun= $data['thn'][0]['TANGGAL'];
+		}else{
+			$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$tahun),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
 		}
+		
+		if($channel_error > 0){
+			$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 		$periode=$tahun;
 		$data['mingguan1'] = $this->tvprogramun_model->get_week_channel($periode);
 		$data['mingguan2'] = $this->tvprogramun_model->get_week_program($periode);
@@ -1347,12 +1482,23 @@ class Dashboarduseetv extends JA_Controller {
 		
 		
 		$this->template->load('maintemplate_useetv', 'dashboarduseetv/views/Tvprogramun_detail', $data);
+		
+		}
+		
+		}
 	}
 	
 	
 	public function detail_nas(){
 		
-	
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			redirect ('/login');
+		}else{
+			
 		$id = $this->session->userdata('project_id');
 		$iduser = $this->session->userdata('user_id');
 		$idrole = $this->session->userdata('id_role');
@@ -1445,12 +1591,26 @@ class Dashboarduseetv extends JA_Controller {
 		$pilihaudiencebar=$this->input->post('audiencebar');
 		$pilihprog=$this->input->post('product_program');
 		
-		
+		$channel_error = 0;
 		if (!isset($tahun)){ 
-		
-			
 			$tahun= $data['thn'][0]['TANGGAL'];
+		}else{
+			$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$tahun),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
 		}
+		
+		if($channel_error > 0){
+			$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+				
 		$periode=$tahun;
 		$data['mingguan1'] = $this->tvprogramun_model->get_week_channel($periode);
 		$data['mingguan2'] = $this->tvprogramun_model->get_week_program($periode);
@@ -1637,6 +1797,10 @@ class Dashboarduseetv extends JA_Controller {
 		
 		
 		$this->template->load('maintemplate_useetv', 'dashboarduseetv/views/Tvprogramun_detail_nas', $data);
+		
+		}
+		
+		}
 	}
 	
 	public function regional(){

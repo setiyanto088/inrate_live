@@ -723,6 +723,13 @@ class Tvprogramun3vod extends JA_Controller {
 	
 	public function get_filter_programaud(){
 		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("221",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$where = ''; 
 		$where2 = ''; 
 		
@@ -1130,10 +1137,17 @@ class Tvprogramun3vod extends JA_Controller {
  	  
 			$this->json_result($result);
 			
+		}
 	}
 	
 	function get_header_tbl(){
 		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("221",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 			
 		$week =  $this->Anti_si($this->input->post('week',true));
 		$type =  $this->Anti_si($this->input->post('type',true));
@@ -1242,6 +1256,7 @@ class Tvprogramun3vod extends JA_Controller {
 		
 		echo json_encode($data,true);
 		
+		}
 	}
 	
 	function getDatesFromRange($start, $end, $format = 'Y-m-d') { 
@@ -2413,6 +2428,13 @@ class Tvprogramun3vod extends JA_Controller {
 	
 	function audiencebar_by_channel42(){
 		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("221",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$userid = $this->session->userdata('user_id');
 		$params['user_id'] = $userid;
 		
@@ -2786,7 +2808,7 @@ class Tvprogramun3vod extends JA_Controller {
 		
 		echo json_encode($data,true);
 		
-		
+		}
 	}
 	
 	public function audiencebar_by_channel_export2(){

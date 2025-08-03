@@ -298,6 +298,15 @@ class Tvprogramunresallp22 extends JA_Controller {
 	
 	public function get_filter_programaud(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("225",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 		$where = '';
 		
 		
@@ -501,7 +510,7 @@ class Tvprogramunresallp22 extends JA_Controller {
 		$result["draw"] = $draw;
 	  
 			$this->json_result($result);
-			
+		}
 	}
 	
   public function index()
@@ -780,6 +789,15 @@ class Tvprogramunresallp22 extends JA_Controller {
 	
 	function day_filter(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("225",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 		$param['start_date_d'] =  $this->Anti_si($this->input->post('start_date_d',true));
 		$param['end_date_d'] =  $this->Anti_si($this->input->post('end_date_d',true));
 		$param['channel_d'] =  $this->Anti_si($this->input->post('channel_d',true));
@@ -816,7 +834,7 @@ class Tvprogramunresallp22 extends JA_Controller {
 		
 		echo json_encode($data,true); 
 		
-		
+		}
 	}
 	
 	function cost_by_program(){
@@ -1022,6 +1040,15 @@ class Tvprogramunresallp22 extends JA_Controller {
 	
 	function audiencebar_by_channel(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("225",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 		$where =  $this->Anti_si($this->input->post('cond',true));
 		$type =  $this->Anti_si($this->input->post('type',true));
 		$tahun=$this->Anti_si($this->input->post('tahun',true));
@@ -1104,6 +1131,8 @@ class Tvprogramunresallp22 extends JA_Controller {
       }
       
 		  echo json_encode($data_ch,true);
+		  
+		}
 	}
 	
 	

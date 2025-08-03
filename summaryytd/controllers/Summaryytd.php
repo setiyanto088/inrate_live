@@ -1028,6 +1028,16 @@ class Summaryytd extends JA_Controller {
 	
 	function header_change(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("189",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
 		$params['start_date'] =  $this->Anti_si($this->input->post('start_date',true));
 		$params['end_date'] =  $this->Anti_si($this->input->post('end_date',true));
 		$params['tpe_f'] =  $this->Anti_si($this->input->post('tpe_f',true));
@@ -1075,6 +1085,7 @@ class Summaryytd extends JA_Controller {
 		}
 		echo json_encode($data,true);
 		
+		}
 	}
 	
 	function audiencebar_by_channel(){

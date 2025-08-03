@@ -51,6 +51,16 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 	  
 	public function list_planning()
 	{	
+			$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("233",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
+		
 			if( !empty($this->Anti_si($this->input->post('start_date',true))) ) {
 			$dt   = new DateTime();
 			$date = $dt->createFromFormat('d/m/Y', $this->Anti_si($this->input->post('start_date',true)));
@@ -670,6 +680,7 @@ class Advancemediaplanningureslogp22 extends JA_Controller {
 		
 		echo json_encode($result,true);
 		
+		}
 	}	
 	
 	public function list_calander2()

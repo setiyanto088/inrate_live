@@ -68,7 +68,8 @@ class Tvpc_model extends CI_Model {
 	
 	public function list_channel() {
 		
-		$query = "SELECT DISTINCT B.`CHANNEL_NAME_PROG` AS channel FROM  `CHANNEL_PARAM_FINAL` B ORDER BY CHANNEL_NAME_PROG ";
+		$query = "SELECT DISTINCT B.`CHANNEL_NAME_PROG` AS CHANNEL FROM  `CHANNEL_PARAM_FINAL` B  
+		WHERE B.`F2A_STATUS` in (0,-99) ORDER BY CHANNEL_NAME_PROG ";
 		
 		$sql	= $this->db->query($query);
 		$this->db->close();	
@@ -945,13 +946,14 @@ class Tvpc_model extends CI_Model {
 	  WHERE B.`F2A_STATUS` in (0,-99) ".$strWhere."   ORDER BY CHANNEL_NAME_PROG ";  
 	  
       $out		= array();
-      // $query		= $this->db->query($sql);
-      // $result = $query->result_array();
+      		$sql	= $this->db->query($sql);
+		$this->db->close();	
+		return $sql->result_array();	
 	  
-	  $querys	= $db->select($sql);
-	$result = $querys->rows();	  
+	  // $querys	= $db->select($sql);
+	// $result = $querys->rows();	  
       
-      return $result;
+      // return $result;
   }             
   
   public function checkdaypart($user_id,$daypart){ 

@@ -187,6 +187,17 @@ class Tvpc3dtvsea extends JA_Controller {
 	}
 	public function list_tvpc()
 	{	        
+	
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("181",$array_menu) == 0) {
+		//if(in_array("0",$array_menu) == 1) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
 		if( ! empty($this->Anti_si($_GET['start_date'])) ) {
 			$dt   = new DateTime();
 			$date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
@@ -264,7 +275,26 @@ class Tvpc3dtvsea extends JA_Controller {
 		$params['genre']		= str_replace("AND","&",$genre);
  		$params['channel']		= $channel;
  		
-		//print_r($params);die;
+		$get_list_channel = $this->tvpc_model->get_list_channel();
+		$arr_chnel_l = [];
+		foreach($get_list_channel as $get_list_channelsa){
+			$arr_chnel_l[] = $get_list_channelsa['CHANNEL_NAME'];
+		}
+		
+		$channel_cnt = explode(',',$params['channel']);
+				
+		$channel_error = 0;
+		foreach($channel_cnt as $channel_cnts){
+			if(in_array(str_replace("'","",$channel_cnts),$arr_chnel_l) == 0){
+				$channel_error++;
+			}
+		}
+		
+		if($channel_error > 0){
+			$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 		
 		$list = $this->tvpc_model->list_tvpc($params);
 		
@@ -306,6 +336,10 @@ class Tvpc3dtvsea extends JA_Controller {
     
 		$result["data"] = $data;
 		$this->output->set_content_type('Application/json')->set_output(json_encode($result));
+		
+		}
+		
+		}
 	}
 
   public function listchart_tvpc()

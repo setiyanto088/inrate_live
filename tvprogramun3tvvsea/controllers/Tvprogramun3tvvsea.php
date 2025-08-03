@@ -13,6 +13,14 @@ class tvprogramun3tvvsea extends JA_Controller {
 
 	public function filter_days(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("179",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$userid = $this->session->userdata('user_id');
 		$type =  $this->Anti_si($this->input->post('audiencebarday',true));
 		$periode =  $this->Anti_si($this->input->post('periode',true));
@@ -160,7 +168,7 @@ class tvprogramun3tvvsea extends JA_Controller {
  
 		
 		echo json_encode($data,true); 
- 		
+ 		}
 	}
 
   public function channelsearch(){
@@ -1282,6 +1290,14 @@ class tvprogramun3tvvsea extends JA_Controller {
 	
 	function audiencebar_by_channel(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("179",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$userid = $this->session->userdata('user_id');
 		$params['user_id'] = $userid;
 		
@@ -1489,6 +1505,8 @@ class tvprogramun3tvvsea extends JA_Controller {
 	
       
 		  echo json_encode($data,true);
+		  
+		}
 	}
  
 

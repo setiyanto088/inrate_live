@@ -13,6 +13,13 @@ class dashboardareauseetv extends JA_Controller {
 	
 	public function filter_program(){
 		
+		if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
 			$periode = $this->input->post('tahun');
 			$check = $this->input->post('check');
 			$regional = $this->input->post('reg');
@@ -78,7 +85,7 @@ class dashboardareauseetv extends JA_Controller {
 			
 			
 			echo json_encode($data,true);
-			
+		}
 		
 	}
 	
@@ -379,6 +386,18 @@ class dashboardareauseetv extends JA_Controller {
 	
 	public function filter_channel_detail(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+				print_r($array_menu);die;
+				
+				
+		if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 			$periode = $this->input->post('tahun');
 			$check = $this->input->post('check');
 			$regional = $this->input->post('reg');
@@ -420,7 +439,7 @@ class dashboardareauseetv extends JA_Controller {
 				echo json_encode($array_view,true);
 					
 		
-			
+		}
 		
 			
 		

@@ -120,7 +120,13 @@ class Listtvpc extends CI_Controller {
   
 	public function cr_pp(){
 		
-		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("159",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 		
 		$params['id_user'] = $this->session->userdata('user_id');
 		$params['list'] = $this->Anti_si($this->input->post('list',true));
@@ -198,6 +204,7 @@ class Listtvpc extends CI_Controller {
 		 $result["data"]["data"] = $data;	
 		$this->output->set_content_type('Application/json')->set_output(json_encode($result)); 
 		
+		}
 	}
   
   	  public function save_channels()
@@ -283,6 +290,17 @@ class Listtvpc extends CI_Controller {
   
       public function list_program(){
         
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("159",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
         if(empty($_POST)){
             $result = array(
                 'success' => false,
@@ -325,6 +343,7 @@ class Listtvpc extends CI_Controller {
         
 		 $this->output->set_content_type('application/json')->set_output(json_encode($result));
         
+		}
     }
   
   

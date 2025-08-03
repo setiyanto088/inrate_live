@@ -1062,6 +1062,13 @@ class Tvprogramun3tvvir extends JA_Controller {
 	
 	public function get_filter_programaud(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("149",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$where = ''; 
 		
 		 if( !empty($this->Anti_si($_GET['periode'])) ) {
@@ -1087,9 +1094,15 @@ class Tvprogramun3tvvir extends JA_Controller {
 		  } else {
 			  $tgl = '0';
 		  }
-		  
+		  $channel_error = 0;
 		   if( !empty($this->Anti_si($_GET['tipe_filter_prog'])) ) {
 			  $tipe_filter = $this->Anti_si($_GET['tipe_filter_prog']);
+			  
+			  $arr_regs = ['live','ALL','TVOD'];
+			  if(in_array(str_replace("'","",$tipe_filter),$arr_regs) == 0){
+					$channel_error++;
+				}
+			  
 		  } else {
 			  $tipe_filter = 'live';
 		  }
@@ -1106,6 +1119,11 @@ class Tvprogramun3tvvir extends JA_Controller {
 		  // } else {
 			  // $check = 'True';
 		  // }
+		  
+		  if($channel_error > 0){
+				$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
 		  
 		   if( !empty($_GET['search']['value']) ) {
 			  $searchtxt = $_GET['search']['value'];
@@ -1791,11 +1809,20 @@ class Tvprogramun3tvvir extends JA_Controller {
 		$result["draw"] = $draw;
 	  
 			$this->json_result($result);
-			
+		}	
+		
+		}
 	}
 	
 	function get_header_tbl(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("149",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 			
 		$week =  $this->Anti_si($this->input->post('week',true));
 		$type =  $this->Anti_si($this->input->post('type',true));
@@ -1906,6 +1933,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
 		echo json_encode($data,true);
 		
+		}
 	}
 	
 	function getDatesFromRange($start, $end, $format = 'Y-m-d') { 
@@ -2938,6 +2966,14 @@ class Tvprogramun3tvvir extends JA_Controller {
 	
 	function audiencebar_by_channel(){
 		
+		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("149",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$userid = $this->session->userdata('user_id');
 		$params['user_id'] = $userid;
 		
@@ -3229,10 +3265,20 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
       
 		echo json_encode($data,true);
+		
+		}
 	}
 	
 	function audiencebar_by_channel42(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("149",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
 		$userid = $this->session->userdata('user_id');
 		$params['user_id'] = $userid;
 		
@@ -3813,7 +3859,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
 		echo json_encode($data,true);
 		
-		
+		}
 	}
 	
 	public function audiencebar_by_channel_export2(){

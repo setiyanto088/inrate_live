@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('Asia/Makassar');
+date_default_timezone_set('Asia/Jakarta');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tvprogramun3 extends JA_Controller {
@@ -416,10 +416,31 @@ class Tvprogramun3 extends JA_Controller {
 	
 	public function get_filter_programaud(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("48",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 		$where = '';
+		$channel_error = 0;
 		
 		 if( !empty($_GET['periode']) ) {
 			  $periode = $_GET['periode'];
+			  
+				$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$periode),$arr_chnel_l) == 0){
+					$channel_error++;
+					
+				}
+				
+				
 		  } else {
 			  $periode = NULL;
 		  }
@@ -431,7 +452,10 @@ class Tvprogramun3 extends JA_Controller {
 		  }
 		  
 		   if( !empty($_GET['profile']) ) {
-			  $profile = $_GET['profile'];
+			  $profile = str_replace("'","",$_GET['profile']);
+			    if (!is_numeric(str_replace("'","",$_GET['profile']))) {
+					$channel_error++;
+				}
 		  } else {
 			  $profile = '0';
 		  }
@@ -469,12 +493,28 @@ class Tvprogramun3 extends JA_Controller {
 				  $where = '';
 			  }else{ 
 				$where = " AND CHANNEL = '".str_replace("_","+",$_GET['channel'])."' ";
+				
+				$get_list_channel = $this->tvprogramun_model->get_list_channel();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['CHANNEL_NAME_PROG'];
+				}
+						
+				
+				if(in_array(str_replace("'","",$_GET['channel']),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+				
 			  }
 			  
 		  } else {
 			  $searchtxt = "";
 		  }
 		  
+		if($channel_error > 0){
+			$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 		   
 		  if( $this->input->get_post('draw') != FALSE )   {$draw   = $this->input->get_post('draw');}   else{$draw   = 1;}; 
 		  if( $this->input->get_post('length') != FALSE ) {$length = $this->input->get_post('length');} else{$length = 10;}; 
@@ -583,7 +623,9 @@ class Tvprogramun3 extends JA_Controller {
 		$result["draw"] = $draw;
  	  
 			$this->json_result($result);
-			
+		}
+		
+		}
 	}
 	
 	public function audiencebar_by_channel_export_sum(){
@@ -935,10 +977,30 @@ class Tvprogramun3 extends JA_Controller {
 	
 	public function get_filter_programaud_mr_tvod(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("48",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$where = '';
-		
+		$channel_error = 0;
 		 if( !empty($_GET['periode']) ) {
 			  $periode = $_GET['periode'];
+			  
+			  $get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$periode),$arr_chnel_l) == 0){
+					$channel_error++;
+					
+				}
+				
 		  } else {
 			  $periode = NULL;
 		  }
@@ -996,6 +1058,10 @@ class Tvprogramun3 extends JA_Controller {
 			  $searchtxt = "";
 		  }
 	 
+		if($channel_error > 0){
+			$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 		   
 		  if( $this->input->get_post('draw') != FALSE )   {$draw   = $this->input->get_post('draw');}   else{$draw   = 1;}; 
 		  if( $this->input->get_post('length') != FALSE ) {$length = $this->input->get_post('length');} else{$length = 10;}; 
@@ -1045,11 +1111,22 @@ class Tvprogramun3 extends JA_Controller {
 		$result["draw"] = $draw;
  	  
 			$this->json_result($result);
-			
+		}
+		
+		}
 	}
 	
 	public function get_filter_programaud_mr(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("48",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$where = '';
 		
 		 if( !empty($_GET['periode']) ) {
@@ -1173,7 +1250,7 @@ class Tvprogramun3 extends JA_Controller {
 		$result["draw"] = $draw;
  	  
 			$this->json_result($result);
-			
+		}	
 	}
 	
   public function index()
@@ -1569,6 +1646,15 @@ class Tvprogramun3 extends JA_Controller {
 	
 	function audiencebar_by_channel(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("48",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 		$where =  $this->Anti_si($this->input->post('cond',true));
 		$type =  $this->Anti_si($this->input->post('type',true));
 		$tahun=$this->Anti_si($this->input->post('tahun',true));
@@ -1639,6 +1725,9 @@ class Tvprogramun3 extends JA_Controller {
       }
       
 		  echo json_encode($data_ch,true);
+		 
+		}		 
+		
 	}
 
 }

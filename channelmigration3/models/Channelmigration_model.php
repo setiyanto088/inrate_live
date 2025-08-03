@@ -18,7 +18,19 @@ class Channelmigration_model extends CI_Model {
 		 $result = $db->select($sql);
 			return $result->rows();	 
     }	
+	
+	public function get_list_channel(){
+
+		 $db = $this->clickhouse->db();
+
+		$query = " SELECT DISTINCT CHANNEL_NAME FROM CHANNEL_PARAM_FINAL WHERE CHANNEL_NAME <> '' ";
+	  
 		
+		$result = $db->select($query);
+		return $result->rows();	 
+
+	}
+	
   	public function get_profile3($iduser,$idrole,$period){
     	
                                                                       

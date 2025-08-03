@@ -88,7 +88,7 @@ class Tvprogramun3mon extends JA_Controller {
 		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("255",$array_menu) == 0) {
 			
-			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 			
 		}else{

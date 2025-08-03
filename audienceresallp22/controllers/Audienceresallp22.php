@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Audienceresallp22 extends JA_Controller {
@@ -112,6 +113,16 @@ class Audienceresallp22 extends JA_Controller {
 	
 	public function list_tree_profile(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("231",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+				
+		 
 		$_POST = json_decode(file_get_contents("php://input"), true);
 		$id_profile = $this->Anti_si($this->input->post('id_profile',true));
 		
@@ -140,10 +151,19 @@ class Audienceresallp22 extends JA_Controller {
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		
-		
+		}
 	}
 	
 	public function cr_pp(){
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("231",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 		
 		$_POST = json_decode(file_get_contents("php://input"), true);
 		
@@ -626,7 +646,7 @@ class Audienceresallp22 extends JA_Controller {
 		 $result["data"]["data"] = $array_table;	
 		 $result["data"]["data_all"] = $list_aa[0]['IH'];	
 		$this->output->set_content_type('Application/json')->set_output(json_encode($result)); 
-		
+		}
 	}
   
 	function audience_export(){
@@ -682,6 +702,17 @@ class Audienceresallp22 extends JA_Controller {
 	}
   
       public function list_program(){
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("231",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+				
+		 
 		$_POST = json_decode(file_get_contents("php://input"), true);
         
         if(empty($_POST)){
@@ -722,7 +753,7 @@ class Audienceresallp22 extends JA_Controller {
         } 
         
 		 $this->output->set_content_type('application/json')->set_output(json_encode($result));
-        
+        }
     }
   
    public function listsearchs(){

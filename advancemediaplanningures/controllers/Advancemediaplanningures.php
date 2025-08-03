@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Advancemediaplanningures extends JA_Controller {
@@ -34,7 +35,18 @@ class Advancemediaplanningures extends JA_Controller {
   
 	public function list_planning()
 	{	
-			if( !empty($this->Anti_si($this->input->post('start_date',true))) ) {
+	
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("169",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
+		
+		if( !empty($this->Anti_si($this->input->post('start_date',true))) ) {
 			$dt   = new DateTime();
 			$date = $dt->createFromFormat('d/m/Y', $this->Anti_si($this->input->post('start_date',true)));
 			$start_date = $date->format('Y-m-d');
@@ -624,7 +636,7 @@ class Advancemediaplanningures extends JA_Controller {
 		$result["data_cal"] = $data_cal;
 		
 		echo json_encode($result,true);
-		
+		}
 	}	
 	
 	public function list_calander2()

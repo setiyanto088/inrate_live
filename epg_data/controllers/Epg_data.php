@@ -23,6 +23,14 @@ class Epg_data extends JA_Controller {
     }
 	
 	function audiencebar_by_channel(){
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("244",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 		
 		$param['start_date'] =  $this->Anti_si($this->input->post('start_date',true));
 		$param['end_date'] =  $this->Anti_si($this->input->post('end_date',true));
@@ -55,10 +63,19 @@ class Epg_data extends JA_Controller {
 		 $data['channel'] = $this->audience_model->list_epg_fil($where); 
 		  
 		 echo json_encode($data['channel'],true);
-		
+		}
 	} 
 	
 	function audiencebar_by_channel_file(){
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("48",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 		
 		$param['start_date'] =  $this->Anti_si($this->input->post('start_date',true));
 		$param['end_date'] =  $this->Anti_si($this->input->post('end_date',true));
@@ -74,7 +91,7 @@ class Epg_data extends JA_Controller {
 		 $data['channel'] = $this->audience_model->list_epg_fil_his($where); 
 		  
 		 echo json_encode($data['channel'],true);
-		
+		}
 	} 
 	
 	public function index(){

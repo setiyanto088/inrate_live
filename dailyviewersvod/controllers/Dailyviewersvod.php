@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Jakarta');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Dailyviewersvod extends JA_Controller {
@@ -1488,6 +1488,13 @@ class Dailyviewersvod extends JA_Controller {
 	
 	function audiencebar_by_channel_t(){
 		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("219",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$userid = $this->session->userdata('user_id');
 		$params['user_id'] = $userid;
 		
@@ -1688,10 +1695,19 @@ class Dailyviewersvod extends JA_Controller {
 		$data['audiencebychannel'] = json_encode($scama2,true); 	
 		
 		echo json_encode($data,true);
+		
+		}
 	}
 	
 	function audiencebar_by_channel(){
 		
+		 $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("219",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$userid = $this->session->userdata('user_id');
 		$params['user_id'] = $userid;
 		
@@ -1890,6 +1906,8 @@ class Dailyviewersvod extends JA_Controller {
 		$data['audiencebychannel'] = json_encode($scama2,true); 	
 		
 		echo json_encode($data,true);
+		
+		}
 	}
 	
 

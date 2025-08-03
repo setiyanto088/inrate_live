@@ -89,13 +89,13 @@ class Tvcc_model extends CI_Model {
   
   public function list_channel_genre() {
 		
+		$db = $this->clickhouse->db();
+		
 		$query = " SELECT DISTINCT(CATEGORY) AS GENRE FROM `PARAM_VOD` C
 		ORDER BY C.`CATEGORY`";
 		
-		$sql	= $this->db->query($query);
-		$this->db->close();
-		$this->db->initialize(); 
-		return $sql->result_array();	   
+		$result = $db->select($query);
+		return $result->rows();	    
 	 
 	}
 	

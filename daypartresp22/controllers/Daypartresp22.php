@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Daypartresp22 extends JA_Controller {
@@ -170,6 +171,15 @@ class Daypartresp22 extends JA_Controller {
 	}
 	
 	public function cr_pp(){
+		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+				
+		if(!$this->session->userdata('user_id') || in_array("226",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 		
 		$_POST = json_decode(file_get_contents("php://input"), true);
 		
@@ -582,7 +592,7 @@ class Daypartresp22 extends JA_Controller {
 		 $result["data"]["data_weekday"] = $array_table['DATA_WEEKDAY'];	
 		 $result["data"]["dataW"] = $array_tablew;	
 		$this->output->set_content_type('Application/json')->set_output(json_encode($result)); 
-		
+		}
 	}
   
 	function audience_export(){
