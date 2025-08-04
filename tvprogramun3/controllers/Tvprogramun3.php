@@ -407,9 +407,13 @@ class Tvprogramun3 extends JA_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
  		$objPHPExcel->setActiveSheetIndex(0);
  
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-	 
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_program.xls');	
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Audience by Program.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
 		
 			
 	}
@@ -838,10 +842,13 @@ class Tvprogramun3 extends JA_Controller {
 		
 		 
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-	 
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/summary_monthly.xls');
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Monthly Report.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
 				
 	}
 	
@@ -1637,7 +1644,7 @@ class Tvprogramun3 extends JA_Controller {
 		 
 		//$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel.xls');
 			header('Content-Type: application/vnd.ms-excel'); // For .xls files
-            header('Content-Disposition: attachment;filename="Audience_by_channel.xls"');
+            header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
             header('Cache-Control: max-age=0');
 
             // Save the Excel file to output
