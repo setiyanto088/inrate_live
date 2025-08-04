@@ -202,8 +202,9 @@ class Jobs_man extends JA_Controller {
 	
 	public function list_profile() 
 	 {
-		 
-		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("91",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}else{

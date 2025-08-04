@@ -368,16 +368,34 @@ class Cprp22 extends JA_Controller {
 	
   public function del_jobs(){
 	  
-	  $_POST = json_decode(file_get_contents("php://input"), true);
-	  
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		$_POST = json_decode(file_get_contents("php://input"), true);
 		$list = $this->Anti_si($_POST['pid']);
-	  
-		$this->createprofileu_model->inset_queue_del($list);
+		$channel_error = 0;
 		
-	  
-		$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
+		if(!$this->session->userdata('user_id') || in_array("48",$array_menu) == 0) {
+		//if(in_array("0",$array_menu) == 1) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 			
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			if (!is_numeric(str_replace("'","",$list))) {
+				$channel_error++;
+			}
+					
+			if($channel_error > 0){
+				$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
+
+				$this->createprofileu_model->inset_queue_del($list);
+				$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			
+			}
+		
+		}
   }
 	
 	public function create_profiling(){

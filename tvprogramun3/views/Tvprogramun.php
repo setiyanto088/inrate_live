@@ -1687,15 +1687,15 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 		
 	$('#channel_export').on('click', function() {
  	  
-		if($('#fta_channel').is(':checked')){
+		// if($('#fta_channel').is(':checked')){
 		
-			var check = "True";
-		}else{
-			var check = "False";
+			// var check = "True";
+		// }else{
+			// var check = "False";
 		
-		}
+		// }
 	  
-		var form_data = new FormData();  
+		//var form_data = new FormData();  
 		var type = $('#audiencebar').val();
 		var tahun = $('#tahun').val();
 		var bulan = $('#bulan').val();
@@ -1707,33 +1707,58 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 		
 		var filter = table4.search()
 			
-		form_data.append('cond',filter);
-		form_data.append('check', check);
-		form_data.append('type', type);
-		form_data.append('tahun', tahun);
-		form_data.append('bulan', bulan);
-		form_data.append('week', week);
-		form_data.append('tgl', tgl);
-		form_data.append('tipe_filter', tipe_filter);
-		form_data.append('profile', profile_chan);
+		// form_data.append('cond',filter);
+		// form_data.append('check', check);
+		// form_data.append('type', type);
+		// form_data.append('tahun', tahun);
+		// form_data.append('bulan', bulan);
+		// form_data.append('week', week);
+		// form_data.append('tgl', tgl);
+		// form_data.append('tipe_filter', tipe_filter);
+		// form_data.append('profile', profile_chan);
 	  
  	  
-		$.ajax({
-			url: "<?php echo base_url().'tvprogramun3/audiencebar_by_channel_export'; ?>", 
-			dataType: 'text',  
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
+		// $.ajax({
+			// url: "<?php echo base_url().'tvprogramun3/audiencebar_by_channel_export'; ?>", 
+			// dataType: 'text',  
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			// data: form_data,                         
+			// type: 'post',
+			// success: function(data){
 				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_channel.xls','Audience_by_channel.xls');
+				// //download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_channel.xls','Audience_by_channel.xls');
 									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
+			// }, error: function(obj, response) {
+				// console.log('ajax list detail error:' + response);	
+			// } 
+		// });	
+		
+		var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_channel_export'; ?>";
+		var cond = filter;
+		var check = check;
+		var type = type;
+		var tahun = tahun;
+		var bulan = bulan;
+		var week = week;
+		var tgl = tgl;
+		var tipe_filter = tipe_filter;
+		var profile = profile_chan;
+		
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='cond' value='" + filter + "' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='type' value='" + type + "' />" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='tgl' value='" + tgl + "' />" +
+			"<input type='hidden' name='tipe_filter' value='" + tipe_filter + "' />" +
+			"<input type='hidden' name='profile' value='" + profile + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
 	  
 	});
 	

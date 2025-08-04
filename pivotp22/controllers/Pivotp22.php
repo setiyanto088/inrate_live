@@ -291,46 +291,6 @@ class Pivotp22 extends JA_Controller {
 		}
 	}
 	
-	public function run_jobs(){
-		$_POST = json_decode(file_get_contents("php://input"), true);
- 		$list = $_POST['pid'];
-		$periode_list = $_POST['val_periode_list'];                
- 		
- 		 
-		if ( $list !== false ) {
-
-			$curr = $this->createprofileu_model->check_job_user();
- 			
-			if($curr[0]['RUNNING_JOB'] < 1 ){
-				
-				$this->createprofileu_model->insert_pid_partial($list,$periode_list); 
-                      
-				 
-				$command = 'php /var/www/jobs/profiling/ultimate/profile_jobs_res.php '.$list.' > /var/www/jobs/profiling/ultimate/log_profile_n_'.$list.'res.log 2>&1 & ';  
-			
-				 
-                
-				
-				$pid = shell_exec($command);
-			
-			
-				 
-			
-			}else{
-				$this->createprofileu_model->inset_queue($list,$periode_list);
-			}
-			
-		 
-		
-			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
-			
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		} else {
-			$result = array( 'success' => false, 'message' => 'Error when inserting to database' );
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		}
-	}
-
 	
 	public function create_pivot(){
 		

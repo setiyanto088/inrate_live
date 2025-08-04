@@ -1036,37 +1036,5 @@ class Postbuyadspeformanceftares extends JA_Controller {
       }
   }
   
-  public function download_video(){
-      $filename = $_GET['f'];
-      $start_time = (int)$_GET['s'];
-      $duration = (int)$_GET['d'];
-      
-      if($start_time > 59){
-          $sMinute = floor($start_time / 60);
-          $sSecond = $start_time % 60; 
-      } else {
-          $sMinute = 0;
-          $sSecond = $start_time;
-      }
-      
-      $arrFilename = explode("/",$filename);
-      $newFilenameArr = array($arrFilename[4],$arrFilename[5],$arrFilename[6]);
-      $newFilename = "/hd/".implode("/",$newFilenameArr); 
-      $newFilenameArr[2] = "chunk_".$newFilenameArr[2];
-      $chunkFilename = "/data/opep/srcs/html/urbanrate/app2/tmp_video/".$newFilenameArr[2];
-      $webPath = rtrim(base_url('tmp_video/'.$newFilenameArr[2]),"'");
-      
-      $exe_cut = system("ffmpeg -i ".trim($newFilename,"'")." -ss 00:0".$sMinute.":".$sSecond." -t 00:00:".$duration." -async 1 -strict -2 ".trim($chunkFilename,"'"), $retval);
-      
-      header( 'Expires: Mon, 1 Apr 1974 05:00:00 GMT' );
-      header( 'Pragma: no-cache' );
-      header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
-      header( 'Content-Description: File Download' );
-      header( 'Content-Type: application/octet-stream' );
-      header( 'Content-Length: '.filesize( $chunkFilename ) );
-      header( 'Content-Disposition: attachment; filename="'.basename( $chunkFilename ).'"' );
-      header( 'Content-Transfer-Encoding: binary' );
-      readfile( $chunkFilename );  
-      exit();
-  }    
+  
 }
