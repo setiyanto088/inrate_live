@@ -555,9 +555,14 @@ class Tvprogramun3tvvirprog extends JA_Controller {
 			$objPHPExcel->getActiveSheet()->setTitle('Audience by Program Summary');
  			$objPHPExcel->setActiveSheetIndex(0);
 
-			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Audience by Program.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
  
-			$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_program.xls');	
  
 		   
 		
@@ -940,10 +945,14 @@ class Tvprogramun3tvvirprog extends JA_Controller {
 			
 			$objPHPExcel->getActiveSheet()->setTitle('Audience by Program Summary');
  			$objPHPExcel->setActiveSheetIndex(0);
-
-			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
  
-			$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_program.xls');	
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Audience by Program.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
 		   
 		   
 		

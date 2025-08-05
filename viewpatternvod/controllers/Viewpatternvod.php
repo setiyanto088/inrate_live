@@ -340,11 +340,15 @@ class Viewpatternvod extends JA_Controller {
   
    public function export_chart()
 	{	                
+	
+	
     if( ! empty($_POST['start_date']) ) {
           $start_date = $_POST['start_date'];
       } else {
           $start_date = NULL;
       }
+	  
+	
       
       if( ! empty($_POST['end_date']) ) {
          
@@ -353,6 +357,8 @@ class Viewpatternvod extends JA_Controller {
           $end_date = NULL;
       }
       
+	  
+	  
 	  if( ! empty($_POST['days']) ) {
          
           $days = $_POST['days'];
@@ -368,8 +374,22 @@ class Viewpatternvod extends JA_Controller {
       }
       
       
+         $channel_error = 0;
       if( ! empty($_POST['genre']) ) {
           $genre = str_replace("AND","&",$_POST['genre']);
+		  
+		  if($genre !== "0"){
+
+				$get_list_channel = $this->tvcc_model->list_channel_genre();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['GENRE'];
+				}
+								
+				if(in_array(str_replace("'","",$genre),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+		  }
       } else {
           $genre = "0";
       }
@@ -379,14 +399,12 @@ class Viewpatternvod extends JA_Controller {
       } else {
           $program = "0";
       }
-      
-    
-      
-      if( ! empty($_POST['channel']) ) {
+            
+       if( ! empty($_POST['channel']) ) {
           $channel = $_POST['channel'];
           
           if($channel == "0"){
-              $channel_array = $this->tvcc_model->channelsearch("",$genre);
+              $channel_array = $this->tvcc_model->channelsearch("",$genre,$start_date,$end_date);
           
               for($i=0;$i < sizeof($channel_array);$i++){
                   $order_fields[$i+2] = $channel_array[$i]['CHANNEL'];
@@ -398,7 +416,7 @@ class Viewpatternvod extends JA_Controller {
           }
       } else {
           $channel = "0";  
-          $channel_array = $this->tvcc_model->channelsearch("",$genre);
+          $channel_array = $this->tvcc_model->channelsearch("",$genre,$start_date,$end_date);
           
           for($i=0;$i < sizeof($channel_array);$i++){
               $order_fields[$i+2] = $channel_array[$i]['CHANNEL'];
@@ -568,10 +586,13 @@ class Viewpatternvod extends JA_Controller {
 	  
 	  $objPHPExcel->setActiveSheetIndex(0);
 	  
-	  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-		 
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/viewing_pattern.xls');
+	 header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Viewing Pattern.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
 	 
 	  
 	

@@ -2013,18 +2013,18 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 						throw '';
 					}
 
-		form_data.append('cond',"<?php echo $cond; ?>");
-		form_data.append('type', type);
-		form_data.append('check', check); 
-		form_data.append('tahun', tahun);
-		form_data.append('bulan', bulan);
-		form_data.append('channel', ch);
-		form_data.append('week', week);
-		form_data.append('start_date', start_date);
-		form_data.append('end_date', end_date);
-		form_data.append('tipe_filter', tipe_filter);
-		form_data.append('profile', profile_chan);
-		form_data.append('preset', preset);
+		// form_data.append('cond',"<?php echo $cond; ?>");
+		// form_data.append('type', type);
+		// form_data.append('check', check); 
+		// form_data.append('tahun', tahun);
+		// form_data.append('bulan', bulan);
+		// form_data.append('channel', ch);
+		// form_data.append('week', week);
+		// form_data.append('start_date', start_date);
+		// form_data.append('end_date', end_date);
+		// form_data.append('tipe_filter', tipe_filter);
+		// form_data.append('profile', profile_chan);
+		// form_data.append('preset', preset);
 		
 		var url = "<?php echo base_url().'tvprogramun3tvvir/audiencebar_by_channel_export'; ?>";
 		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +

@@ -877,6 +877,7 @@
           
           /* HANDLE ALL CHANNEL */
           var channel_header = "";                                                                    
+          var channel_header_t = "";                                                                    
           if(channel == "0"){
               /* READ CHANNEL FROM AFTER CHOOSE GENRE */
               $('#custom_channel').next().children().each(function(){
@@ -885,6 +886,7 @@
                   }
               })
               
+             
               channel_header = channel_header.slice(0,-1);
           } else {
               channel_header = channel;
@@ -893,7 +895,9 @@
           channel_header = channel_header.split(",");
           for(var i=0; i < channel_header.length; i++){
               ch.push("'"+channel_header[i].replace('&',' AND ')+"'");
+		  channel_header_t += "|"+channel_header[i].replace('&',' AND ')+"|,";
           }
+		  
           
           if (channel.length < 1) {
               alert('Please, Select Channel');
@@ -904,23 +908,46 @@
                   $('#processButton').hide();
                   $('#loader').show();
                   $('.loader').css('display','block');
-            
-		   $.ajax({
-              url : "<?php echo base_url().'daypartvir/list_tvpc2_export/'?>" + "?sess_user_id=" + user_id + "&sess_token=" + token  + "&start_date=" + start_date + "&end_date=" + end_date + "&profile=" + profile + "&channel=" + ch + "&stime=" + start_time + "&etime=" + end_time + "&cgroup=" + colgroup + "&genre=" + genre+ "&datatp=" + datatp+ "&daypart=" + daypart,
-              success: function(response) {
-				  
- 				  download_file('<?php echo $donwload_base; ?>tmp_doc/daypart.xls','daypart.xls');
-				  
-					 
-				  $("#loader").hide();
+            			
+			var url = "<?php echo base_url().'daypartvir/list_tvpc2_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='sess_user_id' value='" + user_id + "' />" +
+			"<input type='hidden' name='sess_token' value='" + token + "' />" +
+			"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+			"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+			"<input type='hidden' name='profile' value='" + profile + "' />" +
+			"<input type='hidden' name='channel' value='" + channel_header_t + "' />" +
+			"<input type='hidden' name='stime' value='" + start_time + "' />" +
+			"<input type='hidden' name='etime' value='" + end_time + "' />" +
+			"<input type='hidden' name='cgroup' value='" + colgroup + "' />" +
+			"<input type='hidden' name='genre' value='" + genre + "' />" +
+			"<input type='hidden' name='datatp' value='" + datatp + "' />" +
+			"<input type='hidden' name='daypart' value='" + daypart + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+		  
+		  
+		    $("#loader").hide();
                   $('#processButton').show();
                   $('.loader').css('display','none');
+			
+		   // $.ajax({
+              // url : "<?php echo base_url().'daypartvir/list_tvpc2_export/'?>" + "?sess_user_id=" + user_id + "&sess_token=" + token  + "&start_date=" + start_date + "&end_date=" + end_date + "&profile=" + profile + "&channel=" + ch + "&stime=" + start_time + "&etime=" + end_time + "&cgroup=" + colgroup + "&genre=" + genre+ "&datatp=" + datatp+ "&daypart=" + daypart,
+              // success: function(response) {
 				  
-              },
-              error: function(obj, response) {
-                  console.log('ajax list_project error:' + response);
-              }
-          });
+ 				  // download_file('<?php echo $donwload_base; ?>tmp_doc/daypart.xls','daypart.xls');
+				  
+					 
+				  // $("#loader").hide();
+                  // $('#processButton').show();
+                  // $('.loader').css('display','none');
+				  
+              // },
+              // error: function(obj, response) {
+                  // console.log('ajax list_project error:' + response);
+              // }
+          // });
 
       }
 	  

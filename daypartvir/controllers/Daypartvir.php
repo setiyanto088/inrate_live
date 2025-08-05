@@ -436,65 +436,71 @@ class Daypartvir extends JA_Controller {
 	
 	
 	
-		if( ! empty($this->Anti_si($_GET['start_date'])) ) {
+		if( ! empty($this->Anti_si($this->input->post('start_date',true))) ) {
 			$dt   = new DateTime();
-			$date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['start_date']));
+			$date = $dt->createFromFormat('d/m/Y', $this->Anti_si($this->input->post('start_date',true)));
 			$start_date = $date->format('Y-m-d');
 		} else {
 			$start_date = NULL;
 		}
 		
-		if( ! empty($this->Anti_si($_GET['end_date'])) ) {
+		if( ! empty($this->Anti_si($this->input->post('end_date',true))) ) {
 			$dt   = new DateTime();
-			$date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['end_date']));
+			$date = $dt->createFromFormat('d/m/Y', $this->Anti_si($this->input->post('end_date',true)));
 			$end_date = $date->format('Y-m-d');
 		} else {
 			$end_date = NULL;
 		}
         
-		if( !empty($this->Anti_si($_GET['stime'])) ) {
-			$start_time = $this->Anti_si($_GET['stime']);
+		if( !empty($this->Anti_si($this->input->post('stime',true))) ) {
+			$start_time = $this->Anti_si($this->input->post('stime',true));
 		} else {
 			$start_time = NULL;
 		}
 		
-		if( !empty($this->Anti_si($_GET['etime'])) ) {
-			$end_time = $this->Anti_si($_GET['etime']);
+		if( !empty($this->Anti_si($this->input->post('etime',true))) ) {
+			$end_time = $this->Anti_si($this->input->post('etime',true));
 		} else {
 			$end_time = NULL;
 		}	
 		
-		if( !empty($this->Anti_si($_GET['datatp'])) ) {
-			$datatp = $this->Anti_si($_GET['datatp']);
+		if( !empty($this->Anti_si($this->input->post('datatp',true))) ) {
+			$datatp = $this->Anti_si($this->input->post('datatp',true));
 		} else {
 			$datatp = NULL;
 		}
 		
-		if( !empty($this->Anti_si($_GET['daypart'])) ) {
-			$daypart = $this->Anti_si($_GET['daypart']);
+		if( !empty($this->Anti_si($this->input->post('daypart',true))) ) {
+			$daypart = $this->Anti_si($this->input->post('daypart',true));
 		} else {
 			$daypart = NULL;
 		}
         
-		if( ! empty($this->Anti_si($_GET['profile'])) ) {
-			$profile = $this->Anti_si($_GET['profile']);
+		if( ! empty($this->Anti_si($this->input->post('profile',true))) ) {
+			$profile = $this->Anti_si($this->input->post('profile',true));
 		} else {
 			$profile = 0;
 		}
     
-		if( ! empty($this->Anti_si($_GET['genre'])) ) {
-		  $genre = $this->Anti_si($_GET['genre']);
+		if( ! empty($this->Anti_si($this->input->post('genre',true))) ) {
+		  $genre = $this->Anti_si($this->input->post('genre',true));
 		} else {
 		  $genre = "0";
 		}
 
-		if( ! empty($this->Anti_si($_GET['channel'])) ) {
-			$channel = $this->Anti_si($_GET['channel']);
+		if( ! empty($this->Anti_si($this->input->post('channel',true))) ) {
+			$channel = $this->Anti_si($this->input->post('channel',true));
 		} else {
 			$channel = NULL;
 		}	
-    
-		$channel = str_replace("\'","'",$channel);
+		
+    	
+		$channel = str_replace("|","'",$channel);
+		$channel = str_replace("Crime  Investigation","Crime+ Investigation",$channel);
+		$channel = str_replace("'Eat  AND amp; Go'","'Eat & Go'",$channel);
+		$channel = str_replace("'K '","'K+'",$channel);
+		$channel = str_replace("'K  HD'","'K+ HD'",$channel);
+		$channel = str_replace("''","",$channel);
 
 		$params['starttime'] 	= $start_time;
 		$params['endtime'] 		= $end_time;
@@ -506,6 +512,12 @@ class Daypartvir extends JA_Controller {
 		$params['genre']		= str_replace("AND","&",$genre);
 		$params['channel']		= str_replace("AND","&",str_replace("  AND  "," & ",$channel));
 		
+		if($params['channel'][0] == ','){
+			$params['channel'] = substr(substr($params['channel'], 0, -1), 1);
+			
+		}
+		
+				
 		$channel_cnt = explode(',',$params['channel']);
 		$array_date = $this->getDatesFromRange($start_date,$end_date);
 		
@@ -632,7 +644,6 @@ class Daypartvir extends JA_Controller {
 			$query_s .=" ) ";
 
 		}
-		
 		$params['query_s'] = $query_s;
 		
 		$list = $this->tvpc_model->list_tvpc2($params);
@@ -706,8 +717,14 @@ class Daypartvir extends JA_Controller {
 	  
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/daypart.xls');
+		header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Daypart.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+			
 		
 	}
 	
