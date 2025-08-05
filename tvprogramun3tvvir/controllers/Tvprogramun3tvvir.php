@@ -2782,22 +2782,13 @@ class Tvprogramun3tvvir extends JA_Controller {
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel->setActiveSheetIndex(0);
 
-		
+		header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
+            header('Cache-Control: max-age=0');
 
-
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-		// header('Content-Type: application/vnd.ms-excel');
-		// header('Content-Disposition: attachment;filename="Postbuy_analytics.xlsx"');
-		//$objWriter->save('php://output');
-		
-		 //ob_end_clean();
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel_growth.xls');
-
-	  
-		//var_dump($data_ch);die;  
-	  
-		  //echo json_encode($data_ch,true); die;
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
 	}
 	
 		public function load_channels()
@@ -4576,9 +4567,13 @@ class Tvprogramun3tvvir extends JA_Controller {
 			$objPHPExcel->setActiveSheetIndex(0);
 
 
-			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
+            header('Cache-Control: max-age=0');
 
-			$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel.xls');	
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');	
 			
 			}else{
 				
@@ -4604,9 +4599,13 @@ class Tvprogramun3tvvir extends JA_Controller {
 				$objPHPExcel->setActiveSheetIndex(0);
 
 
-				$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+				header('Content-Type: application/vnd.ms-excel'); // For .xls files
+				header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
+				header('Cache-Control: max-age=0');
 
-				$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel.xls');	
+				// Save the Excel file to output
+				$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+				$objWriter->save('php://output');	
 					
 			}
 		}

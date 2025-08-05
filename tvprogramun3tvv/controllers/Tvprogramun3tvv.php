@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Jakarta');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tvprogramun3tvv extends JA_Controller {
@@ -1296,11 +1296,14 @@ class Tvprogramun3tvv extends JA_Controller {
 		
 		$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
  		$objPHPExcel->setActiveSheetIndex(0);
- 
+		
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
+            header('Cache-Control: max-age=0');
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
- 
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel.xls');
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
  
 	}
 	

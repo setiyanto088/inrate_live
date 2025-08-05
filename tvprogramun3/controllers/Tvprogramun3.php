@@ -117,10 +117,14 @@ class Tvprogramun3 extends JA_Controller {
 		
 		$objPHPExcel->getActiveSheet()->setTitle('Audience by Day Summary');
  		$objPHPExcel->setActiveSheetIndex(0);
- 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-		 
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_day.xls');	
+		
+		header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Audience by Days.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
 		
 			
 	}
@@ -250,9 +254,14 @@ class Tvprogramun3 extends JA_Controller {
  		$objPHPExcel->setActiveSheetIndex(0);
  
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Audience by Program TVOD.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
  
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_program_tvod.xls');	
 		
 			
 	}

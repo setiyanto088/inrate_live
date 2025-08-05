@@ -1660,28 +1660,14 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 	$('#print_days').on('click', function() {
 		
 
-		var form_data = new FormData();  
 		var tahun = $('#tahun').val();
-	
-		form_data.append('tahun', tahun);
-		
-	  
-		$.ajax({
-			url: "<?php echo base_url().'tvprogramun3/audiencebar_by_day_export'; ?>", 
-			dataType: 'text',   
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
-				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_day.xls','Audience_by_day.xls');
-									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
+			
+		var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_day_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
 	  
 	});
 		
@@ -1880,36 +1866,25 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 		var filter = table3.search()
 			
 		var week = $('#week2').val();
-		form_data.append('tahun', tahun);
-		form_data.append('bulan', bulan);
-		form_data.append('week', week);
- 		form_data.append('pilihprog', type);
-		form_data.append('field', field);
-		form_data.append('cond',"<?php echo $cond; ?>");
-		form_data.append('periode',"<?php echo $tahunselected ?>");
-		form_data.append('profile', profile_prog);	
-		form_data.append('tgl', tgl);
-		form_data.append('check', check);
-		form_data.append('tipe_filter', tipe_filter);
-		form_data.append('channel_prog', channel_prog);
 	  
- 	  
-		$.ajax({
-			url: "<?php echo base_url().'tvprogramun3/audiencebar_by_program_export_tvodm'; ?>", 
-			dataType: 'text',  
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
-				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_program_tvod.xls','monthly_tvod.xls');
-									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
+	  var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_program_export_tvodm'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='pilihprog' value='" + type + "' />" +
+			"<input type='hidden' name='field' value='" + field + "' />" +
+			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
+			"<input type='hidden' name='periode' value='<?php echo $tahunselected ?>' />" +
+			"<input type='hidden' name='profile' value='" + profile_prog + "' />" +
+			"<input type='hidden' name='tgl' value='" + tgl + "' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='tipe_filter' value='" + tipe_filter + "' />" +
+			"<input type='hidden' name='channel_prog' value='" + channel_prog + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+
 	  
 	});
 	

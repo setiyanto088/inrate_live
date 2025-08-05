@@ -1876,25 +1876,25 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 		form_data.append('profile', profile_chan);
 		form_data.append('preset', preset);
 	  
- 	  
-		$.ajax({
-			url: "<?php echo base_url().'tvprogramun3tvv/audiencebar_by_channel_export'; ?>", 
-			dataType: 'text',  
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
-				
-				 $("#channel_export").attr("disabled", false);
-				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_channel.xls',type+'_by_channel.xls');
-									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
+		
+		var url = "<?php echo base_url().'tvprogramun3tvv/audiencebar_by_channel_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='cond' value='" + filter + "' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='type' value='" + type + "' />" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+			"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+			"<input type='hidden' name='tipe_filter' value='" + tipe_filter + "' />" +
+			"<input type='hidden' name='profile' value='" + profile_chan + "' />" +
+			"<input type='hidden' name='preset' value='" + preset + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+		  
+		  $("#channel_export").attr("disabled", false);
 	  
 	});
 	
