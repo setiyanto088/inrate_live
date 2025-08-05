@@ -773,10 +773,13 @@ class Daypartresp22 extends JA_Controller {
 							 $objPHPExcel->setActiveSheetIndex(0);
 					 
 					 
-							 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-					 
-							 
-							 $objWriter->save('/data/opep/srcs/html/tmp_doc/Daypart_export.xls');
+							 header('Content-Type: application/vnd.ms-excel'); // For .xls files
+							header('Content-Disposition: attachment;filename="Daypart Export.xls"');
+							header('Cache-Control: max-age=0');
+
+							// Save the Excel file to output
+							$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+							$objWriter->save('php://output');
 					
 										 
 			
@@ -857,11 +860,15 @@ class Daypartresp22 extends JA_Controller {
 			$objPHPExcel->setActiveSheetIndex(0);
 
 
-			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Daypart Export.xls"');
+            header('Cache-Control: max-age=0');
 
-			
-			$objWriter->save('/data/opep/srcs/html/tmp_doc/Daypart_export.xls');
-		
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+
+					
 	   }
 	   
 	  }

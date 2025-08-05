@@ -190,6 +190,12 @@ class Daypartvir extends JA_Controller {
 		}	
     
 		$channel = str_replace("\'","'",$channel);
+		
+		$channel = str_replace("Crime  Investigation","Crime+ Investigation",$channel);
+		$channel = str_replace("'Eat  AND amp; Go'","'Eat & Go'",$channel);
+		$channel = str_replace("'K '","'K+'",$channel);
+		$channel = str_replace("'K  HD'","'K+ HD'",$channel);
+		$channel = str_replace("''","",$channel);
 
 		$params['starttime'] 	= $start_time;
 		$params['endtime'] 		= $end_time;
@@ -200,9 +206,13 @@ class Daypartvir extends JA_Controller {
 		$params['profile']		= $this->db->escape($profile);
 		$params['genre']		= str_replace("AND","&",$genre);
 		$params['channel']		= str_replace("AND","&",str_replace("  AND  "," & ",$channel));
-
-		$channel_cnt = explode(',',$params['channel']);
 		
+		//print_r($params['channel']);die;		
+		if($params['channel'][0] == ','){
+			$params['channel'] = substr($params['channel'], 1);
+		}
+		
+		$channel_cnt = explode(',',$params['channel']);
 		$get_list_channel = $this->tvpc_model->get_list_channel();
 		$arr_chnel_l = [];
 		foreach($get_list_channel as $get_list_channelsa){
@@ -211,11 +221,11 @@ class Daypartvir extends JA_Controller {
 				
 		$channel_error = 0;
 		foreach($channel_cnt as $channel_cnts){
-			if(in_array(str_replace("'","",$channel_cnts),$arr_chnel_l) == 0){
+			if(in_array(str_replace("'","",$channel_cnts),$arr_chnel_l) == 0 ){
 				$channel_error++;
 			}
 		}
-		
+
 		if($channel_error > 0){
 			$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));

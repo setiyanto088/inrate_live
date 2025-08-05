@@ -736,24 +736,25 @@
               cgroup     : colgroup
           };       
 		  
-		       $.ajax({
-              url : "<?php echo base_url().'viewpattern/export_chart'?>",
-              method : "POST",
-              data : form_data,
-              success: function(response) {
-				  
-				  	download_file('<?php echo $donwload_base; ?>tmp_doc/viewing_pattern.xls','Viewing_pattern.xls');
-                
+		  var url = "<?php echo base_url().'viewpattern/export_chart'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='sess_user_id' value='" + user_id + "' />" +
+			"<input type='hidden' name='sess_token' value='" + token + "' />" +
+			"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+			"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+			"<input type='hidden' name='genre' value='" + genre + "' />" +
+			"<input type='hidden' name='days' value='" + days + "' />" +
+			"<input type='hidden' name='channel' value='" + ch + "' />" +
+			"<input type='hidden' name='program' value='" + program + "' />" +
+			"<input type='hidden' name='cgroup' value='" + colgroup + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+		  
 				$("#loader").hide();
 				$('.loader').css('display','none');
 				$('#processButton').show();     
-				$('#processButtonExcell').show();     
-				
-              },
-              error: function(obj, response) {
-                  console.log('ajax list_project error:' + response);
-              }
-          });   
+				$('#processButtonExcell').show();       
 		  
 	  }
 	  

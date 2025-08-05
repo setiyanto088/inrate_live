@@ -639,11 +639,16 @@ class Viewpattern extends JA_Controller {
 	  
 	  $objPHPExcel->setActiveSheetIndex(0);
 	  
-	  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 	 
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/viewing_pattern.xls');
+		header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Viewing Pattern.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
 	 
+			 
 	  
 	
   }  

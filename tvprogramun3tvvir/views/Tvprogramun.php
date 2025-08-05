@@ -323,8 +323,8 @@
 								<div class="form-group">
 									<label>Year</label>	
 									 <select class="form-control" name="start_date42" id="start_date42" class="preset2" >  
-									       <option value="2025">2025</option>
-										<option value="2024" selected>2024</option>
+									    <option value="2025" selected>2025</option>
+										<option value="2024" >2024</option>
 										<option value="2023"  >2023</option>
 										<option value="2022"  >2022</option>
 										<option value="2021"  >2021</option>
@@ -471,8 +471,8 @@
 								<div class="form-group">
 									<label>Year</label>	
 									 <select class="form-control" name="start_date3" id="start_date3" class="preset2" >  
-									 <option value"2025" selected>2025</option>
-										<option value="2024" selected>2024</option>
+										<option value="2025" selected>2025</option>
+										<option value="2024">2024</option>
 										<option value="2023"  >2023</option>
 										<option value="2022"  >2022</option>
 										<option value="2021"  >2021</option>
@@ -2063,6 +2063,7 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 	var tgl = $('#start_date3').val();
 	var profile_prog = $('#profile_chan3').val();
 	var week = $('#end_date3').val();
+	
 	form_data.append('tahun', tahun);
 	form_data.append('bulan', bulan);
 	form_data.append('check', check);
@@ -2076,24 +2077,24 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 	form_data.append('tgl', tgl);
 	  
 	  
-		$.ajax({
-			url: "<?php echo base_url().'tvprogramun3tvvir/audiencebar_by_program_export'; ?>", 
-			dataType: 'text',  // what to expect back from the PHP script, if anything
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
-				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_program.xls','Audience_by_program.xls');
-				$("#program_export").attr("disabled", false);
-									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
+		  var url = "<?php echo base_url().'tvprogramun3tvvir/audiencebar_by_program_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='type' value='" + type + "' />" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='field' value='" + field + "' />" +
+			"<input type='hidden' name='tgl' value='" + tgl + "' />" +
+			"<input type='hidden' name='tipe_filter_prog' value='" + tipe_filter_prog + "' />" +
+			"<input type='hidden' name='profile' value='" + profile_prog + "' />" +
+			"<input type='hidden' name='preset' value='" + preset3 + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
 	  
+	  $("#program_export").attr("disabled", false);
 	});
 	
 });
@@ -3094,40 +3095,26 @@ function chanel_export2(){
               ch.push("'"+channel_header[i].replace('&',' AND ')+"'");
           }
 
+	var url = "<?php echo base_url().'tvprogramun3tvvir/audiencebar_by_channel_export2'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='type' value='" + type + "' />" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='channel' value='" + ch + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+			"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+			"<input type='hidden' name='tipe_filter' value='" + tipe_filter + "' />" +
+			"<input type='hidden' name='profile' value='" + profile_chan + "' />" +
+			"<input type='hidden' name='preset' value='" + preset + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
 
-	form_data.append('cond',"<?php echo $cond; ?>");
-	form_data.append('type', type);
-	form_data.append('tahun', tahun);
-	form_data.append('bulan', bulan);
-	form_data.append('channel', ch);
-	form_data.append('week', week);
-	form_data.append('check', check); 
-	form_data.append('start_date', start_date);
-	form_data.append('end_date', end_date);
-	form_data.append('tipe_filter', tipe_filter);
-	form_data.append('profile', profile_chan);
-	form_data.append('preset', preset);
-
-
-
-	$.ajax({
-			url: "<?php echo base_url().'tvprogramun3tvvir/audiencebar_by_channel_export2'; ?>", 
-			dataType: 'text',  // what to expect back from the PHP script, if anything
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
-				
-				 $("#export_channel42").attr("disabled", false);
-				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_channel.xls','audience_by_channel.xls');
-									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
+		
+		 $("#export_channel42").attr("disabled", false);
 }
 
 

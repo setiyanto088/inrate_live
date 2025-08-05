@@ -1159,23 +1159,16 @@
 		form_data.append('dataf2', $('#dataf2').val());
 		form_data.append('channel', $('#get_chnl').val());
 		
-		$.ajax({
-			url: "<?php echo base_url().'daypartresp22/audience_export'; ?>", 
-			dataType: 'text',  // what to expect back from the PHP script, if anything
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
-				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/Daypart_export.xls','Daypart_export.xls');
-									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
-		
+		var url = "<?php echo base_url().'daypartresp22/audience_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='data' value='" + $('#value_data').val() + "' />" +
+			"<input type='hidden' name='dataf' value='" + $('#dataf').val() + "' />" +
+			"<input type='hidden' name='dataf2' value='" + $('#dataf2').val() + "' />" +
+			"<input type='hidden' name='channel' value='" + $('#get_chnl').val() + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+		  		
  		
 	}
 	
