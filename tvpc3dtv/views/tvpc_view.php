@@ -825,11 +825,12 @@
           
           /* HANDLE ALL CHANNEL */
           var channel_header = "";                                                                    
+          var channel_header_t = "";                                                                    
           if(channel == "0" && genre !== '0'){
               /* READ CHANNEL FROM AFTER CHOOSE GENRE */
               $('#custom_channel').next().children().each(function(){
                   if($(this).children().html() != "All Channel"){
-                      channel_header += $(this).children().html()+",";
+                      channel_header += "'"+$(this).children().html()+"',";
                   }
               })
               
@@ -845,6 +846,7 @@
           for(var i=0; i < channel_header.length; i++){
               ch.push("'"+channel_header[i].replace('&',' AND ')+"'");
               ch2.push(""+channel_header[i].replace('&',' AND ')+"");
+			  channel_header_t += "'"+channel_header[i].replace('&',' AND ')+"'";
           }
           
           if (channel.length < 1) {
@@ -852,38 +854,56 @@
               return false;	 
           }	
 		 
-		var form_data = new FormData();  
-									form_data.append('start_date', start_date);
-									form_data.append('end_date', end_date);
-									form_data.append('start_time', start_time);
-									form_data.append('end_time', end_time);
-									form_data.append('profile', profile);
-									form_data.append('genre', genre);
-									form_data.append('daypart', daypart);
-									form_data.append('channel', ch);
+		// var form_data = new FormData();  
+									// form_data.append('start_date', start_date);
+									// form_data.append('end_date', end_date);
+									// form_data.append('start_time', start_time);
+									// form_data.append('end_time', end_time);
+									// form_data.append('profile', profile);
+									// form_data.append('genre', genre);
+									// form_data.append('daypart', daypart);
+									// form_data.append('channel', ch);
 									
-									
-									$.ajax({
-										url: "<?php echo base_url().'tvpc3dtv/tvpc3_export'; ?>", 
-										dataType: 'text',   
-										cache: false,
-										contentType: false,
-										processData: false,
-										data: form_data,                         
-										type: 'post',
-										success: function(data){
+									var url = "<?php echo base_url().'tvpc3dtv/tvpc3_export'; ?>";
+									 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+										"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+										"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+										"<input type='hidden' name='start_time' value='" + start_time + "' />" +
+										"<input type='hidden' name='end_time' value='" + end_time + "' />" +
+										"<input type='hidden' name='profile' value='" + profile + "' />" +
+										"<input type='hidden' name='genre' value='" + genre + "' />" +
+										"<input type='hidden' name='daypart' value='" + daypart + "' />" +
+										"<input type='hidden' name='channel' value='" + channel_header + "' />" +
+										"</form>");
+									  $('body').append(form);
+									  form.submit();
+									  
+									  
+									   $("#btn_export").removeAttr('disabled');
+										$("#btn_export").css("background-color", "black");
+		  
+		  
+									// $.ajax({
+										// url: "<?php echo base_url().'tvpc3dtv/tvpc3_export'; ?>", 
+										// dataType: 'text',   
+										// cache: false,
+										// contentType: false,
+										// processData: false,
+										// data: form_data,                         
+										// type: 'post',
+										// success: function(data){
 											
-											download_file('<?php echo $donwload_base; ?>tmp_doc/tvpc_dtv_export.xls','TVPC.xls');
+											// download_file('<?php echo $donwload_base; ?>tmp_doc/tvpc_dtv_export.xls','TVPC.xls');
 											
-											 $("#btn_export").removeAttr('disabled');
-											 $("#btn_export").css("background-color", "black");
+											 // $("#btn_export").removeAttr('disabled');
+											 // $("#btn_export").css("background-color", "black");
 																
-										}, error: function(obj, response) {
-											console.log('ajax list detail error:' + response);	
-											$("#btn_export").removeAttr('disabled');
-											$("#btn_export").css("background-color", "black");
-										} 
-									});	
+										// }, error: function(obj, response) {
+											// console.log('ajax list detail error:' + response);	
+											// $("#btn_export").removeAttr('disabled');
+											// $("#btn_export").css("background-color", "black");
+										// } 
+									// });	
 		 
 	 }
       // proses

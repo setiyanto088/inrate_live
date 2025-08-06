@@ -57,8 +57,8 @@ class Tvpc3dtv extends JA_Controller {
 		$params['profile'] =   $this->Anti_si($this->input->post('profile', TRUE));
 		$params['genre'] =   str_replace("AND","&",$this->Anti_si($this->input->post('genre', TRUE)));
 		$params['daypart'] =   $this->Anti_si($this->input->post('daypart', TRUE));
-		
-		if($channel == "'0'" || $channel == "\'0\'" ){
+				
+		if($channel == "'0'" || $channel == "\'0\'" || $channel == "0" ){
 			
 						
 			$get_channel = $this->tvpc_model->list_channel();
@@ -68,15 +68,12 @@ class Tvpc3dtv extends JA_Controller {
 				$txt_channel = $txt_channel."'".$get_channels['channel']."',";
 				
 			}
-						
 			$params['channel']	= rtrim($txt_channel,",");
 		}else{			
-			$params['channel']		=  str_replace("\'","'",str_replace("AND","&",str_replace("  AND  "," & ",$channel)));
+			$tmp_channel = "'".str_replace(",","','",$channel)."'";
+			$params['channel']		=  str_replace("\'","'",str_replace("AND","&",str_replace("  AND  "," & ",$tmp_channel)));
 		}
-		
-
- 	
- 		
+		 	
 		$list = $this->tvpc_model->list_tvpc_export($params);
 		
 		//print_r($list);die;
@@ -140,7 +137,13 @@ class Tvpc3dtv extends JA_Controller {
  		$objPHPExcel->setActiveSheetIndex(0);
  
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="TVPC Export.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
  
 		
 		$objWriter->save('/data/opep/srcs/html/tmp_doc/tvpc_dtv_export.xls');
