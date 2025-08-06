@@ -510,7 +510,6 @@ ORDER BY `DATE`,M1
 				
 			}
     		
-			
      		$out		= array();
  
 			

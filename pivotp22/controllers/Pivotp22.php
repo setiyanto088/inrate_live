@@ -749,6 +749,10 @@ class Pivotp22 extends JA_Controller {
  
 		
 		$data =  $this->Anti_si($this->input->post('tab_cnt'));
+		$data = str_replace('&lt;','<',$data);
+		$data = str_replace('&quot;','"',$data);
+		$data = str_replace('&gt;','>',$data);
+		
 		
 		$data = str_replace('<div style="width: 100%;overflow-x:auto;"><table id="myTable" class="table table-striped table-bordered example urate-table" style="">','',$data);
 		$data = str_replace('<thead>                                  <tr style=""> <th style="color: red; border: 1px solid black;">','<th>',$data);
@@ -827,11 +831,15 @@ class Pivotp22 extends JA_Controller {
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 			$objPHPExcel->setActiveSheetIndex(0);
 			
-			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Pivot Table Print.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');	
  
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/pivot_table_print.xls');
-									 
+											 
 									 
 		 
 	}

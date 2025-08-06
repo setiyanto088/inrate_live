@@ -690,14 +690,14 @@ class Audienceresallp22 extends JA_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('Audience Analytics');
 		$objPHPExcel->setActiveSheetIndex(0);
 
-		
+		header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Audience Export.xls"');
+            header('Cache-Control: max-age=0');
 
-
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-		
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_export.xls');
-		
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');	
+				
 		
 	}
   

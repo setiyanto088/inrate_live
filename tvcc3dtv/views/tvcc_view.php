@@ -831,6 +831,7 @@
     
 		 
           var ch = [];   
+          var chr = '';   
 		  
 
           if(channel == "0"){
@@ -838,6 +839,7 @@
           } else {
               for(var i=0; i < channel_header.length; i++){
                   ch.push("'"+channel_header[i]+"'");
+                  chr += ","+channel_header[i];
               }	      
           }
           
@@ -845,36 +847,22 @@
               alert('Please, Select Channel');
               return false;	
           }	        
-          
-          var form_data = {
-              sess_user_id     : user_id,
-              sess_token      : token,
-              start_date	 : start_date,
-              end_date     : end_date,
-              profile     : profile,
-              genre     : genre,
-              channel     : ch,
-              dpart     : daypart,
-              cgroup     : colgroup
-          };     
 		  
- 		  
-		  
-		  $.ajax({
-			url: "<?php echo base_url().'tvcc3dtv/tvcc_export'; ?>", 
-			 method : "POST",
-              data : form_data,                  
-			type: 'post',
-			success: function(data){
-				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/tvpc_export_dtv.xls','tvcc_export.xls');
-									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
-			
-			
+		  var url = "<?php echo base_url().'tvcc3dtv/tvcc_export'; ?>";
+									 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+										"<input type='hidden' name='sess_user_id' value='" + user_id + "' />" +
+										"<input type='hidden' name='sess_token' value='" + token + "' />" +
+										"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+										"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+										"<input type='hidden' name='profile' value='" + profile + "' />" +
+										"<input type='hidden' name='genre' value='" + genre + "' />" +
+										"<input type='hidden' name='dpart' value='" + daypart + "' />" +
+										"<input type='hidden' name='channel' value='" + chr + "' />" +
+										"<input type='hidden' name='cgroup' value='" + colgroup + "' />" +
+										"</form>");
+									  $('body').append(form);
+									  form.submit();
+
 		}
 		 
 		 	

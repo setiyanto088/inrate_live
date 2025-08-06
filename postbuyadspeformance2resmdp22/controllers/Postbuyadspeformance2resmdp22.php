@@ -337,82 +337,72 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 	}
 	
 	public function print_pdf_2(){
+				
 		
-		 $_POST = json_decode(file_get_contents("php://input"), true);
-      
- 	  
-      if(empty($_POST))
-      {
-          $result = array(
-              'success' => false,
-              'message' => 'Error retrieving list program'
-          );
-          
-          $this->json_result($result);
-      }
-		
-		
-	  if( !empty($this->Anti_si($_POST['start_date'])) ) {
+	 if( !empty($this->Anti_si($this->input->post('start_date',true))) ) {
            $dt   = new DateTime();
-          $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_POST['start_date']));
+          $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($this->input->post('start_date',true)));
           $start_date = $date->format('Y-m-d');
       } else {
           $start_date = NULL;
       }
-
-      if( !empty($this->Anti_si($_POST['end_date'])) ) { 
+      
+	 
+	  
+      if( !empty($this->Anti_si($this->input->post('end_date',true))) ) { 
            $dt   = new DateTime();
-          $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_POST['end_date']));
+          $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($this->input->post('end_date',true)));
           $end_date = $date->format('Y-m-d');
       } else {
           $end_date = NULL;
       }
       
-      if( !empty($this->Anti_si($_POST['profile'])) ) {
-          $profile = $this->Anti_si($_POST['profile']);
+      if( !empty($this->Anti_si($this->input->post('profile',true))) ) {
+          $profile = $this->Anti_si($this->input->post('profile',true));
       } else {
           $profile = NULL;
       }
       
-      if( !empty($this->Anti_si($_POST['kategori_by'])) ) {
-          $kategoriby = $this->Anti_si($_POST['kategori_by']);
+      if( !empty($this->Anti_si($this->input->post('kategori_by',true))) ) {
+          $kategoriby = $this->Anti_si($this->input->post('kategori_by',true));
       } else {
           $kategoriby = NULL;
       }	
       
-      if( !empty($this->Anti_si($_POST['get_kategori'])) ) {
-          $kategori = $this->Anti_si($_POST['get_kategori']);
+      if( !empty($this->Anti_si($this->input->post('get_kategori',true))) ) {
+          $kategori = $this->Anti_si($this->input->post('get_kategori',true));
       } else {
           $kategori = NULL;
       }
       
-      if( !empty($this->Anti_si($_POST['chnl'])) ) {
-          $chnl = $this->Anti_si($_POST['chnl']);
+      if( !empty($this->Anti_si($this->input->post('chnl',true))) ) {
+          $chnl = $this->Anti_si($this->input->post('chnl',true));
       } else {
           $chnl = "0";
       }
 	  
-	    if( !empty($this->Anti_si($_POST['svg'])) ) {
-          $svg = $this->Anti_si($_POST['svg']);
+	    if( !empty($this->Anti_si($this->input->get_post('svg',true))) ) {
+          $svg = $this->input->get_post('svg',true);
       } else {
           $svg = "0";
       }
 	  
-	        $search = $this->Anti_si($this->input->get_post('search'));		
+	  
+	    $search = $this->Anti_si($this->input->get_post('search'));		
       if( ! empty($this->Anti_si($search['value'])) ) {
           $search_value = $this->Anti_si($search['value']);
       } else {
           $search_value = null;
       }
 	  
-	   if( !empty($this->Anti_si($_POST['get_product'])) ) {
-          $get_product = $this->Anti_si($_POST['get_product']);
+	   if( !empty($this->Anti_si($this->input->post('get_product',true))) ) {
+          $get_product = $this->Anti_si($this->input->post('get_product',true));
       } else {
           $get_product = "";
       }
 	  
-	  	    if( !empty($this->Anti_si($_POST['get_program'])) ) {
-          $get_program = $this->Anti_si($_POST['get_program']);
+	    if( !empty($this->Anti_si($this->input->post('get_program',true))) ) {
+          $get_program = $this->Anti_si($this->input->post('get_program',true));
       } else {
           $get_program = "";
       }
@@ -830,21 +820,23 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 			$pdf->Cell(20,6,'',0,'R');
 			$pdf->Ln();
 			  
-	
-			$img = explode(',',$svg,2)[1];
+			
+			  
+			$newPsvg = str_replace("-","+",$svg);
+			$img = explode(']',$newPsvg,2)[1];
 			$pic = 'data://text/plain;base64,'. $img;
 			
 			$pdf->AddPage('0');
 			$pdf->Image($pic, 10,30,0,0,'png');
  
-		$pdf->Output('F','/data/opep/srcs/html/tmp_doc/Report_Postbuy_urban.pdf');
+		$pdf->Output('D','Report_Postbuy_urban.pdf');
 		
-		if ( $list ) {			
-			  $this->output->set_content_type('application/json')->set_output(json_encode($list));
-		} else {
-			  $result = array( 'Value not found!' );
-			  $this->output->set_content_type('application/json')->set_output(json_encode($list));
-		}
+		// if ( $list ) {			
+			  // $this->output->set_content_type('application/json')->set_output(json_encode($list));
+		// } else {
+			  // $result = array( 'Value not found!' );
+			  // $this->output->set_content_type('application/json')->set_output(json_encode($list));
+		// }
 
 		
 	}
@@ -988,23 +980,10 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 	
 	public function print_excel(){
 		
-	  $_POST = json_decode(file_get_contents("php://input"), true);
-      
- 	  
-      if(empty($_POST))
-      {
-          $result = array(
-              'success' => false,
-              'message' => 'Error retrieving list program'
-          );
-          
-          $this->json_result($result);
-      }
-		
-		
-	if( !empty($this->Anti_si($_POST['start_date'])) ) {
+			
+	if( !empty($this->Anti_si($this->input->post('start_date',true))) ) {
            $dt   = new DateTime();
-          $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_POST['start_date']));
+          $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($this->input->post('start_date',true)));
           $start_date = $date->format('Y-m-d');
       } else {
           $start_date = NULL;
@@ -1012,46 +991,46 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
       
 	 
 	  
-      if( !empty($this->Anti_si($_POST['end_date'])) ) { 
+      if( !empty($this->Anti_si($this->input->post('end_date',true))) ) { 
            $dt   = new DateTime();
-          $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_POST['end_date']));
+          $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($this->input->post('end_date',true)));
           $end_date = $date->format('Y-m-d');
       } else {
           $end_date = NULL;
       }
       
-      if( !empty($this->Anti_si($_POST['profile'])) ) {
-          $profile = $this->Anti_si($_POST['profile']);
+      if( !empty($this->Anti_si($this->input->post('profile',true))) ) {
+          $profile = $this->Anti_si($this->input->post('profile',true));
       } else {
           $profile = NULL;
       }
       
-      if( !empty($this->Anti_si($_POST['kategori_by'])) ) {
-          $kategoriby = $this->Anti_si($_POST['kategori_by']);
+      if( !empty($this->Anti_si($this->input->post('kategori_by',true))) ) {
+          $kategoriby = $this->Anti_si($this->input->post('kategori_by',true));
       } else {
           $kategoriby = NULL;
       }	
       
-      if( !empty($this->Anti_si($_POST['get_kategori'])) ) {
-          $kategori = $this->Anti_si($_POST['get_kategori']);
+      if( !empty($this->Anti_si($this->input->post('get_kategori',true))) ) {
+          $kategori = $this->Anti_si($this->input->post('get_kategori',true));
       } else {
           $kategori = NULL;
       }
       
-      if( !empty($this->Anti_si($_POST['chnl'])) ) {
-          $chnl = $this->Anti_si($_POST['chnl']);
+      if( !empty($this->Anti_si($this->input->post('chnl',true))) ) {
+          $chnl = $this->Anti_si($this->input->post('chnl',true));
       } else {
           $chnl = "0";
       }
 	  
-	    if( !empty($this->Anti_si($_POST['get_product'])) ) {
-          $get_product = $this->Anti_si($_POST['get_product']);
+	    if( !empty($this->Anti_si($this->input->post('get_product',true))) ) {
+          $get_product = $this->Anti_si($this->input->post('get_product',true));
       } else {
           $get_product = "";
       }
 	  
-	    if( !empty($this->Anti_si($_POST['get_program'])) ) {
-          $get_program = $this->Anti_si($_POST['get_program']);
+	    if( !empty($this->Anti_si($this->input->post('get_program',true))) ) {
+          $get_program = $this->Anti_si($this->input->post('get_program',true));
       } else {
           $get_program = "";
       }
@@ -1380,18 +1359,21 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 
 		
 		 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
- 
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/Postbuy_analytics.xls');
+		header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Postbuy Analytics.xls"');
+            header('Cache-Control: max-age=0');
 
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');	
+ 
  		
-		if ( $list ) {			
-			  $this->output->set_content_type('application/json')->set_output(json_encode($list));
-		} else {
-			  $result = array( 'Value not found!' );
-			  $this->output->set_content_type('application/json')->set_output(json_encode($list));
-		}
+		// if ( $list ) {			
+			  // $this->output->set_content_type('application/json')->set_output(json_encode($list));
+		// } else {
+			  // $result = array( 'Value not found!' );
+			  // $this->output->set_content_type('application/json')->set_output(json_encode($list));
+		// }
 		
 		
 	}

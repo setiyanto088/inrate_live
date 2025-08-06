@@ -372,6 +372,8 @@ class Timesegment extends JA_Controller {
                   $order_fields[$i+2] = $channel_array[$i]['CHANNEL'];
               }
           } else {
+			  $channel = "'".str_replace(",","','",substr($channel, 1))."'"; 
+			  $channel = explode(',',$channel);
               for($i=0;$i < sizeof($channel);$i++){
                   $order_fields[$i+2] = str_replace("'","",$channel[$i]);
               }
@@ -398,9 +400,9 @@ class Timesegment extends JA_Controller {
 			 $cin2 = "";
 		
 			foreach($f as $channel_f){
-				$cin = $cin."'".$channel_f['CHANNEL']."',";
+				$cin = $cin."'".$channel_f['channel']."',";
 				
-				 $cin2 = $cin2.$channel_f['CHANNEL'].",";
+				 $cin2 = $cin2.$channel_f['channel'].",";
 			}
 			
  			
@@ -415,7 +417,7 @@ class Timesegment extends JA_Controller {
 			
  
 			
-			foreach($_POST['channel'] as $channel_f){
+			foreach($channel as $channel_f){
 				$cin = $cin."'".$channel_f."',";
 				
 				$cin2 = $cin2.$channel_f.",";
@@ -437,14 +439,14 @@ class Timesegment extends JA_Controller {
       //$params['channel']		= str_replace("AND","&",$channel);
       $params['program']		= str_replace(" AND "," & ",$program);
 	  $params['cgroup'] 		= 'viewers';
-      
- 
+       
       $arr_tvcc = [];
       
  
 	  $all_data = array();
 	  $all_data_all = array();
 	  $arr_date = $this->returnBetweenDates( $params['start_date'], $params['end_date']);
+	  
 	  
 	   $this->load->library('excel');
 	  
@@ -465,8 +467,7 @@ class Timesegment extends JA_Controller {
 	  foreach($arr_date as $date_date){
 		  
 		   $list = $this->tvcc_model->export_data($params,$date_date);
- 
-		
+					
 			if($page_periode == 0){
 				
 			}else{
@@ -510,11 +511,15 @@ class Timesegment extends JA_Controller {
 	  
 	  $objPHPExcel->setActiveSheetIndex(0);
 	  
-	  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+	 header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Time Segment.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
  
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/time_segment.xls');
-	 
+			 
 	  
 	
   }  

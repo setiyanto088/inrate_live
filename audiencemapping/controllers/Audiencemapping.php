@@ -148,6 +148,8 @@ class Audiencemapping extends JA_Controller {
                   $order_fields[$i+2] = $channel_array[$i]['CHANNEL'];
               }
           } else {
+			   $channel = "'".str_replace(",","','",substr($channel, 1))."'"; 
+			  $channel = explode(',',$channel);
               for($i=0;$i < sizeof($channel);$i++){
                   $order_fields[$i+2] = str_replace("'","",$channel[$i]);
               }
@@ -231,11 +233,15 @@ class Audiencemapping extends JA_Controller {
 				
 				 $objPHPExcel->setActiveSheetIndex(0);
 	  
-	  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-		
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/export_city.xls');
-     
+				
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Export City.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+		     
   }
   
   
@@ -278,6 +284,8 @@ class Audiencemapping extends JA_Controller {
                   $order_fields[$i+2] = $channel_array[$i]['CHANNEL'];
               }
           } else {
+			  $channel = "'".str_replace(",","','",substr($channel, 1))."'"; 
+			  $channel = explode(',',$channel);
               for($i=0;$i < sizeof($channel);$i++){
                   $order_fields[$i+2] = str_replace("'","",$channel[$i]);
               }
@@ -360,11 +368,15 @@ class Audiencemapping extends JA_Controller {
 				
 				 $objPHPExcel->setActiveSheetIndex(0);
 	  
-	  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="Export Province.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
 		
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/export_province.xls');
-     
+		     
   }
   
   

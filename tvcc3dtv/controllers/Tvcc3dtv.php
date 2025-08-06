@@ -214,6 +214,8 @@ class Tvcc3dtv extends JA_Controller {
                   $order_fields[$i+2] = $channel_array[$i]['CHANNEL'];
               }
           } else {
+			  $channel = "'".str_replace(",","','",substr($channel, 1))."'"; 
+			  $channel = explode(',',$channel);
               for($i=0;$i < sizeof($channel);$i++){
                   $order_fields[$i+2] = str_replace("'","",$channel[$i]);
               }
@@ -261,6 +263,8 @@ class Tvcc3dtv extends JA_Controller {
       $params['channel']		= str_replace("AND","&",$channel);
       $params['cgroup']		= $cgroup;
    
+   
+		//print_r($params);die;
 	  
 	   $list = $this->tvcc_model->list_tvcc($params);
 	   
@@ -324,10 +328,14 @@ class Tvcc3dtv extends JA_Controller {
 		
 		$objPHPExcel->setActiveSheetIndex(0);
 	  
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-	 
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/tvpc_export_dtv.xls');
- 
+		header('Content-Type: application/vnd.ms-excel'); // For .xls files
+            header('Content-Disposition: attachment;filename="TVCC Export.xls"');
+            header('Cache-Control: max-age=0');
+
+            // Save the Excel file to output
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+	  
      
   }
   

@@ -1113,24 +1113,28 @@ function getExport(tab){
 	form_data.append('tab_cnt',tab_cnt);
  
 	
-	var urls = "<?php echo base_url();?>pivotp22/export_table" + "?sess_user_id=" + user_id + "&sess_token=" + token;
-	
-	$.ajax({
-			url: urls, 
-			dataType: 'text',  // what to expect back from the PHP script, if anything
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
+	var url = "<?php echo base_url();?>pivotp22/export_table" + "?sess_user_id=" + user_id + "&sess_token=" + token;
+	 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+								"<input type='hidden' name='tab_cnt' value='" + tab_cnt + "' />" +
+								"</form>");
+							  $('body').append(form);
+							  form.submit();
+	// $.ajax({
+			// url: urls, 
+			// dataType: 'text',  // what to expect back from the PHP script, if anything
+			// cache: false,
+			// contentType: false,
+			// processData: false,
+			// data: form_data,                         
+			// type: 'post',
+			// success: function(data){
 				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/pivot_table_print.xls','pivot_table_print.xls');
+				// download_file('<?php echo $donwload_base; ?>tmp_doc/pivot_table_print.xls','pivot_table_print.xls');
 									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
+			// }, error: function(obj, response) {
+				// console.log('ajax list detail error:' + response);	
+			// } 
+		// });	
 }
 
  function tab_filter(tabs){

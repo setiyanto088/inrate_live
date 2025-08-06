@@ -145,8 +145,6 @@ class Tvpc3dtv extends JA_Controller {
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
             $objWriter->save('php://output');
  
-		
-		$objWriter->save('/data/opep/srcs/html/tmp_doc/tvpc_dtv_export.xls');
 	}
   
 	public function get_profile_id($profiles){

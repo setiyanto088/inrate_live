@@ -2041,25 +2041,27 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 		form_data.append('order', order);
 		form_data.append('dayparts', dayparts);
 	  
+		var url = "<?php echo base_url().'tvprogramunresallp22/audiencebar_by_channel_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='type' value='" + type + "' />" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='survey' value='" + survey + "' />" +
+			"<input type='hidden' name='search' value='" + search + "' />" +
+			"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+			"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+			"<input type='hidden' name='tipe_filter' value='" + tipe_filter + "' />" +
+			"<input type='hidden' name='profile' value='" + profile_chan + "' />" +
+			"<input type='hidden' name='order' value='" + order + "' />" +
+			"<input type='hidden' name='dayparts' value='" + dayparts + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+		  
+		  $('#channel_export').removeAttr('disabled');
  	  
-		$.ajax({
-			url: "<?php echo base_url().'tvprogramunresallp22/audiencebar_by_channel_export'; ?>", 
-			dataType: 'text',  // what to expect back from the PHP script, if anything
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
-				
-				$('#channel_export').removeAttr('disabled');
- 				
- 				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_channel.xls','Audience_by_channel.xls');
-									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
 	  
 	});
 	
@@ -2100,6 +2102,7 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 		var end_date2 = $('#end_date2').val();
 		var profile_prog = $('#profile_prog').val(); 
 		var week = $('#week2').val();
+		
 		form_data.append('tahun', tahun);
 		form_data.append('check', check);
 		form_data.append('check2', check2);
@@ -2145,25 +2148,28 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 			var tpe2 = "'000s ALL";
 		}
 	  
- 	  
-		$.ajax({
-			url: "<?php echo base_url().'tvprogramunresallp22/audiencebar_by_program_export'; ?>", 
-			dataType: 'text',  // what to expect back from the PHP script, if anything
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
-				
-				$('#program_export').removeAttr('disabled');
-				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_by_programs.xls','Audience_by_program.xls');
-									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
+	  var url = "<?php echo base_url().'tvprogramunresallp22/audiencebar_by_program_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='check2' value='" + check2 + "' />" +
+			"<input type='hidden' name='type' value='" + type + "' />" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='channel' value='" + channel_prog + "' />" +
+			"<input type='hidden' name='search_t' value='" + search_t + "' />" +
+			"<input type='hidden' name='start_date' value='" + start_date2 + "' />" +
+			"<input type='hidden' name='end_date' value='" + end_date2 + "' />" +
+			"<input type='hidden' name='tipe_filter_prog' value='" + tipe_filter_prog + "' />" +
+			"<input type='hidden' name='profile' value='" + profile_prog + "' />" +
+			"<input type='hidden' name='order_t' value='" + order_t + "' />" +
+			"<input type='hidden' name='survey_data' value='" + survey_data + "' />" +
+			"<input type='hidden' name='field' value='" + field + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+	  
+	  $('#program_export').removeAttr('disabled');
 	  
 	});
 	

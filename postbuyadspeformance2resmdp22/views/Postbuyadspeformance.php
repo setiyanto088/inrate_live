@@ -1343,20 +1343,34 @@
 								  get_program : get_program
 							  };
 							  
-							  	$.ajax({
-								  type	: "POST",
-								  url		: "<?php echo base_url().'postbuyadspeformance2resmdp22/print_excel/';?>"+ "?sess_user_id=" + user_id + "&sess_token=" + token + "&profile=" + profile,
-								  data	: JSON.stringify(form_data),			
-								  dataType: 'json',
-								  contentType: 'application/json; charset=utf-8',
-								  success	: function(response) {
+							    var url = "<?php echo base_url().'postbuyadspeformance2resmdp22/print_excel'; ?>";
+							 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+								"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+								"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+								"<input type='hidden' name='get_kategori' value='" + get_kategori + "' />" +
+								"<input type='hidden' name='profile' value='" + profile + "' />" +
+								"<input type='hidden' name='kategori_by' value='" + kategori_by + "' />" +
+								"<input type='hidden' name='get_chnl' value='" + get_chnl + "' />" +
+								"<input type='hidden' name='get_product' value='" + get_product + "' />" +
+								"<input type='hidden' name='get_program' value='" + get_program + "' />" +
+								"</form>");
+							  $('body').append(form);
+							  form.submit();
+							  
+							  	// $.ajax({
+								  // type	: "POST",
+								  // url		: "<?php echo base_url().'postbuyadspeformance2resmdp22/print_excel/';?>"+ "?sess_user_id=" + user_id + "&sess_token=" + token + "&profile=" + profile,
+								  // data	: JSON.stringify(form_data),			
+								  // dataType: 'json',
+								  // contentType: 'application/json; charset=utf-8',
+								  // success	: function(response) {
 									  
-									  download_file('<?php echo $donwload_base; ?>tmp_doc/Postbuy_analytics.xls','Postbuy_analytics.xls');
+									  // download_file('<?php echo $donwload_base; ?>tmp_doc/Postbuy_analytics.xls','Postbuy_analytics.xls');
 								
-									}, error: function(obj, response) {
-									  console.log('ajax list detail error:' + response);	
-									} 
-								});
+									// }, error: function(obj, response) {
+									  // console.log('ajax list detail error:' + response);	
+									// } 
+								// });
 		  
 		  
 		
@@ -1441,21 +1455,38 @@
 								  get_program : get_program
 							  };
 							  
+							   const newString = pngm.replaceAll("+", "-");
+						  
 							 
-							  	$.ajax({
-								  type	: "POST",
-								  url		: "<?php echo base_url().'postbuyadspeformance2resmdp22/print_pdf_2/';?>"+ "?sess_user_id=" + user_id + "&sess_token=" + token + "&profile=" + profile,
-								  data	: JSON.stringify(form_data),			
-								  dataType: 'json',
-								  contentType: 'application/json; charset=utf-8',
-								  success	: function(response) {
+							  var url = "<?php echo base_url().'postbuyadspeformance2resmdp22/print_pdf_2'; ?>";
+							 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+								"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+								"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+								"<input type='hidden' name='get_kategori' value='" + get_kategori + "' />" +
+								"<input type='hidden' name='profile' value='" + profile + "' />" +
+								"<input type='hidden' name='kategori_by' value='" + kategori_by + "' />" +
+								"<input type='hidden' name='get_chnl' value='" + get_chnl + "' />" +
+								"<input type='hidden' name='svg' value='" + newString + "' />" +
+								"<input type='hidden' name='get_product' value='" + get_product + "' />" +
+								"<input type='hidden' name='get_program' value='" + get_program + "' />" +
+								"</form>");
+							  $('body').append(form);
+							  form.submit();
+							  
+							  	// $.ajax({
+								  // type	: "POST",
+								  // url		: "<?php echo base_url().'postbuyadspeformance2resmdp22/print_pdf_2/';?>"+ "?sess_user_id=" + user_id + "&sess_token=" + token + "&profile=" + profile,
+								  // data	: JSON.stringify(form_data),			
+								  // dataType: 'json',
+								  // contentType: 'application/json; charset=utf-8',
+								  // success	: function(response) {
 									  
-									  download_file('<?php echo $donwload_base; ?>tmp_doc/Report_Postbuy_urban.pdf','Report_Postbuy_urban.pdf');
+									  // download_file('<?php echo $donwload_base; ?>tmp_doc/Report_Postbuy_urban.pdf','Report_Postbuy_urban.pdf');
 								
-									}, error: function(obj, response) {
-									  console.log('ajax list detail error:' + response);	
-									} 
-								});
+									// }, error: function(obj, response) {
+									  // console.log('ajax list detail error:' + response);	
+									// } 
+								// });
 							  
 							 };							
 
@@ -1559,20 +1590,34 @@
 								  get_program : get_program
 							  };
 							  
-							  	$.ajax({
-								  type	: "POST",
-								  url		: "<?php echo base_url().'postbuyadspeformance2resmdp22/print_excel/';?>"+ "?sess_user_id=" + user_id + "&sess_token=" + token + "&profile=" + profile,
-								  data	: JSON.stringify(form_data),			
-								  dataType: 'json',
-								  contentType: 'application/json; charset=utf-8',
-								  success	: function(response) {
+							  var url = "<?php echo base_url().'postbuyadspeformance2resmdp22/print_excel'; ?>";
+							 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+								"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+								"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+								"<input type='hidden' name='get_kategori' value='" + get_kategori + "' />" +
+								"<input type='hidden' name='profile' value='" + profile + "' />" +
+								"<input type='hidden' name='kategori_by' value='" + kategori_by + "' />" +
+								"<input type='hidden' name='get_chnl' value='" + get_chnl + "' />" +
+								"<input type='hidden' name='get_product' value='" + get_product + "' />" +
+								"<input type='hidden' name='get_program' value='" + get_program + "' />" +
+								"</form>");
+							  $('body').append(form);
+							  form.submit();
+							  
+							  	// $.ajax({
+								  // type	: "POST",
+								  // url		: "<?php echo base_url().'postbuyadspeformance2resmdp22/print_excel/';?>"+ "?sess_user_id=" + user_id + "&sess_token=" + token + "&profile=" + profile,
+								  // data	: JSON.stringify(form_data),			
+								  // dataType: 'json',
+								  // contentType: 'application/json; charset=utf-8',
+								  // success	: function(response) {
 									  
-									  download_file('<?php echo $donwload_base; ?>tmp_doc/Postbuy_analytics.pdf','Postbuy_analytics.pdf');
+									  // download_file('<?php echo $donwload_base; ?>tmp_doc/Postbuy_analytics.pdf','Postbuy_analytics.pdf');
 								
-									}, error: function(obj, response) {
-									  console.log('ajax list detail error:' + response);	
-									} 
-								});
+									// }, error: function(obj, response) {
+									  // console.log('ajax list detail error:' + response);	
+									// } 
+								// });
 							  
 													
 

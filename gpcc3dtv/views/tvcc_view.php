@@ -1139,11 +1139,13 @@
  
           
           var ch = [];   
+		  var channel_header_t = "";
           if(channel == "0"){
               ch = "0";
           } else {
               for(var i=0; i < channel_header.length; i++){
                   ch.push("'"+channel_header[i]+"'");
+                  channel_header_t += ","+channel_header[i];
               }	      
           }
           
@@ -1152,35 +1154,51 @@
               return false;	
           }	        
           
-          var form_data = {
-              sess_user_id     : user_id,
-              sess_token      : token,
-              start_date	 : start_date,
-              end_date     : end_date,
-              genre     : genre,
-              datap     : datap,
-              profile   : profile,
-              daypart     : daypart,
-              channel     : ch,
-              program     : program, 
-              cgroup     : colgroup
-          };       
+          // var form_data = {
+              // sess_user_id     : user_id,
+              // sess_token      : token,
+              // start_date	 : start_date,
+              // end_date     : end_date,
+              // genre     : genre,
+              // datap     : datap,
+              // profile   : profile,
+              // daypart     : daypart,
+              // channel     : ch,
+              // program     : program, 
+              // cgroup     : colgroup
+          // };       
           
+		  var url = "<?php echo base_url().'gpcc3dtv/list_charttvcc_export'; ?>";
+									 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+										"<input type='hidden' name='sess_user_id' value='" + user_id + "' />" +
+										"<input type='hidden' name='sess_token' value='" + token + "' />" +
+										"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+										"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+										"<input type='hidden' name='genre' value='" + genre + "' />" +
+										"<input type='hidden' name='daypart' value='" + daypart + "' />" +
+										"<input type='hidden' name='datap' value='" + datap + "' />" +
+										"<input type='hidden' name='profile' value='" + profile + "' />" +
+										"<input type='hidden' name='channel' value='" + channel_header_t + "' />" +
+										"<input type='hidden' name='program' value='" + program + "' />" +
+										"<input type='hidden' name='cgroup' value='" + colgroup + "' />" +
+										"</form>");
+									  $('body').append(form);
+									  form.submit();
 		  
-		     $.ajax({
-              url : "<?php echo base_url().'gpcc3dtv/list_charttvcc_export'?>",
-              method : "POST",
-              data : form_data,
-              success: function(response) {
+		     // $.ajax({
+              // url : "<?php echo base_url().'gpcc3dtv/list_charttvcc_export'?>",
+              // method : "POST",
+              // data : form_data,
+              // success: function(response) {
 
-                 		download_file('<?php echo $donwload_base; ?>tmp_doc/genre_performance.xls','Genre Performance.xls');
+                 		// download_file('<?php echo $donwload_base; ?>tmp_doc/genre_performance.xls','Genre Performance.xls');
    
 					
-              },
-              error: function(obj, response) {
-                  console.log('ajax list_project error:' + response);
-              }
-          });       
+              // },
+              // error: function(obj, response) {
+                  // console.log('ajax list_project error:' + response);
+              // }
+          // });       
 		  
 		  
 

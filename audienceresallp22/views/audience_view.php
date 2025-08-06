@@ -1053,23 +1053,12 @@
 		var form_data = new FormData();  
 		form_data.append('ads', ads);
 		
-		
-		$.ajax({
-			url: "<?php echo base_url().'audienceresallp22/audience_export'; ?>", 
-			dataType: 'text',  
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'post',
-			success: function(data){
-				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/Audience_export.xls','Audience_export.xls');
-									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
+		var url = "<?php echo base_url().'audienceresallp22/audience_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='ads' value='" + ads + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
 		
 		
 	}
