@@ -416,9 +416,12 @@ class Tvcc extends CI_Controller {
   
   public function setdaypart(){
 	  
-	   if(!$this->session->userdata('user_id') || in_array("8",$array_menu) == 0) {
+	  $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		
+	   if(!$this->session->userdata('user_id') || in_array("8",$array_menu) == 0 || in_array("227",$array_menu) == 0) {
 			
-			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+			$result = array('success' => false, 'message' => "Failed to Process", 'html' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
          // redirect ('/login');
 		}else{
