@@ -968,6 +968,14 @@ class Tvprogramun3tvvirprog extends JA_Controller {
 	
 	public function get_filter_programaud(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("210",$array_menu) == 0) {
+		//if(in_array("0",$array_menu) == 1) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 		$where = ''; 
 		
 		 if( !empty($this->Anti_si($_GET['periode'])) ) {
@@ -1602,11 +1610,19 @@ class Tvprogramun3tvvirprog extends JA_Controller {
 		$result["draw"] = $draw;
  	  
 			$this->json_result($result);
-			
+		}
 	}
 	
 	function get_header_tbl(){
 		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("210",$array_menu) == 0) {
+		//if(in_array("0",$array_menu) == 1) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
 			
 		$week =  $this->Anti_si($this->input->post('week',true));
 		$type =  $this->Anti_si($this->input->post('type',true));
@@ -1715,6 +1731,7 @@ class Tvprogramun3tvvirprog extends JA_Controller {
 		
 		echo json_encode($data,true);
 		
+		}
 	}
 	
 	function getDatesFromRange($start, $end, $format = 'Y-m-d') { 

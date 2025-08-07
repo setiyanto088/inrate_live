@@ -15,8 +15,8 @@ class Dashboarduseetv extends JA_Controller {
 		
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
-		if(in_array("0",$array_menu) == 1) {
-		//if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
+		//if(in_array("0",$array_menu) == 1) {
+		if(!$this->session->userdata('user_id') || in_array("103",$array_menu) == 0) {
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}else{

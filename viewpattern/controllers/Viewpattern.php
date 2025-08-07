@@ -1094,6 +1094,15 @@ class Viewpattern extends JA_Controller {
   }  
 	
   public function channelsearch(){
+	  
+	  $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("151",$array_menu) == 0) {
+		//if(in_array("0",$array_menu) == 1) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+	  
        $genre = str_replace("AND","&",$this->Anti_si($_GET['g']));
       $list = $this->tvcc_model->channelsearch($this->Anti_si($_GET['q']),$genre);
       
@@ -1103,6 +1112,8 @@ class Viewpattern extends JA_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+	  
+		}
   }          
   
   public function checkdaypart(){

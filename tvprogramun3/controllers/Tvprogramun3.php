@@ -37,34 +37,65 @@ class Tvprogramun3 extends JA_Controller {
 
 	public function filter_days(){
 		
-		$type =  $this->Anti_si($this->input->post('audiencebarday',true));
-		$periode =  $this->Anti_si($this->input->post('periode',true));
-		$where = '';
-		
-		if($type == 'Viewers'){
-			$data['date'] = $this->tvprogramun_model->list_spot_by_date_all2_viewer($where,$periode);
-		}elseif($type == 'Duration'){
-			$data['date'] = $this->tvprogramun_model->list_spot_by_date_all2_duration($where,$periode);
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("48",$array_menu) == 0) {
+		//if(in_array("0",$array_menu) == 1) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}else{
-			$data['date'] = $this->tvprogramun_model->list_spot_by_date_all2($where,$periode);
+			
+			$type =  $this->Anti_si($this->input->post('audiencebarday',true));
+			$periode =  $this->Anti_si($this->input->post('periode',true));
+			
+			$arr_regs = ['Audience','Viewers','Duration'];
+			$channel_error = 0;
+				$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$periode),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+				
+				if(in_array(str_replace("'","",$type),$arr_regs) == 0){
+					$channel_error++;
+				}
+				
+				if($channel_error > 0){
+					$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+					$this->output->set_content_type('application/json')->set_output(json_encode($result));
+				}else{
+						
+					$where = '';
+					
+					if($type == 'Viewers'){
+						$data['date'] = $this->tvprogramun_model->list_spot_by_date_all2_viewer($where,$periode);
+					}elseif($type == 'Duration'){
+						$data['date'] = $this->tvprogramun_model->list_spot_by_date_all2_duration($where,$periode);
+					}else{
+						$data['date'] = $this->tvprogramun_model->list_spot_by_date_all2($where,$periode);
+					}
+					
+					if ($data['date'] <> null){
+						foreach($data['date'] as $datasss){
+							$data_date[] = $datasss['date'];
+							$spot_date[] = floatval($datasss['spot']);
+						}
+					}		
+					else {
+						$data_date[]='';
+						$spot_date[] =0;
+					}		
+					
+					$data['json_date'] = $data_date;
+					$data['json_spot_date'] = $spot_date;
+					
+					echo json_encode($data,true); 
+				}
 		}
-		
-		if ($data['date'] <> null){
-			foreach($data['date'] as $datasss){
-				$data_date[] = $datasss['date'];
-				$spot_date[] = floatval($datasss['spot']);
-			}
-		}		
-		else {
-			$data_date[]='';
-			$spot_date[] =0;
-		}		
-		
-		$data['json_date'] = $data_date;
-		$data['json_spot_date'] = $spot_date;
-		
-		echo json_encode($data,true); 
- 		
 	}
 
 

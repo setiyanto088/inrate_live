@@ -267,17 +267,38 @@ class Createprofileu extends JA_Controller {
 	
   public function del_jobs(){
 	  
-	  
-		$list = $_POST['pid'];
-	  
-		$command = 'php /var/www/jobs/profiling/ultimate/delete_profile_fta.php '.$list.' > /var/www/jobs/profiling/ultimate/delete_log_profile_'.$list.'.log 2>&1 & ';  
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		$list = $this->Anti_si($_POST['pid']);
+		
+		$channel_error = 0;
+		
+		//if(!$this->session->userdata('user_id') || in_array("3",$array_menu) == 0  || in_array("55",$array_menu) == 0) {
+		if(in_array("0",$array_menu) == 1) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
 			
-		$pid = shell_exec($command);
-	  
-	  
-		$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
+			if (!is_numeric(str_replace("'","",$list))) {
+				$channel_error++;
+			}
 			
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			if($channel_error > 0){
+				$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
+				$command = 'php /var/www/jobs/profiling/ultimate/delete_profile_fta.php '.$list.' > /var/www/jobs/profiling/ultimate/delete_log_profile_'.$list.'.log 2>&1 & ';  
+					
+				$pid = shell_exec($command);
+				
+				$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
+				
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}
+		  
+		
+		
+		}
   }
 	
 	public function create_profiling(){
