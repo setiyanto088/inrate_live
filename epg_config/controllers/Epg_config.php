@@ -129,7 +129,7 @@ class epg_config extends JA_Controller {
 		
 		$array_field = ['','CHANNEL','SCHEDULE_NAME','START_TIME','END_TIME','GENRE'];
 		
-		$folder="uploads/";
+		$folder="/data/opep/srcs/uploadepg/";
 		if (!file_exists($folder)) {
 			mkdir($folder, 0777);
 		}
@@ -255,7 +255,7 @@ $html_tb .= $row.'
 			$myfile = fopen($folder."load_cdr_zte.sql", "w");
 				//$txt = 'LOAD DATA LOCAL INFILE "C:/xampp56/htdocs/inrate_ch/uploads/data.csv" INTO TABLE EPG_RAW1_TEMP FIELDS TERMINATED BY "," LINES TERMINATED BY "\n"  
 			//(CHANNEL,PROGRAM,START_TIME,END_TIME,GENRE,TOKEN)';
-		$txt = 'LOAD DATA LOCAL INFILE "'.$this->loc_file().'uploads/data.csv" INTO TABLE EPG_RAW1_TEMP FIELDS TERMINATED BY "|" LINES TERMINATED BY "\n"  
+		$txt = 'LOAD DATA LOCAL INFILE "'.$folder.'data.csv" INTO TABLE EPG_RAW1_TEMP FIELDS TERMINATED BY "|" LINES TERMINATED BY "\n"  
 			(CHANNEL,PROGRAM,START_TIME,END_TIME,GENRE,TOKEN)';
 			
 			//echo $txt;die;
@@ -268,7 +268,7 @@ $html_tb .= $row.'
 				
 				//$command = 'C:\xampp56\mysql\bin\mysql -h dev-datamart.u.1elf.net -u inrate -pa2cd-0c6d851fc9de inrate < C:/xampp56/htdocs/inrate_ch/uploads/load_cdr_zte.sql 2>&1 ';
 				// mariadb -h dev-datamart.u.1elf.net -u inrate -pa2cd-0c6d851fc9de inrate < /var/www/html/epg/uploads/load_cdr_zte.sql 2>&1 
-				$command = 'mysql -h dev-datamart.u.1elf.net -u inrate -pa2cd-0c6d851fc9de inrate < '.$this->loc_file().'uploads/load_cdr_zte.sql 2>&1 ';
+				$command = 'mysql -h dev-datamart.u.1elf.net -u inrate -pa2cd-0c6d851fc9de inrate < '.$folder.'load_cdr_zte.sql 2>&1 ';
 				$pid = shell_exec($command);
 			
 		
