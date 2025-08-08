@@ -272,54 +272,54 @@ class Createuser extends JA_Controller {
 		
 		// $this->redirect_halamanself();
 	// }
-	// public function editself() {
+	public function editself() {
 	
-		// $params['pwd'] = $this->Anti_si($_POST['pwd']);
-		// $params['oldpwd']= $this->Anti_si($_POST['oldpwd']);
-		// $params['cmfpwd']= $this->Anti_si($_POST['cmfpwd']);
-		// $params['token']= $this->Anti_si($_POST['token']);
-		// $params['uid']= $this->session->userdata('user_id');
+		$params['pwd'] = $this->Anti_si($_POST['pwd']);
+		$params['oldpwd']= $this->Anti_si($_POST['oldpwd']);
+		$params['cmfpwd']= $this->Anti_si($_POST['cmfpwd']);
+		$params['token']= $this->Anti_si($_POST['token']);
+		$params['uid']= $this->session->userdata('user_id');
 		
-		// $validate = $this->createuser_model->validate_password($params);
+		$validate = $this->createuser_model->validate_password($params);
 		
-		// if($validate['status'] == 0){
-			// $res = array(
-				// 'status' => 'error',
-				// 'message' => $validate['message']
-			// );
-		// }else{
+		if($validate['status'] == 0){
+			$res = array(
+				'status' => 'error',
+				'message' => $validate['message']
+			);
+		}else{
 			
-			// if(strlen($params['pwd']) <8 || strlen($params['cmfpwd']) <8 ){
-				// $res = array(
-					// 'status' => 'error',
-					// 'message' => 'password must 8 character or more'
-				// );
-			// }elseif($params['pwd'] <> $params['cmfpwd']){
-				// $res = array(
-					// 'status' => 'error',
-					// 'message' => 'Confirm password must be same with new Password'
-				// );
-			// }else{
-				// $hasil = $this->createuser_model->edit_pass($params);
-				// if($hasil > 0){
-					 // $res = array(
-						// 'status' => 'success',
-						// 'message' => 'Change Password Success!',
-					// );
-				// }else{
-					// $res = array(
-						// 'status' => 'error',
-						// 'message' => 'Change Password Failed!'
-					// );
-				// }
-			// }
+			if(strlen($params['pwd']) <8 || strlen($params['cmfpwd']) <8 ){
+				$res = array(
+					'status' => 'error',
+					'message' => 'password must 8 character or more'
+				);
+			}elseif($params['pwd'] <> $params['cmfpwd']){
+				$res = array(
+					'status' => 'error',
+					'message' => 'Confirm password must be same with new Password'
+				);
+			}else{
+				$hasil = $this->createuser_model->edit_pass($params);
+				if($hasil > 0){
+					 $res = array(
+						'status' => 'success',
+						'message' => 'Change Password Success!',
+					);
+				}else{
+					$res = array(
+						'status' => 'error',
+						'message' => 'Change Password Failed!'
+					);
+				}
+			}
 			
-		// }
+		}
 		
 		
-		// $this->output->set_content_type('application/json')->set_output(json_encode($res));
+		$this->output->set_content_type('application/json')->set_output(json_encode($res));
 		
-	// }
+	}
 	
 	// public function list_user() 
 	 // {
