@@ -417,17 +417,17 @@ class Tvpc3dtvsea extends JA_Controller {
 		$this->output->set_content_type('Application/json')->set_output(json_encode($result));
 	}	                                                                 
     
-  public function profilesearch(){
-      $iduser = $this->session->userdata('user_id');
-      $list = $this->tvpc_model->profilesearch($_GET['q'],$iduser,$_GET['f']);
+  // public function profilesearch(){
+      // $iduser = $this->session->userdata('user_id');
+      // $list = $this->tvpc_model->profilesearch($_GET['q'],$iduser,$_GET['f']);
       
-      if ( $list ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($list));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
-  }     
+      // if ( $list ) {			
+          // $this->output->set_content_type('application/json')->set_output(json_encode($list));
+      // } else {
+          // $result = array( 'Value not found!' );
+          // $this->output->set_content_type('application/json')->set_output(json_encode($result));
+      // }
+  // }     
   
   public function setprofile(){
       $iduser = $this->session->userdata('user_id');
@@ -441,30 +441,42 @@ class Tvpc3dtvsea extends JA_Controller {
       }
   }                      
   
-  public function genresearch(){
-      $typerole = $this->session->userdata('type_role');
-      $list = $this->tvpc_model->genresearch($_GET['q'],$typerole);
+  // public function genresearch(){
+      // $typerole = $this->session->userdata('type_role');
+      // $list = $this->tvpc_model->genresearch($_GET['q'],$typerole);
       
-      if ( $list ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($list));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
-  }                                                  
+      // if ( $list ) {			
+          // $this->output->set_content_type('application/json')->set_output(json_encode($list));
+      // } else {
+          // $result = array( 'Value not found!' );
+          // $this->output->set_content_type('application/json')->set_output(json_encode($result));
+      // }
+  // }                                                  
     
   public function channelsearch(){
       $typerole = $this->session->userdata('type_role');
-      $genre = str_replace("AND","&",$_GET['g']);
-      $list = $this->tvpc_model->channelsearch($_GET['q'],$genre,$typerole);
+	   $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("181",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+				$search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
+				
+			  $list = $this->tvpc_model->channelsearch($search_t,0,0);
+			  
+			  
+			   
+			  if ( $list ) {			
+				  $this->output->set_content_type('application/json')->set_output(json_encode($list));
+			  } else {
+				  $result = array( 'Value not found!' );
+				  $this->output->set_content_type('application/json')->set_output(json_encode($result));
+			  }
 	  
-       
-      if ( $list ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($list));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
+		}
   }             
   
   public function checkdaypart(){

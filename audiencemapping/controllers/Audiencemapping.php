@@ -870,8 +870,17 @@ class Audiencemapping extends JA_Controller {
                                                                     
     
   public function genresearch(){
+	    if(!$this->session->userdata('user_id') || in_array("97",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       $typerole = $this->session->userdata('type_role');
-      $list = $this->tvcc_model->genresearch($_GET['q'],$typerole);
+	  
+	  $search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
+	  
+      $list = $this->tvcc_model->genresearch($search_t,$typerole);
       
       if ( $list ) {			
           $this->output->set_content_type('application/json')->set_output(json_encode($list));
@@ -879,11 +888,21 @@ class Audiencemapping extends JA_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+	  
+		}
   }                                                                                                        
     
   public function profilesearch(){
+	    if(!$this->session->userdata('user_id') || in_array("97",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       $iduser = $this->session->userdata('user_id');
-      $list = $this->tvcc_model->profilesearch($_GET['q'],$iduser,$_GET['f']);
+	  $search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
+		
+      $list = $this->tvcc_model->profilesearch($search_t,$iduser,$_GET['f']);
       
       if ( $list ) {			
           $this->output->set_content_type('application/json')->set_output(json_encode($list));
@@ -891,9 +910,18 @@ class Audiencemapping extends JA_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+	  
+		}
   }          
   
   public function setprofile(){
+	  
+	    if(!$this->session->userdata('user_id') || in_array("97",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       $iduser = $this->session->userdata('user_id');
       $list = $this->tvcc_model->list_profile($iduser,"",$_GET['f']);          
       
@@ -903,10 +931,18 @@ class Audiencemapping extends JA_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+	  
+		}
   }                                                     
     
 	 
 	public function programsearch(){
+		  if(!$this->session->userdata('user_id') || in_array("97",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       $params['channel'] = str_replace("AND","&",$_GET['q']);
 	  
 	   $sec1 = strtotime($_GET['d']); 
@@ -924,11 +960,23 @@ class Audiencemapping extends JA_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+	  
+		}
   }  
 	
   public function channelsearch(){
+	  
+	  if(!$this->session->userdata('user_id') || in_array("97",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       $genre = str_replace("AND","&",$_GET['g']);
-      $list = $this->tvcc_model->channelsearch($_GET['q'],$genre);
+	  
+	  $search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
+	   
+      $list = $this->tvcc_model->channelsearch($search_t,$genre);
       
       if ( $list ) {			
           $this->output->set_content_type('application/json')->set_output(json_encode($list));
@@ -936,60 +984,8 @@ class Audiencemapping extends JA_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+	  
+		}
   }          
-  
-  public function checkdaypart(){
-      $userid = $this->session->userdata('user_id');
-      
-      if( ! empty($_GET['f']) ) {
-          $from = $_GET['f'];
-      } else {
-          $from = "00:00";
-      }
-      
-      if( ! empty($_GET['t']) ) {
-          $to = $_GET['t'];
-      } else {
-          $to = "00:00";
-      }
-      
-      $daypart = $_GET['f'].":00-".$_GET['t'].":00"; 
-      
-      $count_daypart = $this->tvcc_model->checkdaypart($userid,$daypart);
-    
-  		if ( $count_daypart != "1" ) {
-        $result = array( 'success' => true, 'message' => 'Vacant', 'data' => array('hasil' => $count_daypart));
-  			
-  			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-  		} else {
-  			$result = array( 'success' => false, 'message' => 'Exist', 'data' => array('hasil' => $count_daypart));
-  			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-  		}
-  }       
-  
-  public function setdaypart(){
-      $typerole = $this->session->userdata('type_role');
-      $userid = $this->session->userdata('user_id');
-      
-      if( ! empty($_GET['f']) ) {
-          $from = $_GET['f'];
-      } else {
-          $from = "00:00";
-      }
-      
-      if( ! empty($_GET['t']) ) {
-          $to = $_GET['t'];
-      } else {
-          $to = "00:00";
-      }
-      
-      $daypart = $this->tvcc_model->setdaypart($userid,$from,$to);
-      
-      if ( $daypart ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($daypart));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
-  }
+
 }

@@ -63,6 +63,12 @@ class epg_config extends JA_Controller {
 	
 	public function process_data(){
 		
+		if(!$this->session->userdata('user_id') || in_array("237",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
 		$params['iduser'] = $this->session->userdata('user_id');
 		$token =  $this->Anti_si($this->input->post('data_rdn',true));
 		
@@ -97,10 +103,19 @@ class epg_config extends JA_Controller {
 		
 		}
 		
+		}
+		
 	}
 	
 	 public function upload_file()
 	{
+		
+		
+		if(!$this->session->userdata('user_id') || in_array("237",$array_menu) == 0) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+		
 		$iduser = $this->session->userdata('user_id');
 		$token =  $this->Anti_si($this->input->post('data_rdn',true));
 		$token_rd =  $this->Anti_si($this->input->post('arr_data_tok_int',true));
@@ -301,6 +316,8 @@ $html_tb .= $row.'
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($array_file_s));
 		}
+		}
+		
 	}
 	
  

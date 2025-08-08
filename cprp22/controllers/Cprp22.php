@@ -308,29 +308,29 @@ class Cprp22 extends JA_Controller {
 		
 	}
 	
-	public function listsearch(){
-          $typerole = $this->session->userdata('type_role');
-		$list = $this->createprofileu_model->listsearch($this->Anti_si($_GET['q']), $typerole);
-        if ( $list ) {			
+	// public function listsearch(){
+          // $typerole = $this->session->userdata('type_role');
+		// $list = $this->createprofileu_model->listsearch($this->Anti_si($_GET['q']), $typerole);
+        // if ( $list ) {			
 			
-			$this->output->set_content_type('application/json')->set_output(json_encode($list));
-		} else {
-			$result = array( 'Value not found!' );
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		}
-	}
-	public function searchfav(){
-        $_POST = json_decode(file_get_contents("php://input"), true);
-		$list = $this->createprofileu_model->searchfav($_POST);
-        if ( $list ) {			
-			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
+			// $this->output->set_content_type('application/json')->set_output(json_encode($list));
+		// } else {
+			// $result = array( 'Value not found!' );
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// }
+	// }
+	// public function searchfav(){
+        // $_POST = json_decode(file_get_contents("php://input"), true);
+		// $list = $this->createprofileu_model->searchfav($_POST);
+        // if ( $list ) {			
+			// $result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
 			
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		} else {
-			$result = array( 'success' => true, 'message' => 'data null', 'data' => array('hasil' => array())  );
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		}
-	}
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// } else {
+			// $result = array( 'success' => true, 'message' => 'data null', 'data' => array('hasil' => array())  );
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// }
+	// }
 	
 	public function run_jobs(){
 		$_POST = json_decode(file_get_contents("php://input"), true);
@@ -565,65 +565,65 @@ class Cprp22 extends JA_Controller {
 		
 		
 	}
-	public function create_pav(){
-		$_POST = json_decode(file_get_contents("php://input"), true);
-		$list = $this->createprofileu_model->create_pav($_POST);
-		if ( $list ) {			
-			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
+	// public function create_pav(){
+		// $_POST = json_decode(file_get_contents("php://input"), true);
+		// $list = $this->createprofileu_model->create_pav($_POST);
+		// if ( $list ) {			
+			// $result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => $list));
 			
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		} else {
-			$result = array( 'success' => true, 'message' => 'data null', 'data' => array('hasil' => array()) );
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		}
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// } else {
+			// $result = array( 'success' => true, 'message' => 'data null', 'data' => array('hasil' => array()) );
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// }
 		
 		
-	} 
-	public function searchopvalold(){
-		$_POST = json_decode(file_get_contents("php://input"), true);
-//		 print_r($_POST); die;
-		$list = $this->createprofileu_model->searchopval($this->Anti_si($_POST['name']), $this->Anti_si($_POST['user_id']));
-		if ( $list ) {			
-			$result = array( 'success' => true, 'message' => 'Success', 'data' => $list );
+	// } 
+	// public function searchopvalold(){
+		// $_POST = json_decode(file_get_contents("php://input"), true);
+// //		 print_r($_POST); die;
+		// $list = $this->createprofileu_model->searchopval($this->Anti_si($_POST['name']), $this->Anti_si($_POST['user_id']));
+		// if ( $list ) {			
+			// $result = array( 'success' => true, 'message' => 'Success', 'data' => $list );
 			
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		} else {
-			$result = array( 'success' => false, 'message' => 'Error load data' );
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		}
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// } else {
+			// $result = array( 'success' => false, 'message' => 'Error load data' );
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// }
 		
 		
-	}
-	public function searchopval(){
-		$_POST = json_decode(file_get_contents("php://input"), true);
-//		 print_r($_POST); die;
-		$list = $this->createprofileu_model->searchopval($this->Anti_si($_POST['name']));
-		if ( $list ) {			
-			$result = array( 'success' => true, 'message' => 'Success', 'data' => $list );
+	// }
+	// public function searchopval(){
+		// $_POST = json_decode(file_get_contents("php://input"), true);
+// //		 print_r($_POST); die;
+		// $list = $this->createprofileu_model->searchopval($this->Anti_si($_POST['name']));
+		// if ( $list ) {			
+			// $result = array( 'success' => true, 'message' => 'Success', 'data' => $list );
 			
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		} else {
-			$result = array( 'success' => false, 'message' => 'Error load data' );
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		}
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// } else {
+			// $result = array( 'success' => false, 'message' => 'Error load data' );
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// }
 		
 		
-	}
-	public function ceksearchfav(){
-		$_POST = json_decode(file_get_contents("php://input"), true);
-//		 print_r($_POST); die;
-		$list = $this->createprofileu_model->ceksearchfav($_POST);
-		if ( $list ) {			
-			$result = array( 'success' => true, 'message' => 'Success', 'data' => $list );
+	// }
+	// public function ceksearchfav(){
+		// $_POST = json_decode(file_get_contents("php://input"), true);
+// //		 print_r($_POST); die;
+		// $list = $this->createprofileu_model->ceksearchfav($_POST);
+		// if ( $list ) {			
+			// $result = array( 'success' => true, 'message' => 'Success', 'data' => $list );
 			
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		} else {
-			$result = array( 'success' => false, 'message' => 'Error load data' );
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		}
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// } else {
+			// $result = array( 'success' => false, 'message' => 'Error load data' );
+			// $this->output->set_content_type('application/json')->set_output(json_encode($result));
+		// }
 		
 		
-	}
+	// }
 	public function redirect_halaman()
 	{
 		$this->load->helper('url');
@@ -1119,17 +1119,17 @@ class Cprp22 extends JA_Controller {
 		}	
 	}
   
-  public function listnotyet(){
-      $list = $this->createprofileu_model->listnotyet($this->Anti_si($_GET['profid']));
+  // public function listnotyet(){
+      // $list = $this->createprofileu_model->listnotyet($this->Anti_si($_GET['profid']));
       
-      if ( $list ) {			
-          $result = array( 'success' => true, 'message' => 'Exist', 'data' => $list);
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
-  }  
+      // if ( $list ) {			
+          // $result = array( 'success' => true, 'message' => 'Exist', 'data' => $list);
+          // $this->output->set_content_type('application/json')->set_output(json_encode($result));
+      // } else {
+          // $result = array( 'Value not found!' );
+          // $this->output->set_content_type('application/json')->set_output(json_encode($result));
+      // }
+  // }  
   
   	public function Anti_sql_injection($string) {
 		$string = strip_tags(trim(addslashes(htmlspecialchars(stripslashes($string)))));

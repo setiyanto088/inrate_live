@@ -1832,20 +1832,7 @@ public function list_chart_audience_witel(){
 		 $this->output->set_content_type('application/json')->set_output(json_encode($result));
         
     }
-  
-  
-   public function listsearch(){
-        $typerole = $this->session->userdata('type_role');
-        $list = $this->audience_model->listsearch($_GET['q'],$_GET['d'],$_GET['c'], $typerole);
-		
-        
-        if ( $list ) {			
-            $this->output->set_content_type('application/json')->set_output(json_encode($list));
-        } else {
-            $result = array( 'Value not found!' );
-            $this->output->set_content_type('application/json')->set_output(json_encode($result));
-        }
-    }                
+           
   
   public function setdaypart(){
       $typerole = $this->session->userdata('type_role');

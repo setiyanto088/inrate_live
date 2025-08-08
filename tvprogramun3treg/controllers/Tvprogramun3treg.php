@@ -10,538 +10,538 @@ class Tvprogramun3treg extends JA_Controller {
 		$this->load->model('tvprogramun_model');
 	}
 
-	public function stosearch(){
-      $typerole = $this->session->userdata('type_role');
-      $genre = str_replace("AND","&",$_GET['g']);
-      $witel = $_GET['w'];
-      $datel = $_GET['d'];
+	// public function stosearch(){
+      // $typerole = $this->session->userdata('type_role');
+      // $genre = str_replace("AND","&",$_GET['g']);
+      // $witel = $_GET['w'];
+      // $datel = $_GET['d'];
 	  
 	  
-      $list = $this->tvprogramun_model->stosearch($_GET['q'],$genre,$witel,$typerole, $datel);
+      // $list = $this->tvprogramun_model->stosearch($_GET['q'],$genre,$witel,$typerole, $datel);
       
-      if ( $list ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($list));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
-	} 
+      // if ( $list ) {			
+          // $this->output->set_content_type('application/json')->set_output(json_encode($list));
+      // } else {
+          // $result = array( 'Value not found!' );
+          // $this->output->set_content_type('application/json')->set_output(json_encode($result));
+      // }
+	// } 
 
-	public function datelsearch(){
-      $typerole = $this->session->userdata('type_role');
-      $genre = str_replace("AND","&",$_GET['g']);
-      $witel = $_GET['w'];
+	// public function datelsearch(){
+      // $typerole = $this->session->userdata('type_role');
+      // $genre = str_replace("AND","&",$_GET['g']);
+      // $witel = $_GET['w'];
 	  
 	  
-      $list = $this->tvprogramun_model->datelsearch($_GET['q'],$genre,$witel,$typerole);
+      // $list = $this->tvprogramun_model->datelsearch($_GET['q'],$genre,$witel,$typerole);
       
-      if ( $list ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($list));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
-	} 
+      // if ( $list ) {			
+          // $this->output->set_content_type('application/json')->set_output(json_encode($list));
+      // } else {
+          // $result = array( 'Value not found!' );
+          // $this->output->set_content_type('application/json')->set_output(json_encode($result));
+      // }
+	// } 
 	
-	public function witelsearch(){
-      $typerole = $this->session->userdata('type_role');
-      $genre = str_replace("AND","&",$_GET['g']);
-      $list = $this->tvprogramun_model->witelsearch($_GET['q'],$genre,$typerole);
+	// public function witelsearch(){
+      // $typerole = $this->session->userdata('type_role');
+      // $genre = str_replace("AND","&",$_GET['g']);
+      // $list = $this->tvprogramun_model->witelsearch($_GET['q'],$genre,$typerole);
       
-      if ( $list ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($list));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
-	}    
+      // if ( $list ) {			
+          // $this->output->set_content_type('application/json')->set_output(json_encode($list));
+      // } else {
+          // $result = array( 'Value not found!' );
+          // $this->output->set_content_type('application/json')->set_output(json_encode($result));
+      // }
+	// }    
 	
 	
-	public function audiencebar_by_program_export(){
+	// public function audiencebar_by_program_export(){
 		
 		
-		$genre =  $this->Anti_si($this->input->post('genre',true));
-		$regional =  $this->Anti_si($this->input->post('regional',true));
-		$witel =  $this->Anti_si($this->input->post('witel',true));
-		$datel =  $this->Anti_si($this->input->post('datel',true));
-		$sto =  $this->Anti_si($this->input->post('sto',true));
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		$type =  $this->Anti_si($this->input->post('pilihprog',true));
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$profile=$this->Anti_si($this->input->post('profile',true));
-		$nmonth = date("m", strtotime($tahun));
-		$week=$this->Anti_si($this->input->post('week',true));
-		$tgl=$this->Anti_si($this->input->post('tgl',true));
-		$periode=$this->Anti_si($this->input->post('periode',true));
+		// $genre =  $this->Anti_si($this->input->post('genre',true));
+		// $regional =  $this->Anti_si($this->input->post('regional',true));
+		// $witel =  $this->Anti_si($this->input->post('witel',true));
+		// $datel =  $this->Anti_si($this->input->post('datel',true));
+		// $sto =  $this->Anti_si($this->input->post('sto',true));
+		// $where =  $this->Anti_si($this->input->post('cond',true));
+		// $type =  $this->Anti_si($this->input->post('pilihprog',true));
+		// $tahun=$this->Anti_si($this->input->post('tahun',true));
+		// $bulan=$this->Anti_si($this->input->post('bulan',true));
+		// $profile=$this->Anti_si($this->input->post('profile',true));
+		// $nmonth = date("m", strtotime($tahun));
+		// $week=$this->Anti_si($this->input->post('week',true));
+		// $tgl=$this->Anti_si($this->input->post('tgl',true));
+		// $periode=$this->Anti_si($this->input->post('periode',true));
 	
 	
-		if($genre == "" || $genre == "0" ){
-				$where_g = "";
-			}else{
-				$where_g = " AND GENRE = '".str_replace("AND","&",$genre)."' ";
-			}
+		// if($genre == "" || $genre == "0" ){
+				// $where_g = "";
+			// }else{
+				// $where_g = " AND GENRE = '".str_replace("AND","&",$genre)."' ";
+			// }
 		  
  		  
-		  $where = '';
-		  $pilihprog = $type;
+		  // $where = '';
+		  // $pilihprog = $type;
 		 
-		   $params['limit'] 		= 10;
-			$params['offset'] 		= 0;
-			$params['periode'] 	= $periode;
-			$params['week'] 	= $week;
-			$params['searchtxt'] 	= "";
+		   // $params['limit'] 		= 10;
+			// $params['offset'] 		= 0;
+			// $params['periode'] 	= $periode;
+			// $params['week'] 	= $week;
+			// $params['searchtxt'] 	= "";
 		 
 			
-			$nmonth = date("m", strtotime($periode));
-			$datef = $tgl."/".$nmonth."/".substr($periode,0,4);
-			$datefF = substr($periode,0,4)."-".$nmonth."-".$tgl;
+			// $nmonth = date("m", strtotime($periode));
+			// $datef = $tgl."/".$nmonth."/".substr($periode,0,4);
+			// $datefF = substr($periode,0,4)."-".$nmonth."-".$tgl;
 			
-			$params['tgl'] 	= $datefF;
+			// $params['tgl'] 	= $datefF;
 		
 		
 		
-				if ($week=="ALL"){
-			if ($tgl=="0"){
+				// if ($week=="ALL"){
+			// if ($tgl=="0"){
 				
-				if($regional == "0" || $regional == ""){
+				// if($regional == "0" || $regional == ""){
 					
  					
-					$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly","NASIONAL","",$profile,$where_g,$params);
+					// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly","NASIONAL","",$profile,$where_g,$params);
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params); 
+						// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$witel,$regional,$profile,$where_g,$params); 
+							// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$witel,$regional,$profile,$where_g,$params); 
 							
 							
-						}else{
+						// }else{
 						
-							if($sto == "0" || $sto == ""){
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$datel,$witel,$profile,$where_g,$params); 
-							}else{
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$sto,$datel,$profile,$where_g,$params); 
-							}
-						}
+							// if($sto == "0" || $sto == ""){
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$datel,$witel,$profile,$where_g,$params); 
+							// }else{
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$sto,$datel,$profile,$where_g,$params); 
+							// }
+						// }
 
 					
-					}
+					// }
 
-				}
+				// }
 				
 				
-			}else {
+			// }else {
 				
-				if($regional == "0" || $regional == ""){
+				// if($regional == "0" || $regional == ""){
 					
-					$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly","NASIONAL","",$profile,$where_g,$params,$datefF);
+					// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly","NASIONAL","",$profile,$where_g,$params,$datefF);
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params,$datefF); 
+						// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params,$datefF); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$witel,$regional,$profile,$where_g,$params,$datefF); 
+							// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$witel,$regional,$profile,$where_g,$params,$datefF); 
 							
 							
-						}else{
+						// }else{
 							
-							if($sto == "0" || $sto == ""){
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$datel,$witel,$profile,$where_g,$params,$datefF); 
-							}else{
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$sto,$datel,$profile,$where_g,$params,$datefF); 
-							}
+							// if($sto == "0" || $sto == ""){
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$datel,$witel,$profile,$where_g,$params,$datefF); 
+							// }else{
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$sto,$datel,$profile,$where_g,$params,$datefF); 
+							// }
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
+				// }
 				
-			}
-		}else {
-				if($regional == "0" || $regional == ""){
+			// }
+		// }else {
+				// if($regional == "0" || $regional == ""){
 					
-					$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly","NASIONAL","",$profile,$where_g,$params,$week);
+					// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly","NASIONAL","",$profile,$where_g,$params,$week);
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params,$week); 
+						// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params,$week); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$witel,$regional,$profile,$where_g,$params,$week); 
+							// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$witel,$regional,$profile,$where_g,$params,$week); 
 							
 							
-						}else{
-							if($sto == "0" || $sto == ""){
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$datel,$witel,$profile,$where_g,$params,$week); 
-							}else{
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$sto,$datel,$profile,$where_g,$params,$week); 
-							}
+						// }else{
+							// if($sto == "0" || $sto == ""){
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$datel,$witel,$profile,$where_g,$params,$week); 
+							// }else{
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$sto,$datel,$profile,$where_g,$params,$week); 
+							// }
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
-		}
+				// }
+		// }
 			
 				
-		    $data = array();	
+		    // $data = array();	
 			
  		
-		   foreach ( $list['data_full'] as $k => $v ) {
+		   // foreach ( $list['data_full'] as $k => $v ) {
 			  
 				
-			    array_push($data, 
-				  array(
-					 $v['Rangking'],
-					  $v['PROGRAM'],
-					  $v['CHANNEL'],
-					  $v['AUDIENCE'],
-					  $v['SHARE'],
-					 $v['REACH'],
-					  $v['TOTAL_VIEW'],
-					$v['DURATION'],
-					 $v['AVGTOTDUR']
+			    // array_push($data, 
+				  // array(
+					 // $v['Rangking'],
+					  // $v['PROGRAM'],
+					  // $v['CHANNEL'],
+					  // $v['AUDIENCE'],
+					  // $v['SHARE'],
+					 // $v['REACH'],
+					  // $v['TOTAL_VIEW'],
+					// $v['DURATION'],
+					 // $v['AVGTOTDUR']
 					 
-				  )
-			  );
+				  // )
+			  // );
  			   
-		   }
-			 $result["data_full"] = $data;
+		   // }
+			 // $result["data_full"] = $data;
 			  
 		 
 			
-		   $this->load->library('excel');
+		   // $this->load->library('excel');
 	   
-	   $objPHPExcel = new PHPExcel();
+	   // $objPHPExcel = new PHPExcel();
 	   
 	   
 	   
-	   $objPHPExcel->getProperties()->setCreator("Unics")
-									 ->setLastModifiedBy("Unics")
-									 ->setTitle("Postbuy Analytics")
-									 ->setSubject("Postbuy Analytics")
-									 ->setDescription("Report Postbuy")
-									 ->setKeywords("Postbuy Analytics")
-									 ->setCategory("Report");
+	   // $objPHPExcel->getProperties()->setCreator("Unics")
+									 // ->setLastModifiedBy("Unics")
+									 // ->setTitle("Postbuy Analytics")
+									 // ->setSubject("Postbuy Analytics")
+									 // ->setDescription("Report Postbuy")
+									 // ->setKeywords("Postbuy Analytics")
+									 // ->setCategory("Report");
 	   
-	     $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A1', 'Regional '.$regional)
-					->setCellValue('B1', 'Witel '.$witel)
-					->setCellValue('C1', 'Datel '.$datel)
-					->setCellValue('C1', 'STO '.$sto);
+	     // $objPHPExcel->setActiveSheetIndex(0)
+					// ->setCellValue('A1', 'Regional '.$regional)
+					// ->setCellValue('B1', 'Witel '.$witel)
+					// ->setCellValue('C1', 'Datel '.$datel)
+					// ->setCellValue('C1', 'STO '.$sto);
 	   
-	   $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A3', 'Rangking')
-					->setCellValue('B3', 'Channel')
-					->setCellValue('C3', 'Program')
-					->setCellValue('D3', 'Audience')
- 					->setCellValue('E3', 'Reach')
-					->setCellValue('F3', 'Total Viewers')
-					->setCellValue('G3', 'Duration')
-					->setCellValue('H3', 'Avg Duration/View');
+	   // $objPHPExcel->setActiveSheetIndex(0)
+					// ->setCellValue('A3', 'Rangking')
+					// ->setCellValue('B3', 'Channel')
+					// ->setCellValue('C3', 'Program')
+					// ->setCellValue('D3', 'Audience')
+ 					// ->setCellValue('E3', 'Reach')
+					// ->setCellValue('F3', 'Total Viewers')
+					// ->setCellValue('G3', 'Duration')
+					// ->setCellValue('H3', 'Avg Duration/View');
 	   
-	   $it1 = 4;
-		 foreach($data as $frt){
+	   // $it1 = 4;
+		 // foreach($data as $frt){
 			
-			 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A'.$it1, $frt[0])
-					->setCellValue('B'.$it1, $frt[1])
-					->setCellValue('C'.$it1, $frt[2])
-					->setCellValue('D'.$it1, $frt[3])
- 					->setCellValue('E'.$it1, $frt[5])
-					->setCellValue('F'.$it1, $frt[6])
-					->setCellValue('G'.$it1, $frt[7])
-					->setCellValue('H'.$it1, $frt[8]);
+			 // $objPHPExcel->setActiveSheetIndex(0)
+					// ->setCellValue('A'.$it1, $frt[0])
+					// ->setCellValue('B'.$it1, $frt[1])
+					// ->setCellValue('C'.$it1, $frt[2])
+					// ->setCellValue('D'.$it1, $frt[3])
+ 					// ->setCellValue('E'.$it1, $frt[5])
+					// ->setCellValue('F'.$it1, $frt[6])
+					// ->setCellValue('G'.$it1, $frt[7])
+					// ->setCellValue('H'.$it1, $frt[8]);
 
-			$it1++;
-		}
+			// $it1++;
+		// }
 		
-		$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
- 		$objPHPExcel->setActiveSheetIndex(0);
+		// $objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
+ 		// $objPHPExcel->setActiveSheetIndex(0);
  
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		// $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		 
-		$objWriter->save('/var/www/html/tmp_doc/Audience_by_program.xls');	
+		// $objWriter->save('/var/www/html/tmp_doc/Audience_by_program.xls');	
 		
 			
-	}
+	// }
 	
-	public function get_filter_programaud(){
+	// public function get_filter_programaud(){
 		
-		 if( !empty($this->Anti_si($_GET['periode'])) ) {
-			  $periode = $this->Anti_si($_GET['periode']);
-		  } else {
-			  $periode = NULL;
-		  }
+		 // if( !empty($this->Anti_si($_GET['periode'])) ) {
+			  // $periode = $this->Anti_si($_GET['periode']);
+		  // } else {
+			  // $periode = NULL;
+		  // }
 		  
-		   if( !empty($this->Anti_si($_GET['pilihprog'])) ) {
-			  $pilihprog = $this->Anti_si($_GET['pilihprog']);
-		  } else {
-			  $pilihprog = 'Viewers';
-		  }
+		   // if( !empty($this->Anti_si($_GET['pilihprog'])) ) {
+			  // $pilihprog = $this->Anti_si($_GET['pilihprog']);
+		  // } else {
+			  // $pilihprog = 'Viewers';
+		  // }
 		  
-		   if( !empty($this->Anti_si($_GET['tgl2'])) ) {
-			  $tgl = $this->Anti_si($_GET['tgl2']);
-		  } else {
-			  $tgl = '0';
-		  }
+		   // if( !empty($this->Anti_si($_GET['tgl2'])) ) {
+			  // $tgl = $this->Anti_si($_GET['tgl2']);
+		  // } else {
+			  // $tgl = '0';
+		  // }
 		  
-		   if( !empty($this->Anti_si($_GET['week2'])) ) {
-			  $week = $this->Anti_si($_GET['week2']);
-		  } else {
-			  $week = '0';
-		  }
+		   // if( !empty($this->Anti_si($_GET['week2'])) ) {
+			  // $week = $this->Anti_si($_GET['week2']);
+		  // } else {
+			  // $week = '0';
+		  // }
 		  
-		   if( !empty($this->Anti_si($_GET['genre2'])) ) {
-			  $genre = $this->Anti_si($_GET['genre2']);
-		  } else {
-			  $genre = "";
-		  }
+		   // if( !empty($this->Anti_si($_GET['genre2'])) ) {
+			  // $genre = $this->Anti_si($_GET['genre2']);
+		  // } else {
+			  // $genre = "";
+		  // }
 		  
-		   if( !empty($this->Anti_si($_GET['regional2'])) ) {
-			  $regional = $this->Anti_si($_GET['regional2']);
-		  } else {
-			  $regional = "0";
-		  }
+		   // if( !empty($this->Anti_si($_GET['regional2'])) ) {
+			  // $regional = $this->Anti_si($_GET['regional2']);
+		  // } else {
+			  // $regional = "0";
+		  // }
 		  
-		   if( !empty($this->Anti_si($_GET['witel2'])) ) {
-			  $witel = $this->Anti_si($_GET['witel2']);
-		  } else {
-			  $witel = "";
-		  }
+		   // if( !empty($this->Anti_si($_GET['witel2'])) ) {
+			  // $witel = $this->Anti_si($_GET['witel2']);
+		  // } else {
+			  // $witel = "";
+		  // }
 		  
-		   if( !empty($this->Anti_si($_GET['datel2'])) ) {
-			  $datel = $this->Anti_si($_GET['datel2']);
-		  } else {
-			  $datel = "";
-		  }
+		   // if( !empty($this->Anti_si($_GET['datel2'])) ) {
+			  // $datel = $this->Anti_si($_GET['datel2']);
+		  // } else {
+			  // $datel = "";
+		  // }
 		  
-		    if( !empty($this->Anti_si($_GET['sto2'])) ) {
-			  $sto = $this->Anti_si($_GET['sto2']);
-		  } else {
-			  $sto = "";
-		  }
+		    // if( !empty($this->Anti_si($_GET['sto2'])) ) {
+			  // $sto = $this->Anti_si($_GET['sto2']);
+		  // } else {
+			  // $sto = "";
+		  // }
 		  
-		   if( !empty($this->Anti_si($_GET['profile_prog'])) ) {
-			  $profile = $this->Anti_si($_GET['profile_prog']);
-		  } else {
-			  $profile = "0";
-		  }
+		   // if( !empty($this->Anti_si($_GET['profile_prog'])) ) {
+			  // $profile = $this->Anti_si($_GET['profile_prog']);
+		  // } else {
+			  // $profile = "0";
+		  // }
 		  
-		   if( !empty($this->Anti_si($_GET['searchtxt'])) ) {
-			  $searchtxt = $this->Anti_si($_GET['searchtxt']);
-		  } else {
-			  $searchtxt = "";
-		  }
+		   // if( !empty($this->Anti_si($_GET['searchtxt'])) ) {
+			  // $searchtxt = $this->Anti_si($_GET['searchtxt']);
+		  // } else {
+			  // $searchtxt = "";
+		  // }
 		  
-		  $where = '';
+		  // $where = '';
  
 		  	
-			if($genre == ""){
-				$where_g = "";
-			}else{
-				$where_g = " AND GENRE = '".str_replace("AND","&",$genre)."' ";
-			}
+			// if($genre == ""){
+				// $where_g = "";
+			// }else{
+				// $where_g = " AND GENRE = '".str_replace("AND","&",$genre)."' ";
+			// }
 		
 		   
-		  if( $this->input->get_post('draw') != FALSE )   {$draw   = $this->input->get_post('draw');}   else{$draw   = 1;}; 
-		  if( $this->input->get_post('length') != FALSE ) {$length = $this->input->get_post('length');} else{$length = 10;}; 
-		  if( $this->input->get_post('start') != FALSE )  {$start  = $this->input->get_post('start');}  else{$start  = 0;}; 				
-		  $order_fields = array('TANGGAL','TANGGAL', 'CHANNEL', 'PROGRAM', 'PRODUCT', 'ADVERTISER', 'SECTOR', 'START_TIME', 'DURATION', 'ADS_TYPE', 'TVR');  
-		  $order = $this->input->get_post('order');
-		  if( ! empty($order[0]['dir']))    {$order_dir    = $order[0]['dir'];}    else{$order_dir    = 'desc';}; 
-		  if( ! empty($order[0]['column'])) {$order_column = $order[0]['column'];} else{$order_column = 0;}; 	
+		  // if( $this->input->get_post('draw') != FALSE )   {$draw   = $this->input->get_post('draw');}   else{$draw   = 1;}; 
+		  // if( $this->input->get_post('length') != FALSE ) {$length = $this->input->get_post('length');} else{$length = 10;}; 
+		  // if( $this->input->get_post('start') != FALSE )  {$start  = $this->input->get_post('start');}  else{$start  = 0;}; 				
+		  // $order_fields = array('TANGGAL','TANGGAL', 'CHANNEL', 'PROGRAM', 'PRODUCT', 'ADVERTISER', 'SECTOR', 'START_TIME', 'DURATION', 'ADS_TYPE', 'TVR');  
+		  // $order = $this->input->get_post('order');
+		  // if( ! empty($order[0]['dir']))    {$order_dir    = $order[0]['dir'];}    else{$order_dir    = 'desc';}; 
+		  // if( ! empty($order[0]['column'])) {$order_column = $order[0]['column'];} else{$order_column = 0;}; 	
 		  
-		    $params['limit'] 		= (int) $length;
-			$params['offset'] 		= (int) $start;
-			$params['order_column'] = $order_fields[$order_column];
-			$params['order_dir'] 	= $order_dir;
-			$params['periode'] 	= $periode;
-			$params['week'] 	= $week;
-			$params['regional'] 	= $regional;
-			$params['witel'] 	= $witel;
-			$params['datel'] 	= $datel;
-			$params['where_g'] 	= $where_g;
-			$params['searchtxt'] 	= $_GET['search']['value'];
+		    // $params['limit'] 		= (int) $length;
+			// $params['offset'] 		= (int) $start;
+			// $params['order_column'] = $order_fields[$order_column];
+			// $params['order_dir'] 	= $order_dir;
+			// $params['periode'] 	= $periode;
+			// $params['week'] 	= $week;
+			// $params['regional'] 	= $regional;
+			// $params['witel'] 	= $witel;
+			// $params['datel'] 	= $datel;
+			// $params['where_g'] 	= $where_g;
+			// $params['searchtxt'] 	= $_GET['search']['value'];
  
 			
-			$nmonth = date("m", strtotime($periode));
-			$datef = $tgl."/".$nmonth."/".substr($periode,0,4);
-			$datefF = substr($periode,0,4)."-".$nmonth."-".$tgl;
+			// $nmonth = date("m", strtotime($periode));
+			// $datef = $tgl."/".$nmonth."/".substr($periode,0,4);
+			// $datefF = substr($periode,0,4)."-".$nmonth."-".$tgl;
 			
-			$params['tgl'] 	= $datefF;
+			// $params['tgl'] 	= $datefF;
 		
 		 
-			if ($week=="ALL"){
-			if ($tgl=="0"){
+			// if ($week=="ALL"){
+			// if ($tgl=="0"){
 				
-				if($regional == "0" || $regional == ""){
+				// if($regional == "0" || $regional == ""){
 					
  					
-					$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly","NASIONAL","",$profile,$where_g,$params);
+					// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly","NASIONAL","",$profile,$where_g,$params);
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params); 
+						// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$witel,$regional,$profile,$where_g,$params); 
+							// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$witel,$regional,$profile,$where_g,$params); 
 							
 							
-						}else{
+						// }else{
 						
-							if($sto == "0" || $sto == ""){ 
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$datel,$witel,$profile,$where_g,$params); 
-							}else{
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$sto,$datel,$profile,$where_g,$params); 
+							// if($sto == "0" || $sto == ""){ 
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$datel,$witel,$profile,$where_g,$params); 
+							// }else{
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2($periode,"Monthly",$sto,$datel,$profile,$where_g,$params); 
 								
-							}
+							// }
 							
 							
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
+				// }
 				
 				
-			}else {
+			// }else {
 				
-				if($regional == "0" || $regional == ""){
+				// if($regional == "0" || $regional == ""){
 					
-					$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly","NASIONAL","",$profile,$where_g,$params,$datefF);
+					// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly","NASIONAL","",$profile,$where_g,$params,$datefF);
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params,$datefF); 
+						// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params,$datefF); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$witel,$regional,$profile,$where_g,$params,$datefF); 
+							// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$witel,$regional,$profile,$where_g,$params,$datefF); 
 							
 							
-						}else{
+						// }else{
 							
-							if($sto == "0" || $sto == ""){ 
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$datel,$witel,$profile,$where_g,$params,$datefF);
-							}else{
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$sto,$datel,$profile,$where_g,$params,$datefF);
-							}
+							// if($sto == "0" || $sto == ""){ 
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$datel,$witel,$profile,$where_g,$params,$datefF);
+							// }else{
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_day($periode,"Monthly",$sto,$datel,$profile,$where_g,$params,$datefF);
+							// }
 							
 							 
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
+				// }
 				
-			}
-		}else {
-				if($regional == "0" || $regional == ""){
+			// }
+		// }else {
+				// if($regional == "0" || $regional == ""){
 					
-					$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly","NASIONAL","",$profile,$where_g,$params,$week);
+					// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly","NASIONAL","",$profile,$where_g,$params,$week);
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params,$week); 
+						// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$regional,"NASIONAL",$profile,$where_g,$params,$week); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$witel,$regional,$profile,$where_g,$params,$week); 
+							// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$witel,$regional,$profile,$where_g,$params,$week); 
 							
 							
-						}else{
+						// }else{
 							
-							if($sto == "0" || $sto == ""){
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$datel,$witel,$profile,$where_g,$params,$week); 
-							}else{
-								$list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$sto,$datel,$profile,$where_g,$params,$week); 
-							}
+							// if($sto == "0" || $sto == ""){
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$datel,$witel,$profile,$where_g,$params,$week); 
+							// }else{
+								// $list = $this->tvprogramun_model->list_spot_by_program_all2Ps_new2_week($periode,"Monthly",$sto,$datel,$profile,$where_g,$params,$week); 
+							// }
 							
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
-		}
+				// }
+		// }
 			
 				
-		    $data = array();	
+		    // $data = array();	
 		
-		   foreach ( $list['data'] as $k => $v ) {
+		   // foreach ( $list['data'] as $k => $v ) {
 			   
 				
-			    array_push($data, 
-				  array(
-					  number_format($v['Rangking'],0,',','.'),
-					  $v['PROGRAM'],
-					  $v['CHANNEL'],
-					  "<p align='right' >".number_format($v['AUDIENCE'],0,",",".")."</p>",
- 					  "<p align='right' >".number_format($v['REACH'],2,",",".")."</p>",
-					  "<p align='right' >".number_format($v['TOTAL_VIEW'],0,",",".")."</p>",
-					  "<p align='right' >".number_format($v['DURATION'],0,",",".")."</p>",
-					  "<p align='right' >".number_format($v['AVGTOTDUR'],2,",",".")."</p>"
+			    // array_push($data, 
+				  // array(
+					  // number_format($v['Rangking'],0,',','.'),
+					  // $v['PROGRAM'],
+					  // $v['CHANNEL'],
+					  // "<p align='right' >".number_format($v['AUDIENCE'],0,",",".")."</p>",
+ 					  // "<p align='right' >".number_format($v['REACH'],2,",",".")."</p>",
+					  // "<p align='right' >".number_format($v['TOTAL_VIEW'],0,",",".")."</p>",
+					  // "<p align='right' >".number_format($v['DURATION'],0,",",".")."</p>",
+					  // "<p align='right' >".number_format($v['AVGTOTDUR'],2,",",".")."</p>"
 					 
-				  )
-			  );
+				  // )
+			  // );
  			   
-		   }
-			 $result["data"] = $data;
-		$result["recordsTotal"] = $list['total'];
-		$result["recordsFiltered"] = $list['total_filtered'];
-		$result["draw"] = $draw;
+		   // }
+			 // $result["data"] = $data;
+		// $result["recordsTotal"] = $list['total'];
+		// $result["recordsFiltered"] = $list['total_filtered'];
+		// $result["draw"] = $draw;
  	  
-			$this->json_result($result);
+			// $this->json_result($result);
 			
-	}
+	// }
 	
   public function index()
 	{
@@ -776,509 +776,509 @@ class Tvprogramun3treg extends JA_Controller {
  		return $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31); 
 	}
 	
-	function cost_by_program(){
+	// function cost_by_program(){
 		
-		$type =  $this->Anti_si($this->input->post('type',true));
-		$field =  $this->Anti_si($this->input->post('field',true));
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$profile=$this->Anti_si($this->input->post('profile',true));
-			$tgl=$this->Anti_si($this->input->post('tgl',true));
-		$nmonth = date("m", strtotime($tahun)); 
-		 $week=$this->Anti_si($this->input->post('week',true));
-		$datef = $tgl."/".$nmonth."/".substr($tahun,0,4);
-		$datefF = substr($tahun,0,4)."-".$nmonth."-".$tgl;
+		// $type =  $this->Anti_si($this->input->post('type',true));
+		// $field =  $this->Anti_si($this->input->post('field',true));
+		// $where =  $this->Anti_si($this->input->post('cond',true));
+		// $tahun=$this->Anti_si($this->input->post('tahun',true));
+		// $bulan=$this->Anti_si($this->input->post('bulan',true));
+		// $profile=$this->Anti_si($this->input->post('profile',true));
+			// $tgl=$this->Anti_si($this->input->post('tgl',true));
+		// $nmonth = date("m", strtotime($tahun)); 
+		 // $week=$this->Anti_si($this->input->post('week',true));
+		// $datef = $tgl."/".$nmonth."/".substr($tahun,0,4);
+		// $datefF = substr($tahun,0,4)."-".$nmonth."-".$tgl;
 		
-		$periode=$tahun; 
+		// $periode=$tahun; 
 		 
 		
-		if ($week=="ALL"){
-			if ($tgl=="0"){
-				$data['programs'] = $this->tvprogramun_model->list_spot_by_program_all2Ps("Program",$where,$periode,$type,$profile);
- 			}else {
+		// if ($week=="ALL"){
+			// if ($tgl=="0"){
+				// $data['programs'] = $this->tvprogramun_model->list_spot_by_program_all2Ps("Program",$where,$periode,$type,$profile);
+ 			// }else {
 				
- 				$data['programs'] = $this->tvprogramun_model->list_spot_by_program_all2Ps_hari_date("Program",$where,$periode, $datef,$datefF,$type,$profile); 
- 			}
-		}else {
- 			$data['programs'] = $this->tvprogramun_model->list_spot_by_program_all2Ps_hari("Program",$where,$periode,$week,$type,$profile);
-		}
+ 				// $data['programs'] = $this->tvprogramun_model->list_spot_by_program_all2Ps_hari_date("Program",$where,$periode, $datef,$datefF,$type,$profile); 
+ 			// }
+		// }else {
+ 			// $data['programs'] = $this->tvprogramun_model->list_spot_by_program_all2Ps_hari("Program",$where,$periode,$week,$type,$profile);
+		// }
 		
-		if(sizeof($data['programs']) > 0){
-  		  $i = 1;
-  			$ik = 0;
-				foreach($data['programs'] as $datax){
-					$data_ch[$ik]['Rangking'] = $i;
-					$data_ch[$ik]['Program'] = $datax['Program'];
-					$data_ch[$ik]['CHANNEL'] = $datax['CHANNEL'];
- 					$data_ch[$ik]['Spot'] =  $datax['Spot'];
-					$i++;
-					$ik++;
-				}
-    } else {
-        $data_ch = null;
-    }
+		// if(sizeof($data['programs']) > 0){
+  		  // $i = 1;
+  			// $ik = 0;
+				// foreach($data['programs'] as $datax){
+					// $data_ch[$ik]['Rangking'] = $i;
+					// $data_ch[$ik]['Program'] = $datax['Program'];
+					// $data_ch[$ik]['CHANNEL'] = $datax['CHANNEL'];
+ 					// $data_ch[$ik]['Spot'] =  $datax['Spot'];
+					// $i++;
+					// $ik++;
+				// }
+    // } else {
+        // $data_ch = null;
+    // }
 			
 		 
-		echo json_encode($data_ch,true);
+		// echo json_encode($data_ch,true);
 		
-	}
+	// }
 	
-	function audiencebar_by_channel_export_m(){
+	// function audiencebar_by_channel_export_m(){
 		
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
+		// $tahun=$this->Anti_si($this->input->post('tahun',true));
 		
-		$scama = $this->tvprogramun_model->list_spot_by_program_all_bar_month($tahun); 
+		// $scama = $this->tvprogramun_model->list_spot_by_program_all_bar_month($tahun); 
 		
-		 $this->load->library('excel');
+		 // $this->load->library('excel');
 		
  	   
-	   $objPHPExcel = new PHPExcel();
+	   // $objPHPExcel = new PHPExcel();
 	   
 	   
 	   
-	   $objPHPExcel->getProperties()->setCreator("Unics")
-									 ->setLastModifiedBy("Unics")
-									 ->setTitle("Treg Analytics")
-									 ->setSubject("Treg Analytics")
-									 ->setDescription("Report Treg")
-									 ->setKeywords("Treg Analytics")
-									 ->setCategory("Report");
+	   // $objPHPExcel->getProperties()->setCreator("Unics")
+									 // ->setLastModifiedBy("Unics")
+									 // ->setTitle("Treg Analytics")
+									 // ->setSubject("Treg Analytics")
+									 // ->setDescription("Report Treg")
+									 // ->setKeywords("Treg Analytics")
+									 // ->setCategory("Report");
 									 
- $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A1', 'Regional ')
-					->setCellValue('B1', 'Witel ')
-					->setCellValue('C1', 'Datel ')
-					->setCellValue('D1', 'Channel ')
-					->setCellValue('E1', 'Audience ')
-					->setCellValue('F1', 'Reach ')
-					->setCellValue('G1', 'Total Viewers ')
-					->setCellValue('H1', 'Duration ')
-					->setCellValue('I1', 'Avg Duration/View ')
-					->setCellValue('J1', 'Audience Share ');
+ // $objPHPExcel->setActiveSheetIndex(0)
+					// ->setCellValue('A1', 'Regional ')
+					// ->setCellValue('B1', 'Witel ')
+					// ->setCellValue('C1', 'Datel ')
+					// ->setCellValue('D1', 'Channel ')
+					// ->setCellValue('E1', 'Audience ')
+					// ->setCellValue('F1', 'Reach ')
+					// ->setCellValue('G1', 'Total Viewers ')
+					// ->setCellValue('H1', 'Duration ')
+					// ->setCellValue('I1', 'Avg Duration/View ')
+					// ->setCellValue('J1', 'Audience Share ');
 	   
 	   
-	   $it1 = 2;
-		 foreach($scama as $frt){
+	   // $it1 = 2;
+		 // foreach($scama as $frt){
 			
-			 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A'.$it1, $frt['REG'])
-					->setCellValue('B'.$it1, $frt['WITEL'])
-					->setCellValue('C'.$it1, $frt['DATEL'])
-					->setCellValue('D'.$it1, $frt['CHANNEL'])
-					->setCellValue('E'.$it1, $frt['AUDIENCE'])
-					->setCellValue('F'.$it1, $frt['REACH'])
-					->setCellValue('G'.$it1, $frt['TOTAL_VIEW'])
-					->setCellValue('H'.$it1, $frt['DURATION'])
-					->setCellValue('I'.$it1, $frt['AVGTOTDUR'])
-					->setCellValue('J'.$it1, $frt['SHARE']);
+			 // $objPHPExcel->setActiveSheetIndex(0)
+					// ->setCellValue('A'.$it1, $frt['REG'])
+					// ->setCellValue('B'.$it1, $frt['WITEL'])
+					// ->setCellValue('C'.$it1, $frt['DATEL'])
+					// ->setCellValue('D'.$it1, $frt['CHANNEL'])
+					// ->setCellValue('E'.$it1, $frt['AUDIENCE'])
+					// ->setCellValue('F'.$it1, $frt['REACH'])
+					// ->setCellValue('G'.$it1, $frt['TOTAL_VIEW'])
+					// ->setCellValue('H'.$it1, $frt['DURATION'])
+					// ->setCellValue('I'.$it1, $frt['AVGTOTDUR'])
+					// ->setCellValue('J'.$it1, $frt['SHARE']);
 
-			$it1++;
-		}
+			// $it1++;
+		// }
 		
 		
-		$objPHPExcel->getActiveSheet()->setTitle('Treg by Channel Summary');
- 		$objPHPExcel->setActiveSheetIndex(0);
+		// $objPHPExcel->getActiveSheet()->setTitle('Treg by Channel Summary');
+ 		// $objPHPExcel->setActiveSheetIndex(0);
 
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-		$objWriter->save('/var/www/html/tmp_doc/Audience_by_channel_treg.xls');
+		// $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		// $objWriter->save('/var/www/html/tmp_doc/Audience_by_channel_treg.xls');
 		
-	}
+	// }
 	
-	function audiencebar_by_channel_export(){
+	// function audiencebar_by_channel_export(){
 		
- 		$type =  $this->Anti_si($this->input->post('type',true));
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$profile=$this->Anti_si($this->input->post('profile',true));
-		$nmonth = date("m", strtotime($tahun));
-		$week=$this->Anti_si($this->input->post('week',true));
-		$tgl=$this->Anti_si($this->input->post('tgl',true));
+ 		// $type =  $this->Anti_si($this->input->post('type',true));
+		// $tahun=$this->Anti_si($this->input->post('tahun',true));
+		// $bulan=$this->Anti_si($this->input->post('bulan',true));
+		// $profile=$this->Anti_si($this->input->post('profile',true));
+		// $nmonth = date("m", strtotime($tahun));
+		// $week=$this->Anti_si($this->input->post('week',true));
+		// $tgl=$this->Anti_si($this->input->post('tgl',true));
 		
-		$genre =  $this->Anti_si($this->input->post('genre',true));
-		$regional =  $this->Anti_si($this->input->post('regional',true));
-		$witel =  $this->Anti_si($this->input->post('witel',true));
-		$datel =  $this->Anti_si($this->input->post('datel',true));
-		$sto =  $this->Anti_si($this->input->post('sto',true));
+		// $genre =  $this->Anti_si($this->input->post('genre',true));
+		// $regional =  $this->Anti_si($this->input->post('regional',true));
+		// $witel =  $this->Anti_si($this->input->post('witel',true));
+		// $datel =  $this->Anti_si($this->input->post('datel',true));
+		// $sto =  $this->Anti_si($this->input->post('sto',true));
 			 
-		$datef = substr($tahun,0,4)."-".$nmonth."-".$tgl;
-		$periode=$tahun;
+		// $datef = substr($tahun,0,4)."-".$nmonth."-".$tgl;
+		// $periode=$tahun;
 		
-		if($genre == "" || $genre == "0" ){
-			$where = "";
-		}else{
-			$where = " AND GENRE = '".str_replace("AND","&",$genre)."' ";
-		}
+		// if($genre == "" || $genre == "0" ){
+			// $where = "";
+		// }else{
+			// $where = " AND GENRE = '".str_replace("AND","&",$genre)."' ";
+		// }
 		 
-		if ($week=="ALL"){
-			if ($tgl=="0"){
+		// if ($week=="ALL"){
+			// if ($tgl=="0"){
 				
-				if($regional == "0" || $regional == ""){
+				// if($regional == "0" || $regional == ""){
 					
-					$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly","NASIONAL","","0",$where); 
+					// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly","NASIONAL","","0",$where); 
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$regional,"NASIONAL","0",$where); 
+						// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$regional,"NASIONAL","0",$where); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$witel,$regional,"0",$where); 
+							// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$witel,$regional,"0",$where); 
 							
 							
-						}else{
+						// }else{
 							
-							if($sto == "0" || $sto == ""){
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$datel,$witel,"0",$where); 
-							}else{
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$sto,$datel,"0",$where); 
-							}
+							// if($sto == "0" || $sto == ""){
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$datel,$witel,"0",$where); 
+							// }else{
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$sto,$datel,"0",$where); 
+							// }
 						
 							
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
+				// }
 				
 				
-			}else {
+			// }else {
 				
-				if($regional == "0" || $regional == ""){
+				// if($regional == "0" || $regional == ""){
 					
-					$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly","NASIONAL","","0",$where,$datef); 
+					// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly","NASIONAL","","0",$where,$datef); 
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$regional,"NASIONAL","0",$where,$datef); 
+						// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$regional,"NASIONAL","0",$where,$datef); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$witel,$regional,"0",$where,$datef); 
+							// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$witel,$regional,"0",$where,$datef); 
 							
 							
-						}else{
+						// }else{
 						
-							if($sto == "0" || $sto == ""){
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$datel,$witel,"0",$where,$datef); 
-							}else{
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$sto,$datel,"0",$where,$datef); 
-							}
+							// if($sto == "0" || $sto == ""){
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$datel,$witel,"0",$where,$datef); 
+							// }else{
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$sto,$datel,"0",$where,$datef); 
+							// }
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
+				// }
 				
-			}
-		}else {
-				if($regional == "0" || $regional == ""){
+			// }
+		// }else {
+				// if($regional == "0" || $regional == ""){
 					
-					$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly","NASIONAL","","0",$where,$week); 
+					// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly","NASIONAL","","0",$where,$week); 
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$regional,"NASIONAL","0",$where,$week); 
+						// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$regional,"NASIONAL","0",$where,$week); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$witel,$regional,"0",$where,$week); 
+							// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$witel,$regional,"0",$where,$week); 
 							
 							
-						}else{
+						// }else{
 							
-							if($sto == "0" || $sto == ""){
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$datel,$witel,"0",$where,$week); 
-							}else{
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$sto,$datel,"0",$where,$week); 
-							}
+							// if($sto == "0" || $sto == ""){
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$datel,$witel,"0",$where,$week); 
+							// }else{
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$sto,$datel,"0",$where,$week); 
+							// }
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
-		}
-			$data['totpopulasi'] = $this->tvprogramun_model->list_populasi2($periode);
+				// }
+		// }
+			// $data['totpopulasi'] = $this->tvprogramun_model->list_populasi2($periode);
 			
-       if(sizeof($data['channel']) > 0){
-    			$i = 1;
-    			$ik = 0;
+       // if(sizeof($data['channel']) > 0){
+    			// $i = 1;
+    			// $ik = 0;
           
-		$dataM=$data['channel'];
-		$scama = array();
-		for ($i=0;$i<count($dataM);$i++){
-			$scam['Rangking'] = $i+1;
-			$scam['AUDIENCE'] = $dataM[$i]['AUDIENCE'];
-			$scam['TOTAL_VIEW'] = $dataM[$i]['TOTAL_VIEW'];
-			$scam['DURATION'] = $dataM[$i]['DURATION'];
-			$scam['SHARE'] = $dataM[$i]['SHARE'];
-			$scam['AVGTOTDUR'] = $dataM[$i]['AVGTOTDUR'];
-			$scam['REACH'] = $dataM[$i]['REACH'];
-			$scam['channel'] = $dataM[$i]['CHANNEL'];
-			$data_cha[] = '"'.$dataM[$i]['CHANNEL'].'"';
-			$spot_cha[] = $dataM[$i]['AUDIENCE'];
-			array_push($scama, $scam);
-		}	
+		// $dataM=$data['channel'];
+		// $scama = array();
+		// for ($i=0;$i<count($dataM);$i++){
+			// $scam['Rangking'] = $i+1;
+			// $scam['AUDIENCE'] = $dataM[$i]['AUDIENCE'];
+			// $scam['TOTAL_VIEW'] = $dataM[$i]['TOTAL_VIEW'];
+			// $scam['DURATION'] = $dataM[$i]['DURATION'];
+			// $scam['SHARE'] = $dataM[$i]['SHARE'];
+			// $scam['AVGTOTDUR'] = $dataM[$i]['AVGTOTDUR'];
+			// $scam['REACH'] = $dataM[$i]['REACH'];
+			// $scam['channel'] = $dataM[$i]['CHANNEL'];
+			// $data_cha[] = '"'.$dataM[$i]['CHANNEL'].'"';
+			// $spot_cha[] = $dataM[$i]['AUDIENCE'];
+			// array_push($scama, $scam);
+		// }	
 		
 		 
-      } else {
-          $scama = null;
-      }
+      // } else {
+          // $scama = null;
+      // }
       
-	   $this->load->library('excel');
+	   // $this->load->library('excel');
 	   
-	   $objPHPExcel = new PHPExcel();
-	   
-	   
-	   
-	   $objPHPExcel->getProperties()->setCreator("Unics")
-									 ->setLastModifiedBy("Unics")
-									 ->setTitle("Postbuy Analytics")
-									 ->setSubject("Postbuy Analytics")
-									 ->setDescription("Report Postbuy")
-									 ->setKeywords("Postbuy Analytics")
-									 ->setCategory("Report");
-	  $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A1', 'Regional '.$regional)
-					->setCellValue('B1', 'Witel '.$witel)
-					->setCellValue('C1', 'Datel '.$datel)
-					->setCellValue('D1', 'STO '.$sto);
+	   // $objPHPExcel = new PHPExcel();
 	   
 	   
-	   $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A3', 'Rangking')
-					->setCellValue('B3', 'Channel')
-					->setCellValue('C3', 'Audience')
-					->setCellValue('D3', 'Reach')
-					->setCellValue('E3', 'Total Viewers')
-					->setCellValue('F3', 'Duration')
-					->setCellValue('G3', 'Avg Duration/Views')
-					->setCellValue('H3', 'Audience Share');
 	   
-	   $it1 = 4;
-		 foreach($scama as $frt){
+	   // $objPHPExcel->getProperties()->setCreator("Unics")
+									 // ->setLastModifiedBy("Unics")
+									 // ->setTitle("Postbuy Analytics")
+									 // ->setSubject("Postbuy Analytics")
+									 // ->setDescription("Report Postbuy")
+									 // ->setKeywords("Postbuy Analytics")
+									 // ->setCategory("Report");
+	  // $objPHPExcel->setActiveSheetIndex(0)
+					// ->setCellValue('A1', 'Regional '.$regional)
+					// ->setCellValue('B1', 'Witel '.$witel)
+					// ->setCellValue('C1', 'Datel '.$datel)
+					// ->setCellValue('D1', 'STO '.$sto);
+	   
+	   
+	   // $objPHPExcel->setActiveSheetIndex(0)
+					// ->setCellValue('A3', 'Rangking')
+					// ->setCellValue('B3', 'Channel')
+					// ->setCellValue('C3', 'Audience')
+					// ->setCellValue('D3', 'Reach')
+					// ->setCellValue('E3', 'Total Viewers')
+					// ->setCellValue('F3', 'Duration')
+					// ->setCellValue('G3', 'Avg Duration/Views')
+					// ->setCellValue('H3', 'Audience Share');
+	   
+	   // $it1 = 4;
+		 // foreach($scama as $frt){
 			
-			 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A'.$it1, $frt['Rangking'])
-					->setCellValue('B'.$it1, $frt['channel'])
-					->setCellValue('C'.$it1, $frt['AUDIENCE'])
-					->setCellValue('D'.$it1, $frt['REACH'])
-					->setCellValue('E'.$it1, $frt['TOTAL_VIEW'])
-					->setCellValue('F'.$it1, $frt['DURATION'])
-					->setCellValue('G'.$it1, $frt['AVGTOTDUR'])
-					->setCellValue('H'.$it1, $frt['SHARE']);
+			 // $objPHPExcel->setActiveSheetIndex(0)
+					// ->setCellValue('A'.$it1, $frt['Rangking'])
+					// ->setCellValue('B'.$it1, $frt['channel'])
+					// ->setCellValue('C'.$it1, $frt['AUDIENCE'])
+					// ->setCellValue('D'.$it1, $frt['REACH'])
+					// ->setCellValue('E'.$it1, $frt['TOTAL_VIEW'])
+					// ->setCellValue('F'.$it1, $frt['DURATION'])
+					// ->setCellValue('G'.$it1, $frt['AVGTOTDUR'])
+					// ->setCellValue('H'.$it1, $frt['SHARE']);
 
-			$it1++;
-		}
+			// $it1++;
+		// }
 		
-		$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
- 		$objPHPExcel->setActiveSheetIndex(0);
+		// $objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
+ 		// $objPHPExcel->setActiveSheetIndex(0);
  
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		// $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		 
 		
-		$objWriter->save('/var/www/html/tmp_doc/Audience_by_channel.xls');
+		// $objWriter->save('/var/www/html/tmp_doc/Audience_by_channel.xls');
  
-	}
+	// }
 	
-	function channel_filter(){
+	// function channel_filter(){
 		
 		
 		
-	}
+	// }
 	
-	function audiencebar_by_channel(){
+	// function audiencebar_by_channel(){
 		
-		$genre =  $this->Anti_si($this->input->post('genre',true));
+		// $genre =  $this->Anti_si($this->input->post('genre',true));
 		
  		
-		$regional =  $this->Anti_si($this->input->post('regional',true));
-		$witel =  $this->Anti_si($this->input->post('witel',true));
-		$datel =  $this->Anti_si($this->input->post('datel',true));
-		$sto =  $this->Anti_si($this->input->post('sto',true));
-		$where =  $this->Anti_si($this->input->post('cond',true));
-		$type =  $this->Anti_si($this->input->post('type',true));
-		$tahun=$this->Anti_si($this->input->post('tahun',true));
-		$bulan=$this->Anti_si($this->input->post('bulan',true));
-		$profile=$this->Anti_si($this->input->post('profile',true));
-		$nmonth = date("m", strtotime($tahun));
-		$week=$this->Anti_si($this->input->post('week',true));
-		$tgl=$this->Anti_si($this->input->post('tgl',true));
+		// $regional =  $this->Anti_si($this->input->post('regional',true));
+		// $witel =  $this->Anti_si($this->input->post('witel',true));
+		// $datel =  $this->Anti_si($this->input->post('datel',true));
+		// $sto =  $this->Anti_si($this->input->post('sto',true));
+		// $where =  $this->Anti_si($this->input->post('cond',true));
+		// $type =  $this->Anti_si($this->input->post('type',true));
+		// $tahun=$this->Anti_si($this->input->post('tahun',true));
+		// $bulan=$this->Anti_si($this->input->post('bulan',true));
+		// $profile=$this->Anti_si($this->input->post('profile',true));
+		// $nmonth = date("m", strtotime($tahun));
+		// $week=$this->Anti_si($this->input->post('week',true));
+		// $tgl=$this->Anti_si($this->input->post('tgl',true));
 		 
-		$datef = substr($tahun,0,4)."-".$nmonth."-".$tgl;
-		$periode=$tahun;
+		// $datef = substr($tahun,0,4)."-".$nmonth."-".$tgl;
+		// $periode=$tahun;
 		
-		if($genre == "" || $genre == "0" || $genre == NULL){
-			$where = "";
-		}else{
-			$where = " AND GENRE = '".str_replace("AND","&",$genre)."' ";
-		}
+		// if($genre == "" || $genre == "0" || $genre == NULL){
+			// $where = "";
+		// }else{
+			// $where = " AND GENRE = '".str_replace("AND","&",$genre)."' ";
+		// }
 		 
-		if ($week=="ALL"){
-			if ($tgl=="0"){
+		// if ($week=="ALL"){
+			// if ($tgl=="0"){
 				
-				if($regional == "0" || $regional == ""){
+				// if($regional == "0" || $regional == ""){
 					
-					$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly","NASIONAL","","0",$where); 
+					// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly","NASIONAL","","0",$where); 
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$regional,"NASIONAL","0",$where); 
+						// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$regional,"NASIONAL","0",$where); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$witel,$regional,"0",$where); 
+							// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$witel,$regional,"0",$where); 
 							
 							
-						}else{
+						// }else{
 						
-							if($sto == "0" || $sto == ""){
+							// if($sto == "0" || $sto == ""){
 								
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$datel,$witel,"0",$where); 
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$datel,$witel,"0",$where); 
 								
-							}else{
+							// }else{
 								
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$sto,$datel,"0",$where); 
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar($periode,"Monthly",$sto,$datel,"0",$where); 
 								
-							}
+							// }
 							
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
+				// }
 				
 				
-			}else {
+			// }else {
 				
-				if($regional == "0" || $regional == ""){
+				// if($regional == "0" || $regional == ""){
 					
-					$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly","NASIONAL","","0",$where,$datef); 
+					// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly","NASIONAL","","0",$where,$datef); 
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$regional,"NASIONAL","0",$where,$datef); 
+						// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$regional,"NASIONAL","0",$where,$datef); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$witel,$regional,"0",$where,$datef); 
+							// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$witel,$regional,"0",$where,$datef); 
 							
 							
-						}else{
+						// }else{
 						
-							if($sto == "0" || $sto == ""){
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$datel,$witel,"0",$where,$datef); 
-							}else{
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$sto,$datel,"0",$where,$datef); 
-							}							
+							// if($sto == "0" || $sto == ""){
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$datel,$witel,"0",$where,$datef); 
+							// }else{
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_day($periode,"Monthly",$sto,$datel,"0",$where,$datef); 
+							// }							
 							
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
+				// }
 				
-			}
-		}else {
-				if($regional == "0" || $regional == ""){
+			// }
+		// }else {
+				// if($regional == "0" || $regional == ""){
 					
-					$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly","NASIONAL","","0",$where,$week); 
+					// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly","NASIONAL","","0",$where,$week); 
 					
-				}else{
+				// }else{
 					
-					if($witel == "0" || $witel == ""){
+					// if($witel == "0" || $witel == ""){
 						
-						$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$regional,"NASIONAL","0",$where,$week); 
+						// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$regional,"NASIONAL","0",$where,$week); 
 						
 						
-					}else{
+					// }else{
 					
-						if($datel == "0" || $datel == ""){
+						// if($datel == "0" || $datel == ""){
 							
-							$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$witel,$regional,"0",$where,$week); 
+							// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$witel,$regional,"0",$where,$week); 
 							
 							
-						}else{
+						// }else{
 						
-							if($sto == "0" || $sto == ""){
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$datel,$witel,"0",$where,$week); 
-							}else{
-								$data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$sto,$datel,"0",$where,$week); 
-							}	
+							// if($sto == "0" || $sto == ""){
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$datel,$witel,"0",$where,$week); 
+							// }else{
+								// $data['channel'] = $this->tvprogramun_model->list_spot_by_program_all_bar_week($periode,"Monthly",$sto,$datel,"0",$where,$week); 
+							// }	
 							
 						
-						}
+						// }
 
 					
-					}
+					// }
 
-				}
-		}
-			$data['totpopulasi'] = $this->tvprogramun_model->list_populasi2($periode);
+				// }
+		// }
+			// $data['totpopulasi'] = $this->tvprogramun_model->list_populasi2($periode);
 			
-       if(sizeof($data['channel']) > 0){
-    			$i = 1;
-    			$ik = 0;
+       // if(sizeof($data['channel']) > 0){
+    			// $i = 1;
+    			// $ik = 0;
           
-		$dataM=$data['channel'];
-		$scama = array();
-		for ($i=0;$i<count($dataM);$i++){
-			$scam['Rangking'] = $i+1;
-			$scam['AUDIENCE'] = $dataM[$i]['AUDIENCE'];
-			$scam['TOTAL_VIEW'] = $dataM[$i]['TOTAL_VIEW'];
-			$scam['DURATION'] = $dataM[$i]['DURATION'];
-			$scam['SHARE'] = $dataM[$i]['SHARE'];
-			$scam['AVGTOTDUR'] = $dataM[$i]['AVGTOTDUR'];
-			$scam['REACH'] = $dataM[$i]['REACH'];
-			$scam['channel'] = $dataM[$i]['CHANNEL'];
-			$data_cha[] = '"'.$dataM[$i]['CHANNEL'].'"';
-			$spot_cha[] = $dataM[$i]['AUDIENCE'];
-			array_push($scama, $scam);
-		}	
+		// $dataM=$data['channel'];
+		// $scama = array();
+		// for ($i=0;$i<count($dataM);$i++){
+			// $scam['Rangking'] = $i+1;
+			// $scam['AUDIENCE'] = $dataM[$i]['AUDIENCE'];
+			// $scam['TOTAL_VIEW'] = $dataM[$i]['TOTAL_VIEW'];
+			// $scam['DURATION'] = $dataM[$i]['DURATION'];
+			// $scam['SHARE'] = $dataM[$i]['SHARE'];
+			// $scam['AVGTOTDUR'] = $dataM[$i]['AVGTOTDUR'];
+			// $scam['REACH'] = $dataM[$i]['REACH'];
+			// $scam['channel'] = $dataM[$i]['CHANNEL'];
+			// $data_cha[] = '"'.$dataM[$i]['CHANNEL'].'"';
+			// $spot_cha[] = $dataM[$i]['AUDIENCE'];
+			// array_push($scama, $scam);
+		// }	
  
-      } else {
-          $scama = null;
-      }
+      // } else {
+          // $scama = null;
+      // }
       
-		  echo json_encode($scama,true);
-	}
+		  // echo json_encode($scama,true);
+	// }
 
 }
 

@@ -674,7 +674,15 @@ class Audiencevir extends JA_Controller {
   
   
    public function listsearch(){
+	   
+	    if(!$this->session->userdata('user_id') || in_array("150",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
         $typerole = $this->session->userdata('type_role');
+		$search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
 		
 		 $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['d']));
@@ -684,7 +692,7 @@ class Audiencevir extends JA_Controller {
           $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['dend']));
           $_GET['dend'] = $date->format('Y-m-d');
 		
-        $list = $this->audience_model->listsearch($this->Anti_si($_GET['q']),$this->Anti_si($_GET['d']),$this->Anti_si($_GET['dend']),$this->Anti_si($_GET['c']), $typerole);
+        $list = $this->audience_model->listsearch($this->Anti_si($search_t),$this->Anti_si($_GET['d']),$this->Anti_si($_GET['dend']),$this->Anti_si($_GET['c']), $typerole);
 		
         
         if ( $list ) {			
@@ -693,6 +701,8 @@ class Audiencevir extends JA_Controller {
             $result = array( 'Value not found!' );
             $this->output->set_content_type('application/json')->set_output(json_encode($result));
         }
+		
+		}
     }                
   
   public function setdaypart(){

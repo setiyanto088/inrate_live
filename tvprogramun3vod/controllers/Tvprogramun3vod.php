@@ -166,16 +166,29 @@ class Tvprogramun3vod extends JA_Controller {
 	}
 
   public function channelsearch(){
-      $typerole = $this->session->userdata('type_role');
-      $genre = str_replace("AND","&",$this->Anti_si($_GET['g']));
-      $list = $this->tvprogramun_model->channelsearch($_GET['q'],$genre,$typerole);
-      
-      if ( $list ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($list));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
+	  
+	  $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("221",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+				$search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
+			
+			  $typerole = $this->session->userdata('type_role');
+			  $genre = str_replace("AND","&",$this->Anti_si($_GET['g']));
+			  $list = $this->tvprogramun_model->channelsearch($search_t,0,0);
+			  
+			  if ( $list ) {			
+				  $this->output->set_content_type('application/json')->set_output(json_encode($list));
+			  } else {
+				  $result = array( 'Value not found!' );
+				  $this->output->set_content_type('application/json')->set_output(json_encode($result));
+			  }
+	  
+		}
   }     
 
 	public function audiencebar_by_program_export(){

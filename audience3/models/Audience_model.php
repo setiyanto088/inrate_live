@@ -25,6 +25,7 @@ class Audience_model extends CI_Model {
 			GROUP BY PROGRAM
   			ORDER BY program";
 	 }
+	 
         $sql2	= $this->db->query($query2); 
         $this->db->close();	   
         $hasil2 = $sql2->result_array();

@@ -972,6 +972,16 @@ class Postbuyadspeformanceftares extends JA_Controller {
   }                             
     
   public function listsearch(){
+	  
+	   $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("172",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
       if( ! empty($_GET['sd']) ) {
            $dt   = new DateTime();
           $date = $dt->createFromFormat('d/m/Y', $_GET['sd']);
@@ -987,8 +997,12 @@ class Postbuyadspeformanceftares extends JA_Controller {
       } else {
           $end_date = NULL;
       }
+	  
+	  	$search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
+		
+		$search_chn =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['c']))))));
       
-      $list = $this->postbuyadspeformance_model->listsearch($_GET['q'],$_GET['c'],$start_date,$end_date);
+      $list = $this->postbuyadspeformance_model->listsearch($search_t,$search_chn,$start_date,$end_date);
       
       if ( $list ) {			
           $this->output->set_content_type('application/json')->set_output(json_encode($list));
@@ -996,11 +1010,36 @@ class Postbuyadspeformanceftares extends JA_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+	  
+		}
   }                                                                  
     
   public function profilesearch(){
+	  
+	   $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("172",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
+			
       $iduser = $this->session->userdata('user_id');
-      $list = $this->postbuyadspeformance_model->profilesearch($_GET['q'],$iduser,$_GET['f']);
+	  
+	  	$search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
+		
+		$channel_error = 0;
+		if (!is_numeric(str_replace("'","",$_GET['f']))) {
+				$channel_error++;
+		}
+		
+		if($channel_error > 0){
+				$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
+		
+      $list = $this->postbuyadspeformance_model->profilesearch($search_t,$iduser,$_GET['f']);
       
       if ( $list ) {			
           $this->output->set_content_type('application/json')->set_output(json_encode($list));
@@ -1008,6 +1047,10 @@ class Postbuyadspeformanceftares extends JA_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+	  
+		}
+		
+		}
   }                                                               
   
   public function setprofile(){
@@ -1025,8 +1068,20 @@ class Postbuyadspeformanceftares extends JA_Controller {
   }                                                    
     
   public function channelsearch(){
+	  
+	   $menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("172",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		}else{
+			
       $typerole = $this->session->userdata('type_role');
-      $list = $this->postbuyadspeformance_model->channelsearch($_GET['q'],$typerole);
+	  
+	   	$search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
+		
+      $list = $this->postbuyadspeformance_model->channelsearch($search_t,$typerole);
       
       if ( $list ) {			
           $this->output->set_content_type('application/json')->set_output(json_encode($list));
@@ -1034,6 +1089,8 @@ class Postbuyadspeformanceftares extends JA_Controller {
           $result = array( 'Value not found!' );
           $this->output->set_content_type('application/json')->set_output(json_encode($result));
       }
+	  
+		}
   }
   
   

@@ -934,27 +934,27 @@ class Daypartresp22 extends JA_Controller {
         }
     }  
   
-   public function listsearch(){
-        $typerole = $this->session->userdata('type_role');
+   // public function listsearch(){
+        // $typerole = $this->session->userdata('type_role');
 		
-		 $dt   = new DateTime();
-          $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['d']));
-          $_GET['d'] = $date->format('Y-m-d');
+		 // $dt   = new DateTime();
+          // $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['d']));
+          // $_GET['d'] = $date->format('Y-m-d');
 		  
-		   $dt   = new DateTime();
-          $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['dend']));
-          $_GET['dend'] = $date->format('Y-m-d');
+		   // $dt   = new DateTime();
+          // $date = $dt->createFromFormat('d/m/Y', $this->Anti_si($_GET['dend']));
+          // $_GET['dend'] = $date->format('Y-m-d');
 		
-        $list = $this->audience_model->listsearchs($this->Anti_si($_GET['q']), $typerole); 
+        // $list = $this->audience_model->listsearchs($this->Anti_si($_GET['q']), $typerole); 
 		
         
-        if ( $list ) {			
-            $this->output->set_content_type('application/json')->set_output(json_encode($list));
-        } else {
-            $result = array( 'Value not found!' );
-            $this->output->set_content_type('application/json')->set_output(json_encode($result));
-        }
-    }                
+        // if ( $list ) {			
+            // $this->output->set_content_type('application/json')->set_output(json_encode($list));
+        // } else {
+            // $result = array( 'Value not found!' );
+            // $this->output->set_content_type('application/json')->set_output(json_encode($result));
+        // }
+    // }                
   
   public function setdaypart(){
       $typerole = $this->session->userdata('type_role');
