@@ -294,6 +294,8 @@ class Pivotp22 extends JA_Controller {
 	
 	public function create_pivot(){
 		
+		
+		
 		 $menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("232",$array_menu) == 0) {
@@ -303,7 +305,14 @@ class Pivotp22 extends JA_Controller {
 		
 		$_POST = json_decode(file_get_contents("php://input"), true);
 		
+		$params['token'] = $this->Anti_si($_POST['token']);
+		$secs = $this->validate_owdol($params['token']);
 		
+		if($secs > 0){
+				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
+				
 		$data1 = $_POST['list'];
 		$data2 = $_POST['list2'];
 		$notab = $_POST['notab'];
@@ -739,7 +748,7 @@ class Pivotp22 extends JA_Controller {
 		$result = array( 'success' => true, 'message' => 'Success', 'data' => array('tabel' => $html));
 			
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		
+			}
 		}
 		
 	}

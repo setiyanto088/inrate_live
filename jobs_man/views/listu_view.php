@@ -568,6 +568,7 @@
 		var form_data = new FormData();  
 		  	form_data.append('set_min', set_min);
 			form_data.append('tokens', tokens);	
+			form_data.append('token','<?php echo $this->session->userdata('token'); ?>');
 			   
 		$.ajax({
 			type: "POST",
@@ -607,6 +608,7 @@
 			form_data.append('set_hours', set_hours);
 			form_data.append('set_min', set_min);	
 			form_data.append('tokens', tokens);	
+			form_data.append('token','<?php echo $this->session->userdata('token'); ?>');
 			   
 		$.ajax({
 			type: "POST",
@@ -659,6 +661,7 @@
 			form_data.append('set_name', hid_univ_name);
 			form_data.append('set_univ', set_universe);	
 			form_data.append('tokens', tokens);	
+			form_data.append('token','<?php echo $this->session->userdata('token'); ?>');
 			   
 		$.ajax({
 			type: "POST",

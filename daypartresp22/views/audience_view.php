@@ -385,7 +385,7 @@
         var to = $('#to').val();
         
         var user_id = $.cookie(window.cookie_prefix + "user_id");
-        var token = $.cookie(window.cookie_prefix + "token");
+        var token = '<?php echo $this->session->userdata('token'); ?>';
         
         var dpart_list = ""; 
         

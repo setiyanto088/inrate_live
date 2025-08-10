@@ -865,7 +865,8 @@
 			   var form_data = {
 				  sess_user_id     : user_id,
 				  sess_token      : token,
-				  save_channel_name	 :  $('#preset_name_del').val()
+				  save_channel_name	 :  $('#preset_name_del').val(),
+				  token : '<?php echo $this->session->userdata('token'); ?>'
 			  };       
 			
 			
@@ -930,7 +931,8 @@
 				  sess_user_id     : user_id,
 				  sess_token      : token,
 				  save_channel_name	 : save_channel_name,
-				  channel     : channel
+				  channel     : channel,
+				  token : '<?php echo $this->session->userdata('token'); ?>'
 			  };       
 			
 			

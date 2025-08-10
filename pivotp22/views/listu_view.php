@@ -1194,7 +1194,8 @@ function getCreateCr(){
                         isi			 : crcroptVal1,
                         output		 : output,
                          name	 	 : $("#crname").val(),
-						notab 		 : new_tab_no						
+						notab 		 : new_tab_no	,
+						token : '<?php echo $this->session->userdata('token'); ?>'						
                     }
                     
 					if(output == 'table'){
