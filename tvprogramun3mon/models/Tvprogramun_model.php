@@ -69,10 +69,23 @@ $db = $this->clickhouse->db();
 		
 	}
 	
+	public function get_list_periode(){
+
+		 $db = $this->clickhouse->db();
+
+		$query = " SELECT DISTINCT TANGGAL FROM M_SUM_TV_DASH_ACTIVE_PTV WHERE TANGGAL <> '' ";
+	  
+		
+		$result = $db->select($query);
+		return $result->rows();	 
+
+	}	
+	
 	public function get_curr_data($periode) {
 		
 		$data_file = date('Y-m-d');
 		$n_period = date_format(date_create($periode),"Y-m");
+		$periodes= date_format(date_create($periode),"Y-F");
 
 $db = $this->clickhouse->db();
 		$query = "     
@@ -83,7 +96,7 @@ $db = $this->clickhouse->db();
 					    ORDER BY DATETIME DESC,SERVER_NODE
 					    LIMIT 2
 				    ) A join (
-				   		SELECT * FROM inrate.SERVER_PERF_SUMMARY A WHERE TIME_PERIODE IN ('".$data_file."','".$periode."')  
+				   		SELECT * FROM inrate.SERVER_PERF_SUMMARY A WHERE TIME_PERIODE IN ('".$data_file."','".$periodes."')  
 				    ) B on A.SERVER_NODE = B.SERVER_NODE
 				    LEFT JOIN (
 				    	 SELECT SERVER_NODE, AVG(MAX_CPU_USAGE) AS AVG_MAX_CPU, AVG(MAX_MEM_ACTIVE) AS AVG_MAX_MEM FROM SERVER_PERF_SUMMARY 

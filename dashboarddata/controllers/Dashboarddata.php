@@ -711,12 +711,16 @@ class Dashboarddata extends JA_Controller {
 	function datadash(){
 		 $menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
-		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+		//if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+		if(in_array("0",$array_menu) == 1) {
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}else{
-				
+			$channel_error = 0;
 			$type =  $this->input->post('type');
+			$array_tp = [1 => 1,2 => 2,3 => 3,4 => 4,5 => 5,6 => 6,7 => 7,8 => 8];
+			
+			
 			$tahun= $this->input->post('tahun');
 			$detail_file = $this->input->post('detail_file');
 			$token = $this->input->post('token');
@@ -724,127 +728,147 @@ class Dashboarddata extends JA_Controller {
 			$params['token']= $token;
 			$params['uid']= $this->session->userdata('user_id');
 			
-			$validate = $this->tvprogramun_model->validate_password($params);
-
+			if($array_tp[$type]==''){
+				$channel_error++;
+			}
 			
-				if($type == "1"){
-				
-					$daily = $this->tvprogramun_model->daily_filter($tahun,$detail_file);
-
-					$array_jobs_detail = ['LOAD_EPG','SPLIT_EPG','LOAD_CDR','CLEANSING_CDR','SPLIT_CDR','JOIN_CDR_EPG','RATING_PERMINUTES','TVCC','MEDIAPLAN','BEFORE_AFTER','MIGRATION','AUDIENCE','DASHBOARD'];
-					$iii = 13;
-
-				}elseif($type == "2"){
-					
-					$daily = $this->tvprogramun_model->daily_filter_2($tahun,$detail_file);
-
-					$array_jobs_detail = ['LOAD_LOGPROOF','SPLIT_LOGPROOF','JOIN_LOGPROOF_CDR','DETAIL_LOGPROOF','PTV_CIM_RATING','REACH_BRAND','REACH_AGENCY','REACH_ADVERTISER','SUB_CAT'];
-					$iii = 9;
-
-					
-				}elseif($type == "3"){
-					
-					$daily = $this->tvprogramun_model->daily_filter_3($tahun);
-
-					$array_jobs_detail = ['LOAD_LOGPROOF','SPLIT_LOGPROOF','JOIN_LOGPROOF_CDR','DETAIL_LOGPROOF','PTV_CIM_RATING','REACH_BRAND','REACH_AGENCY','REACH_ADVERTISER','SUB_CAT'];
-					$iii = 9;
-
-					
-				}elseif($type == "4"){
-					
-					$daily = $this->tvprogramun_model->daily_filter_4($tahun,$detail_file);
-
-					$array_jobs_detail = ['LOAD_CIM','SPLIT_CIM','DETAIL_CIM','DETAIL_LOGPROOF','CIM_RATING','REACH_PRODUCT','REACH_SECTOR','REACH_ADVERTISER','REACH_PRODUCT_MONTHLY','REACH_SECTOR_MONTHLY','REACH_ADVERTISER_MONTHLY','SUB_CAT','DASHBOARD_POSTBUY'];
-					$iii = 13;
-
-					
-				}elseif($type == "5"){
-					
-					$daily = $this->tvprogramun_model->daily_filter_5($tahun,$detail_file);
-
-					$array_jobs_detail = ['LOAD_RATECARD','CLEANSING_RATECARD','SPLIT_RATECARD','DETAIL_RATECARD','RATING_PERMINUTES','MEDIAPLAN_RATING','TVCC','AFTER_BEFORE','MIGRATION','AUDIENCE','DASHBOARD_MEDIAPLAN'];
-					$iii = 11;
-
-					
-				}elseif($type == "7"){
-					
-					$daily = $this->tvprogramun_model->daily_filter_7($tahun,$detail_file);
-
-					$array_jobs_detail = ['LOAD_LOGPROOF','SPLIT_LOGPROOF','JOIN_LOGPROOF_CDR','DETAIL_LOGPROOF','PTV_CIM_RATING','REACH_BRAND','REACH_AGENCY','REACH_ADVERTISER','SUB_CAT'];
-					$iii = 9;
-
-					
-				}elseif($type == "8"){
-					
-					$daily = $this->tvprogramun_model->daily_filter_8($tahun,$detail_file);
-
-					$array_jobs_detail = ['LOAD_LOGPROOF','SPLIT_LOGPROOF','JOIN_LOGPROOF_CDR','DETAIL_LOGPROOF','PTV_CIM_RATING','REACH_BRAND','REACH_AGENCY','REACH_ADVERTISER','SUB_CAT'];
-					$iii = 9;
-
-					
+				$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
 				}
-				
+								
+				if(in_array(str_replace("'","",$tahun),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
 			
-				$status_array = ['Not Process','Success','Failed','On Process','On Queue'];
-
-				$detail_daily = array();
-				for ($i=0;$i<count($daily);$i++){
-					$scamud['LOG_DATE'] = $daily[$i]['LOG_DATE'];
-					$ssucc = 0;
-					$prog = 0;
+				if($channel_error > 0){
+					$result = array('success' => false, 'message' => "Parameters not Valid", 'data' => '');
+					$this->output->set_content_type('application/json')->set_output(json_encode($result));
+				}else{
 					
-					foreach($array_jobs_detail AS $detail_name){
-						if($daily[$i][$detail_name] == null){
-							$scamud[$detail_name] = $status_array[0];
-						}else{
-							$scamud[$detail_name] = $status_array[$daily[$i][$detail_name]];
-						}
-						
-						$note[$detail_name] = explode("||",$daily[$i][$detail_name.'_NOTE']);
-						$scamud[$detail_name.'_NOTE'] = $note[$detail_name][0];
-						$scamud[$detail_name.'_NOTE_FL'] = $scamud[$detail_name]."||".$note[$detail_name][0];
-						
-						if($daily[$i][$detail_name] == 1){
-							$ssucc++ ;
-						}
-						
-						if($daily[$i][$detail_name] == 3){
-							
-							$prog++;
-						}
-					}
+					$validate = $this->tvprogramun_model->validate_password($params);
 
-					if($daily[$i]['STATUS_J'] == 3){
+				
+					if($type == "1"){
+					
+						$daily = $this->tvprogramun_model->daily_filter($tahun,$detail_file);
+
+						$array_jobs_detail = ['LOAD_EPG','SPLIT_EPG','LOAD_CDR','CLEANSING_CDR','SPLIT_CDR','JOIN_CDR_EPG','RATING_PERMINUTES','TVCC','MEDIAPLAN','BEFORE_AFTER','MIGRATION','AUDIENCE','DASHBOARD'];
+						$iii = 13;
+
+					}elseif($type == "2"){
 						
-						$scamud['SUCC'] = "On Progress";
-					}else{
+						$daily = $this->tvprogramun_model->daily_filter_2($tahun,$detail_file);
+
+						$array_jobs_detail = ['LOAD_LOGPROOF','SPLIT_LOGPROOF','JOIN_LOGPROOF_CDR','DETAIL_LOGPROOF','PTV_CIM_RATING','REACH_BRAND','REACH_AGENCY','REACH_ADVERTISER','SUB_CAT'];
+						$iii = 9;
+
 						
-						if($ssucc < $iii){
-							if($ssucc == 0){
-								$scamud['SUCC'] = "Process Not Running";
+					}elseif($type == "3"){
+						
+						$daily = $this->tvprogramun_model->daily_filter_3($tahun);
+
+						$array_jobs_detail = ['LOAD_LOGPROOF','SPLIT_LOGPROOF','JOIN_LOGPROOF_CDR','DETAIL_LOGPROOF','PTV_CIM_RATING','REACH_BRAND','REACH_AGENCY','REACH_ADVERTISER','SUB_CAT'];
+						$iii = 9;
+
+						
+					}elseif($type == "4"){
+						
+						$daily = $this->tvprogramun_model->daily_filter_4($tahun,$detail_file);
+
+						$array_jobs_detail = ['LOAD_CIM','SPLIT_CIM','DETAIL_CIM','DETAIL_LOGPROOF','CIM_RATING','REACH_PRODUCT','REACH_SECTOR','REACH_ADVERTISER','REACH_PRODUCT_MONTHLY','REACH_SECTOR_MONTHLY','REACH_ADVERTISER_MONTHLY','SUB_CAT','DASHBOARD_POSTBUY'];
+						$iii = 13;
+
+						
+					}elseif($type == "5"){
+						
+						$daily = $this->tvprogramun_model->daily_filter_5($tahun,$detail_file);
+
+						$array_jobs_detail = ['LOAD_RATECARD','CLEANSING_RATECARD','SPLIT_RATECARD','DETAIL_RATECARD','RATING_PERMINUTES','MEDIAPLAN_RATING','TVCC','AFTER_BEFORE','MIGRATION','AUDIENCE','DASHBOARD_MEDIAPLAN'];
+						$iii = 11;
+
+						
+					}elseif($type == "7"){
+						
+						$daily = $this->tvprogramun_model->daily_filter_7($tahun,$detail_file);
+
+						$array_jobs_detail = ['LOAD_LOGPROOF','SPLIT_LOGPROOF','JOIN_LOGPROOF_CDR','DETAIL_LOGPROOF','PTV_CIM_RATING','REACH_BRAND','REACH_AGENCY','REACH_ADVERTISER','SUB_CAT'];
+						$iii = 9;
+
+						
+					}elseif($type == "8"){
+						
+						$daily = $this->tvprogramun_model->daily_filter_8($tahun,$detail_file);
+
+						$array_jobs_detail = ['LOAD_LOGPROOF','SPLIT_LOGPROOF','JOIN_LOGPROOF_CDR','DETAIL_LOGPROOF','PTV_CIM_RATING','REACH_BRAND','REACH_AGENCY','REACH_ADVERTISER','SUB_CAT'];
+						$iii = 9;
+
+						
+					}
+					
+				
+					$status_array = ['Not Process','Success','Failed','On Process','On Queue'];
+
+					$detail_daily = array();
+					for ($i=0;$i<count($daily);$i++){
+						$scamud['LOG_DATE'] = $daily[$i]['LOG_DATE'];
+						$ssucc = 0;
+						$prog = 0;
+						
+						foreach($array_jobs_detail AS $detail_name){
+							if($daily[$i][$detail_name] == null){
+								$scamud[$detail_name] = $status_array[0];
 							}else{
-								if($prog == 0){
-									$scamud['SUCC'] = "Process Not Complete<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",".$type.")' >Reprocess</button>";
-								}else{
-									$scamud['SUCC'] = "Process Not Complete";
-								}
+								$scamud[$detail_name] = $status_array[$daily[$i][$detail_name]];
 							}
+							
+							$note[$detail_name] = explode("||",$daily[$i][$detail_name.'_NOTE']);
+							$scamud[$detail_name.'_NOTE'] = $note[$detail_name][0];
+							$scamud[$detail_name.'_NOTE_FL'] = $scamud[$detail_name]."||".$note[$detail_name][0];
+							
+							if($daily[$i][$detail_name] == 1){
+								$ssucc++ ;
+							}
+							
+							if($daily[$i][$detail_name] == 3){
+								
+								$prog++;
+							}
+						}
+
+						if($daily[$i]['STATUS_J'] == 3){
+							
+							$scamud['SUCC'] = "On Progress";
 						}else{
-							$scamud['SUCC'] = "Process Complete<br><br><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",1)' >Reprocess</button>";
+							
+							if($ssucc < $iii){
+								if($ssucc == 0){
+									$scamud['SUCC'] = "Process Not Running";
+								}else{
+									if($prog == 0){
+										$scamud['SUCC'] = "Process Not Complete<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",".$type.")' >Reprocess</button>";
+									}else{
+										$scamud['SUCC'] = "Process Not Complete";
+									}
+								}
+							}else{
+								$scamud['SUCC'] = "Process Complete<br><br><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",1)' >Reprocess</button>";
+							}
+							
 						}
 						
+
+						
+						
+						
+						array_push($detail_daily, $scamud);
 					}
 					
-
+					$data['daily'] = json_encode($detail_daily,true); 
 					
-					
-					
-					array_push($detail_daily, $scamud);
+					echo $data['daily'];
 				}
-				
-				$data['daily'] = json_encode($detail_daily,true); 
-				
-				echo $data['daily'];
 		}
 		
 	}
@@ -856,88 +880,108 @@ class Dashboarddata extends JA_Controller {
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}else{
-			
+			$channel_error = 0;
 			$type =  $this->input->post('type');
+			
+			$array_tp = [1 => 1,2 => 2,3 => 3,4 => 4,5 => 5,6 => 6,7 => 7,8 => 8];
+			
 			$field =  $this->input->post('field');
 			$tahun= $this->input->post('tahun');
 			$token = $this->input->post('token');
-			
+						
 			$params['token']= $token;
 			$params['uid']= $this->session->userdata('user_id');
 			
-			
-
-				$periode=$tahun; 
-
-				if($type == 7 || $type == 8 ){
-					$data['programs'] = $this->tvprogramun_model->filter_table2("Program",$periode,$type);
-				}else{
-					$data['programs'] = $this->tvprogramun_model->filter_table("Program",$periode,$type);
+				if($array_tp[$type]==''){
+					$channel_error++;
 				}
 				
-				$status_array = ['Not Process','Process Success','Process Fail','File Ready to Process','On Queue','On Progress','Checking File'];
+				$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$tahun),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+				
+				if($channel_error > 0){
+					$result = array('success' => false, 'message' => "Parameters not Valid", 'data' => '');
+					$this->output->set_content_type('application/json')->set_output(json_encode($result));
+				}else{
+					$periode=$tahun; 
 
-				if(sizeof($data['programs']) > 0){
-				  $i = 1;
-					$ik = 0;
-						foreach($data['programs'] as $datax){
-							
-							if($datax['FILE_TYPE'] == 0){
-								$ft = 'Original';
-							}else if($datax['FILE_TYPE'] == 99){
-								$ft = 'File Not Found';
-							}else{
-								$ft = 'Rev '.$datax['FILE_TYPE'];
-							}
-							
-							$fn = explode("/",$datax['FILE_NAME']);
-							
-							$data_ch[$ik]['Date'] = $datax['LOG_DATE'];
-							$data_ch[$ik]['file_name'] = end($fn);
-							$data_ch[$ik]['file_size'] = $datax['FILESIZE'];
-							$data_ch[$ik]['row_file'] = $datax['ROW_COUNT_FILE'];
-							$data_ch[$ik]['row_load'] = $datax['ROW_COUNT_LOAD'];
-							$data_ch[$ik]['row_cleansing'] = $datax['ROW_COUNT_CLEANSING'];
-							$data_ch[$ik]['date_load'] = $datax['DATE_LOAD'];
-							$data_ch[$ik]['file_type'] = $ft;
-							
-							if($datax['STATUS_FILE'] == 3){
-								$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='process_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='onqueue(\"".$datax['LOG_DATE']."\",".$type.")' >Process</button>".'<br>'.$datax['CHANNEL'].'</div>';
-							}else{
-								$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br>".$datax['NOTE'].'<br>'.$datax['CHANNEL'].'</div>';
-							}
-							
-							if($datax['STATUS_FILE'] == 1){
+					if($type == 7 || $type == 8 ){
+						$data['programs'] = $this->tvprogramun_model->filter_table2("Program",$periode,$type);
+					}else{
+						$data['programs'] = $this->tvprogramun_model->filter_table("Program",$periode,$type);
+					}
+					
+					$status_array = ['Not Process','Process Success','Process Fail','File Ready to Process','On Queue','On Progress','Checking File'];
+
+					if(sizeof($data['programs']) > 0){
+					  $i = 1;
+						$ik = 0;
+							foreach($data['programs'] as $datax){
 								
-								if($datax['STATUS_J'] == 1 ){
-									$data_ch[$ik]['check_data'] = "<span style='color:blue'><strong>Checked</strong></span>";
-								}elseif($datax['STATUS_J'] == 2 ){
-									$data_ch[$ik]['check_data'] = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='onreproc_f(\"".$datax['LOG_DATE']."\",".$type.")' >Reprocess</button>";
-								}elseif($datax['STATUS_J'] == 3 ){
-									$data_ch[$ik]['check_data'] = "<span style='color:green'><strong>In Checking</strong></span>";
-									
-								}elseif($datax['STATUS_J'] == 4 ){
-									$data_ch[$ik]['check_data'] = "<span style='color:green'><strong>In Queue</strong></span>";
-									
+								if($datax['FILE_TYPE'] == 0){
+									$ft = 'Original';
+								}else if($datax['FILE_TYPE'] == 99){
+									$ft = 'File Not Found';
 								}else{
-								
-									$data_ch[$ik]['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='chek_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type.")' >Check Data</button>";
+									$ft = 'Rev '.$datax['FILE_TYPE'];
 								}
 								
-							}else{
+								$fn = explode("/",$datax['FILE_NAME']);
 								
-								$data_ch[$ik]['check_data'] = "";
-			
+								$data_ch[$ik]['Date'] = $datax['LOG_DATE'];
+								$data_ch[$ik]['file_name'] = end($fn);
+								$data_ch[$ik]['file_size'] = $datax['FILESIZE'];
+								$data_ch[$ik]['row_file'] = $datax['ROW_COUNT_FILE'];
+								$data_ch[$ik]['row_load'] = $datax['ROW_COUNT_LOAD'];
+								$data_ch[$ik]['row_cleansing'] = $datax['ROW_COUNT_CLEANSING'];
+								$data_ch[$ik]['date_load'] = $datax['DATE_LOAD'];
+								$data_ch[$ik]['file_type'] = $ft;
+								
+								if($datax['STATUS_FILE'] == 3){
+									$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='process_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='onqueue(\"".$datax['LOG_DATE']."\",".$type.")' >Process</button>".'<br>'.$datax['CHANNEL'].'</div>';
+								}else{
+									$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br>".$datax['NOTE'].'<br>'.$datax['CHANNEL'].'</div>';
+								}
+								
+								if($datax['STATUS_FILE'] == 1){
+									
+									if($datax['STATUS_J'] == 1 ){
+										$data_ch[$ik]['check_data'] = "<span style='color:blue'><strong>Checked</strong></span>";
+									}elseif($datax['STATUS_J'] == 2 ){
+										$data_ch[$ik]['check_data'] = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='onreproc_f(\"".$datax['LOG_DATE']."\",".$type.")' >Reprocess</button>";
+									}elseif($datax['STATUS_J'] == 3 ){
+										$data_ch[$ik]['check_data'] = "<span style='color:green'><strong>In Checking</strong></span>";
+										
+									}elseif($datax['STATUS_J'] == 4 ){
+										$data_ch[$ik]['check_data'] = "<span style='color:green'><strong>In Queue</strong></span>";
+										
+									}else{
+									
+										$data_ch[$ik]['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='chek_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type.")' >Check Data</button>";
+									}
+									
+								}else{
+									
+									$data_ch[$ik]['check_data'] = "";
+				
+								}
+								
+								$i++;
+								$ik++;
 							}
-							
-							$i++;
-							$ik++;
-						}
-				} else {
-					$data_ch = null;
-				}
+					} else {
+						$data_ch = null;
+					}
 
-				echo json_encode($data_ch,true);
+					echo json_encode($data_ch,true);
+				}
 		}
 	}
 	

@@ -38,7 +38,7 @@ class Jobs_man extends JA_Controller {
 		
 		
 		$typerole = $this->session->userdata('type_role');
-		$data['listparent'] = $this->createprofileu_model->listdataprofilenew($typerole);
+		//$data['listparent'] = $this->createprofileu_model->listdataprofilenew($typerole);
 		$data['listperiode'] = $this->createprofileu_model->listperiode();
 		$data['min_row'] = $this->createprofileu_model->min_row($typerole);
     
@@ -311,22 +311,27 @@ class Jobs_man extends JA_Controller {
 	public function change_min_row(){
 		 $menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
-		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
-			
-			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
+		//if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+		if(in_array("0",$array_menu) == 1) {
+			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
          // redirect ('/login');
 		}else{
 			
 			$set_min = $_POST['set_min'];
 			$token = $_POST['tokens'];
 			
-			$params['token']= $token;
-			$params['uid']= $this->session->userdata('user_id');
+			if(is_numeric($set_min)==0 || $set_min < 0){
+				
+				$result = array( 'success' => false, 'message' => 'Parameter not Valid', 'data' => array('hasil' => 'aaaa'));
+			}else{
+				
+				$params['token']= $token;
+				$params['uid']= $this->session->userdata('user_id');
 
 				$curr = $this->createprofileu_model->change_min_row($set_min);
 				$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
 		
-			
+			}
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -369,7 +374,8 @@ class Jobs_man extends JA_Controller {
 	public function change_time_jobs(){
 		 $menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
-		if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+		//if(!$this->session->userdata('user_id') || in_array("89",$array_menu) == 0) {
+		if(in_array("0",$array_menu) == 1) {
 			
 			$result = array('success' => false, 'message' => "Failed to Edit", 'data' => '');
          // redirect ('/login');
@@ -379,25 +385,36 @@ class Jobs_man extends JA_Controller {
 			$data_post['set_hours'] = $_POST['set_hours'];
 			$data_post['set_min'] = $_POST['set_min'];
 			
-			$data_post['token'] = $_POST['tokens'];
-					
-			$params['token']= $token;
-			$params['uid']= $this->session->userdata('user_id');
-		
-		//$validate = $this->tvprogramun_model->validate_password($params);
-		
-		// if($validate['status'] == 0){
-			// $result = array(
-					 // 'success' => true,
-					// 'status' => 'error',
-					// 'message' => $validate['message'],
-					// 'data' => array('hasil' => 'aaaa')
-				// );
-		
-		// }else{
-			$curr = $this->createprofileu_model->change_jobs_time($data_post['str'],$data_post['set_hours'],$data_post['set_min']);
-			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
-		// }
+			$arr_hours = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24'];
+			$arr_min = ['00','05','10','15','20','25','30','35','40','45','50','55'];
+			$arr_od = ['10','11'];
+			
+			$channel_error = 0;
+			if(in_array(str_replace("'","",$data_post['set_hours']),$arr_hours) == 0){
+					$channel_error++;
+			}
+			
+			if(in_array(str_replace("'","",$data_post['set_min']),$arr_min) == 0){
+					$channel_error++;
+			}
+			
+			if(in_array(str_replace("'","",$data_post['str']),$arr_od) == 0){
+					$channel_error++;
+			}
+			
+			if($channel_error > 0){
+					$result = array('success' => false, 'message' => "Parameters not Valid", 'html' => $channel_error);
+					//$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
+			
+				$data_post['token'] = $_POST['tokens'];
+						
+				$params['token']= $token;
+				$params['uid']= $this->session->userdata('user_id');
+			
+				$curr = $this->createprofileu_model->change_jobs_time($data_post['str'],$data_post['set_hours'],$data_post['set_min']);
+				$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
+			}
 		
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -418,11 +435,34 @@ class Jobs_man extends JA_Controller {
 			$set_univ = $_POST['set_univ'];
 			$token = $_POST['tokens'];
 			
-			$params['token']= $token;
-			$params['uid']= $this->session->userdata('user_id');
-
-			$curr = $this->createprofileu_model->change_jobs_univ($str,$set_name,$set_univ);
-			$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
+			if(is_numeric($set_univ)==0 || $set_univ < 0){
+				
+				$result = array( 'success' => false, 'message' => 'Parameter not Valid', 'data' => array('hasil' => 'aaaa'));
+			}else{
+				$params['token']= $token;
+				$params['uid']= $this->session->userdata('user_id');
+				
+				$channel_error = 0;
+				$get_list_channel = $this->createprofileu_model->get_list_per();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['name'];
+				}
+				
+				if(in_array(str_replace("'","",$set_name),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+				
+				if($channel_error > 0){
+					$result = array('success' => false, 'message' => "Parameters not Valid", 'html' => $channel_error);
+					//$this->output->set_content_type('application/json')->set_output(json_encode($result));
+				}else{
+				
+					$curr = $this->createprofileu_model->change_jobs_univ($str,$set_name,$set_univ);
+					$result = array( 'success' => true, 'message' => 'Success', 'data' => array('hasil' => 'aaaa'));
+				
+				}
+			}
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));

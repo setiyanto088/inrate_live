@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Jakarta');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tvprogramunresallp22 extends JA_Controller {
@@ -795,48 +795,56 @@ class Tvprogramunresallp22 extends JA_Controller {
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 				
-		if(!$this->session->userdata('user_id') || in_array("225",$array_menu) == 0) {
-			
+		if(!$this->session->userdata('user_id') || in_array("225",$array_menu) == 0) {			
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}else{
 		
 		$param['start_date_d'] =  $this->Anti_si($this->input->post('start_date_d',true));
 		$param['end_date_d'] =  $this->Anti_si($this->input->post('end_date_d',true));
-		$param['channel_d'] =  $this->Anti_si($this->input->post('channel_d',true));
-		$param['audiencebar_2']=$this->Anti_si($this->input->post('audiencebar_2',true));
-		$param['interval']=$this->Anti_si($this->input->post('interval',true)); 
-		$param['respondent']=$this->Anti_si($this->input->post('respondent',true));
-		$param['survey_data']=$this->Anti_si($this->input->post('survey_data',true));
 		
-		if($param['survey_data'] == '2022'){
-			$param['tbl'] = 'M_SUM_TV_DASH_DATE_RES_P22';
+		$startDate = new DateTime($param['start_date_d']);
+		$endDate = new DateTime($param['end_date_d']);
+		$interval = $startDate->diff($endDate);
+		
+		if($interval->days > 61){
+			$result = array('success' => false, 'message' => "Parameters Date not Valid", 'data' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}else{
-			$param['tbl'] = 'M_SUM_TV_DASH_DATE_RES';
-		}
-		 
-		
-		$data['date'] = $this->tvprogramun_model->day_filters($param);
-		
-		
-			if ($data['date'] <> null){
-				foreach($data['date'] as $datasss){
-					$data_date[] = $datasss['date'];
-					$spot_date[] = floatval($datasss['spot']);
-				}
-			}else {
-				$data_date[]='';
-				$spot_date[] =0;
-			}	
+			$param['channel_d'] =  $this->Anti_si($this->input->post('channel_d',true));
+			$param['audiencebar_2']=$this->Anti_si($this->input->post('audiencebar_2',true));
+			$param['interval']=$this->Anti_si($this->input->post('interval',true)); 
+			$param['respondent']=$this->Anti_si($this->input->post('respondent',true));
+			$param['survey_data']=$this->Anti_si($this->input->post('survey_data',true));
+			
+			if($param['survey_data'] == '2022'){
+				$param['tbl'] = 'M_SUM_TV_DASH_DATE_RES_P22';
+			}else{
+				$param['tbl'] = 'M_SUM_TV_DASH_DATE_RES';
+			}
+			 
+			
+			$data['date'] = $this->tvprogramun_model->day_filters($param);
+			
+			
+				if ($data['date'] <> null){
+					foreach($data['date'] as $datasss){
+						$data_date[] = $datasss['date'];
+						$spot_date[] = floatval($datasss['spot']);
+					}
+				}else {
+					$data_date[]='';
+					$spot_date[] =0;
+				}	
 
-		
-		
-		
-		$data['json_date'] = $data_date;
-		$data['json_spot_date'] = $spot_date;
-		
-		echo json_encode($data,true); 
-		
+			
+			
+			
+			$data['json_date'] = $data_date;
+			$data['json_spot_date'] = $spot_date;
+			
+			echo json_encode($data,true); 
+		}
 		}
 	}
 	

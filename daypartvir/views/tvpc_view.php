@@ -1462,14 +1462,14 @@
         var to = $('#to').val();
         
         var user_id = $.cookie(window.cookie_prefix + "user_id");
-        var token = $.cookie(window.cookie_prefix + "token");
+        var token = '<?php echo $this->session->userdata('token'); ?>';
         
         var dpart_list = ""; 
-        
+
         $.ajax({
             type	: "POST",
             url		: "<?php echo base_url().'daypartvir/setdaypart/';?>"+ "?sess_user_id=" + user_id + "&sess_token=" + token +"&f=" + from +"&t=" + to,
-             dataType: 'json',
+            dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             success	: function(response) {
                  for(i=0; i < response.length; i++){

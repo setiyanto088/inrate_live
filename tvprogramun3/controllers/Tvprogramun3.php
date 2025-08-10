@@ -8,6 +8,7 @@ class Tvprogramun3 extends JA_Controller {
 	{
 		parent::__construct();			
 		$this->load->model('tvprogramun_model');
+		$this->output->set_header('X-Content-Type-Options: nosniff');
 	}
 	
 	
@@ -1695,7 +1696,7 @@ class Tvprogramun3 extends JA_Controller {
 	}
 	
 	function audiencebar_by_channel(){
-		
+
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 				

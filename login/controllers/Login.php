@@ -18,23 +18,29 @@ class Login extends MX_Controller {
 		
 		if ( ! empty($this->session->userdata('user_id')) ) {
 			
+			// echo session_id().'<br>';
+			
+			// var_dump($_SESSION);die;
+			
+			//print_r($this->session->userdata());die;
+			
 			$user_id 	= $this->session->userdata('user_id');
 			$token		= $this->session->userdata('token');
 			$status 	= $this->session->userdata('status_pwd');
 			
 					 
-					 $query = $this->db->query('SELECT 	COUNT(id) as is_valid
-					FROM 	hrd_profile 
-					WHERE 	id = ?
-					AND id_unit <> 87
-					AND 	token = ?;', array($user_id, $token) );
-					 $row   = $query->row_array();
-					 if ( ! $row['is_valid']) {
+					 // $query = $this->db->query('SELECT 	COUNT(id) as is_valid
+					// FROM 	hrd_profile 
+					// WHERE 	id = ?
+					// AND id_unit <> 87
+					// AND 	token = ?;', array($user_id, $token) );
+					 // $row   = $query->row_array();
+					 // if ( ! $row['is_valid']) {
 						 
 						 
 
-					 }
-					 else{
+					 // }
+					 // else{
 							$role		= $user_id 	= $this->session->userdata('role_id');
 							if ($role == 10 ){
 								redirect(base_url().'dashboardfreetoair'); 
@@ -79,7 +85,7 @@ class Login extends MX_Controller {
 							
 							
 							
-				    }
+				   // }
 		} 
 		else {
 			

@@ -1375,52 +1375,92 @@ class Dailyviewersvod extends JA_Controller {
 		
 	  public function save_channels()
 	{
-		$userid = $this->session->userdata('user_id');
-		$params['save_channel_name'] = $this->Anti_si($_POST['save_channel_name']);
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("219",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+         // redirect ('/login');
+		}else{
+			
+			$params['token'] = $this->Anti_si($_POST['token']);
+			$secs = $this->validate_owdol($params['token']);
+			
+			if($secs > 0){
+				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
+			
+				$userid = $this->session->userdata('user_id');
+				$params['save_channel_name'] = $this->Anti_si($_POST['save_channel_name']);
+				
+				$channel_lists = explode(',',$this->Anti_si($_POST['channel']));
+				
+				$params['save_channel_name'] = $this->Anti_si($_POST['save_channel_name']);
+				$search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($params['save_channel_name']))))));
+				$params['save_channel_name'] = $search_t;
+				$arr_ss = array_unique($channel_lists);
+				
+				
+				$params['channel'] = implode(',', $arr_ss);
+				$params['user_id'] = $userid;
+				
+				
+				$daypart2 = $this->tvprogramun_model->save_channels($params);
+				
+				$daypart = $this->tvprogramun_model->load_channels($params);
+			  
+			  if ( $daypart ) {			
+				  $this->output->set_content_type('application/json')->set_output(json_encode($daypart));
+			  } else {
+				  $result = array( 'Value not found!' );
+				  $this->output->set_content_type('application/json')->set_output(json_encode($result));
+			  }
+		  
+			}
 		
-		$channel_lists = explode(',',$this->Anti_si($_POST['channel']));
-		
-		$arr_ss = array_unique($channel_lists);
-		
-		
-		$params['channel'] = implode(',', $arr_ss);
-		$params['user_id'] = $userid;
-		
-		
-		$daypart2 = $this->tvprogramun_model->save_channels($params);
-		
-		$daypart = $this->tvprogramun_model->load_channels($params);
-      
-      if ( $daypart ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($daypart));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
-		
-		
+		}
 		
 	}	 
 
 	public function delete_channels()
 	{
-		$userid = $this->session->userdata('user_id');
-		$params['save_channel_name'] = $this->Anti_si($_POST['save_channel_name']);
-		$params['user_id'] = $userid;
-		
-		
-		$daypart2 = $this->tvprogramun_model->delete_channels($params);
-		
-		$daypart = $this->tvprogramun_model->load_channels($params);
-      
-      if ( $daypart ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($daypart));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
-		
-		
+		$menuL = $this->session->userdata('menuL');
+		$array_menu = explode(',',$menuL);
+		if(!$this->session->userdata('user_id') || in_array("219",$array_menu) == 0) {
+			
+			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+			$this->output->set_content_type('application/json')->set_output(json_encode($result));
+         // redirect ('/login');
+		}else{
+			
+			$params['token'] = $this->Anti_si($_POST['token']);
+			$secs = $this->validate_owdol($params['token']);
+			
+			if($secs > 0){
+				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
+				$userid = $this->session->userdata('user_id');
+				$params['save_channel_name'] = $this->Anti_si($_POST['save_channel_name']);
+				$search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($params['save_channel_name']))))));
+				$params['save_channel_name'] = $search_t;
+				$params['user_id'] = $userid;
+				
+				
+				$daypart2 = $this->tvprogramun_model->delete_channels($params);
+				
+				$daypart = $this->tvprogramun_model->load_channels($params);
+			  
+				if ( $daypart ) {			
+				  $this->output->set_content_type('application/json')->set_output(json_encode($daypart));
+				} else {
+				  $result = array( 'Value not found!' );
+				  $this->output->set_content_type('application/json')->set_output(json_encode($result));
+				}
+			}
+		}
 		
 	}
 	

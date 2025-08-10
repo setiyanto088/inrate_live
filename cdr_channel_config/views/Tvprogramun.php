@@ -233,6 +233,7 @@
       </div>
     </div>
 
+
   	<div class="modal fade modalDaypart" id="modalNewTime" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog modal-sm" role="document">
 			<div class="modal-content">
@@ -288,6 +289,7 @@
 						<div class="form-group col-md-12">
 							<label for="">Standard Quality Channel</label>
 							<input type="text" class="form-control urate-form-input" name="quality_edit" id="quality_edit" placeholder="" required />
+							
 						</div>
 					
           <div class="dayPartMsg"></div>
@@ -359,9 +361,10 @@ function makeid(length) {
 $('#add_user').on('submit',(function(e) {
 				$('#btn_daftar').attr('disabled','disabled');
 				$('#dayPartMsg').html('');
-				e.preventDefault();
+				e.preventDefault();				
 				
 				var formData = new FormData(this);
+				formData.append('token','<?php echo $this->session->userdata('token'); ?>');
 
 				$.ajax({
 					type:'POST',
@@ -387,7 +390,6 @@ $('#add_user').on('submit',(function(e) {
 									"Info" : false,
 								});	
 
-								
 								$('#add_user').trigger("reset");
 								$('#btn_daftar').removeAttr('disabled');
 								
@@ -416,6 +418,7 @@ $('#add_user').on('submit',(function(e) {
 				e.preventDefault();
 				
 				var formData = new FormData(this);
+				formData.append('token','<?php echo $this->session->userdata('token'); ?>');
 
 				$.ajax({
 					type:'POST',
@@ -426,7 +429,6 @@ $('#add_user').on('submit',(function(e) {
 					processData: false,
 					success: function(response) {
 						
-						console.log(response);
 						if (response.success == true) {
 								
 								$('#table_program2').html('');

@@ -1019,30 +1019,39 @@ class Daypartvir extends JA_Controller {
          // redirect ('/login');
 		}else{
 			
+			$params['token'] = $this->Anti_si($_GET['sess_token']);
+			$secs = $this->validate_owdol($params['token']);
 			
-      $typerole = $this->session->userdata('type_role');
-      $userid = $this->session->userdata('user_id');
-      
-      if( ! empty($this->Anti_si($_GET['f'])) ) {
-          $from = $this->Anti_si($_GET['f']);
-      } else {
-          $from = "00:00";
-      }
-      
-      if( ! empty($this->Anti_si($_GET['t'])) ) {
-          $to = $this->Anti_si($_GET['t']);
-      } else {
-          $to = "00:00";
-      }
-      
-      $daypart = $this->tvpc_model->setdaypart($userid,$from,$to);
-      
-      if ( $daypart ) {			
-          $this->output->set_content_type('application/json')->set_output(json_encode($daypart));
-      } else {
-          $result = array( 'Value not found!' );
-          $this->output->set_content_type('application/json')->set_output(json_encode($result));
-      }
+			
+			if($secs > 0){
+				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
+			}else{
+			
+			  $typerole = $this->session->userdata('type_role');
+			  $userid = $this->session->userdata('user_id');
+			  
+			  if( ! empty($this->Anti_si($_GET['f'])) ) {
+				  $from = $this->Anti_si($_GET['f']);
+			  } else {
+				  $from = "00:00";
+			  }
+			  
+			  if( ! empty($this->Anti_si($_GET['t'])) ) {
+				  $to = $this->Anti_si($_GET['t']);
+			  } else {
+				  $to = "00:00";
+			  }
+			  
+			  $daypart = $this->tvpc_model->setdaypart($userid,$from,$to);
+			  
+			  if ( $daypart ) {			
+				  $this->output->set_content_type('application/json')->set_output(json_encode($daypart));
+			  } else {
+				  $result = array( 'Value not found!' );
+				  $this->output->set_content_type('application/json')->set_output(json_encode($result));
+			  }
+			}
 		}
   }
 }

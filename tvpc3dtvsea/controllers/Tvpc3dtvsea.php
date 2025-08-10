@@ -463,9 +463,8 @@ class Tvpc3dtvsea extends JA_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}else{
 			
-				$search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
-				
-			  $list = $this->tvpc_model->channelsearch($search_t,0,0);
+			$search_t =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($_GET['q']))))));
+			$list = $this->tvpc_model->channelsearch($search_t,0,0);
 			  
 			  
 			   

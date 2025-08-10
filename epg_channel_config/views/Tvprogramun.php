@@ -407,6 +407,7 @@ $('#add_user').on('submit',(function(e) {
 				e.preventDefault();
 				
 				var formData = new FormData(this);
+				formData.append('token','<?php echo $this->session->userdata('token'); ?>');
 
 				$.ajax({
 					type:'POST',
@@ -417,7 +418,6 @@ $('#add_user').on('submit',(function(e) {
 					processData: false,
 					success: function(response) {
 						
-						console.log(response);
 						if (response.success == true) {
 								
 								$('#table_program2').html('');
@@ -462,6 +462,7 @@ $('#edit_user').on('submit',(function(e) {
 				e.preventDefault();
 				
 				var formData = new FormData(this);
+				formData.append('token','<?php echo $this->session->userdata('token'); ?>');
 
 				$.ajax({
 					type:'POST',
@@ -472,7 +473,6 @@ $('#edit_user').on('submit',(function(e) {
 					processData: false,
 					success: function(response) {
 						
-						console.log(response);
 						if (response.success == true) {
 								
 								$('#table_program2').html('');

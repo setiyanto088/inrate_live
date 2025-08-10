@@ -62,8 +62,9 @@ class Channel_config extends JA_Controller {
 		 $menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 		if(!$this->session->userdata('user_id') || in_array("249",$array_menu) == 0) {
+		//if(in_array("0",$array_menu) == 1) {
 			
-			$result = array('success' => false, 'message' => "Failed to Edit", 'html' => '');
+			$result = array('success' => false, 'message' => "Failed to Process", 'html' => '');
          // redirect ('/login');
 		}else{
 		
@@ -82,76 +83,131 @@ class Channel_config extends JA_Controller {
 			$data_post['color'] = strtoupper(substr($this->Anti_sql_injection($this->input->post('color', TRUE)), 1));
 			$data_post['status'] = $this->Anti_sql_injection($this->input->post('status', TRUE));
 			$data_post['cdr_edit_data'] = $this->Anti_sql_injection($this->input->post('cdr_edit_data', TRUE));
+			$data_post['token'] = $this->Anti_sql_injection($this->input->post('token', TRUE));
 			
-			$epg_edit_data = explode("|",$data_post['cdr_edit_data']);
-			$data_post['edit_data'] = $epg_edit_data;
-							
-			$result = array('success' => true, 'message' => "");
-			$cnt = 0;
-			
-			if($cnt == 0){
+			$secs = $this->validate_owdol($data_post['token']);
 
-	
-				$this->tvprogramun_model->add_new_channel_param($data_post);
-				$this->tvprogramun_model->add_new_channel_param_final($data_post);
-				$this->tvprogramun_model->add_new_channel_param_final_res($data_post);
-				$this->tvprogramun_model->add_new_channel_param_final_eval($data_post);
+			if($secs > 0){
+				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
+			}else{
 				
 				
+				$epg_edit_data = explode("|",$data_post['cdr_edit_data']);
+				$data_post['edit_data'] = $epg_edit_data;
+			
+				$channel_error = 0;
+				$get_list_channel = $this->tvprogramun_model->get_list_channel();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['CHANNEL_NAME'];
+				}
+								
+				if(in_array(str_replace("'","",$data_post['channel_name']),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+				
+				if(in_array(str_replace("'","",$epg_edit_data[0]),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+				
+				
+				$get_list_channel = $this->tvprogramun_model->get_list_cat();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['KATEGORI'];
+				}
+				
+				
+				if(in_array(str_replace("'","",str_replace('&amp;','&',$data_post['genre'])),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+				
+				$arr_regs = ['INTERNATIONAL','LOCAL'];				
+				if(in_array(str_replace("'","",$data_post['regional']),$arr_regs) == 0){
+					$channel_error++;
+				}
+				
+				$arr_regs = ['BLOCKING','FOREIGN PREMIUM','FTA INTERNATIONAL','FTA LOKAL','FTA NATIONAL','HOTLINK','IN HOUSE BASIC','IN HOUSE PREMIUM','LOCAL','LOCAL PREMIUM','OTHER'];				
+				if(in_array(str_replace("'","",$data_post['category']),$arr_regs) == 0){
+					$channel_error++;
+				}
+				
+				$arr_regs = ['1','0'];				
+				if(in_array(str_replace("'","",$data_post['status']),$arr_regs) == 0){
+					$channel_error++;
+				}
+				
+				if($channel_error > 0){
+					$result = array('success' => false, 'message' => "Parameters not Valid", 'html' => $channel_error);
+					//$this->output->set_content_type('application/json')->set_output(json_encode($result));
+				}else{
+			
+					$result = array('success' => true, 'message' => "");
+					$cnt = 0;
+					
+					if($cnt == 0){
+
+			
+						$this->tvprogramun_model->add_new_channel_param($data_post);
+						$this->tvprogramun_model->add_new_channel_param_final($data_post);
+						$this->tvprogramun_model->add_new_channel_param_final_res($data_post);
+						$this->tvprogramun_model->add_new_channel_param_final_eval($data_post);
+						
+						
+					}
+					
+						$list = $this->tvprogramun_model->get_list_channel();
+						$status_tpe[0] = 'Not Active';
+						$status_tpe[1] = 'Active';
+						
+						$html = '
+						<table aria-describedby="table" id="example4" class="table table-striped example" style="width: 100%">
+										<thead style="color:red">
+											<tr>
+												<th  scope="col" style="vertical-align:top;text-align:center" >No</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel Name </th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel Front End </th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel Genre </th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel Number </th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel Regional </th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel Category </th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel URI </th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Color </th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Status </th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Update</th>
+											</tr>
+										</thead>
+										<tbody>';
+										
+										$nu = 1; 
+										foreach($list as $array_data_channels){
+											$html .= '
+											<tr>
+												<th  scope="col" style="vertical-align:top;text-align:center" >'.$nu.'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_NAME'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_NAME_PROG'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['GENRE'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_NUMBER'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_REG'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CATEGORY'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANEL_URI'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" ><div class="button_black" style="background-color:#'.$array_data_channels['COLOR'].'"> &nbsp </div></th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$status_tpe[$array_data_channels['FLAG_TV']].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" ><button onclick="update(\''.$array_data_channels['CHANNEL_NAME'].'\',\''.$array_data_channels['CHANNEL_NAME_PROG'].'\',\''.$array_data_channels['GENRE'].'\',\''.$array_data_channels['CHANNEL_NUMBER'].'\',\''.$array_data_channels['CHANNEL_REG'].'\',\''.$array_data_channels['CATEGORY'].'\',\''.$array_data_channels['CHANEL_URI'].'\',\''.$array_data_channels['COLOR'].'\',\''.$array_data_channels['FLAG_TV'].'\')" id="exportWidget" class="button_black" data-complete-text="" style="float: right;"><strong>Update</strong></button></th>
+											</tr>
+											';
+										 $nu++; 
+										}
+										
+										$html .= '</tbody></table>';
+					
+					$result = array('success' => true, 'message' => "Success", 'html' => $html);
+				}
 			}
-			
-				$list = $this->tvprogramun_model->get_list_channel();
-				$status_tpe[0] = 'Not Active';
-				$status_tpe[1] = 'Active';
-				
-				$html = '
-				<table aria-describedby="table" id="example4" class="table table-striped example" style="width: 100%">
-								<thead style="color:red">
-									<tr>
-										<th  scope="col" style="vertical-align:top;text-align:center" >No</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel Name </th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel Front End </th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel Genre </th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel Number </th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel Regional </th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel Category </th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel URI </th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Color </th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Status </th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Update</th>
-									</tr>
-								</thead>
-								<tbody>';
-								
-								$nu = 1; 
-								foreach($list as $array_data_channels){
-									$html .= '
-									<tr>
-										<th  scope="col" style="vertical-align:top;text-align:center" >'.$nu.'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_NAME'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_NAME_PROG'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['GENRE'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_NUMBER'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_REG'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CATEGORY'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANEL_URI'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" ><div class="button_black" style="background-color:#'.$array_data_channels['COLOR'].'"> &nbsp </div></th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$status_tpe[$array_data_channels['FLAG_TV']].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" ><button onclick="update(\''.$array_data_channels['CHANNEL_NAME'].'\',\''.$array_data_channels['CHANNEL_NAME_PROG'].'\',\''.$array_data_channels['GENRE'].'\',\''.$array_data_channels['CHANNEL_NUMBER'].'\',\''.$array_data_channels['CHANNEL_REG'].'\',\''.$array_data_channels['CATEGORY'].'\',\''.$array_data_channels['CHANEL_URI'].'\',\''.$array_data_channels['COLOR'].'\',\''.$array_data_channels['FLAG_TV'].'\')" id="exportWidget" class="button_black" data-complete-text="" style="float: right;"><strong>Update</strong></button></th>
-									</tr>
-									';
-								 $nu++; 
-								}
-								
-								$html .= '</tbody></table>';
-			
-			$result = array('success' => true, 'message' => "Success", 'html' => $html);
 		}
-		
-	
 								
 								
-		$results = array('success' => $result['success'], 'message' => $result['message'], 'html' => $html);
+		$results = array('success' => $result['success'], 'message' => $result['message'], 'html' => $result['html']);
 		$this->output->set_content_type('application/json')->set_output(json_encode($results));
 		
 		

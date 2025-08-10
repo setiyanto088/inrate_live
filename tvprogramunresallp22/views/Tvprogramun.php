@@ -2195,7 +2195,14 @@ function day_filter(){
 		form_data.append('respondent', respondent);
 		form_data.append('survey_data', survey_data);
 		
+	const date1 = new Date(start_date_d);
+    const date2 = new Date(end_date_d);
+
+    const diffInMs = ((date2 - date1) / (1000 * 60 * 60 * 24))+1;
 	
+	if(diffInMs > 60){
+		alert('Maximum date 60 Days !!');
+	}else{
 	
 	$.ajax({
 			url: "<?php echo base_url().'tvprogramunresallp22/day_filter'; ?>", 
@@ -2248,7 +2255,7 @@ function day_filter(){
 				console.log('ajax list detail error:' + response);	
 			} 
 		});	
-	
+	}
 
 	
 }

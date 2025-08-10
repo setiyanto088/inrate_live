@@ -362,6 +362,7 @@ $('#add_user').on('submit',(function(e) {
 				e.preventDefault();
 				
 				var formData = new FormData(this);
+				formData.append('token','<?php echo $this->session->userdata('token'); ?>');
 
 				$.ajax({
 					type:'POST',
@@ -417,6 +418,7 @@ $('#add_user').on('submit',(function(e) {
 				e.preventDefault();
 				
 				var formData = new FormData(this);
+				formData.append('token','<?php echo $this->session->userdata('token'); ?>');
 
 				$.ajax({
 					type:'POST',

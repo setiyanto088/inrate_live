@@ -48,47 +48,7 @@ class Createprofileu_model extends CI_Model {
 	}
 	
 
-	public function listdataprofilenew($typerole){
-        $table = 'SS_CLASS_U_BARU2';
-		$queryh = 'SELECT DISTINCT CLASS_1_HEADER AS HEADER FROM '.$table.'';
-		$sqlh = $this->db->query($queryh);
-		$this->db->close();	   
-		$hasilh = $sqlh->result_array();
-		$i = -1;
-		$result = array();
-		$int = 0;
-		$arr_child = array();
-		$ja = 0;
-		$array_profile = array();
-
-		foreach ($hasilh as $k => $v) {
-			$query1 = 'SELECT DISTINCT CLASS_2_HEADER AS ANAK1 FROM '.$table.' WHERE CLASS_1_HEADER="'.$v['HEADER'].'" ORDER BY ANAK1';
-			$sql1 = $this->db->query($query1);
-			$this->db->close();	   
-			$hasil1 = $sql1->result_array();
-
-			foreach ($hasil1 as $v1) {
-					$arr_child[$int] = $v1;
-					$query2 = 'SELECT DISTINCT CLASS_3_HEADER AS ANAK2 FROM '.$table.' WHERE CLASS_2_HEADER="'.$v1['ANAK1'].'" AND CLASS_1_HEADER="'.$v['HEADER'].'" AND CLASS_3_HEADER IS NOT NULL ORDER BY CLASS_3_HEADER ASC';
-					$sql2 = $this->db->query($query2);
-					$this->db->close();	   
-					$hasil2 = $sql2->result_array();
-					$arr_child[$int]['ANAK2'] = $hasil2;
-					$int++;
-			}				
-			$array_profile['HEADER'][$v['HEADER']] = $arr_child;
-			$arr_child = array();
-
-			$ja++;
-		}
-
-		array_push($result, $array_profile);
-		return $result;
-
-	}
-
-
-	public function listprofile($iduser,$idrole) {
+		public function listprofile($iduser,$idrole) {
 		
 		$query = "SELECT a.id, `name`, grouping, postbuy_status FROM t_profiling_ub a WHERE (STATUS = 1 OR STATUS = 3) AND user_id_profil in(".$iduser.",0) order by a.`user_id_profil` ASC, status_job DESC, date_create desc ";
 		
@@ -168,6 +128,17 @@ class Createprofileu_model extends CI_Model {
 	public function listperiode() {
 		
 		$query = "SELECT *  FROM T_PERIODE order by PERIODE DESC ";
+		
+		
+		$sql	= $this->db->query($query);
+		$this->db->close();
+		$this->db->initialize(); 	
+		return $sql->result_array();	   
+	}
+	
+	public function get_list_per() {
+		
+		$query = "SELECT name FROM T_PARAM_UNICS GROUP BY name ";
 		
 		
 		$sql	= $this->db->query($query);

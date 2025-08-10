@@ -44,7 +44,7 @@ class Api_auth_model extends CI_Model {
 
 						$hash = $params['password'];
 						
-						 if (password_verify($hash, $result[0]['pwd'])) {
+						if (password_verify($hash, $result[0]['pwd'])) {
 
 							$sqlcek 	= 'SELECT count(id) as totaluser 
 											FROM t_curr_user
@@ -81,7 +81,10 @@ class Api_auth_model extends CI_Model {
 											   $result[0]['id']
 											));
 											
-											
+										$sql1p 	= "SELECT MAX(id)+1 as PID FROM t_curr_user";
+										$query1p 	=  $this->db->query($sql1p);
+										$result1p = $query1p->result_array();
+																					
 										$sql3	= 'INSERT INTO t_curr_user(user_id, status_login, date_login, token) VALUES(?, 1, NOW(), ?)';
 									
 										$query3 	=  $this->db->query($sql3,
@@ -91,12 +94,22 @@ class Api_auth_model extends CI_Model {
 											));
 										
 										if($query3){
+											$plainText = $result1p[0]['PID'].':'.$result1[0]['token'];
+											$method = 'AES-256-CBC'; // Choose a strong cipher method
+											$key = KEY_SD; // A strong, randomly generated key (32 bytes for AES-256)
+											$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method)); // Generate a unique IV for each encryption
+
+											$encrypted = openssl_encrypt($plainText, $method, $key, 0, $iv);
+
+											// For storage or transmission, combine IV and encrypted data (e.g., base64 encode for string representation)
+											$encryptedData = base64_encode($iv . $encrypted);
+											
 											$return = array(
 											'success' => true,
 											'message' => 'Success',
 											'data' => array(
 												'user_id' => $result[0]['id'],
-												'token' => $result1[0]['token'],
+												'token' => $encryptedData,
 												)
 											);
 										}else{
@@ -108,19 +121,21 @@ class Api_auth_model extends CI_Model {
 						}else{
 							
 							if($result[0]['ctr'] > 5){
-								$sql2	= 'UPDATE t_activation SET activation_id = 3 where user_id = ?';
+								$sql2	= 'UPDATE t_activation SET activation_id = 4 where user_id = ?';
 										$query2 	=  $this->db->query($sql2,
 											array(
 											   $result[0]['id']
 											));
+								$return = array('success' => false, 'message' => 'User Blocked', 'data' => array());
 							}else{
 								$sql2	= 'UPDATE hrd_profile SET ctr = ctr+1 where id = ?';
 										$query2 	=  $this->db->query($sql2,
 											array(
 											   $result[0]['id']
 											));
+								$return = array('success' => false, 'message' => 'Username or Password Incorrect', 'data' => array());
 							}
-							$return = array('success' => false, 'message' => 'Username or Password Incorrect', 'data' => array());
+							
 							
 							
 						}

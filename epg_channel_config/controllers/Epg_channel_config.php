@@ -46,70 +46,78 @@ class epg_channel_config extends JA_Controller {
 		}else{
 			
 			
-		$userid = $this->session->userdata('user_id');
+			$userid = $this->session->userdata('user_id');
 
 
-		$data_post['origin'] = $this->Anti_sql_injection($this->input->post('origin', TRUE));
-		$data_post['userid'] = $userid;
-		$data_post['epg'] = $this->Anti_sql_injection($this->input->post('epg', TRUE));
-		$data_post['cdr'] = $this->Anti_sql_injection($this->input->post('cdr', TRUE));
-		$data_post['cat_epg'] = $this->Anti_sql_injection($this->input->post('cat_epg', TRUE));
-		$data_post['status_epg'] = $this->Anti_sql_injection($this->input->post('status_epg', TRUE));
+			$data_post['origin'] = $this->Anti_sql_injection($this->input->post('origin', TRUE));
+			$data_post['userid'] = $userid;
+			$data_post['epg'] = $this->Anti_sql_injection($this->input->post('epg', TRUE));
+			$data_post['cdr'] = $this->Anti_sql_injection($this->input->post('cdr', TRUE));
+			$data_post['cat_epg'] = $this->Anti_sql_injection($this->input->post('cat_epg', TRUE));
+			$data_post['status_epg'] = $this->Anti_sql_injection($this->input->post('status_epg', TRUE));
+			$data_post['token'] = $this->Anti_sql_injection($this->input->post('token', TRUE));
 
-		$u_id = $this->tvprogramun_model->get_channel($data_post['epg']);
+			$secs = $this->validate_owdol($data_post['token']);
+
+			if($secs > 0){
+				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
+			}else{
+
+				$u_id = $this->tvprogramun_model->get_channel($data_post['epg']);
+						
+				$result = array('success' => true, 'message' => "");
+				$cnt = 0;
+				if($u_id[0]['cnt_user'] > 0){
+					$result = array('success' => false, 'message' => "Channel " . $data_post['epg'] . " sudah terdaftar, silahkan input channel yang lain");
+					$cnt++;
+				}
+
 				
-		$result = array('success' => true, 'message' => "");
-		$cnt = 0;
-		if($u_id[0]['cnt_user'] > 0){
-			$result = array('success' => false, 'message' => "Channel " . $data_post['epg'] . " sudah terdaftar, silahkan input channel yang lain");
-			$cnt++;
-		}
+				if($cnt == 0){
 
-		
-		if($cnt == 0){
-
-			$this->tvprogramun_model->add_new_channel($data_post);
-			$this->tvprogramun_model->add_new_mr_kat($data_post);
-			
-			$this->tvprogramun_model->add_cdr_param($data_post);
-			
-			$list = $this->tvprogramun_model->get_list_channel();
-			$status_tpe[0] = 'Not Active';
-			$status_tpe[1] = 'Active';
-			
-			$html = '
-				<table aria-describedby="table" id="example4" class="table table-striped example" style="width: 100%">
-								<thead style="color:red">
-									<tr>
-										<th  scope="col" style="vertical-align:top;text-align:center" >No</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel EPG</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel Origin</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel CDR</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Category Channel</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Status</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Update</th>
-									</tr>
-								</thead>
-								<tbody>';
-								
-								$nu = 1; 
-								foreach($list as $array_data_channels){
-									$html .= '<tr>
-										<th  scope="col" style="vertical-align:top;text-align:center" >'.$nu.'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_ORIGIN'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_CDR'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['KATEGORI'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >'.$status_tpe[$array_data_channels['STATUS']].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" ><button onclick="update(\''.$array_data_channels['CHANNEL_ORIGIN'].'\',\''.$array_data_channels['CHANNEL'].'\',\''.$array_data_channels['CHANNEL_CDR'].'\',\''.$array_data_channels['STATUS'].'\',\''.$array_data_channels['KATEGORI'].'\')" id="exportWidget" class="button_black" data-complete-text="" style="float: right;"><strong>Update</strong></button></th>
-									</tr>';
-								 $nu++; 
-								}
-								
-								$html .= '</tbody></table>';
-								
-								$result = array('success' => true, 'message' => "", 'html' => $html);
-		}
+					$this->tvprogramun_model->add_new_channel($data_post);
+					$this->tvprogramun_model->add_new_mr_kat($data_post);
+					
+					$this->tvprogramun_model->add_cdr_param($data_post);
+					
+					$list = $this->tvprogramun_model->get_list_channel();
+					$status_tpe[0] = 'Not Active';
+					$status_tpe[1] = 'Active';
+					
+					$html = '
+						<table aria-describedby="table" id="example4" class="table table-striped example" style="width: 100%">
+										<thead style="color:red">
+											<tr>
+												<th  scope="col" style="vertical-align:top;text-align:center" >No</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel EPG</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel Origin</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel CDR</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Category Channel</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Status</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Update</th>
+											</tr>
+										</thead>
+										<tbody>';
+										
+										$nu = 1; 
+										foreach($list as $array_data_channels){
+											$html .= '<tr>
+												<th  scope="col" style="vertical-align:top;text-align:center" >'.$nu.'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_ORIGIN'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_CDR'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['KATEGORI'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >'.$status_tpe[$array_data_channels['STATUS']].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" ><button onclick="update(\''.$array_data_channels['CHANNEL_ORIGIN'].'\',\''.$array_data_channels['CHANNEL'].'\',\''.$array_data_channels['CHANNEL_CDR'].'\',\''.$array_data_channels['STATUS'].'\',\''.$array_data_channels['KATEGORI'].'\')" id="exportWidget" class="button_black" data-complete-text="" style="float: right;"><strong>Update</strong></button></th>
+											</tr>';
+										 $nu++; 
+										}
+										
+										$html .= '</tbody></table>';
+										
+										$result = array('success' => true, 'message' => "", 'html' => $html);
+				}
+			}
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -127,80 +135,85 @@ class epg_channel_config extends JA_Controller {
          // redirect ('/login');
 		}else{
 			
-		$userid = $this->session->userdata('user_id');
+			$userid = $this->session->userdata('user_id');
 
+			$data_post['origin'] = $this->Anti_sql_injection($this->input->post('origin_edit', TRUE));
+			$data_post['userid'] = $userid;
+			$data_post['epg'] = $this->Anti_sql_injection($this->input->post('epg_edit', TRUE));
+			$data_post['cdr'] = $this->Anti_sql_injection($this->input->post('cdr_edit', TRUE));
+			$data_post['cat_epg'] = $this->Anti_sql_injection($this->input->post('cat_epg_edit', TRUE));
+			$data_post['status_epg'] = $this->Anti_sql_injection($this->input->post('status_epg_edit', TRUE));
+			$data_post['epg_edit_data'] = $this->Anti_sql_injection($this->input->post('epg_edit_data', TRUE));
+			$data_post['token'] = $this->Anti_sql_injection($this->input->post('token', TRUE));
 
-		$data_post['origin'] = $this->Anti_sql_injection($this->input->post('origin_edit', TRUE));
-		$data_post['userid'] = $userid;
-		$data_post['epg'] = $this->Anti_sql_injection($this->input->post('epg_edit', TRUE));
-		$data_post['cdr'] = $this->Anti_sql_injection($this->input->post('cdr_edit', TRUE));
-		$data_post['cat_epg'] = $this->Anti_sql_injection($this->input->post('cat_epg_edit', TRUE));
-		$data_post['status_epg'] = $this->Anti_sql_injection($this->input->post('status_epg_edit', TRUE));
-		$data_post['epg_edit_data'] = $this->Anti_sql_injection($this->input->post('epg_edit_data', TRUE));
-		
-		$epg_edit_data = explode("|",$data_post['epg_edit_data']);
-		
-		$data_post['edit_data'] = $epg_edit_data;
-		
-		$u_id = $this->tvprogramun_model->get_channel_edit($data_post['epg'],$epg_edit_data[1]);
+			$secs = $this->validate_owdol($data_post['token']);
+
+			if($secs > 0){
+				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
+			}else{
 				
-		$result = array('success' => true, 'message' => "");
-		$cnt = 0;
-		if($u_id[0]['cnt_user'] > 0){
-			$result = array('success' => false, 'message' => "Channel " . $data_post['epg'] . " sudah terdaftar, silahkan input channel yang lain");
-			$cnt++;
-		}
+				$epg_edit_data = explode("|",$data_post['epg_edit_data']);
+				
+				$data_post['edit_data'] = $epg_edit_data;
+				
+				$u_id = $this->tvprogramun_model->get_channel_edit($data_post['epg'],$epg_edit_data[1]);
+						
+				$result = array('success' => true, 'message' => "");
+				$cnt = 0;
+				if($u_id[0]['cnt_user'] > 0){
+					$result = array('success' => false, 'message' => "Channel " . $data_post['epg'] . " sudah terdaftar, silahkan input channel yang lain");
+					$cnt++;
+				}
 
-		
-		if($cnt == 0){
+				
+				if($cnt == 0){
 
-			$this->tvprogramun_model->edit_new_channel($data_post);
-			$this->tvprogramun_model->edit_new_mr_kat($data_post);
-			
-			$this->tvprogramun_model->add_cdr_param($data_post);
-			
-			$list = $this->tvprogramun_model->get_list_channel();
-			$status_tpe[0] = 'Not Active';
-			$status_tpe[1] = 'Active';
-			
-			$html = '
-				<table aria-describedby="table" id="example4" class="table table-striped example" style="width: 100%">
-								<thead style="color:red">
-									<tr>
-										<th  scope="col" style="vertical-align:top;text-align:center" >No</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel EPG</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel Origin</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Channel CDR</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Category Channel</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Status</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >Update</th>
-									</tr>
-								</thead>
-								<tbody>';
-								
-								$nu = 1; 
-								foreach($list as $array_data_channels){
-									$html .= '<tr>
-										<th  scope="col" style="vertical-align:top;text-align:center" >'.$nu.'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_ORIGIN'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_CDR'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['KATEGORI'].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:center" >'.$status_tpe[$array_data_channels['STATUS']].'</th>
-										<th  scope="col" style="vertical-align:top;text-align:left" ><button onclick="update(\''.$array_data_channels['CHANNEL_ORIGIN'].'\',\''.$array_data_channels['CHANNEL'].'\',\''.$array_data_channels['CHANNEL_CDR'].'\',\''.$array_data_channels['STATUS'].'\',\''.$array_data_channels['KATEGORI'].'\')" id="exportWidget" class="button_black" data-complete-text="" style="float: right;"><strong>Update</strong></button></th>
-									</tr>';
-								 $nu++; 
-								}
-								
-								$html .= '</tbody></table>';
-								
-								$result = array('success' => true, 'message' => "", 'html' => $html);
+					$this->tvprogramun_model->edit_new_channel($data_post);
+					$this->tvprogramun_model->edit_new_mr_kat($data_post);
+					
+					$this->tvprogramun_model->add_cdr_param($data_post);
+					
+					$list = $this->tvprogramun_model->get_list_channel();
+					$status_tpe[0] = 'Not Active';
+					$status_tpe[1] = 'Active';
+					
+					$html = '
+						<table aria-describedby="table" id="example4" class="table table-striped example" style="width: 100%">
+										<thead style="color:red">
+											<tr>
+												<th  scope="col" style="vertical-align:top;text-align:center" >No</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel EPG</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel Origin</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Channel CDR</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Category Channel</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Status</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >Update</th>
+											</tr>
+										</thead>
+										<tbody>';
+										
+										$nu = 1; 
+										foreach($list as $array_data_channels){
+											$html .= '<tr>
+												<th  scope="col" style="vertical-align:top;text-align:center" >'.$nu.'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_ORIGIN'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['CHANNEL_CDR'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" >'.$array_data_channels['KATEGORI'].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:center" >'.$status_tpe[$array_data_channels['STATUS']].'</th>
+												<th  scope="col" style="vertical-align:top;text-align:left" ><button onclick="update(\''.$array_data_channels['CHANNEL_ORIGIN'].'\',\''.$array_data_channels['CHANNEL'].'\',\''.$array_data_channels['CHANNEL_CDR'].'\',\''.$array_data_channels['STATUS'].'\',\''.$array_data_channels['KATEGORI'].'\')" id="exportWidget" class="button_black" data-complete-text="" style="float: right;"><strong>Update</strong></button></th>
+											</tr>';
+										 $nu++; 
+										}
+										
+										$html .= '</tbody></table>';
+										
+										$result = array('success' => true, 'message' => "", 'html' => $html);
+				}
+			}
 		}
-		}
-		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		
-		
+
 	}
 	
   public function index()

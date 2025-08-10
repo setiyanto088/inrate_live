@@ -86,27 +86,48 @@ class Tvprogramun3mon extends JA_Controller {
 	function get_data_last(){
 		 $menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
-		if(!$this->session->userdata('user_id') || in_array("255",$array_menu) == 0) {
-			
+		//if(!$this->session->userdata('user_id') || in_array("255",$array_menu) == 0) {
+		if(in_array("0",$array_menu) == 1) {
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-			
 		}else{
-		
+			$channel_error = 0;
 			$types =  $this->input->post('types',true);
+			$array_tp = [1 => 1,2 => 2];
 			$periode =  $this->input->post('periode',true);
-			//print_r($types);die;
-			$data = $this->tvprogramun_model->get_curr_data($periode);
-			//print_r($data);die;
-			if($types == 1){
-				$array_file_s['dataw'] = $data[0];
-				$array_file_s['datawm'] = $data[1];
+			
+				if($array_tp[$types]==''){
+					$channel_error++;
+				}
+
+				
+				$get_list_channel = $this->tvprogramun_model->get_list_periode();
+				$arr_chnel_l = [];
+				foreach($get_list_channel as $get_list_channelsa){
+					$arr_chnel_l[] = $get_list_channelsa['TANGGAL'];
+				}
+								
+				if(in_array(str_replace("'","",$periode),$arr_chnel_l) == 0){
+					$channel_error++;
+				}
+			
+			if($channel_error > 0){
+				$result = array('success' => false, 'message' => "Parameters not Valid", 'data' => '');
+				$this->output->set_content_type('application/json')->set_output(json_encode($result));
 			}else{
-				$array_file_s['dataw'] = $data[2];
-				$array_file_s['datawm'] = $data[3];
+			
+				$data = $this->tvprogramun_model->get_curr_data($periode);
+				//print_r($data);die;
+				if($array_tp[$types] == 1){
+					$array_file_s['dataw'] = $data[0];
+					$array_file_s['datawm'] = $data[1];
+				}else{
+					$array_file_s['dataw'] = $data[2];
+					$array_file_s['datawm'] = $data[3];
+				}
+			
+				$this->output->set_content_type('application/json')->set_output(json_encode($array_file_s));
 			}
-		
-			$this->output->set_content_type('application/json')->set_output(json_encode($array_file_s));
 		}
 		
 	}

@@ -24,6 +24,7 @@ class Api_auth extends CI_Controller {
 		
 		$_POST = json_decode(file_get_contents("php://input"), true);
 		
+		
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('username', 'Username', 'required');
 		
@@ -37,7 +38,6 @@ class Api_auth extends CI_Controller {
 				'password' 		=> $this->Anti_si($this->input->post('password', true)),
 			);
 			$login_result = $this->api_auth_model->login($data);
-			
          	if ( $login_result['message']== 'Success') {
 			
 				$hasilnya = $this->api_auth_model->get_profile($data);              
@@ -50,7 +50,7 @@ class Api_auth extends CI_Controller {
                                 $newdata = array
                                         (
                                             'user_id'		=> $newhasil['user_id'],
-                                            'token'		    => $newhasil['token'],
+                                            'token'		    => $login_result['data']['token'],
                                             'username' 		=> $newhasil['username'],
                                             'nama' 			=> $newhasil['nama'],					
                                             'id_role' 		=> $newhasil['id_role'],
@@ -94,7 +94,7 @@ class Api_auth extends CI_Controller {
                                                 $newdata = array
                                                         (
                                                             'user_id'		=> $newhasil['user_id'],
-                                                            'token'		    => $newhasil['token'],
+                                                            'token'		    => $login_result['data']['token'],
                                                             'username' 		=> $newhasil['username'],
                                                             'nama' 			=> $newhasil['nama'],					
                                                             'id_role' 		=> $newhasil['id_role'],
@@ -117,6 +117,7 @@ class Api_auth extends CI_Controller {
         
                                                 );
                                             }
+											
                                              $this->session->set_userdata($newdata);
         
                                          $return = array(
