@@ -21,7 +21,7 @@ class Api_auth extends CI_Controller {
     }
 	
 	public function login() {
-		
+
 		$_POST = json_decode(file_get_contents("php://input"), true);
 		
 		
@@ -120,11 +120,57 @@ class Api_auth extends CI_Controller {
 											
                                              $this->session->set_userdata($newdata);
         
-                                         $return = array(
+                                       
+											
+											$role		= $newhasil['id_role'];
+											if ($role == 10 ){
+												$urlss = 'dashboardfreetoair'; 
+											}
+											elseif ($role == 1 ||$role == 19  ){
+												$urlss = 'dashboard';
+											}
+											elseif ($role == 3 ){
+												$urlss = 'createuser';
+											}
+											elseif ($role == 40 ){
+												$urlss = 'createprofileglobal';
+											}
+											elseif ($role == 41 || $role == 42 ){
+												$urlss = 'dashboarddata';
+											}
+											elseif ($role == 25 ||  $role == 35 ||  $role == 27 ||  $role == 33){
+												$urlss = 'tvprogramun3';
+											}elseif ($role == 645 ){
+												$urlss = 'tvprogramun3tvsea';
+											}
+											elseif ($role == 1000001 || $role == 1000000 || $role == 1000002 || $role == 30000001 || $role == 50 || $role == 55 || $role == 74 || $role == 60 || $role == 49 || $role == 5555 || $role == 5566  || $role == 5577 || $role == 5599 ){
+												$urlss = 'tvprogramun3';
+											}elseif ($role == 90 ){
+												$urlss = 'dashboarduseetv';
+											}elseif ($role == 79 ){
+												$urlss = 'user_usee';
+											}elseif ($role == 999 ){
+												$urlss = 'tvprogramunpro';
+											}elseif ($role == 998 ){
+												$urlss = 'tvpostbuyures';
+											}elseif ($role == 656 ){
+												$urlss = 'respondent';
+											}elseif ($role == 969 ){
+												$urlss = 'tvprogramunres';
+											}elseif ($role == 5002 ){
+												$urlss = 'epg_config';
+											}
+											else{
+												$urlss = 'tvprogramun3';
+											}
+											
+											  $return = array(
                                             'success' => true,
                                             'message' => 'Success',
-                                            'data' => $newdata
+                                            'data' => $newdata,
+											'url' => $urlss
                                             );
+											
                                     }elseif($aktivasi[0]['activation_id'] == 3){
                                         $return = array('success' => false, 'message' => 'Your account has been expired!', 'data' => array());
                                     }else{

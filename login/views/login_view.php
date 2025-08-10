@@ -161,8 +161,9 @@ $path7 = base_url() . 'assets/urate-frontend-master/';
               $('#loader').show();
  							$.cookie(cookie_prefix + "token", response.data.token, {path: '/'});
 					 
-						location.href = "<?php echo base_url();?>home/";
-						location.reload();
+					// console.log(response);
+						location.href = "<?php echo base_url();?>"+response.url;
+						// location.reload();
                         
                         
                         
