@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
@@ -8,12 +9,46 @@ class Login extends MX_Controller {
 	{
 		parent::__construct();	
 		$this->load->model('login_model');
+		//$this->load->helper(array('captcha'));
 	
+	}
+	
+	private function chap(){
+		$gbr = imagecreate(200, 50);
+ 
+		//warna background captcha
+		imagecolorallocate($gbr, 69, 179, 157);
+		 
+		// pengaturan font captcha
+		$color = imagecolorallocate($gbr, 253, 252, 252);
+		$font = "Allura-Regular.otf"; 
+		$ukuran_font = 20;
+		$posisi = 32;
+		// membuat nomor acak dan ditampilkan pada gambar
+		$chtp = '';
+		for($i=0;$i<=5;$i++) {
+			// jumlah karakter
+			$angka=rand(0, 9);
+		 
+			$chtp.=$angka;
+			
+		 
+			$kemiringan= rand(20, 20);
+			
+			imagettftext($gbr, $ukuran_font, $kemiringan, 8+15*$i, $posisi, $color, $font, $angka);	
+		}
+		
+		//$this->session->set_userdata('mycaptcha', $chtp);
+		//untuk membuat gambar 
+		// imagepng($gbr); 
+		// imagedestroy($gbr);
+		
+		return imagepng($gbr); 
 	}
 	
 	public function index()
 	{
-		
+
 		$this->session->sess_destroy();
 		$this->load->view('login_view');
 		

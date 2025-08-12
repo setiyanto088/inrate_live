@@ -12,6 +12,7 @@ class Api_auth_model extends CI_Model {
         public function __construct()
         {
                 parent::__construct();
+				$this->load->library('ClickHouse');
         }
         
         /**
@@ -20,25 +21,52 @@ class Api_auth_model extends CI_Model {
 		 * @param array $params Parameter berupa username, password
 		 * @return array Daftar contact berdasarkan parameter yang diberikan
 		 */
-        public function login($params = array()) {
+		public function limitr($params = array()){
+			$db = $this->clickhouse->db();
 			
+			$userAgent = $_SERVER['HTTP_USER_AGENT'];
+			$userIP = $_SERVER['REMOTE_ADDR'];
+
+			$dateString = date('Y-m-d H:i:s');
+			$newTimestamp = strtotime('-1 minutes', strtotime($dateString));
+			$newDate = date('Y-m-d H:i:s', $newTimestamp);
+						
+			$query = " SELECT COUNT(*) NCT FROM T_ATTEMPT_N WHERE ATTEMP_TIME BETWEEN '".$newTimestamp."' AND '".$dateString."' AND AGENT = '".$userAgent."||".$userIP."' ";
+
+			$sql	= $db->select($query);
+			$dataCNt = $sql->rows();		
 			
-			
+			return $dataCNt[0]['NCT'];
+		}
 		
+		public function insert_att($params = array()){
+				$db = $this->clickhouse->db();
+				
+				$userAgent = $_SERVER['HTTP_USER_AGENT'];
+				$userIP = $_SERVER['REMOTE_ADDR'];
 			
-			$sql 	= 'SELECT id, pwd , ctr 
-						FROM hrd_profile
-						WHERE username = ?
-						AND id_unit <> 87 and id_role not in (3) ';
-			
-			$query 	=  $this->db->query($sql,
-				array(
-					$params['username']
-				));
-			$result = $query->result_array();
-			
-			$this->load->helper('db');
-			free_result($this->db->conn_id);
+				$sql 	= "INSERT INTO T_ATTEMPT_N
+				VALUES('1','".$params['username']."','".$userAgent."||".$userIP."','".date('Y-m-d H:i:s')."')";
+				$sql	= $db->write($sql);
+		}
+		 
+        public function login($params = array()) {
+				
+				
+				
+				$sql 	= 'SELECT id, pwd , ctr 
+							FROM hrd_profile
+							WHERE username = ?
+							AND id_unit <> 87 and id_role not in (3) ';
+				
+				$query 	=  $this->db->query($sql,
+					array(
+						$params['username']
+					));
+				$result = $query->result_array();
+				
+				$this->load->helper('db');
+				free_result($this->db->conn_id);
 
 					if(isset($result[0]['id'])){
 
@@ -61,7 +89,7 @@ class Api_auth_model extends CI_Model {
 							free_result($this->db->conn_id);
 							
 							
-							if($resultcek[0]['totaluser'] >= 100){
+							if($resultcek[0]['totaluser'] >= 1000){
 								$return = array('success' => false, 'message' => 'OVERLIMIT', 'data' => array());
 							}else{
 										$sql1 	= "SELECT SUBSTRING(MD5(concat('adresdsadv',' ',NOW())), 1, 30) as token";
@@ -143,10 +171,9 @@ class Api_auth_model extends CI_Model {
 					}else{
 						$return = array('success' => false, 'message' => 'Username or Password Incorrect', 'data' => array());
 					}
-		
-          	
+
+				return $return;
 			
-			return $return;
 		}
 		
 		public function check_token($params = array()) {
