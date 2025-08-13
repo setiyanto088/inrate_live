@@ -11,6 +11,7 @@ class Postbuyadspeformanceftares extends JA_Controller {
 	
 	public function index()
   {
+	  session_regenerate_id(TRUE); 
       $id = $this->session->userdata('project_id') ? $this->session->userdata('project_id') : 0;
       $iduser = $this->session->userdata('user_id');
       $idrole = $this->session->userdata('id_role');

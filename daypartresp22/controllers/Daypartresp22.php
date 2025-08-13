@@ -24,6 +24,7 @@ class Daypartresp22 extends JA_Controller {
     }
 	
 	public function index(){
+		session_regenerate_id(TRUE); 
       $id = $this->session->userdata('project_id');
       $iduser = $this->session->userdata('user_id');
       

@@ -242,6 +242,7 @@ class Cdr_channel_config extends JA_Controller {
 	
   public function index()
 	{
+		session_regenerate_id(TRUE); 
 		$iduser = $this->session->userdata('user_id');
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);

@@ -25,6 +25,7 @@ class Createprofileu3 extends JA_Controller {
 	
 	public function index()
 	{
+		session_regenerate_id(TRUE); 
 		$data = '';
 		
 		$id = $this->session->userdata('project_id');
