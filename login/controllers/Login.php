@@ -83,6 +83,7 @@ class Login extends MX_Controller {
 			
 			
 				$this->session->sess_destroy();
+				
 				redirect(base_url());
 		}
 		
