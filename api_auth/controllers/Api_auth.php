@@ -173,12 +173,14 @@ class Api_auth extends CI_Controller {
 													$urlss = 'tvprogramun3';
 												}
 												
-												  $return = array(
-												'success' => true,
-												'message' => 'Success',
-												'data' => $newdata,
-												'url' => $urlss
+												$return = array(
+													'success' => true,
+													'message' => 'Success',
+													'data' => $newdata,
+													'url' => $urlss
 												);
+												
+												session_regenerate_id(TRUE); 
 																								
 										}elseif($aktivasi[0]['activation_id'] == 3){
 											$return = array('success' => false, 'message' => 'Your account has been expired!', 'data' => array());
