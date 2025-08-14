@@ -85,6 +85,7 @@ class Api_auth extends CI_Controller {
 									
 									
 									 $this->session->set_userdata($newdata);
+									 
 
 								 $return = array(
 									'success' => true,
