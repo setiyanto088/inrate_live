@@ -89,7 +89,7 @@ class Api_auth_model extends CI_Model {
 							free_result($this->db->conn_id);
 							
 							
-							if($resultcek[0]['totaluser'] >= 1000){
+							if($resultcek[0]['totaluser'] >= 10000000){
 								$return = array('success' => false, 'message' => 'OVERLIMIT', 'data' => array());
 							}else{
 										$sql1 	= "SELECT SUBSTRING(MD5(concat('adresdsadv',' ',NOW())), 1, 30) as token";
