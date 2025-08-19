@@ -47,7 +47,6 @@ class Api_auth extends CI_Controller {
 						'password' 		=> $this->Anti_si($this->input->post('password', true)),
 					);
 					
-					print_r($data );die;
 					$login_result = $this->api_auth_model->login($data);
 					if ( $login_result['message']== 'Success') {
 					
