@@ -39,13 +39,15 @@ class Api_auth extends CI_Controller {
 				
 				$newdata = array();
 				if ($this->form_validation->run() == FALSE)  {
-					$result = array( 'success' => false, 'message' => validation_errors() );
+					$result = array( 'success' => false, 'message' => 'Validation Failed' );
 					$this->output->set_content_type('application/json')->set_output(json_encode($result));
 				} else if ($this->form_validation->run() == TRUE)  {
 					$data = array (
 						'username' 		=> $this->Anti_si($this->input->post('username', true)),
 						'password' 		=> $this->Anti_si($this->input->post('password', true)),
 					);
+					
+					print_r($data );die;
 					$login_result = $this->api_auth_model->login($data);
 					if ( $login_result['message']== 'Success') {
 					
@@ -209,6 +211,9 @@ class Api_auth extends CI_Controller {
 
 					$this->output->set_content_type('application/json')->set_output(json_encode($return));
 					
+				}else{
+					$return = array('success' => false, 'message' => 'Validation False ', 'data' => array());
+					$this->output->set_content_type('application/json')->set_output(json_encode($return));
 				}
 			//}
 		}
