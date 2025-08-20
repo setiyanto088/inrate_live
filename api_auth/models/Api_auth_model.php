@@ -52,7 +52,7 @@ class Api_auth_model extends CI_Model {
 		 
         public function login($params = array()) {
 				
-				
+			
 				
 				$sql 	= 'SELECT id, pwd , ctr 
 							FROM hrd_profile
@@ -193,12 +193,12 @@ class Api_auth_model extends CI_Model {
 		public function get_profile($params = array()) {
             $nickname = $params['username'];
 
-					
+				
 			$sql = '		
 				SELECT * FROM (
 					SELECT a. id AS user_id, a.token, a.username, a.type_role, a.nokontak2, a.nokontak3, a.id_unit, a.username AS user_name, a.nama, a.nama AS user_full_name, a.id_role,  a.id_role AS role_id, b.role AS role_name, a.status_pwd AS status_pwd
                     FROM hrd_profile a LEFT JOIN pmt_role b   ON a.id_role = b.id
-                    WHERE a.username = "'.$nickname.'"
+                    WHERE a.username = ?
                     AND (a.status_akses = 1 OR a.status_akses = 8 ) 
                 ) A LEFT JOIN (
 					SELECT id_profile FROM `pmt_menu_profile`
@@ -221,8 +221,8 @@ class Api_auth_model extends CI_Model {
 			group by id_profile
 		) F on A.id_role = F.id_profile5
              ';       
-					
-            $hasil = $this->db->query($sql)->result_array();
+			
+            $hasil = $this->db->query($sql,array($nickname))->result_array();
 
             return $hasil; 
 	    }
