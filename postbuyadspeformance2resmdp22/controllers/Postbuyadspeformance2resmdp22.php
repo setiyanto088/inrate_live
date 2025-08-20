@@ -20,7 +20,7 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 	  $menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 		
-		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+		if(!$this->session->userdata('user_id') || in_array("236",$array_menu) == 0) {
           redirect ('/login');
 		}
        
@@ -64,7 +64,7 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 				
-		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+		if(!$this->session->userdata('user_id') || in_array("236",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -200,7 +200,7 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 				
-		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+		if(!$this->session->userdata('user_id') || in_array("236",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -1546,7 +1546,7 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 				
-		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+		if(!$this->session->userdata('user_id') || in_array("236",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -1767,7 +1767,7 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 				
-		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+		if(!$this->session->userdata('user_id') || in_array("236",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -2293,7 +2293,7 @@ class postbuyadspeformance2resmdp22 extends JA_Controller {
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 				
-		if(!$this->session->userdata('user_id') || in_array("230",$array_menu) == 0) {
+		if(!$this->session->userdata('user_id') || in_array("236",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
