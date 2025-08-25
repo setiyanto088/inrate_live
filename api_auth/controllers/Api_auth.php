@@ -43,7 +43,7 @@ class Api_auth extends CI_Controller {
 					$this->output->set_content_type('application/json')->set_output(json_encode($result));
 				} else if ($this->form_validation->run() == TRUE)  {
 					
-					$user =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($this->input->post('username', true)))))));
+					$user =   str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($this->input->post('username', true))))));
 					$pass =   str_replace('_','',str_replace('%','',str_replace('\\','',str_replace('"','',str_replace("'","",$this->Anti_si($this->input->post('password', true)))))));
 					
 					
@@ -51,7 +51,7 @@ class Api_auth extends CI_Controller {
 						'username' 		=> $user,
 						'password' 		=> $pass,
 					);
-					
+										
 					$login_result = $this->api_auth_model->login($data);
 					if ( $login_result['message']== 'Success') {
 					
