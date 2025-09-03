@@ -67,13 +67,14 @@ class Tvpc_model extends CI_Model {
 	}
 	
 	public function list_channel() {
+		$db = $this->clickhouse->db();	
 		
 		$query = "SELECT DISTINCT B.`CHANNEL_NAME_PROG` AS CHANNEL FROM  `CHANNEL_PARAM_FINAL` B  
 		WHERE B.`F2A_STATUS` in (0,-99) ORDER BY CHANNEL_NAME_PROG ";
-		
-		$sql	= $this->db->query($query);
-		$this->db->close();	
-		return $sql->result_array();	   
+
+		$querys	= $db->select($query);
+		$result = $querys->rows();	  
+		return $result;
 	}          
   
   public function list_channel_by_genre($strGenre) {     
@@ -934,26 +935,26 @@ class Tvpc_model extends CI_Model {
 		$db = $this->clickhouse->db();	
 		
       if($strGenre == "0"){
-          $strWhere = "AND CHANNEL_NAME LIKE '%".strtoupper($strSearch)."%' ";
+          $strWhere = "AND UPPER(CHANNEL_NAME) LIKE '%".strtoupper($strSearch)."%' ";
       }ELSE if($strGenre == ""){
-          $strWhere = "AND CHANNEL_NAME LIKE '%".strtoupper($strSearch)."%' ";
+          $strWhere = "AND UPPER(CHANNEL_NAME) LIKE '%".strtoupper($strSearch)."%' ";
       }else {
-          $strWhere = "AND GENRE = '".$strGenre."' AND CHANNEL_NAME LIKE '%".strtoupper($strSearch)."%' ";
+          $strWhere = "AND GENRE = '".$strGenre."' AND UPPER(CHANNEL_NAME) LIKE '%".strtoupper($strSearch)."%' ";
       }
       
 	  
 	   $sql = "SELECT DISTINCT B.`CHANNEL_NAME_PROG` AS CHANNEL FROM  `CHANNEL_PARAM_FINAL` B  
 	  WHERE B.`F2A_STATUS` in (0,-99) ".$strWhere."   ORDER BY CHANNEL_NAME_PROG ";  
 	  
-      $out		= array();
-      		$sql	= $this->db->query($sql);
-		$this->db->close();	
-		return $sql->result_array();	
+      // $out		= array();
+      		// $sql	= $this->db->query($sql);
+		// $this->db->close();	
+		// return $sql->result_array();	
 	  
-	  // $querys	= $db->select($sql);
-	// $result = $querys->rows();	  
+	  $querys	= $db->select($sql);
+		$result = $querys->rows();	  
       
-      // return $result;
+      return $result;
   }             
   
   public function checkdaypart($user_id,$daypart){ 
