@@ -35,13 +35,14 @@ class Tvcc_model extends CI_Model {
 	}
 	
 	public function list_channel() {
-     $query = "SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM` C
-      WHERE C.`F2A_STATUS` IN (0,-99)  
-      ORDER BY C.`CHANNEL_NAME`";			
-		$sql	= $this->db->query($query);
-		$this->db->close();
-		$this->db->initialize(); 
-		return $sql->result_array();	   
+    	$db = $this->clickhouse->db();	
+		
+		$query = "SELECT DISTINCT B.`CHANNEL_NAME_PROG` AS CHANNEL FROM  `CHANNEL_PARAM_FINAL` B  
+		WHERE B.`F2A_STATUS` in (0,-99) ORDER BY CHANNEL_NAME_PROG ";
+
+		$querys	= $db->select($query);
+		$result = $querys->rows();	  
+		return $result;   
 	}
   
   public function list_channel_by_genre($strGenre) {
@@ -547,20 +548,20 @@ ORDER BY `DATE`,M1
   }        
     
   public function channelsearch($strSearch,$strGenre){ 
+  $db = $this->clickhouse->db();	
         if($strGenre == "0"){
-          $strWhere = "AND CHANNEL_NAME LIKE '%".strtoupper($strSearch)."%' ";
+          $strWhere = "AND UPPER(CHANNEL_NAME) LIKE '%".strtoupper($strSearch)."%' ";
       }ELSE if($strGenre == ""){
-          $strWhere = "AND CHANNEL_NAME LIKE '%".strtoupper($strSearch)."%' ";
+          $strWhere = "AND UPPER(CHANNEL_NAME) LIKE '%".strtoupper($strSearch)."%' ";
       }else {
-          $strWhere = "AND GENRE = '".$strGenre."' AND CHANNEL_NAME LIKE '%".strtoupper($strSearch)."%' ";
+          $strWhere = "AND GENRE = '".$strGenre."' AND UPPER(CHANNEL_NAME) LIKE '%".strtoupper($strSearch)."%' ";
       }
       
       $sql = "SELECT DISTINCT C.`CHANNEL_NAME_PROG` AS CHANNEL FROM `CHANNEL_PARAM_FINAL` C
-      WHERE C.`F2A_STATUS` <> 1 ".$strWhere."  
-      ORDER BY C.`CHANNEL_NAME_PROG`";               
-       $out		= array();
-      $query		= $this->db->query($sql);
-      $result = $query->result_array();
+      WHERE C.`F2A_STATUS` <>  1 ".$strWhere."  ORDER BY C.`CHANNEL_NAME_PROG`";       
+	  
+      $querys	= $db->select($sql);
+		$result = $querys->rows();	  
       
       return $result;
   }         
