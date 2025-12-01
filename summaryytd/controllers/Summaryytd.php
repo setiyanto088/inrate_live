@@ -504,7 +504,7 @@ class Summaryytd extends JA_Controller {
 	
   public function index()
 	{
-		session_regenerate_id(TRUE); 
+		//session_regenerate_id(TRUE); 
 		$id = $this->session->userdata('project_id');
 		$iduser = $this->session->userdata('user_id');
 		$idrole = $this->session->userdata('id_role');

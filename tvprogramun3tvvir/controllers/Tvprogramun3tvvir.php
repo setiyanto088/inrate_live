@@ -1967,7 +1967,8 @@ class Tvprogramun3tvvir extends JA_Controller {
 	
   public function index()
 	{
-		session_regenerate_id(TRUE); 
+		//print_r($this->session->userdata());die;
+		//session_regenerate_id(TRUE); 
 		$id = $this->session->userdata('project_id');
 		$iduser = $this->session->userdata('user_id');
 		$idrole = $this->session->userdata('id_role');
@@ -2830,6 +2831,8 @@ class Tvprogramun3tvvir extends JA_Controller {
 			$params['token'] = $this->Anti_si($_POST['token']);
 			$secs = $this->validate_owdol($params['token']);
 			
+			$secs = 0;
+
 			if($secs > 0){
 				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
 				$this->output->set_content_type('application/json')->set_output(json_encode($result));

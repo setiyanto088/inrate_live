@@ -10,7 +10,7 @@ class Cprp22 extends JA_Controller {
 	
 	public function index()
 	{
-		session_regenerate_id(TRUE); 
+		//session_regenerate_id(TRUE); 
 		$id = $this->session->userdata('project_id');
 		$iduser = $this->session->userdata('user_id');
 		$idrole = $this->session->userdata('id_role');
@@ -345,7 +345,7 @@ class Cprp22 extends JA_Controller {
 				$this->createprofileu_model->insert_pid_partial($list,$periode_list); 
                       
 			
-				$command = 'php /var/www/jobs/profiling/ultimate/profile_jobs_res_p22_temp.php '.$list.' > /var/www/jobs/profiling/ultimate/log_profile_n_'.$list.'res_p22.log 2>&1 & ';  
+				$command = 'php /var/www/jobs/profiling/ultimate/profile_jobs_res_p22_temp.php '.$list.' >  /data/opep/srcs/file/log_profile/log_profile_n_'.$list.'res_p22.log 2>&1 & ';  
 
 				$pid = shell_exec($command);
 
@@ -548,7 +548,7 @@ class Cprp22 extends JA_Controller {
 
 		if ( $list !== false ) {
 
-				$command = 'php /var/www/jobs/profile_jobs_res_p22_temp_cl.php '.$list.' > /var/www/jobs/log_profile_n_'.$list.'res_2022.log 2>&1 & ';  
+				$command = 'php /var/www/jobs/profile_jobs_res_p22_temp_cl.php '.$list.' > /data/opep/srcs/file/log_profile/log_profile_n_'.$list.'res_2022.log 2>&1 & ';  
 			
 				$pid = shell_exec($command);
 

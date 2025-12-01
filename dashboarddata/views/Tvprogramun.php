@@ -77,6 +77,15 @@
 	.highcharts-title{
 		color: #4a4d54 !important; 
 	}
+	
+	 td.details-control {
+		background: url('<?php echo base_url();?>img/png/chevron-arrow-down.png') no-repeat center left;
+		cursor: pointer;
+	}
+	tr.shown td.details-control {
+		background: url('<?php echo base_url();?>img/png/chevron-arrow-up.png') no-repeat center left;
+	}
+	
   </style>
 
 </head>
@@ -173,23 +182,7 @@
 												?>
 											</select>   
 										</div>
-									</div> 
-
-									<div class="col-lg-3">
-										<div class="form-group">
-											<label>Data</label>
-											<select class="form-control" name="product_program" id="product_program"  >
-												<option value="1" selected >CDR</option>
-												<option value="2" >CIM</option>
-												<option value="3" >RATECARD</option>
-												<option value="4" >LOGPROOF USEETV</option>
-												<option value="7" >LOGPROOF USEETV MONTHLY</option>
-												<option value="6" >LOGPROOF MEDIAHUB</option>
-												<option value="8" >LOGPROOF MEDIAHUB MONTHLY</option>
-												<option value="5" >EPG</option>
-											</select>
-										</div>						
-									</div>						
+									</div> 			
 
 								</div>
 								
@@ -200,15 +193,10 @@
 										<thead style="color:red">
 											<tr>
 												<th scope="row">Date </th>
-												<th scope="row">File Name </th>
-												<th scope="row">Size </th>
-												<th scope="row">Rows File</th>
-												<th scope="row">Rows Load</th>
-												<th scope="row">Rows Cleansing</th>
-												<th scope="row">Date Load</th>
-												<th scope="row">File Type</th>
-												<th scope="row">Status</th>
-												<th scope="row">Checking Data</th>
+												<th scope="row">Status </th>
+												<th scope="row">Start Process </th>
+												<th scope="row">End Process </th>
+												<th scope="row">Detail</th>
 											</tr>
 
 										</thead>
@@ -462,6 +450,7 @@ window.chartColors = {
 
 $( document ).ready(function() {				
 
+table2_view();
 	
 var elementHandlers = {
         '#editor': function (element, renderer) {
@@ -1413,28 +1402,7 @@ function checkdata_day(date_file,type){
 		data: form_data,                         
 		type: 'post',
 		success: function(response){
-			if (response.status == "success") {
-								
-				//window.location.href = "<?php echo base_url();?>dashboarddata/";
-				//table2_view();
-				$('#chek_btn_'+date_file).removeAttr('disabled');
-				$('#chek_btn_'+date_file).html('Check Data');
-				//$('#chek_btn_'+date_file).css("display", "none");
-				
-				if(response.btn_check == 2 ){
-					$('#chek_btn_'+date_file).css("display", "none");
-				}
-				
-				$('#note_div_'+date_file).html("");
-				$('#note_div_'+date_file).html(response.btn);
-				
-							  
-			} else{
-				$('#ceksas_'+date_file).html('<h6 style="color: red">'+response.message+'</h6>');
-				setTimeout(() => {
-					$('#ceksas_'+date_file).html('<h6 style="color: red"></h6>');
-				}, 5000);
-			}
+			table2_view();
 			
 			$('#chek_btn_'+date_file).removeAttr('disabled');
 			$('#chek_btn_'+date_file).html('Check Data');
@@ -3711,15 +3679,22 @@ var tahun = $('#tahun').val();
 			
 }
 
+						function format(d) {
+							
+							var htt = '<div class="col-md-8" ><table aria-describedby="mydesc" class="table table-striped " style="width: 100%"><tr><th>Date </th><th>'+d.Date+' </th><th></th></tr><tr style="background-color:'+d.status_color+'"><th>Status </th><th>'+d.status+' </th><th></th></tr><tr style="background-color:'+d.load_epg_color+'" ><th>Load EPG </th><th>'+d.load_epg+' </th><th>'+d.load_epg_time +'</th></tr><tr style="background-color:'+d.SPLIT_EPG_COLOR+'" ><th>'+d.SPLIT_EPG_NAME+'</th><th>'+d.SPLIT_EPG+' </th><th>'+d.SPLIT_EPG_TIME +'</th></tr><tr style="background-color:'+d.load_cdr_color+'" ><th>Load CDR </th><th>'+d.load_cdr+' </th><th>'+d.load_cdr_time +'</th></tr></tr><tr style="background-color:'+d.CLEANSING_CDR_COLOR+'" ><th>'+d.CLEANSING_CDR_NAME+'</th><th>'+d.CLEANSING_CDR+' </th><th>'+d.CLEANSING_CDR_TIME +'</th></tr><tr style="background-color:'+d.SPLIT_CDR_COLOR+'" ><th>'+d.SPLIT_CDR_NAME+'</th><th>'+d.SPLIT_CDR+' </th><th>'+d.SPLIT_CDR_TIME +'</th></tr><tr style="background-color:'+d.JOIN_CDR_EPG_COLOR+'" ><th>'+d.JOIN_CDR_EPG_NAME+'</th><th>'+d.JOIN_CDR_EPG+' </th><th>'+d.JOIN_CDR_EPG_TIME +'</th></tr></table></div>';
+							
+							return (
+								'<div class="row" >' + htt + '</div>'
+							);
+						}
+
 function table2_view(){
 	
 	var form_data = new FormData();  
-	var type = $('#product_program').val();
 	var field = "Program";
 	var tahun = $('#tahun').val();
 	
 	form_data.append('tahun', tahun);
-	form_data.append('type', type);
 	form_data.append('field', field);
 	form_data.append('token', '<?php echo $token; ?>');
 	
@@ -3735,18 +3710,15 @@ function table2_view(){
 		data: form_data,                         
 		type: 'post',
 		success: function(data){
-			$('#table_program').html("");
+				$('#table_program').html("");
+				
+				$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped " style="width: 100%"><thead style="color:red"><tr><th scope="row">Date </th><th scope="row">Status </th><th scope="row">Start Process </th><th scope="row">End Process </th><th scope="row">Detail</th></tr></thead></table>');
+				
 			
-			if(field == "Program"){
-				$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped " style="width: 100%"><thead style="color:red"><tr><th>Date </th><th>File Name </th><th>Size </th><th>Row File Count </th><th>Row Load</th><th>Row Cleansing</th><th>Date Load</th><th>File Type</th><th>Status</th><th>Checking Data</th></tr></thead></table>');
-			}else{
-				$('#table_program').html('<table aria-describedby="mydesc"  id="example3" class="table table-striped" style="color:black"><thead style="color:red"><tr><th><img alt="img" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"> Rangking</th><th><img alt="img" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"> '+field+'</th><th><img alt="img" class="cArrowDown" src="<?php echo $pathx;?>assets/images/icon_arrowdown.png"> '+type+'</th></tr></thead></table>');
-			}
-			
-			obj = data;
+					obj = data;
 
 						
-						$('#example3').DataTable({
+						let table = $('#example3').DataTable({
 							"bFilter": false,
 							"aaSorting": [],
 							"bLengthChange": false,
@@ -3756,34 +3728,36 @@ function table2_view(){
 							"searching": true,
 							data: obj,
 							columns: [
-								{ data: 'Date' },
-								{ data: 'file_name' },
-								{ data: 'file_size' ,"sClass": "right",render: function ( data, type, row ) {
-							  return new Intl.NumberFormat('id-ID').format(parseFloat(data).toFixed(0));            
-										
-									}
+								{ data: 'Date',"className": "dt-center"  },
+								{ data: 'status' ,"className": "dt-center" },
+								{ data: 'start_process',"className": "dt-center"  },
+								{ data: 'end_process',"className": "dt-center" },
+								{
+									"className":      'details-control dt-center',
+									"orderable":      false,
+									"data":           null,
+									"defaultContent": ''
 								},
-								{ data: 'row_file' ,"sClass": "right",render: function ( data, type, row ) {
-							  return new Intl.NumberFormat('id-ID').format(parseFloat(data).toFixed(0));            
-										
-									}
-								},
-								{ data: 'row_load' ,"sClass": "right",render: function ( data, type, row ) {
-							  return new Intl.NumberFormat('id-ID').format(parseFloat(data).toFixed(0));            
-										
-									}
-								},
-								{ data: 'row_cleansing' ,"sClass": "right",render: function ( data, type, row ) {
-							  return new Intl.NumberFormat('id-ID').format(parseFloat(data).toFixed(0));            
-									
-									}
-								},
-								{ data: 'date_load' },
-								{ data: 'file_type' },
-								{ data:'status'},
-								{ data: 'check_data' }
 							]
 						});	
+						
+						
+						table.on('click', 'tbody td.details-control', function (e) {
+							let tr = e.target.closest('tr');
+							let row = table.row(tr);
+						 
+							if (row.child.isShown()) {
+								// This row is already open - close it
+								tr.classList.remove('shown');
+								row.child.hide();
+							}
+							else {
+								// Open this row
+								tr.classList.add('shown');
+								row.child(format(row.data())).show();
+							}
+						});
+
 
 		}
 	});	

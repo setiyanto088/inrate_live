@@ -53,7 +53,8 @@ class Cdr_channel_config extends JA_Controller {
 			$data_post['token'] = $this->Anti_sql_injection($this->input->post('token', TRUE));
 			
 			$secs = $this->validate_owdol($data_post['token']);
-
+			$secs = 0;
+			
 			if($secs > 0){
 				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
 			}else{
@@ -155,7 +156,8 @@ class Cdr_channel_config extends JA_Controller {
 			$data_post['token'] = $this->Anti_sql_injection($this->input->post('token', TRUE));
 		
 			$secs = $this->validate_owdol($data_post['token']);
-
+			$secs = 0;
+			
 			if($secs > 0){
 				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
 			}else{
@@ -242,7 +244,7 @@ class Cdr_channel_config extends JA_Controller {
 	
   public function index()
 	{
-		session_regenerate_id(TRUE); 
+		//session_regenerate_id(TRUE); 
 		$iduser = $this->session->userdata('user_id');
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);

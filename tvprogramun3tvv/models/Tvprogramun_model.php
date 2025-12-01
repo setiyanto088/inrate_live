@@ -62,7 +62,7 @@ class Tvprogramun_model extends CI_Model {
 	
 	public function get_tahun(){
 		
-		$query = "SELECT DISTINCT(PERIODE_STR)  TANGGAL FROM T_PERIODE ORDER BY PERIODE DESC";
+		$query = "SELECT DISTINCT(PERIODE_STR) TANGGAL FROM T_PERIODE ORDER BY STR_TO_DATE(PERIODE_STR,'%Y-%M') DESC";
 		 
 		$sql	= $this->db->query($query);
 		$this->db->close();

@@ -463,21 +463,28 @@ $(document).ready(function(){
 	
 		form_data.append('token_p', token_p);
 	  
+	   url = "<?php echo base_url().'logproof_load/audiencebar_by_program_export'; ?>";
+									 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+										"<input type='hidden' name='token_p' value='" + token_p + "' />" +
+										"</form>");
+									  $('body').append(form);
+									  form.submit();
+									  
  	  
-		$.ajax({
-			url: "<?php echo base_url().'logproof_load/audiencebar_by_program_export'; ?>", 
-			contentType: false,
-			processData: false,
-			data: form_data,                         
-			type: 'POST',
-			success: function(data){
+		// $.ajax({
+			// url: "<?php echo base_url().'logproof_load/audiencebar_by_program_export'; ?>", 
+			// contentType: false,
+			// processData: false,
+			// data: form_data,                         
+			// type: 'POST',
+			// success: function(data){
 				
-				download_file('<?php echo $donwload_base; ?>tmp_doc/sopos.xls',data['filename']);
+				// download_file('<?php echo $donwload_base; ?>tmp_doc/sopos.xls',data['filename']);
 									
-			}, error: function(obj, response) {
-				console.log('ajax list detail error:' + response);	
-			} 
-		});	
+			// }, error: function(obj, response) {
+				// console.log('ajax list detail error:' + response);	
+			// } 
+		// });	
 	  
 	}
 	
@@ -514,71 +521,57 @@ $(document).ready(function(){
 
 function audiencebar_view_file(){
 		  
-			var form_data = new FormData();  
+		  var form_data = new FormData();  
 			var start_date = $('#start_date2').val();
 			var end_date = $('#end_date2').val();
-			
-			const start_date_1 = start_date.split("/");
-			const start_date_2 = end_date.split("/");
-			
-			const date1 = new Date(start_date_1[2]+'-'+start_date_1[1]+'-'+start_date_1[0]);
-			const date2 = new Date(start_date_2[2]+'-'+start_date_2[1]+'-'+start_date_2[0]);
-
-			const diffInMs = ((date2 - date1) / (1000 * 60 * 60 * 24))+1;
 			
 			form_data.append('start_date', start_date);
 			form_data.append('end_date', end_date);
 			
-			if(diffInMs > 60){
-				alert('Maximum date 60 Days !!');
-			}else{
-		
-				$.ajax({
-					url: "<?php echo base_url().'logproof_load/audiencebar_by_channel_file'; ?>", 
-					dataType: 'text',   
-					cache: false,
-					contentType: false,
-					processData: false,
-					data: form_data,                         
-					type: 'post',
-					success: function(data){
-				
-				
-					$('#table_program3').html('<table aria-describedby="table" id="example42" class="table table-striped example" style="width: 100%"><thead style="color:red"><tr><th scope="row">File Name </th><th scope="row">Periode </th><th scope="row">Type </th><th scope="row">Note </th><th scope="row">Status </th><th scope="row">Upload Date </th><th scope="row">Process Date </th><th scope="row">PIC </th><th scope="row">Download </th></tr></thead></table>');
-				
-					obj = jQuery.parseJSON(data);
-				
-					$('#example42').DataTable({
-						"bFilter": false,
-						"aaSorting": [],
-						"bLengthChange": false,
-						'iDisplayLength': 10,
-						"sPaginationType": "simple_numbers",
-						"Info" : false,
-						
-						"searching": true,
-						"language": {
-							"decimal": ",",
-							"thousands": "."
-						},
-						data: obj,
-						columns: [
-							{ data: 'FILENAME' },
-							{ data: 'PERIODE' },
-							{ data: 'TYPE' },
-							{ data: 'ERROR' },
-							{ data: 'STATUS' },
-							{ data: 'UPLOAD_DATE' },
-							{ data: 'PROCESS_DATE' },
-							{ data: 'USER' },
-							{ data: 'BTN' }
-						]
-					});	
-					
-					}
-				});	
+			$.ajax({
+				url: "<?php echo base_url().'logproof_load/audiencebar_by_channel_file'; ?>", 
+				dataType: 'text',   
+				cache: false,
+				contentType: false,
+				processData: false,
+				data: form_data,                         
+				type: 'post',
+				success: function(data){
 			
-			}
+			
+				$('#table_program3').html('<table aria-describedby="table" id="example42" class="table table-striped example" style="width: 100%"><thead style="color:red"><tr><th scope="row">File Name </th><th scope="row">Periode </th><th scope="row">Type </th><th scope="row">Note </th><th scope="row">Status </th><th scope="row">Upload Date </th><th scope="row">Process Date </th><th scope="row">PIC </th><th scope="row">Download </th></tr></thead></table>');
+			
+				obj = jQuery.parseJSON(data);
+			
+				$('#example42').DataTable({
+					"bFilter": false,
+					"aaSorting": [],
+					"bLengthChange": false,
+					'iDisplayLength': 10,
+					"sPaginationType": "simple_numbers",
+					"Info" : false,
+					
+					"searching": true,
+					"language": {
+						"decimal": ",",
+						"thousands": "."
+					},
+					data: obj,
+					columns: [
+						{ data: 'FILENAME' },
+						{ data: 'PERIODE' },
+						{ data: 'TYPE' },
+						{ data: 'ERROR' },
+						{ data: 'STATUS' },
+						{ data: 'UPLOAD_DATE' },
+						{ data: 'PROCESS_DATE' },
+						{ data: 'USER' },
+						{ data: 'BTN' }
+					]
+				});	
+				
+				}
+			});	
 			
 	  }
 

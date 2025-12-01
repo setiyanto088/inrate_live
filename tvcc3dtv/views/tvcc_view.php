@@ -165,7 +165,7 @@
 									  <select class="urate-select grid-menu" name="channel" id="channel" title="Please Choose a Channel ..." required>
 										  <option value="0" >All Channel</option>
 										  <?php foreach($channel as $key) { ?>
-										  <option value="<?php echo str_replace("&","AND",$key['CHANNEL']); ?>" ><?php echo $key['CHANNEL']; ?></option>
+										  <option value="<?php echo str_replace("&","AND",$key['channel']); ?>" ><?php echo $key['channel']; ?></option>
 										  <?php } ?>
 									  </select>
 								  </div>

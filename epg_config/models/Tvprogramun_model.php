@@ -17,6 +17,14 @@ class Tvprogramun_model extends CI_Model {
 		return $sql->rows();			   
 	}          
 	
+	public function save_file_channel_data($params){ 
+				
+		$sql 	= "INSERT INTO EPG_RAW1_TEMP VALUES ".$params." ";
+		//ECHO $sql;DIE;
+        $this->db->query($sql);
+
+	}   	
+	
 	public function get_profile($iduser,$idrole,$periode) {  
 	 
 		
@@ -61,18 +69,36 @@ class Tvprogramun_model extends CI_Model {
 	
 	public function get_list_channel($date){
 		
+		// $query = "
+		// SELECT GROUP_CONCAT(A.CHANNEL_ORIGIN ORDER BY A.CHANNEL_ORIGIN ASC SEPARATOR ', ') as CLS,COUNT(A.CHANNEL_ORIGIN) SD FROM (
+		// SELECT * FROM CHANNEL_EPG_CONFIG A
+		// WHERE A.`STATUS` = 1
+		// ) A LEFT JOIN (
+			// SELECT CHANNEL,COUNT(*) SD, DATE_FORMAT(START_TIME,'%Y-%d-%d') AS DTS FROM (SELECT * FROM EPG_RAW1_TEST GROUP BY `CHANNEL`,`PROGRAM`,`START_TIME`) ec 
+			// WHERE START_TIME BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59'
+			// GROUP BY CHANNEL,DTS
+		// ) B ON A.CHANNEL_CDR = B.CHANNEL 
+		// WHERE B.CHANNEL IS NULL OR SD < 8
+		// ORDER BY A.CHANNEL_ORIGIN
+		// ";
+		
 		$query = "
-		SELECT GROUP_CONCAT(A.CHANNEL_ORIGIN ORDER BY A.CHANNEL_ORIGIN ASC SEPARATOR ', ') as CLS,COUNT(A.CHANNEL_ORIGIN) SD FROM (
+		 SELECT GROUP_CONCAT(A.CHANNEL_ORIGIN ORDER BY A.CHANNEL_ORIGIN ASC SEPARATOR ', ') AS CLS,COUNT(A.CHANNEL_ORIGIN) SD FROM 
+	 (
+	 SELECT * FROM (
 		SELECT * FROM CHANNEL_EPG_CONFIG A
 		WHERE A.`STATUS` = 1
 		) A LEFT JOIN (
-			SELECT CHANNEL,COUNT(*) SD, DATE_FORMAT(START_TIME,'%Y-%d-%d') AS DTS FROM (SELECT * FROM EPG_RAW1_TEST GROUP BY `CHANNEL`,`PROGRAM`,`START_TIME`) ec 
+			SELECT CHANNEL AS CHANNEL_B,COUNT(*) SD, DATE_FORMAT(START_TIME,'%Y-%d-%d') AS DTS FROM (SELECT * FROM EPG_RAW1_TEST GROUP BY `CHANNEL`,`PROGRAM`,`START_TIME`) ec 
 			WHERE START_TIME BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59'
 			GROUP BY CHANNEL,DTS
-		) B ON A.CHANNEL_CDR = B.CHANNEL 
-		WHERE B.CHANNEL IS NULL OR SD < 8
+		) B ON A.CHANNEL_CDR = B.CHANNEL_B 
+		WHERE B.CHANNEL_B IS NULL OR SD < 8
+		GROUP BY A.CHANNEL_ORIGIN
+	) A
 		ORDER BY A.CHANNEL_ORIGIN
-		";
+		 ";
+		 
 		 
 		$sql	= $this->db->query($query);
 		$this->db->close();

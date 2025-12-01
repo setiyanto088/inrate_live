@@ -32,7 +32,6 @@ class epg_config extends JA_Controller {
 	
   public function index()
 	{	
-		session_regenerate_id(TRUE); 
 		$iduser = $this->session->userdata('user_id');
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
@@ -64,12 +63,6 @@ class epg_config extends JA_Controller {
 	
 	public function process_data(){
 		
-		if(!$this->session->userdata('user_id') || in_array("237",$array_menu) == 0) {
-			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		}else{
-			
-			
 		$params['iduser'] = $this->session->userdata('user_id');
 		$token =  $this->Anti_si($this->input->post('data_rdn',true));
 		
@@ -104,19 +97,10 @@ class epg_config extends JA_Controller {
 		
 		}
 		
-		}
-		
 	}
 	
 	 public function upload_file()
 	{
-		
-		
-		if(!$this->session->userdata('user_id') || in_array("237",$array_menu) == 0) {
-			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
-			$this->output->set_content_type('application/json')->set_output(json_encode($result));
-		}else{
-		
 		$iduser = $this->session->userdata('user_id');
 		$token =  $this->Anti_si($this->input->post('data_rdn',true));
 		$token_rd =  $this->Anti_si($this->input->post('arr_data_tok_int',true));
@@ -155,22 +139,14 @@ class epg_config extends JA_Controller {
 				
 		$array_file_s = [];
 		
-		//print_r($_FILES["upload_file"]["name"]);die;
-		
 		for($f=0; $f<count($_FILES["upload_file"]["tmp_name"]); $f++ ){
-			
-			$imageFileType = strtolower(pathinfo($folder . $_FILES["upload_file"]["name"][$f],PATHINFO_EXTENSION));
-			$excel_check = 0;
-			if($imageFileType !== 'xls'){
-				$excel_check == 1;
-			}
-			
 			$move = move_uploaded_file($_FILES["upload_file"]["tmp_name"][$f], $folder . $_FILES["upload_file"]["name"][$f]);
 			
 			$file_excel = $folder . $_FILES["upload_file"]["name"][$f];
 			$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file_excel);
 			
-					
+			//echo $file_excel;die;
+			
 			
 		$sheetCount = $spreadsheet->getSheetCount();
 		
@@ -218,6 +194,7 @@ class epg_config extends JA_Controller {
 			//now it is created a html table with the excel file data
 			//$html_tb ='<table border="1"><tr><th>'. implode('</th><th>', $xls_data[1]) .'</th></tr>';
 			$html_tb ='';
+			$insert_d ='';
 			$channel = '';
 			$start_time = '';
 			$end_time = '';
@@ -253,57 +230,56 @@ class epg_config extends JA_Controller {
 				$row = substr($row, 0, -1);
 $html_tb .= $row.'
 ';
+
+$data_param = explode('|',$row);
+
+$insert_d .= "('".$data_param[0]."','".$data_param[1]."','".$data_param[2]."','".$data_param[3]."','".$data_param[4]."','".$data_param[5]."'),";
+
 			}
 			
 			//echo $html_tb;die;
-			$errnoe = 0;			
+						
 			$params['CHANNEL'] = $channel;
 			$params['START_TIME'] = $start_time;
 			$params['END_TIME'] = $end_time;
 			$params['TOT_ROW'] = $i-2;
 			$params['CHANNEL_STATUS'] = '';
 			$params['CHANNEL_COLOR'] = 'BLACK';
-			if($excel_check > 0){
-				$params['CHANNEL_STATUS'] = ' - Only Upload xls File ! ';
+			if($params['CHANNEL'] == ''){
+				$params['CHANNEL_STATUS'] = ' - EPG Channel Not Found or Format File Not Correct';
 				$params['CHANNEL_COLOR'] = 'RED';
-				$errnoe++;
-			}else{
-				if($params['CHANNEL'] == ''){
-					$params['CHANNEL_STATUS'] = ' - EPG Channel Not Found or Format File Not Correct';
-					$params['CHANNEL_COLOR'] = 'RED';
-					$errnoe++;
-				}
 			}
 			
 			$array_file_s['data'][] = $params;
 			
-			if($errnoe == 0){
-				$this->tvprogramun_model->save_file_channel($params);
+			$this->tvprogramun_model->save_file_channel($params);
+			
+			$insert_d = substr($insert_d, 0, -1);
+			$this->tvprogramun_model->save_file_channel_data($insert_d);
 
-				$fp = fopen($folder.'data.csv', 'w');
-				fclose($fp);
-				file_put_contents($folder.'data.csv', $html_tb);
-				
-				$myfile = fopen($folder."load_cdr_zte.sql", "w");
-					//$txt = 'LOAD DATA LOCAL INFILE "C:/xampp56/htdocs/inrate_ch/uploads/data.csv" INTO TABLE EPG_RAW1_TEMP FIELDS TERMINATED BY "," LINES TERMINATED BY "\n"  
-				//(CHANNEL,PROGRAM,START_TIME,END_TIME,GENRE,TOKEN)';
-			$txt = 'LOAD DATA LOCAL INFILE "'.$folder.'data.csv" INTO TABLE EPG_RAW1_TEMP FIELDS TERMINATED BY "|" LINES TERMINATED BY "\n"  
-				(CHANNEL,PROGRAM,START_TIME,END_TIME,GENRE,TOKEN)';
+			// $fp = fopen($folder.'data.csv', 'w');
+			// fclose($fp);
+			// file_put_contents($folder.'data.csv', $html_tb);
 			
-			//echo $txt;die;
-				fwrite($myfile, $txt);
-				fclose($myfile);
+			// $myfile = fopen($folder."load_cdr_zte.sql", "w");
+				// //$txt = 'LOAD DATA LOCAL INFILE "C:/xampp56/htdocs/inrate_ch/uploads/data.csv" INTO TABLE EPG_RAW1_TEMP FIELDS TERMINATED BY "," LINES TERMINATED BY "\n"  
+			// //(CHANNEL,PROGRAM,START_TIME,END_TIME,GENRE,TOKEN)';
+		// $txt = 'LOAD DATA LOCAL INFILE "/data/opep/srcs/uploadepg/data.csv" INTO TABLE EPG_RAW1_TEMP FIELDS TERMINATED BY "|" LINES TERMINATED BY "\n" (CHANNEL,PROGRAM,START_TIME,END_TIME,GENRE,TOKEN)';
 			
-				file_put_contents($file, $text_cont);
+			// //echo $txt;die;
+				// fwrite($myfile, $txt);
+				// fclose($myfile);
+			
+				// file_put_contents($file, $text_cont);
 							
-				fclose($my_file);
+				// fclose($my_file);
 				
-				//$command = 'C:\xampp56\mysql\bin\mysql -h dev-datamart.u.1elf.net -u inrate -pa2cd-0c6d851fc9de inrate < C:/xampp56/htdocs/inrate_ch/uploads/load_cdr_zte.sql 2>&1 ';
-				// mariadb -h dev-datamart.u.1elf.net -u inrate -pa2cd-0c6d851fc9de inrate < /var/www/html/epg/uploads/load_cdr_zte.sql 2>&1 
-				$command = 'mysql -h dev-datamart.u.1elf.net -u inrate -pa2cd-0c6d851fc9de inrate < '.$folder.'load_cdr_zte.sql 2>&1 ';
-				$pid = shell_exec($command);
+				// //$command = 'C:\xampp56\mysql\bin\mysql -h dev-datamart.u.1elf.net -u inrate -pa2cd-0c6d851fc9de inrate < C:/xampp56/htdocs/inrate_ch/uploads/load_cdr_zte.sql 2>&1 ';
+				// // mariadb -h dev-datamart.u.1elf.net -u inrate -pa2cd-0c6d851fc9de inrate < /var/www/html/epg/uploads/load_cdr_zte.sql 2>&1 
+				// $command = 'mysql -h 10.93.155.38 -u inrate -pa2cd-0c6d851fc9de inrate < /data/opep/srcs/uploadepg/load_cdr_zte.sql 2>&1 ';
+				// $pid = shell_exec($command);
 			
-			}
+		
 		}
 
 		}
@@ -317,8 +293,6 @@ $html_tb .= $row.'
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($array_file_s));
 		}
-		}
-		
 	}
 	
  

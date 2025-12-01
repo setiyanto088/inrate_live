@@ -12,7 +12,7 @@ class Dashboarddata extends JA_Controller {
 
   public function index()
 	{
-		session_regenerate_id(TRUE); 
+		//session_regenerate_id(TRUE); 
 		$id = $this->session->userdata('project_id');
 		$iduser = $this->session->userdata('user_id');
 		$idrole = $this->session->userdata('id_role');
@@ -219,27 +219,15 @@ class Dashboarddata extends JA_Controller {
 						$scamu['status'] = $status_array[$dataMa[$i]['STATUS_FILE']]."<br>".$dataMa[$i]['NOTE'].'<br>'.$dataMa[$i]['CHANNEL'];
 					}
 					
-					if($dataMa[$i]['STATUS_FILE'] == 1){
+					if($dataMa[$i]['STATUS_FILE'] == 4){
 						
-						if($dataMa[$i]['STATUS_J'] == 1 ){
-							$scamu['check_data'] = "<span style='color:blue'><strong>Checked</strong></span>";
-						}elseif($dataMa[$i]['STATUS_J'] == 2 ){
-							
-							$scamu['check_data'] = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$dataMa[$i]['LOG_DATE']."' onclick='onreproc_f(\"".$dataMa[$i]['LOG_DATE']."\",1)' >Reprocess</button>";
-						}elseif($dataMa[$i]['STATUS_J'] == 3 ){
-							$scamu['check_data'] = "<span style='color:green'><strong>In Checking</strong></span>";
-							
-						}elseif($dataMa[$i]['STATUS_J'] == 4 ){
-							$scamu['check_data'] = "<span style='color:green'><strong>In Queue</strong></span>";
-							
-						}else{
-							$scamu['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$dataMa[$i]['LOG_DATE']."' onclick='checkdata_day(\"".$dataMa[$i]['LOG_DATE']."\",1)' >Check Data</button>
-							<span id='ceksas_".$dataMa[$i]['LOG_DATE']."'style='color:green'></span>";
-						}
+
+						$scamu['check_data'] = "<span style='color:green'><strong>In Checking</strong></span>";
+
 						
 					}else{
 						
-						$scamu['check_data'] = "";
+						$scamu['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='chek_btn_".$dataMa[$i]['LOG_DATE']."' data-id='".$dataMa[$i]['LOG_DATE']."' onclick='checkdata_day(\"".$dataMa[$i]['LOG_DATE']."\",".$type.")' >Check File</button>";
 	
 					}
 					
@@ -256,11 +244,17 @@ class Dashboarddata extends JA_Controller {
 			$prog = 0;
 			
 			foreach($array_jobs_detail AS $detail_name){
-				if($daily[$i][$detail_name] == null){
-					$scamud[$detail_name] = $status_array[0];
-				}else{
-					$scamud[$detail_name] = $status_array[$daily[$i][$detail_name]];
-				}
+							$note[$detail_name] = explode("||",$daily[$i][$detail_name.'_NOTE']);
+							
+							if($daily[$i][$detail_name] == null){
+								$scamud[$detail_name] = $status_array[0];
+							}else{
+								
+								$scamud[$detail_name] = '<span style="color:red">'.$status_array[$daily[$i][$detail_name]].'<br>'.$note[$detail_name][0].'</span>';
+								if($note[$detail_name][0] == ''){
+									$scamud[$detail_name] = '<span>'.$status_array[$daily[$i][$detail_name]].'<br>'.$note[$detail_name][0].'</span>';
+								}
+							}
 				
 				$note[$detail_name] = explode("||",$daily[$i][$detail_name.'_NOTE']);
 				$scamud[$detail_name.'_NOTE'] = $note[$detail_name][0];
@@ -385,7 +379,7 @@ class Dashboarddata extends JA_Controller {
 						if($datax['STATUS_J'] == 1 ){
 							$data_ch[$ik]['check_data'] = "<span style='color:blue'><strong>Checked</strong></span>";
 						}elseif($datax['STATUS_J'] == 2 ){
-							$data_ch[$ik]['check_data'] = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='onreproc_f(\"".$datax['LOG_DATE']."\",".$type_jobs.")' >Reprocess</button>";
+							$data_ch[$ik]['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='onreproc_f(\"".$datax['LOG_DATE']."\",".$type_jobs.")' >Reprocess</button>";
 						}elseif($datax['STATUS_J'] == 3 ){
 							$data_ch[$ik]['check_data'] = "<span style='color:green'><strong>In Checking</strong></span>";
 							
@@ -394,7 +388,7 @@ class Dashboarddata extends JA_Controller {
 							
 						}else{
 						
-							$data_ch[$ik]['check_data'] = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type_jobs.")' >Check Data</button>";
+							$data_ch[$ik]['check_data'] = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type_jobs.")' >Check File</button>";
 						}
 						
 					}else{
@@ -489,6 +483,16 @@ class Dashboarddata extends JA_Controller {
 						$scamud[$detail_name] = $status_array[$daily[$i][$detail_name]];
 					}
 					
+							if($daily[$i][$detail_name] == null){
+								$scamud[$detail_name] = $status_array[0];
+							}else{
+								
+								$scamud[$detail_name] = '<span style="color:red">'.$status_array[$daily[$i][$detail_name]].'<br>'.$note[$detail_name][0].'</span>';
+								if($note[$detail_name][0] == ''){
+									$scamud[$detail_name] = '<span>'.$status_array[$daily[$i][$detail_name]].'<br>'.$note[$detail_name][0].'</span>';
+								}
+							}
+					
 					$note[$detail_name] = explode("||",$daily[$i][$detail_name.'_NOTE']);
 					$scamud[$detail_name.'_NOTE'] = $note[$detail_name][0];
 					$scamud[$detail_name.'_NOTE_FL'] = $scamud[$detail_name]."||".$note[$detail_name][0];
@@ -513,7 +517,7 @@ class Dashboarddata extends JA_Controller {
 							$scamud['SUCC'] = "Process Not Running";
 						}else{
 							if($prog == 0){
-								$scamud['SUCC'] = "Process Not Complete<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='btn_repro_".$daily[$i]['LOG_DATE']."' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",".$type.")' >Reprocess</button>";
+								$scamud['SUCC'] = "Process Not Complete<br><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='btn_repro_".$daily[$i]['LOG_DATE']."' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",".$type.")' >Reprocess</button>";
 							}else{
 								$scamud['SUCC'] = "Process Not Complete";
 							}
@@ -602,7 +606,7 @@ class Dashboarddata extends JA_Controller {
 						if($datax['STATUS_J'] == 1 ){
 							$data_ch[$ik]['check_data'] = "<span style='color:blue'><strong>Checked</strong></span>";
 						}elseif($datax['STATUS_J'] == 2 ){
-							$data_ch[$ik]['check_data'] = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='onreproc_f(\"".$datax['LOG_DATE']."\",".$type_jobs.")' >Reprocess</button>";
+							$data_ch[$ik]['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='onreproc_f(\"".$datax['LOG_DATE']."\",".$type_jobs.")' >Reprocess</button>";
 						}elseif($datax['STATUS_J'] == 3 ){
 							$data_ch[$ik]['check_data'] = "<span style='color:green'><strong>In Checking</strong></span>";
 							
@@ -611,7 +615,7 @@ class Dashboarddata extends JA_Controller {
 							
 						}else{
 						
-							$data_ch[$ik]['check_data'] = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type_jobs.")' >Check Data</button>";
+							$data_ch[$ik]['check_data'] = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type_jobs.")' >Check File</button>";
 						}
 						
 					}else{
@@ -686,8 +690,14 @@ class Dashboarddata extends JA_Controller {
 			}elseif($params['type'] == "1"){
 			
 				$queue_id = 6;
-				$sc_duplicate = "php /data/opep/srcs/jobs/check_cdr_file.php ".$tahun." ";
-				$tbs = 'DAILY_CHECK_REPORT';
+				// $sc_duplicate = "php /data/opep/srcs/jobs/check_cdr_file.php ".$tahun." ";
+				// $tbs = 'DAILY_CHECK_REPORT';
+				
+				$this->tvprogramun_model->recheck_cdr_process($params);
+				
+				$button_process = "<div id='note_div_".$params['date_file']."'>Process Success<br><br></div>";
+				$button_check = 1;
+				
 
 			}
 			
@@ -808,7 +818,6 @@ class Dashboarddata extends JA_Controller {
 						
 					}
 					
-				
 					$status_array = ['Not Process','Success','Failed','On Process','On Queue'];
 
 					$detail_daily = array();
@@ -818,10 +827,17 @@ class Dashboarddata extends JA_Controller {
 						$prog = 0;
 						
 						foreach($array_jobs_detail AS $detail_name){
+							
+							$note[$detail_name] = explode("||",$daily[$i][$detail_name.'_NOTE']);
+							
 							if($daily[$i][$detail_name] == null){
 								$scamud[$detail_name] = $status_array[0];
 							}else{
-								$scamud[$detail_name] = $status_array[$daily[$i][$detail_name]];
+								
+								$scamud[$detail_name] = '<span style="color:red">'.$status_array[$daily[$i][$detail_name]].'<br>'.$note[$detail_name][0].'</span>';
+								if($note[$detail_name][0] == ''){
+									$scamud[$detail_name] = '<span>'.$status_array[$daily[$i][$detail_name]].'<br>'.$note[$detail_name][0].'</span>';
+								}
 							}
 							
 							$note[$detail_name] = explode("||",$daily[$i][$detail_name.'_NOTE']);
@@ -848,7 +864,7 @@ class Dashboarddata extends JA_Controller {
 									$scamud['SUCC'] = "Process Not Running";
 								}else{
 									if($prog == 0){
-										$scamud['SUCC'] = "Process Not Complete<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",".$type.")' >Reprocess</button>";
+										$scamud['SUCC'] = "Process Not Complete<br><button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$daily[$i]['LOG_DATE']."' onclick='onreproc(\"".$daily[$i]['LOG_DATE']."\",".$type.")' >Reprocess</button>";
 									}else{
 										$scamud['SUCC'] = "Process Not Complete";
 									}
@@ -865,6 +881,7 @@ class Dashboarddata extends JA_Controller {
 						
 						array_push($detail_daily, $scamud);
 					}
+					 
 					
 					$data['daily'] = json_encode($detail_daily,true); 
 					
@@ -882,7 +899,6 @@ class Dashboarddata extends JA_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		}else{
 			$channel_error = 0;
-			$type =  $this->input->post('type');
 			
 			$array_tp = [1 => 1,2 => 2,3 => 3,4 => 4,5 => 5,6 => 6,7 => 7,8 => 8];
 			
@@ -893,9 +909,7 @@ class Dashboarddata extends JA_Controller {
 			$params['token']= $token;
 			$params['uid']= $this->session->userdata('user_id');
 			
-				if($array_tp[$type]==''){
-					$channel_error++;
-				}
+				
 				
 				$get_list_channel = $this->tvprogramun_model->get_list_periode();
 				$arr_chnel_l = [];
@@ -913,14 +927,19 @@ class Dashboarddata extends JA_Controller {
 				}else{
 					$periode=$tahun; 
 
-					if($type == 7 || $type == 8 ){
-						$data['programs'] = $this->tvprogramun_model->filter_table2("Program",$periode,$type);
-					}else{
-						$data['programs'] = $this->tvprogramun_model->filter_table("Program",$periode,$type);
-					}
+
+					$data['programs'] = $this->tvprogramun_model->filter_table($periode,$type);
+					
+					//print_r($data['programs']);die;
 					
 					$status_array = ['Not Process','Process Success','Process Fail','File Ready to Process','On Queue','On Progress','Checking File'];
-
+					
+					$process_status = ['Process Incomplete','Process Success','Process Error','On Process','Process Done with Error'];
+					$process_color = ['','green','red','yellow','orange'];
+					
+					$array_jobs_detail = [['SPLIT_EPG','Split EPG'],['CLEANSING_CDR','Cleansing CDR'],['SPLIT_CDR','Split CDR'],['JOIN_CDR_EPG','Join CDR EPG'],['RATING_PERMINUTES','Rating per Minutes'],['TVCC','TVCC'],['MEDIAPLAN','TVPC'],['BEFORE_AFTER','Summart Before After'],['MIGRATION','Channel Migration'],['AUDIENCE','Channel Audience'],['DASHBOARD','Dashboard']];
+					
+					
 					if(sizeof($data['programs']) > 0){
 					  $i = 1;
 						$ik = 0;
@@ -933,46 +952,68 @@ class Dashboarddata extends JA_Controller {
 								}else{
 									$ft = 'Rev '.$datax['FILE_TYPE'];
 								}
-								
-								$fn = explode("/",$datax['FILE_NAME']);
-								
+
 								$data_ch[$ik]['Date'] = $datax['LOG_DATE'];
-								$data_ch[$ik]['file_name'] = end($fn);
-								$data_ch[$ik]['file_size'] = $datax['FILESIZE'];
-								$data_ch[$ik]['row_file'] = $datax['ROW_COUNT_FILE'];
-								$data_ch[$ik]['row_load'] = $datax['ROW_COUNT_LOAD'];
-								$data_ch[$ik]['row_cleansing'] = $datax['ROW_COUNT_CLEANSING'];
-								$data_ch[$ik]['date_load'] = $datax['DATE_LOAD'];
-								$data_ch[$ik]['file_type'] = $ft;
+								$data_ch[$ik]['status'] = '<span style="color:'.$process_color[$datax['STATUS_J']].'">'.$process_status[$datax['STATUS_J']].'</span>';
+								$data_ch[$ik]['status_color'] = $process_color[$datax['STST']];
+								$data_ch[$ik]['start_process'] = $datax['START_DATE'];
+								$data_ch[$ik]['end_process'] = $datax['END_DATE'];
+								$data_ch[$ik]['detail'] = $datax['DETAILS'];
 								
-								if($datax['STATUS_FILE'] == 3){
-									$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br><button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='process_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='onqueue(\"".$datax['LOG_DATE']."\",".$type.")' >Process</button>".'<br>'.$datax['CHANNEL'].'</div>';
+								$details_d = explode("--,",$datax['DETAILS']);
+								
+								
+								IF($datax['LOAD_EPG'] == null){
+									$data_ch[$ik]['load_epg'] = 'File Not Ready';
+									$data_ch[$ik]['load_epg_color'] = $process_color[0];
+									$data_ch[$ik]['load_epg_time'] = '';
 								}else{
-									$data_ch[$ik]['status'] = '<div id="note_div_'.$datax['LOG_DATE'].'">'.$status_array[$datax['STATUS_FILE']]."<br>".$datax['NOTE'].'<br>'.$datax['CHANNEL'].'</div>';
+									$datad = explode("||",$details_d[0]);
+									$fn = explode("/",$datad[0]);
+									$data_ch[$ik]['load_epg'] = $process_status[$datax['LOAD_EPG']].'<br>'.end($fn).' '.$datad[1].' Rows, '.round(($datad[2]/1024),2).' KB ';
+									
+									$detail_loads = explode("||",$datax['LOAD_EPG_NOTE']);
+									
+									$data_ch[$ik]['load_epg_time'] = $detail_loads[1].' - '.$detail_loads[2];
+									$data_ch[$ik]['load_epg_color'] = $process_color[$datax['LOAD_EPG']];
 								}
 								
-								if($datax['STATUS_FILE'] == 1){
+								IF($datax['LOAD_CDR'] == null){
+									$data_ch[$ik]['load_cdr'] = 'File Not Ready';
+									$data_ch[$ik]['load_cdr_color'] = $process_color[0];
+									$data_ch[$ik]['load_cdr_time'] = '';
+								}else{
+									$datad = explode("||",$details_d[1]);
+									$fn = explode("/",$datad[0]);
+									$data_ch[$ik]['load_cdr'] = $process_status[$datax['LOAD_CDR']].'<br>'.end($fn).' '.$datad[1].' Rows, '.round(($datad[2]/(1024*1024)),2).' MB ';
 									
-									if($datax['STATUS_J'] == 1 ){
-										$data_ch[$ik]['check_data'] = "<span style='color:blue'><strong>Checked</strong></span>";
-									}elseif($datax['STATUS_J'] == 2 ){
-										$data_ch[$ik]['check_data'] = "<button class='btn urate-outline-btn' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' data-id='".$datax['LOG_DATE']."' onclick='onreproc_f(\"".$datax['LOG_DATE']."\",".$type.")' >Reprocess</button>";
-									}elseif($datax['STATUS_J'] == 3 ){
-										$data_ch[$ik]['check_data'] = "<span style='color:green'><strong>In Checking</strong></span>";
-										
-									}elseif($datax['STATUS_J'] == 4 ){
-										$data_ch[$ik]['check_data'] = "<span style='color:green'><strong>In Queue</strong></span>";
-										
+									$detail_loads = explode("||",$datax['LOAD_CDR_NOTE']);
+									
+									$data_ch[$ik]['load_cdr_time'] = $detail_loads[1].' - '.$detail_loads[2];
+									$data_ch[$ik]['load_cdr_color'] = $process_color[$datax['LOAD_CDR']];
+								}
+								
+								
+								foreach($array_jobs_detail as $array_jobs_details){
+								
+									$data_ch[$ik][$array_jobs_details[0].'_NAME']  = $array_jobs_details[1];
+									IF($datax[$array_jobs_details[0]] == null){
+										$data_ch[$ik][$array_jobs_details[0]] = 'File Not Ready';
+										$data_ch[$ik][$array_jobs_details[0].'_COLOR'] = $process_color[0];
+										$data_ch[$ik][$array_jobs_details[0].'_TIME'] = '';
 									}else{
-									
-										$data_ch[$ik]['check_data'] = "<button class='button_black' style='cursor: pointer;padding:1px;padding-left:10px;padding-right:10px' id='chek_btn_".$datax['LOG_DATE']."' data-id='".$datax['LOG_DATE']."' onclick='checkdata_day(\"".$datax['LOG_DATE']."\",".$type.")' >Check Data</button>";
+										$datad = explode("||",$details_d[1]);
+										$fn = explode("/",$datad[0]);
+										$data_ch[$ik][$array_jobs_details[0]] = $process_status[$datax[$array_jobs_details[0]]];
+										
+										$detail_loads = explode("||",$datax[$array_jobs_details[0].'_NOTE']);
+										
+										$data_ch[$ik][$array_jobs_details[0].'_TIME'] = $detail_loads[1].' - '.$detail_loads[2];
+										$data_ch[$ik][$array_jobs_details[0].'_COLOR'] = $process_color[$datax[$array_jobs_details[0]]];
 									}
-									
-								}else{
-									
-									$data_ch[$ik]['check_data'] = "";
-				
+								
 								}
+								
 								
 								$i++;
 								$ik++;

@@ -70,7 +70,7 @@ class Epg_data extends JA_Controller {
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
 				
-		if(!$this->session->userdata('user_id') || in_array("48",$array_menu) == 0) {
+		if(!$this->session->userdata('user_id') || in_array("244",$array_menu) == 0) {
 			
 			$result = array('success' => false, 'message' => "Failed to Process", 'data' => '');
 			$this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -95,7 +95,7 @@ class Epg_data extends JA_Controller {
 	} 
 	
 	public function index(){
-		session_regenerate_id(TRUE); 
+		//session_regenerate_id(TRUE); 
       $id = $this->session->userdata('project_id');
       $iduser = $this->session->userdata('user_id');
 	  

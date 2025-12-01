@@ -19,7 +19,7 @@ class Tvpostbuyu3resp22 extends JA_Controller {
 	
 	public function index()
 	{
-		session_regenerate_id(TRUE); 
+		//session_regenerate_id(TRUE); 
 		if($this->input->post('filter_text')){
 				
 				$filter = $this->input->post('filter_text');

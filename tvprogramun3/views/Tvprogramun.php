@@ -1673,13 +1673,13 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 		
 	$('#channel_export').on('click', function() {
  	  
-		// if($('#fta_channel').is(':checked')){
+		if($('#fta_channel').is(':checked')){
 		
-			// var check = "True";
-		// }else{
-			// var check = "False";
+			var check = "True";
+		}else{
+			var check = "False";
 		
-		// }
+		}
 	  
 		//var form_data = new FormData();  
 		var type = $('#audiencebar').val();

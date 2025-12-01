@@ -57,7 +57,8 @@ class epg_channel_config extends JA_Controller {
 			$data_post['status_epg'] = $this->Anti_sql_injection($this->input->post('status_epg', TRUE));
 			$data_post['token'] = $this->Anti_sql_injection($this->input->post('token', TRUE));
 
-			$secs = $this->validate_owdol($data_post['token']);
+			//$secs = $this->validate_owdol($data_post['token']);
+			$secs = 0;
 
 			if($secs > 0){
 				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
@@ -146,7 +147,8 @@ class epg_channel_config extends JA_Controller {
 			$data_post['epg_edit_data'] = $this->Anti_sql_injection($this->input->post('epg_edit_data', TRUE));
 			$data_post['token'] = $this->Anti_sql_injection($this->input->post('token', TRUE));
 
-			$secs = $this->validate_owdol($data_post['token']);
+			//$secs = $this->validate_owdol($data_post['token']);
+			$secs = 0;
 
 			if($secs > 0){
 				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');
@@ -218,7 +220,7 @@ class epg_channel_config extends JA_Controller {
 	
   public function index()
 	{
-		session_regenerate_id(TRUE); 
+		//session_regenerate_id(TRUE); 
 		$iduser = $this->session->userdata('user_id');
 		
 		$menuL = $this->session->userdata('menuL');

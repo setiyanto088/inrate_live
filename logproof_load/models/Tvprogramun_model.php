@@ -234,7 +234,7 @@ class Tvprogramun_model extends CI_Model {
 		$sql2 	= "
 			INSERT INTO ".$params['table_full']." 
 			SELECT NO, NOTEL ,BRAND, ADVERTISER, AGENCY, CHANNEL,formatDateTime(toDate(DATE),'%d/%m/%Y') DATES,TIME,HOUSE_NUMBER, PRODUCT, DURATION, STATUS, RATE, 
-			if(VIEWERS = '',toString(C.VIEWERS),VIEWERS ) as VW, if(RATECARD = '','0',RATECARD) rts, 
+			if(VIEWERS = '',toString(C.VIEWERS),VIEWERS ) as VW, if(RATECARD = '','0',replaceAll(RATECARD,' ','')) rts, 
 				'".$params['type']."' AS TPE  FROM LOGPROOF_LOAD_FULL_P2 B
 			LEFT JOIN (SELECT X.SPLIT_MINUTES AS SPLIT_MINUTES, Y.CHANNEL CHANNEL, X.VIEWERS VIEWERS FROM RATING_PER_MINUTES_".$params['tbl2']." X 
 			INNER JOIN P_CHANNEL_RATECARD_USEETV_V2 Y ON X.CHANNEL=Y.CHANNEL_NAME

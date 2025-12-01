@@ -42,7 +42,7 @@ class Tvpc_model extends CI_Model {
 
 		 $db = $this->clickhouse->db();
 
-		$query = " SELECT DISTINCT CHANNEL_NAME_PROG FROM CHANNEL_PARAM_FINAL WHERE CHANNEL_NAME_PROG <> '' ";
+		$query = " SELECT DISTINCT CHANNEL_NAME_PROG FROM CHANNEL_PARAM_FINAL WHERE CHANNEL_NAME_PROG <> '' AND F2A_STATUS = 0";
 	  
 		
 		$result = $db->select($query);
@@ -236,6 +236,8 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
 
 	public function listchart_tvpc($params = array()) {	
 		 
+		 print_r($params);die;
+		 
 				$db = $this->clickhouse->db();
 				// $sql		= 'SELECT * FROM M_SUMMARY_MEDIA_PLAN_D_PTV_NEW_DTV WHERE CHANNEL IN ('.$params['channel'].') AND DATE BETWEEN "'.$params['start_date'].'" AND "'.$params['end_date'].'"
 				// AND (BEGIN_PROGRAM BETWEEN "'.$params['start_date'].' '.$params['starttime'].':00" AND "'.$params['end_date'].' '.$params['endtime'].':00"
@@ -256,7 +258,8 @@ $query = " SELECT CHANNEL_NAME AS channel FROM `CHANNEL_PARAM_FINAL` C
 				ORDER BY ".$params['cgroup']." DESC 
 				LIMIT 4000"
 				;
-								
+		
+		//echo $sql;die; 		
 		$query2	= $db->select($sql);
 		$result2 = $query2->rows();		
 		

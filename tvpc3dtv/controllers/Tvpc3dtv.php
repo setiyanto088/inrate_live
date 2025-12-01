@@ -283,6 +283,7 @@ class Tvpc3dtv extends JA_Controller {
 			$params['channel']	= rtrim($txt_channel,",");
 		}else{			
 			$params['channel']		= str_replace("AND","&",str_replace("  AND  "," & ",$channel));
+			$params['channel']		= str_replace("'K '","'K+'",$channel);
 			
 			$channel_cnt = explode(',',$params['channel']);
 		
@@ -291,13 +292,23 @@ class Tvpc3dtv extends JA_Controller {
 			foreach($get_list_channel as $get_list_channelsa){
 				$arr_chnel_l[] = $get_list_channelsa['CHANNEL_NAME_PROG'];
 			}
+			
+			
+				//echo in_array(str_replace("'","","'K+d'"),$arr_chnel_l);die;
+			
+			//print_r($channel_cnt);die;
 
-			$channel_error = 0;
-			foreach($channel_cnt as $channel_cnts){
-				if(in_array(str_replace("'","",$channel_cnts),$arr_chnel_l) == 0){
-					$channel_error++;
-				}
-			}
+			 $channel_error = 0;
+			// foreach($channel_cnt as $channel_cnts){
+				
+				// //echo in_array(str_replace("'","",$channel_cnts),$arr_chnel_l);die;
+				// //print_r($arr_chnel_l);die;
+				// if(in_array(str_replace("'","",$channel_cnts),$arr_chnel_l) !== 1){
+					// $channel_error++;
+				// }
+			// }
+			
+			//echo $channel_error;die;
 		
 		}
 		
@@ -313,7 +324,7 @@ class Tvpc3dtv extends JA_Controller {
 		$params['profile']		= $profile;
 		$params['genre']		= str_replace("AND","&",$genre);
 		
-
+		//print_r($params);die;
 		
 		if($channel_error > 0){
 			$result = array('success' => false, 'message' => "Parameter not Valid", 'data' => '');

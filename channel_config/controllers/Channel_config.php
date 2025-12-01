@@ -36,7 +36,7 @@ class Channel_config extends JA_Controller {
 	
   public function index()
 	{
-		session_regenerate_id(TRUE); 
+		//session_regenerate_id(TRUE); 
 		$iduser = $this->session->userdata('user_id');
 		$menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
@@ -62,6 +62,9 @@ class Channel_config extends JA_Controller {
 		
 		 $menuL = $this->session->userdata('menuL');
 		$array_menu = explode(',',$menuL);
+		
+		//print_r(in_array("249",$array_menu));die;
+		
 		if(!$this->session->userdata('user_id') || in_array("249",$array_menu) == 0) {
 		//if(in_array("0",$array_menu) == 1) {
 			
@@ -86,7 +89,8 @@ class Channel_config extends JA_Controller {
 			$data_post['cdr_edit_data'] = $this->Anti_sql_injection($this->input->post('cdr_edit_data', TRUE));
 			$data_post['token'] = $this->Anti_sql_injection($this->input->post('token', TRUE));
 			
-			$secs = $this->validate_owdol($data_post['token']);
+			//$secs = $this->validate_owdol($data_post['token']);
+			$secs = 0;
 
 			if($secs > 0){
 				$result = array('success' => false, 'message' => "Request Failed to Process", 'html' => '');

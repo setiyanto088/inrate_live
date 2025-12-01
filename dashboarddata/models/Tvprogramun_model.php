@@ -21,13 +21,23 @@ class Tvprogramun_model extends CI_Model {
 	
 			public function get_list_periode(){
 
-		 $db = $this->clickhouse->db();
+		 // $db = $this->clickhouse->db();
 
-		$query = " SELECT DISTINCT TANGGAL FROM M_SUM_TV_DASH_ACTIVE_PTV WHERE TANGGAL <> '' ";
+		// $query = " SELECT DISTINCT TANGGAL FROM M_SUM_TV_DASH_ACTIVE_PTV WHERE TANGGAL <> '' ";
 	  
 		
-		$result = $db->select($query);
-		return $result->rows();	 
+		// $result = $db->select($query);
+		// return $result->rows();	 
+		
+		
+		 $query = "		SELECT DATE_FORMAT(LOG_DATE,'%Y-%M') AS TANGGAL FROM 	DAILY_JOBS_REPORT
+GROUP BY DATE_FORMAT(LOG_DATE,'%Y-%M')	 " ;
+		 
+		$sql	= $this->db2->query($query);
+		$this->db2->close();
+		$this->db2->initialize(); 
+		return $sql->result_array();
+
 
 	}	
 	
@@ -692,113 +702,25 @@ class Tvprogramun_model extends CI_Model {
 	}
 	
 	
-	public function filter_table($field,$periode,$type) {
+	public function filter_table($periode,$type) {
 		
-		if($type == 1){
-			$query = '
-				SELECT A.*, B.STATUS_J, CHANNEL FROM (
-				SELECT * FROM DATASOURCE_CDR a
-				WHERE DATA_TYPE = "'.$type.'"  
-				AND DATE_FORMAT(LOG_DATE,"%Y-%M")= "'.$periode.'" 
-				ORDER BY LOG_DATE DESC
-				) A LEFT JOIN 
-				`DAILY_CHECK_REPORT` B 
-				ON A.LOG_DATE = B.`LOG_DATE`
-				LEFT JOIN DAILY_CHECK_CHANNEL C
-				ON A.LOG_DATE = C.LOG_DATE
-				GROUP BY A.LOG_DATE
-				ORDER BY LOG_DATE DESC
-			';
-		}elseif($type == 5){
-			
-			$query = '
-				SELECT A.*, B.STATUS_J, "" AS CHANNEL FROM (
-				SELECT * FROM DATASOURCE_CDR a
-				WHERE DATA_TYPE = "'.$type.'"  
-				AND DATE_FORMAT(LOG_DATE,"%Y-%M")= "'.$periode.'" 
-				ORDER BY LOG_DATE DESC
-				) A LEFT JOIN 
-				`DAILY_CHECK_REPORT` B 
-				ON A.LOG_DATE = B.`LOG_DATE`
-				GROUP BY A.LOG_DATE
-				ORDER BY LOG_DATE DESC
-			';
-			
-		}elseif($type == 2){
-			
-			$query = '
-				SELECT A.*, B.STATUS_J, "" AS CHANNEL FROM (
-				SELECT * FROM DATASOURCE_CDR a
-				WHERE DATA_TYPE = "'.$type.'"  
-				AND DATE_FORMAT(LOG_DATE,"%Y-%M")= "'.$periode.'" 
-				ORDER BY LOG_DATE DESC
-				) A LEFT JOIN 
-				`DAILY_CIM_CHECK` B 
-				ON A.LOG_DATE = B.`LOG_DATE`
-				GROUP BY A.LOG_DATE
-				ORDER BY LOG_DATE DESC
-			';
-			
-		}elseif($type == 3){
-			
-			$query = '
-				SELECT A.*, B.STATUS_J, "" AS CHANNEL FROM (
-				SELECT * FROM DATASOURCE_CDR a
-				WHERE DATA_TYPE = "'.$type.'"  
-				AND DATE_FORMAT(LOG_DATE,"%Y-%M")= "'.$periode.'" 
-				ORDER BY LOG_DATE DESC
-				) A LEFT JOIN 
-				`DAILY_RATECARD_CHECK` B 
-				ON A.LOG_DATE = B.`LOG_DATE`
-				GROUP BY A.LOG_DATE
-				ORDER BY LOG_DATE DESC
-			';
-			
-		}elseif($type == 4){
-			
-			$query = '
-				SELECT A.*, B.STATUS_J, "" AS CHANNEL FROM (
-				SELECT * FROM DATASOURCE_CDR a
-				WHERE DATA_TYPE = "'.$type.'"  
-				AND DATE_FORMAT(LOG_DATE,"%Y-%M")= "'.$periode.'" 
-				ORDER BY LOG_DATE DESC
-				) A LEFT JOIN 
-				`DAILY_LOGPROOF_U_CHECK` B 
-				ON A.LOG_DATE = B.`LOG_DATE`
-				GROUP BY A.LOG_DATE
-				ORDER BY LOG_DATE DESC
-			';
-			
-		}elseif($type == 6){
-			
-			$query = '
-				SELECT A.*, B.STATUS_J, "" AS CHANNEL FROM (
-				SELECT * FROM DATASOURCE_CDR a
-				WHERE DATA_TYPE = "'.$type.'"  
-				AND DATE_FORMAT(LOG_DATE,"%Y-%M")= "'.$periode.'" 
-				ORDER BY LOG_DATE DESC
-				) A LEFT JOIN 
-				`DAILY_LOGPROOF_M_CHECK` B 
-				ON A.LOG_DATE = B.`LOG_DATE`
-				GROUP BY A.LOG_DATE
-				ORDER BY LOG_DATE DESC
-			';
-			
-		}elseif($type == 7){
-			
-			$query = '
-				SELECT A.*, B.STATUS_J, "" AS CHANNEL FROM (
-				SELECT * FROM DATASOURCE_CDR a
-				WHERE DATA_TYPE = "'.$type.'"  
-				ORDER BY LOG_DATE DESC
-				) A LEFT JOIN 
-				`DAILY_LOGPROOF_U_CHECK_MONTH` B 
-				ON A.LOG_DATE = B.`LOG_DATE`
-				GROUP BY A.LOG_DATE
-				ORDER BY LOG_DATE DESC
-			';
-			
-		}
+
+			$query = "
+				SELECT 
+				IF(STATUS_J = 0 ,' Process Incomplete ',
+				IF(STATUS_J = 1 ,' Process Done ',
+				IF(STATUS_J = 2 ,' Process Error ',
+				IF(STATUS_J = 3 ,' On Process ',
+				IF(STATUS_J = 4 ,' Process Done with Error ',' Rttot '))))) as STST,A.*,B.DETAILS FROM `DAILY_JOBS_REPORT` A
+				LEFT JOIN ( 
+					SELECT LOG_DATE,GROUP_CONCAT(CONCAT(FILE_NAME,'||',ROW_COUNT_FILE,'||',FILESIZE),'--' order by FILE_NAME) AS DETAILS 
+					FROM DATASOURCE_CDR WHERE DATE_FORMAT(LOG_DATE,'%Y-%M') = '".$periode."' AND DATA_TYPE IN (1,5) 
+					GROUP BY LOG_DATE
+				) B ON A.LOG_DATE = B.LOG_DATE
+				WHERE DATE_FORMAT(A.LOG_DATE,'%Y-%M') = '".$periode."'
+				ORDER BY A.LOG_DATE DESC
+			";
+		
 	
 		$sql	= $this->db2->query($query);
 		$this->db2->close();
@@ -868,11 +790,11 @@ SELECT LOG_DATE AS NLOG_DATE, DATE_FORMAT(LOG_DATE,"%Y-%m") AS LOG_DATE,`FILE_NA
 			$tpe_job = 1;
 			$quo_job = 1;
 			
-			$query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$tpe_job."' ";	
+			// $query = "	Update DATASOURCE_CDR set STATUS_FILE = 4 WHERE LOG_DATE = '".$date_data."' AND DATA_TYPE = '".$tpe_job."' ";	
 
-			$sql	= $this->db2->query($query);
-			$this->db2->close();
-			$this->db2->initialize(); 
+			// $sql	= $this->db2->query($query);
+			// $this->db2->close();
+			// $this->db2->initialize(); 
 			
 			// $query = "	UPDATE `DAILY_JOBS_REPORT` SET STATUS_J = 3 WHERE LOG_DATE = '".$date_data."' ";	
 
@@ -881,7 +803,7 @@ SELECT LOG_DATE AS NLOG_DATE, DATE_FORMAT(LOG_DATE,"%Y-%m") AS LOG_DATE,`FILE_NA
 			// $this->db2->initialize(); 
 			
 			
-			$query = "	UPDATE `DAILY_JOBS_REPORT` SET LOAD_CDR = 0, CLEANSING_CDR = 0, SPLIT_CDR = 0, JOIN_CDR_EPG = 0, RATING_PERMINUTES = 0, TVCC = 0, MEDIAPLAN = 0, AUDIENCE = 0,BEFORE_AFTER = 0, MIGRATION = 0, DASHBOARD = 0, STATUS_J = 0 WHERE LOG_DATE = '".$date_data."' ";	
+			$query = "	UPDATE `DAILY_JOBS_REPORT` SET LOAD_EPG = 0, SPLIT_EPG = 0, LOAD_CDR = 0, CLEANSING_CDR = 0, SPLIT_CDR = 0, JOIN_CDR_EPG = 0, RATING_PERMINUTES = 0, TVCC = 0, MEDIAPLAN = 0, AUDIENCE = 0,BEFORE_AFTER = 0, MIGRATION = 0, DASHBOARD = 0, STATUS_J = 0 WHERE LOG_DATE = '".$date_data."' ";	
 
 			$sql	= $this->db2->query($query);
 			$this->db2->close();
@@ -947,6 +869,10 @@ SELECT LOG_DATE AS NLOG_DATE, DATE_FORMAT(LOG_DATE,"%Y-%m") AS LOG_DATE,`FILE_NA
 			
 		}
 		
+		
+		shell_exec('php /var/www/jobs/daily_jobs_epg_daily.php '.$date_data.' > /var/www/jobs/daily_jobs_epg_daily_'.$date_data.' &');
+		
+		
 		$query = "	DELETE FROM  JOBS_QUEUE WHERE JOBS_DATE = '".$date_data."' AND QUEUE = '".$tpe_job."' ";	
 		$sql	= $this->db2->query($query);
 		$this->db2->close();
@@ -963,6 +889,29 @@ SELECT LOG_DATE AS NLOG_DATE, DATE_FORMAT(LOG_DATE,"%Y-%m") AS LOG_DATE,`FILE_NA
 	public function insert_queue_check($tahun,$queue_id,$sc_duplicate,$tbs){
 		
 		$query = "	INSERT INTO JOBS_QUEUE VALUES('".$tahun."','".$sc_duplicate."',NULL,NULL,2,'".date("Y-m-d H:i:s")."',".$queue_id.",NULL,NULL,2,'')  ";	
+		
+		
+		$sql	= $this->db2->query($query);
+		$this->db2->close();
+		$this->db2->initialize(); 
+		
+		
+		$script_insert_new_date = ' UPDATE '.$tbs.' SET STATUS_J = 4  WHERE LOG_DATE = "'.$tahun.'" ' ; 
+		
+		
+		$sql	= $this->db2->query($script_insert_new_date);
+		$this->db2->close();
+		$this->db2->initialize(); 
+		
+	}	
+	
+	public function recheck_cdr_process($params){
+		
+		$query = "	
+					update 	`DATASOURCE_CDR`
+					set FILESIZE = 0, NOTE = '', STATUS_FILE = 4 WHERE `LOG_DATE` = '".$params['date_file']."'
+					AND `DATA_TYPE` = 1
+		";	
 		
 		
 		$sql	= $this->db2->query($query);
