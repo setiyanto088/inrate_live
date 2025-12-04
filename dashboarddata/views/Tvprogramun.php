@@ -318,7 +318,88 @@
           </div>
 		
         <!-- Dashboard Widget -->
-      
+      <div class="modal fade modalDaypart" id="modalNewTime" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-titles" id="myModalLabelss"></h4>
+				</div>
+					<div class="modal-body">
+							
+						<table aria-describedby="mydesc" class="table " style="width: 100%">
+							<tr>
+								<td>Load EPG</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="load_epg"  ></td>
+								<td><input type="hidden" class="urate-form-input" name="date_log_re" id="date_log_re" value=""  ></td>
+							</tr>
+							<tr>
+								<td>Split EPG</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="split_epg" value="split_epg"   ></td>
+							</tr>
+							<tr>
+								<td>Copy CDR</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="copy_cdr" value="copy_cdr"  ></td>
+							</tr>
+							<tr>
+								<td>Load CDR</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="load_cdr" value="load_cdr"  ></td>
+							</tr>
+							<tr>
+								<td>Cleansing CDR</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="cleansing_cdr" value="cleansing_cdr"  ></td>
+							</tr>
+							<tr>
+								<td>Split CDR</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="split_cdr" value="split_cdr"  ></td>
+							</tr>
+							<tr>
+								<td>Join CDR EPG</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="join_cdr_epg" value="join_cdr_epg"  ></td>
+							</tr>
+							<tr>
+								<td>Rating per Minutes</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="rating_perm" value="rating_perm"  ></td>
+							</tr>
+							<tr>
+								<td>TVCC</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="tvcc" value="tvcc"  ></td>
+							</tr>
+							<tr>
+								<td>TVPC</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="tvpc" value="tvpc"  ></td>
+							</tr>
+							<tr>
+								<td>Channel Audience</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="channel_aud" value="channel_aud"  ></td>
+							</tr>
+							<tr>
+								<td>Dashboard</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="dashboards" value="dashboards"  ></td>
+							</tr>
+							<tr>
+								<td>Summart Before After</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="before_after" value="before_after"  ></td>
+							</tr>
+							<tr>
+								<td>Channel Migration</td>
+								<td><input type="checkbox" class="urate-form-input" name="reprosess_jobs" id="migration" value="migration"  ></td>
+							</tr>
+
+						</table>
+							
+
+						
+						<div class="dayPartMsg"></div>
+					</div>
+					<div class="modal-footer">                                       
+						<img alt="image" class="gambar" src="<?php echo $path; ?>assets/images/icon_loader.gif" id="loaderdp" style="display: none;">
+						<button type="button" class="button_white" data-dismiss="modal"><em class="fa fa-times"></em>&nbsp Cancel</button>
+						<button type="submit" id="btn_daftar" onClick="repros_jobs()" class="button_black" ><em class="fa fa-check"></em>&nbsp Process</button>
+					</div>
+			</div>
+		</div>
+	</div>
         <!-- / Dashboard Widget -->
         <!-- / Content -->
       </div>
@@ -3677,14 +3758,46 @@ var tahun = $('#tahun').val();
 		}
 	});	
 			
-}
+}	
+						function reproses_view(d) {
+							
+							$('#myModalLabelss').html('<strong>Reprosess '+d+' </strong>');
+							$('#modalNewTime').modal('show');
+							$('#date_log_re').val(d);
+							
+							
+							
+						}
 
+
+						function repros_jobs() {
+							
+							const checkboxes = document.querySelectorAll('input[name="reprosess_jobs"]');
+							const checkedValues = [];
+
+							checkboxes.forEach(checkbox => {
+							  if (checkbox.checked) {
+								checkedValues.push(checkbox.value);
+							  }
+							});
+
+							console.log('Checked options:', checkedValues);
+							
+						}
+
+
+
+						
+						
 						function format(d) {
 							
-							var htt = '<div class="col-md-8" ><table aria-describedby="mydesc" class="table table-striped " style="width: 100%"><tr><th>Date </th><th>'+d.Date+' </th><th></th></tr><tr style="background-color:'+d.status_color+'"><th>Status </th><th>'+d.status+' </th><th></th></tr><tr style="background-color:'+d.load_epg_color+'" ><th>Load EPG </th><th>'+d.load_epg+' </th><th>'+d.load_epg_time +'</th></tr><tr style="background-color:'+d.SPLIT_EPG_COLOR+'" ><th>'+d.SPLIT_EPG_NAME+'</th><th>'+d.SPLIT_EPG+' </th><th>'+d.SPLIT_EPG_TIME +'</th></tr><tr style="background-color:'+d.load_cdr_color+'" ><th>Load CDR </th><th>'+d.load_cdr+' </th><th>'+d.load_cdr_time +'</th></tr></tr><tr style="background-color:'+d.CLEANSING_CDR_COLOR+'" ><th>'+d.CLEANSING_CDR_NAME+'</th><th>'+d.CLEANSING_CDR+' </th><th>'+d.CLEANSING_CDR_TIME +'</th></tr><tr style="background-color:'+d.SPLIT_CDR_COLOR+'" ><th>'+d.SPLIT_CDR_NAME+'</th><th>'+d.SPLIT_CDR+' </th><th>'+d.SPLIT_CDR_TIME +'</th></tr><tr style="background-color:'+d.JOIN_CDR_EPG_COLOR+'" ><th>'+d.JOIN_CDR_EPG_NAME+'</th><th>'+d.JOIN_CDR_EPG+' </th><th>'+d.JOIN_CDR_EPG_TIME +'</th></tr></table></div>';
+							var htt = '<div class="col-md-7" ><table aria-describedby="mydesc" class="table table-striped " style="width: 100%"><tr><th>Date </th><th>'+d.Date+' </th><th></th></tr><tr style="background-color:'+d.status_color+'"><th>Status </th><th>'+d.status+' </th><th></th></tr><tr style="background-color:'+d.load_epg_color+'" ><th>Load EPG </th><th>'+d.load_epg+' </th><th>'+d.load_epg_time +'</th></tr><tr style="background-color:'+d.SPLIT_EPG_COLOR+'" ><th>'+d.SPLIT_EPG_NAME+'</th><th>'+d.SPLIT_EPG+' </th><th>'+d.SPLIT_EPG_TIME +'</th></tr><tr style="background-color:'+d.load_cdr_color+'" ><th>Load CDR </th><th>'+d.load_cdr+' </th><th>'+d.load_cdr_time +'</th></tr></tr><tr style="background-color:'+d.CLEANSING_CDR_COLOR+'" ><th>'+d.CLEANSING_CDR_NAME+'</th><th>'+d.CLEANSING_CDR+' </th><th>'+d.CLEANSING_CDR_TIME +'</th></tr><tr style="background-color:'+d.SPLIT_CDR_COLOR+'" ><th>'+d.SPLIT_CDR_NAME+'</th><th>'+d.SPLIT_CDR+' </th><th>'+d.SPLIT_CDR_TIME +'</th></tr><tr style="background-color:'+d.JOIN_CDR_EPG_COLOR+'" ><th>'+d.JOIN_CDR_EPG_NAME+'</th><th>'+d.JOIN_CDR_EPG+' </th><th>'+d.JOIN_CDR_EPG_TIME +'</th></tr><tr style="background-color:'+d.RATING_PERMINUTES_COLOR+'" ><th>'+d.RATING_PERMINUTES_NAME+'</th><th>'+d.RATING_PERMINUTES+' </th><th>'+d.RATING_PERMINUTES_TIME +'</th></tr><tr style="background-color:'+d.TVCC_COLOR+'" ><th>'+d.TVCC_NAME+'</th><th>'+d.TVCC+' </th><th>'+d.TVCC_TIME +'</th></tr><tr style="background-color:'+d.MEDIAPLAN_COLOR+'" ><th>'+d.MEDIAPLAN_NAME+'</th><th>'+d.MEDIAPLAN+' </th><th>'+d.MEDIAPLAN_TIME +'</th></tr><tr style="background-color:'+d.AUDIENCE_COLOR+'" ><th>'+d.AUDIENCE_NAME+'</th><th>'+d.AUDIENCE+' </th><th>'+d.AUDIENCE_TIME +'</th></tr><tr style="background-color:'+d.DASHBOARD_COLOR+'" ><th>'+d.DASHBOARD_NAME+'</th><th>'+d.DASHBOARD+' </th><th>'+d.DASHBOARD_TIME +'</th></tr><tr style="background-color:'+d.BEFORE_AFTER_COLOR+'" ><th>'+d.BEFORE_AFTER_NAME+'</th><th>'+d.BEFORE_AFTER+' </th><th>'+d.BEFORE_AFTER_TIME +'</th></tr><tr style="background-color:'+d.MIGRATION_COLOR+'" ><th>'+d.MIGRATION_NAME+'</th><th>'+d.MIGRATION+' </th><th>'+d.MIGRATION_TIME +'</th></tr></table></div>';
+							
+							
+							var httS = '<div class="col-md-5" ><div class="navbar-right" style="padding:10px" ><button onClick="reproses_view(\''+d.Date+'\')" class="button_red">Reprosess</button></div><table aria-describedby="mydesc" class="table table-striped " style="width: 100%"><tr><th>Detail </th><th>Request Time</th></tr></table></div>';
 							
 							return (
-								'<div class="row" >' + htt + '</div>'
+								'<div class="row" >' + htt + '' + httS + '</div>'
 							);
 						}
 

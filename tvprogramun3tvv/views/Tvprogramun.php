@@ -319,7 +319,8 @@
 					</div>
 					 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
 						<button onClick="filter_panel('channel')" class="button_white" id="filter_channel"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
-						<button class="button_black" id='channel_export'><em class="fa fa-download"></em> &nbsp Export</button>
+						<button class="button_black" id='channel_export_csv'><em class="fa fa-download"></em> &nbsp CSV</button>
+						<button class="button_black" id='channel_export'><em class="fa fa-download"></em> &nbsp Excel</button>
 					</div>
 				</div>
 
@@ -1839,6 +1840,7 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 		var preset = $('#preset').val();
 		var profile_chan = $('#profile_chan').val();
 		var check = check;
+		var filetp = 'excel';
 		
 		
 		if(week == 'ALL'){
@@ -1881,6 +1883,88 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
 			"<input type='hidden' name='cond' value='" + filter + "' />" +
 			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
+			"<input type='hidden' name='type' value='" + type + "' />" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+			"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+			"<input type='hidden' name='tipe_filter' value='" + tipe_filter + "' />" +
+			"<input type='hidden' name='profile' value='" + profile_chan + "' />" +
+			"<input type='hidden' name='preset' value='" + preset + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+		  
+		  $("#channel_export").attr("disabled", false);
+	  
+	});
+	
+	$('#channel_export_csv').on('click', function() {
+		
+ 
+	  
+	  $("#channel_export").attr("disabled", true);
+	  
+		
+		var check = "True";
+	  
+		var form_data = new FormData();  
+		var type = $('#audiencebar').val();
+		var tahun = $('#tahun').val();
+		var bulan = $('#bulan').val();
+		var week = $('#week1').val();
+		var start_date = $('#start_date').val();
+		var end_date = $('#end_date').val();
+		var tipe_filter = $('#tipe_filter').val();
+		var preset = $('#preset').val();
+		var profile_chan = $('#profile_chan').val();
+		var check = check;
+		var filetp = 'csv';
+		
+		
+		if(week == 'ALL'){
+				var listDate = [];
+				var dateMove = new Date(start_date);
+				var strDate = start_date;
+
+				while (strDate < end_date){
+				  var strDate = dateMove.toISOString().slice(0,10);
+				  listDate.push(strDate);
+				  dateMove.setDate(dateMove.getDate()+1);
+				};
+			
+			}
+ 
+				if(listDate.length > 31){
+					
+					$('#errorm').modal('show');
+					$('#body_error').html('<h5>Maximal Duration is 31 Days !!!! </h5>');
+					$("#channel_export").attr("disabled", false);
+					throw '';
+				}
+ 
+		var filter = '';
+			
+		form_data.append('cond',filter);
+		form_data.append('check', check);
+		form_data.append('type', type);
+		form_data.append('tahun', tahun);
+		form_data.append('bulan', bulan);
+		form_data.append('week', week);
+		form_data.append('start_date', start_date);
+		form_data.append('end_date', end_date);		
+		form_data.append('tipe_filter', tipe_filter);
+		form_data.append('profile', profile_chan);
+		form_data.append('preset', preset);
+	  
+		
+		var url = "<?php echo base_url().'tvprogramun3tvv/audiencebar_by_channel_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='cond' value='" + filter + "' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
 			"<input type='hidden' name='type' value='" + type + "' />" +
 			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
 			"<input type='hidden' name='bulan' value='" + bulan + "' />" +

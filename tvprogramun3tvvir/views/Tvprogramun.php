@@ -182,7 +182,8 @@
                 </div>
 				<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
 						<button onClick="filter_panel('channel')" class="button_white" id="filter_channel"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
-						<button class="button_black" id='channel_export'><em class="fa fa-download"></em> &nbsp Export</button>
+						<button class="button_black" id='channel_export_csv'><em class="fa fa-download"></em> &nbsp CSV</button>
+						<button class="button_black" id='channel_export'><em class="fa fa-download"></em> &nbsp Excel</button>
 					</div>
 				<br>
                 <div class="widget-content">
@@ -302,7 +303,8 @@
                 </div>
 				<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
 						<button onClick="filter_panel('channels')" class="button_white" id="filter_channels"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
-						<button class="button_black" onClick="chanel_export2()" id="export_channel42"><em class="fa fa-download"></em> &nbsp Export</button>
+						<button class="button_black" onClick="chanel_export2('csv')" id="export_channel42"><em class="fa fa-download"></em> &nbsp CSV</button>
+						<button class="button_black" onClick="chanel_export2('excel')" id="export_channel42"><em class="fa fa-download"></em> &nbsp Excel</button>
 				</div>
 
                 <div class="widget-content">
@@ -449,7 +451,8 @@
                 </div>
 				<div class="navbar-right" style="padding-right:20px;padding-top:10px;">
 						<button onClick="filter_panel('program')" class="button_white" id="filter_program"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
-						<button class="button_black" id="program_export"><em class="fa fa-download"></em> &nbsp Export</button>
+						<button class="button_black" id="program_export_csv"><em class="fa fa-download"></em> &nbsp CSV</button>
+						<button class="button_black" id="program_export"><em class="fa fa-download"></em> &nbsp Excel</button>
 				</div>
 				<br>
 
@@ -1975,6 +1978,8 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 		var check = check;
 		var profile_chan = $('#profile_chan').val();
 		var channel = $('#channel').val().replace('&',' AND ');
+		var filetp = 'excel';
+		
 		 var ch = []; 
 			 /* HANDLE ALL CHANNEL */
 			  var channel_header = "";                                                                    
@@ -2032,6 +2037,103 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
 			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
 			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
+			"<input type='hidden' name='type' value='" + type + "' />" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='channel' value='" + channel + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='start_date' value='" + start_date + "' />" +
+			"<input type='hidden' name='end_date' value='" + end_date + "' />" +
+			"<input type='hidden' name='tipe_filter' value='" + tipe_filter + "' />" +
+			"<input type='hidden' name='profile' value='" + profile_chan + "' />" +
+			"<input type='hidden' name='preset' value='" + preset + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+	  
+	});
+	
+	
+	$('#channel_export_csv').on('click', function() {
+	
+	  
+	  
+		var check = "True";
+	  
+		var form_data = new FormData();  
+		var type = $('#audiencebar').val();
+		var tahun = $('#tahun').val();
+		var bulan = "";
+		//var week = $('#week1').val();
+		var week = "";
+		var start_date = $('#start_date').val();
+		var end_date = $('#end_date').val();
+		var tipe_filter = $('#tipe_filter').val();
+		var preset = $('#preset').val();
+		var check = check;
+		var profile_chan = $('#profile_chan').val();
+		var channel = $('#channel').val().replace('&',' AND ');
+		var filetp = 'csv';
+		
+		 var ch = []; 
+			 /* HANDLE ALL CHANNEL */
+			  var channel_header = "";                                                                    
+			  if(channel == "0"){
+				  /* READ CHANNEL FROM AFTER CHOOSE GENRE */
+				  $('#custom_channel').next().children().each(function(){
+					  if($(this).children().html() != "All Channel"){
+						  channel_header += $(this).children().html()+",";
+					  }
+				  })
+				  
+				  channel_header = channel_header.slice(0,-1);
+			  } else {
+				  channel_header = channel;
+			  }  
+			  
+			  channel_header = channel_header.split(",");
+			  for(var i=0; i < channel_header.length; i++){
+				  ch.push("'"+channel_header[i].replace('&',' AND ')+"'");
+			  }
+		
+		
+					var listDate = [];
+					var dateMove = new Date(start_date);
+					var strDate = start_date;
+
+					while (strDate < end_date){
+					  var strDate = dateMove.toISOString().slice(0,10);
+					  listDate.push(strDate);
+					  dateMove.setDate(dateMove.getDate()+1);
+					};
+				
+				
+					if(listDate.length > 61){
+						
+						$('#errorm').modal('show');
+						$('#body_error').html('<h5>Maximal Duration is 31 Days !!!! </h5>');
+						throw '';
+					}
+
+		// form_data.append('cond',"<?php echo $cond; ?>");
+		// form_data.append('type', type);
+		// form_data.append('check', check); 
+		// form_data.append('tahun', tahun);
+		// form_data.append('bulan', bulan);
+		// form_data.append('channel', ch);
+		// form_data.append('week', week);
+		// form_data.append('start_date', start_date);
+		// form_data.append('end_date', end_date);
+		// form_data.append('tipe_filter', tipe_filter);
+		// form_data.append('profile', profile_chan);
+		// form_data.append('preset', preset);
+		
+		var url = "<?php echo base_url().'tvprogramun3tvvir/audiencebar_by_channel_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
 			"<input type='hidden' name='type' value='" + type + "' />" +
 			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
 			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
@@ -2065,6 +2167,7 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 	var tgl = $('#start_date3').val();
 	var profile_prog = $('#profile_chan3').val();
 	var week = $('#end_date3').val();
+	var filetp = 'excel';
 	
 	form_data.append('tahun', tahun);
 	form_data.append('bulan', bulan);
@@ -2083,6 +2186,60 @@ var search_val = $( "input[aria-controls='example3']" ).val();
 		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
 			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
 			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
+			"<input type='hidden' name='type' value='" + type + "' />" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='field' value='" + field + "' />" +
+			"<input type='hidden' name='tgl' value='" + tgl + "' />" +
+			"<input type='hidden' name='tipe_filter_prog' value='" + tipe_filter_prog + "' />" +
+			"<input type='hidden' name='profile' value='" + profile_prog + "' />" +
+			"<input type='hidden' name='preset' value='" + preset3 + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+	  
+	  $("#program_export").attr("disabled", false);
+	});
+	
+	$('#program_export_csv').on('click', function() {
+		$("#program_export").attr("disabled", true);
+		
+		var check = "True";
+	  
+		var form_data = new FormData();  
+			var type = $('#audiencebar3').val();
+	var preset3 = $('#preset3').val();
+	var field = "Program";
+	var tahun = $('#tahun').val();
+	var tipe_filter_prog = $('#tipe_filter3').val();
+	
+	
+	var bulan = $('#bulan').val();
+	var tgl = $('#start_date3').val();
+	var profile_prog = $('#profile_chan3').val();
+	var week = $('#end_date3').val();
+	var filetp = 'csv';
+	
+	form_data.append('tahun', tahun);
+	form_data.append('bulan', bulan);
+	form_data.append('check', check);
+	form_data.append('tipe_filter_prog', tipe_filter_prog);
+	form_data.append('week', week);
+	form_data.append('type', type);
+	form_data.append('preset', preset3);
+	form_data.append('field', field);
+	form_data.append('cond',"<?php echo $cond; ?>");
+	form_data.append('profile', profile_prog);	
+	form_data.append('tgl', tgl);
+	  
+	  
+		  var url = "<?php echo base_url().'tvprogramun3tvvir/audiencebar_by_program_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
 			"<input type='hidden' name='type' value='" + type + "' />" +
 			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
 			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
@@ -3054,7 +3211,7 @@ function print_excel(){
     }
 }
 
-function chanel_export2(){
+function chanel_export2(filetp){
 	
 	
 	$("#export_channel42").attr("disabled", true);
@@ -3101,6 +3258,7 @@ function chanel_export2(){
 		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
 			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
 			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
 			"<input type='hidden' name='type' value='" + type + "' />" +
 			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
 			"<input type='hidden' name='bulan' value='" + bulan + "' />" +

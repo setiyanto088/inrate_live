@@ -355,6 +355,13 @@ class Viewpattern extends JA_Controller {
       } else {
           $days = NULL; 
       }
+	  
+	    if( ! empty($this->Anti_si($_POST['filetp'])) ) {
+         
+          $filetp = $this->Anti_si($_POST['filetp']);
+      } else {
+          $filetp = NULL; 
+      }
       
       
       if( ! empty($this->Anti_si($_POST['genre'])) ) {
@@ -639,18 +646,24 @@ class Viewpattern extends JA_Controller {
 	 
 	  
 	  $objPHPExcel->setActiveSheetIndex(0);
-	  
-	 
-		header('Content-Type: application/vnd.ms-excel'); // For .xls files
+		
+		if($filetp == 'excel'){
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
             header('Content-Disposition: attachment;filename="Viewing Pattern.xls"');
             header('Cache-Control: max-age=0');
-
+			
             // Save the Excel file to output
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
             $objWriter->save('php://output');
-	 
-			 
-	  
+		}else{
+			
+            header('Content-Disposition: attachment;filename="Viewing Pattern.csv"');
+            header('Cache-Control: max-age=0');
+			
+			 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+		}
+
 	
   }  
   

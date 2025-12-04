@@ -1050,7 +1050,7 @@ class Tvprogramun3tvv extends JA_Controller {
 		$userid = $this->session->userdata('user_id');
 		$params['user_id'] = $userid;
 		
-		
+		$filetp =  $this->Anti_si($this->input->post('filetp',true));
 		$where =  $this->Anti_si($this->input->post('cond',true));
 		$type =  $this->Anti_si($this->input->post('type',true));
 		$tahun=$this->Anti_si($this->input->post('tahun',true));
@@ -1233,91 +1233,175 @@ class Tvprogramun3tvv extends JA_Controller {
 			
 		}
 		
+		
  		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
 		$array_cell = ['B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
 	   'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK'];
 		
-		foreach($scama2 as $adadada){
+		
+		if($filetp == 'excel'){
 			
-			$table_html = $table_html.'<tr><td>'.$adadada['Rangking'].'</td><td>'.$adadada['channel'].'</td>';
-			$ttrs = 0;
-			foreach($day_dates as $day_datess){
-				$table_html = $table_html.'<td>'.$adadada[$day_datess].'</td>';
-				$ttrs++;
+			
+			foreach($scama2 as $adadada){
 				
-				$new_cell = $ttrs;
-				 $objPHPExcel->setActiveSheetIndex(0)
-				 ->setCellValue($array_cell[$new_cell].'2', $day_datess);
+				$table_html = $table_html.'<tr><td>'.$adadada['Rangking'].'</td><td>'.$adadada['channel'].'</td>';
+				$ttrs = 0;
+				foreach($day_dates as $day_datess){
+					$table_html = $table_html.'<td>'.$adadada[$day_datess].'</td>';
+					$ttrs++;
+					
+					$new_cell = $ttrs;
+					 $objPHPExcel->setActiveSheetIndex(0)
+					 ->setCellValue($array_cell[$new_cell].'2', $day_datess);
+				}
+				
+				$table_html = $table_html.'</tr>';
+
 			}
 			
-			$table_html = $table_html.'</tr>';
-
-		}
-		
-		
- 		
-		$table_html = $table_html.'</tr></thead></table>';
-						
- 						
-		$data['table'] = $scama2;
-		$data['date'] = $day_dates;
-		
-		
-		
-		$data['audiencebychannel'] = json_encode($scama2,true); 	
-		
- 
-	   
-	   
-	   $objPHPExcel->getProperties()->setCreator("Unics")
-									 ->setLastModifiedBy("Unics")
-									 ->setTitle("Postbuy Analytics")
-									 ->setSubject("Postbuy Analytics")
-									 ->setDescription("Report Postbuy")
-									 ->setKeywords("Postbuy Analytics")
-									 ->setCategory("Report");
-	   
-	   $objPHPExcel->setActiveSheetIndex(0)
-					->mergeCells('A1:A2')
-					->setCellValue('A1', 'Rangking')
-					->mergeCells('B1:B2')
-					->setCellValue('B1', 'Channel')
-					->mergeCells('C1:'.$array_cell[$ttrs].'1')
-					->setCellValue('C1', $types);
-	   
-	   $it1 = 3;
-	 
-		 foreach($scama2 as $frt){
 			
- 			
-			 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A'.$it1, $frt['Rangking'])
-					->setCellValue('B'.$it1, $frt['channel']);
-					
-					$ttrs = 0;
- 					for($rr=0;$rr<count($day_dates);$rr++){
+			
+			$table_html = $table_html.'</tr></thead></table>';
+							
+							
+			$data['table'] = $scama2;
+			$data['date'] = $day_dates;
+			
+			
+			
+			$data['audiencebychannel'] = json_encode($scama2,true); 	
+			
+	 
+		   
+		   
+		   $objPHPExcel->getProperties()->setCreator("Unics")
+										 ->setLastModifiedBy("Unics")
+										 ->setTitle("Postbuy Analytics")
+										 ->setSubject("Postbuy Analytics")
+										 ->setDescription("Report Postbuy")
+										 ->setKeywords("Postbuy Analytics")
+										 ->setCategory("Report");
+		   
+		   $objPHPExcel->setActiveSheetIndex(0)
+						->mergeCells('A1:A2')
+						->setCellValue('A1', 'Rangking')
+						->mergeCells('B1:B2')
+						->setCellValue('B1', 'Channel')
+						->mergeCells('C1:'.$array_cell[$ttrs].'1')
+						->setCellValue('C1', $types);
+		   
+		   $it1 = 3;
+		 
+			 foreach($scama2 as $frt){
+				
+				
+				 $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A'.$it1, $frt['Rangking'])
+						->setCellValue('B'.$it1, $frt['channel']);
 						
- 						$ttrs++;
-						
-						$new_cell = $ttrs;
-						 $objPHPExcel->setActiveSheetIndex(0)
-						 ->setCellValue($array_cell[$new_cell].$it1, $frt[$day_dates[$rr]]);
-					}
+						$ttrs = 0;
+						for($rr=0;$rr<count($day_dates);$rr++){
+							
+							$ttrs++;
+							
+							$new_cell = $ttrs;
+							 $objPHPExcel->setActiveSheetIndex(0)
+							 ->setCellValue($array_cell[$new_cell].$it1, $frt[$day_dates[$rr]]);
+						}
 
-			$it1++; 
- 		}
+				$it1++; 
+			}
+			
+			$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
+			$objPHPExcel->setActiveSheetIndex(0);
 		
-		$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
- 		$objPHPExcel->setActiveSheetIndex(0);
 		
 			header('Content-Type: application/vnd.ms-excel'); // For .xls files
-            header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
+            header('Content-Disposition: attachment;filename="'.$types.' by Channel.xls"');
             header('Cache-Control: max-age=0');
-
+			
             // Save the Excel file to output
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
             $objWriter->save('php://output');
+		}else{
+			
+			foreach($scama2 as $adadada){
+				
+				$table_html = $table_html.'<tr><td>'.$adadada['Rangking'].'</td><td>'.$adadada['channel'].'</td>';
+				$ttrs = 0;
+				foreach($day_dates as $day_datess){
+					$table_html = $table_html.'<td>'.$adadada[$day_datess].'</td>';
+					$ttrs++;
+					
+					$new_cell = $ttrs;
+					 $objPHPExcel->setActiveSheetIndex(0)
+					 ->setCellValue($array_cell[$new_cell].'1', $day_datess);
+				}
+				
+				$table_html = $table_html.'</tr>';
+
+			}
+			
+			
+			
+			$table_html = $table_html.'</tr></thead></table>';
+							
+							
+			$data['table'] = $scama2;
+			$data['date'] = $day_dates;
+			
+			
+			
+			$data['audiencebychannel'] = json_encode($scama2,true); 	
+			
+	 
+		   
+		   
+		   $objPHPExcel->getProperties()->setCreator("Unics")
+										 ->setLastModifiedBy("Unics")
+										 ->setTitle("Postbuy Analytics")
+										 ->setSubject("Postbuy Analytics")
+										 ->setDescription("Report Postbuy")
+										 ->setKeywords("Postbuy Analytics")
+										 ->setCategory("Report");
+		   
+		   $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'Rangking')
+						->setCellValue('B1', 'Channel');
+		   
+		   $it1 = 2;
+		 
+			 foreach($scama2 as $frt){
+				
+				
+				 $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A'.$it1, $frt['Rangking'])
+						->setCellValue('B'.$it1, $frt['channel']);
+						
+						$ttrs = 0;
+						for($rr=0;$rr<count($day_dates);$rr++){
+							
+							$ttrs++;
+							
+							$new_cell = $ttrs;
+							 $objPHPExcel->setActiveSheetIndex(0)
+							 ->setCellValue($array_cell[$new_cell].$it1, $frt[$day_dates[$rr]]);
+						}
+
+				$it1++; 
+			}
+			
+			$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
+			$objPHPExcel->setActiveSheetIndex(0);
+			
+            header('Content-Disposition: attachment;filename="'.$types.' by Channel.csv"');
+            header('Cache-Control: max-age=0');
+			
+			 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+		}
+
  
 	}
 	

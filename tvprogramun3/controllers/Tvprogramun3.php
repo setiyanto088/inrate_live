@@ -103,6 +103,7 @@ class Tvprogramun3 extends JA_Controller {
 	public function audiencebar_by_day_export(){
 
 		$tahun=$this->Anti_si($this->input->post('tahun'));
+		$filetp =  $this->Anti_si($this->input->post('filetp',true));
 		$nmonth = date("m", strtotime($tahun));
 		$periode = $tahun;
 		
@@ -150,21 +151,29 @@ class Tvprogramun3 extends JA_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('Audience by Day Summary');
  		$objPHPExcel->setActiveSheetIndex(0);
 		
-		header('Content-Type: application/vnd.ms-excel'); // For .xls files
+		if($filetp == 'excel'){
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
             header('Content-Disposition: attachment;filename="Audience by Days.xls"');
             header('Cache-Control: max-age=0');
-
+			
             // Save the Excel file to output
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
             $objWriter->save('php://output');
-		
+		}else{
+			
+            header('Content-Disposition: attachment;filename="Audience by Days.csv"');
+            header('Cache-Control: max-age=0');
+			
+			 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+		}
 			
 	}
 	
 
 	public function audiencebar_by_program_export_tvodm(){
 		
-		
+		$filetp =  $this->Anti_si($this->input->post('filetp',true));
 		$where =  $this->Anti_si($this->input->post('cond',true));
 		$type =  $this->Anti_si($this->input->post('pilihprog',true));
 		$tahun=$this->Anti_si($this->input->post('tahun',true));
@@ -285,22 +294,28 @@ class Tvprogramun3 extends JA_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
  		$objPHPExcel->setActiveSheetIndex(0);
  
-
-			header('Content-Type: application/vnd.ms-excel'); // For .xls files
-            header('Content-Disposition: attachment;filename="Audience by Program TVOD.xls"');
-            header('Cache-Control: max-age=0');
-
-            // Save the Excel file to output
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
-            $objWriter->save('php://output');
- 
-		
+			if($filetp == 'excel'){
+				header('Content-Type: application/vnd.ms-excel'); // For .xls files
+				header('Content-Disposition: attachment;filename="Audience by Program TVOD.xls"');
+				header('Cache-Control: max-age=0');
+				
+				// Save the Excel file to output
+				$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+				$objWriter->save('php://output');
+			}else{
+				
+				header('Content-Disposition: attachment;filename="Audience by Program TVOD.csv"');
+				header('Cache-Control: max-age=0');
+				
+				 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+				$objWriter->save('php://output');
+			}	
 			
 	}
 
 	public function audiencebar_by_program_export(){
 		
-		
+		$filetp =  $this->Anti_si($this->input->post('filetp',true));
 		$where =  $this->Anti_si($this->input->post('cond',true));
 		$type = $this->Anti_si($this->input->post('pilihprog',true));
 		$tahun=$this->Anti_si($this->input->post('tahun',true));
@@ -447,7 +462,8 @@ class Tvprogramun3 extends JA_Controller {
 		
 		$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
  		$objPHPExcel->setActiveSheetIndex(0);
- 
+		
+		if($filetp == 'excel'){
 			header('Content-Type: application/vnd.ms-excel'); // For .xls files
             header('Content-Disposition: attachment;filename="Audience by Program.xls"');
             header('Cache-Control: max-age=0');
@@ -455,7 +471,15 @@ class Tvprogramun3 extends JA_Controller {
             // Save the Excel file to output
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
             $objWriter->save('php://output');
-		
+		}else{
+			
+			 header('Content-Disposition: attachment;filename="Audience by Program.csv"');
+            header('Cache-Control: max-age=0');
+			
+			 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+			
+		}
 			
 	}
 	
@@ -677,6 +701,7 @@ class Tvprogramun3 extends JA_Controller {
 		
 		$where = '';
 		
+		$filetp =  $this->Anti_si($this->input->post('filetp',true));
 		$sess_user_id =  $this->Anti_si($this->input->post('sess_user_id',true));
 		$sess_token =  $this->Anti_si($this->input->post('sess_token',true));
 		$periode=$this->Anti_si($this->input->post('periode',true));
@@ -759,6 +784,8 @@ class Tvprogramun3 extends JA_Controller {
 		}
 			
 				$array_cell = ['C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE'];
+				
+				$array_cell_csv = ['C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE'];
  				
 			    $this->load->library('excel');
 	   
@@ -772,15 +799,16 @@ class Tvprogramun3 extends JA_Controller {
 									 ->setKeywords("Postbuy Analytics")
 									 ->setCategory("Report");
 									 
-									 
-		    $data = array();	
-			  $idx = 0; 
-			  
-			 $i = 1;
-			 $is = 3;
-  			$ik = 0;
+			if($filetp == 'excel'){
+				
+				$data = array();	
+				  $idx = 0; 
+				  
+				 $i = 1;
+				 $is = 3;
+				$ik = 0;
 			
-			 $objPHPExcel->setActiveSheetIndex(0)
+				$objPHPExcel->setActiveSheetIndex(0)
 								->setCellValue('A2', 'Rank')
 								->setCellValue('B2', 'Channel');
 			
@@ -876,20 +904,93 @@ class Tvprogramun3 extends JA_Controller {
 				}
 			
 
-		
-		$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
- 		$objPHPExcel->setActiveSheetIndex(0);
+				
+				$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
+				$objPHPExcel->setActiveSheetIndex(0);
 
 		
-		 
+			
+				header('Content-Type: application/vnd.ms-excel'); // For .xls files
+				header('Content-Disposition: attachment;filename="Monthly Report.xls"');
+				header('Cache-Control: max-age=0');
+				
+				// Save the Excel file to output
+				$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+				$objWriter->save('php://output');
+			}else{
+				
+				$data = array();	
+				  $idx = 0; 
+				  
+				 $i = 1;
+				 $is = 2;
+				$ik = 0;
+				
+				$objPHPExcel->setActiveSheetIndex(0)
+								->setCellValue('A1', 'Rank')
+								->setCellValue('B1', 'Channel');
+				
+				foreach($list as $datax){
+					
+					$objPHPExcel->setActiveSheetIndex(0)
+								->setCellValue('A'.$is, $i)
+								->setCellValue('B'.$is, $datax['CHANNEL']);
+								
+			 
+					$frt = 0;
+					$frts = 0;
+					foreach ($array_period as $dts) {
+								
+								IF($datax['TVR'.$frt] !== '' || $datax['TVR'.$frt] !== NULL ){	
+									$cla = $frts;
+									
+									$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue($array_cell_csv[$frts].'1', 'AUDIENCE_'.$dts)
+									->setCellValue($array_cell_csv[$frts].$is, $datax['AUDIENCE'.$frt]);
+									
+									$s_cell = $array_cell_csv[$frts];
+									
+									$frts++;
+									$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue($array_cell_csv[$frts].'1', 'TVR_'.$dts)
+									->setCellValue($array_cell_csv[$frts].$is, $datax['TVR'.$frt]);
+									$frts++;
+									$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue($array_cell_csv[$frts].'1', 'TVS_'.$dts)
+									->setCellValue($array_cell_csv[$frts].$is, $datax['TVS'.$frt]);
+									$frts++;
+									$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue($array_cell_csv[$frts].'1', 'VIEWER_'.$dts)
+									->setCellValue($array_cell_csv[$frts].$is, $datax['VIEWER'.$frt]);
+									$frts++;
+									$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue($array_cell_csv[$frts].'1', 'REACH_'.$dts)
+									->setCellValue($array_cell_csv[$frts].$is, $datax['REACH'.$frt]);
+									
+									$e_cell = $array_cell_csv[$frts];
+									$frts++;
+									
+									$clb = $frts;
+								}	
+								
+						$frt++;
+					}
+					$is++;
+					$i++;
+					$ik++;
+				}
+			
 
-			header('Content-Type: application/vnd.ms-excel'); // For .xls files
-            header('Content-Disposition: attachment;filename="Monthly Report.xls"');
-            header('Cache-Control: max-age=0');
-
-            // Save the Excel file to output
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
-            $objWriter->save('php://output');
+				
+				$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
+				$objPHPExcel->setActiveSheetIndex(0);
+				
+				header('Content-Disposition: attachment;filename="Monthly Report.csv"');
+				header('Cache-Control: max-age=0');
+				
+				 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+				$objWriter->save('php://output');
+			}
 				
 	}
 	
@@ -1569,6 +1670,7 @@ class Tvprogramun3 extends JA_Controller {
 	
 	function audiencebar_by_channel_export(){
 		
+		$filetp =  $this->Anti_si($this->input->post('filetp',true));
 		$where =  $this->Anti_si($this->input->post('cond',true));
 		$type =  $this->Anti_si($this->input->post('type',true));
 		$check =  $this->Anti_si($this->input->post('check',true));
@@ -1651,49 +1753,61 @@ class Tvprogramun3 extends JA_Controller {
        } else {
           $data_ch = null;
       }
-      
-	   $this->load->library('excel');
-	   
-	   $objPHPExcel = new PHPExcel();
-	   
-	   
-	   
-	   $objPHPExcel->getProperties()->setCreator("Unics")
-									 ->setLastModifiedBy("Unics")
-									 ->setTitle("Postbuy Analytics")
-									 ->setSubject("Postbuy Analytics")
-									 ->setDescription("Report Postbuy")
-									 ->setKeywords("Postbuy Analytics")
-									 ->setCategory("Report");
-	   
-	   $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A1', 'Rangking')
-					->setCellValue('B1', 'Channel')
-					->setCellValue('C1', $types);
-	   
-	   $it1 = 2;
-		 foreach($data_ch as $frt){
-			
-			 $objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A'.$it1, $frt['Rangking'])
-					->setCellValue('B'.$it1, $frt['channel'])
-					->setCellValue('C'.$it1, $frt['Spot']);
-
-			$it1++;
-		}
+	  
 		
-		$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
- 		$objPHPExcel->setActiveSheetIndex(0);
+      
+		   $this->load->library('excel');
+		   
+		   $objPHPExcel = new PHPExcel();
+		   
+		   
+		   
+		   $objPHPExcel->getProperties()->setCreator("Unics")
+										 ->setLastModifiedBy("Unics")
+										 ->setTitle("Postbuy Analytics")
+										 ->setSubject("Postbuy Analytics")
+										 ->setDescription("Report Postbuy")
+										 ->setKeywords("Postbuy Analytics")
+										 ->setCategory("Report");
+		   
+		   $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'Rangking')
+						->setCellValue('B1', 'Channel')
+						->setCellValue('C1', $types);
+		   
+		   $it1 = 2;
+			 foreach($data_ch as $frt){
+				
+				 $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A'.$it1, $frt['Rangking'])
+						->setCellValue('B'.$it1, $frt['channel'])
+						->setCellValue('C'.$it1, $frt['Spot']);
+
+				$it1++;
+			}
+			
+			$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
+			$objPHPExcel->setActiveSheetIndex(0);
 		 
 		//$objWriter->save('/data/opep/srcs/html/tmp_doc/Audience_by_channel.xls');
+			
+		
+		if($filetp == 'excel'){
 			header('Content-Type: application/vnd.ms-excel'); // For .xls files
             header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
             header('Cache-Control: max-age=0');
-
+			
             // Save the Excel file to output
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
             $objWriter->save('php://output');
-
+		}else{
+			
+            header('Content-Disposition: attachment;filename="Audience by Channel.csv"');
+            header('Cache-Control: max-age=0');
+			
+			 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+		}
 	   
 	}
 	

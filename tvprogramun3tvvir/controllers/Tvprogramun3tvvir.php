@@ -202,7 +202,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 		
 		
 	$where = ''; 
-		
+		$filetp =  $this->Anti_si($this->input->post('filetp',true));
 			  $periode = $this->Anti_si($this->input->post('periode',true));
 
 			  $type = $this->Anti_si($this->input->post('type',true));
@@ -622,18 +622,23 @@ class Tvprogramun3tvvir extends JA_Controller {
 			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 			$objPHPExcel->setActiveSheetIndex(0);
 
-			header('Content-Type: application/vnd.ms-excel'); // For .xls files
-            header('Content-Disposition: attachment;filename="Audience by Program.xls"');
-            header('Cache-Control: max-age=0');
+			if($filetp == 'excel'){
+				header('Content-Type: application/vnd.ms-excel'); // For .xls files
+				header('Content-Disposition: attachment;filename="Audience by Program.xls"');
+				header('Cache-Control: max-age=0');
+				
+				// Save the Excel file to output
+				$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+				$objWriter->save('php://output');
+			}else{
+				
+				header('Content-Disposition: attachment;filename="Audience by Program.csv"');
+				header('Cache-Control: max-age=0');
+				
+				 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+				$objWriter->save('php://output');
+			}
 
-            // Save the Excel file to output
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
-            $objWriter->save('php://output');
-		
-		   
-		   //PRINT_R($data);die;
-		   
-		
 		}else{
 			
 			$data['monthdt'] = $this->tvprogramun_model->get_sel_week_month($first_day,$this_day);
@@ -994,70 +999,136 @@ class Tvprogramun3tvvir extends JA_Controller {
 										 ->setKeywords("Postbuy Analytics")
 										 ->setCategory("Report");
 		   
-		   $objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A1', 'Rangking');
-		   $objPHPExcel->getActiveSheet()->mergeCells('A1:A2');
-		    $gos = 1;
-			$gosw = 1;
-			
-			//print_r($mth);die;
-			
-			foreach($mhtj as $ssss){
-				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos]."1", "Week ".$gosw." (".$ssss['PER'].")"); 
-						$goss = $gos+1;
-						$goss2 = $goss+1;
-						$objPHPExcel->getActiveSheet()->mergeCells($array_cell[$gos].'1:'.$array_cell[$goss2].'1');
-						$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue($array_cell[$gos].'2', 'Program')
-						->setCellValue($array_cell[$goss].'2', 'Channel')
-						->setCellValue($array_cell[$goss2].'2', $ggg);
-						$gos++;	
-						$gos++;	
-						$gos++;	
-						$gosw++;
-			}
-			
-
-			$vtl = 3;
-			
-			//print_r($mth);die;
-			
-			foreach($data as $datass){
-				
-				 $objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A'.$vtl, $datass['Rank']);
-						
+		   
+		   
+			if($filetp == 'excel'){
+		   
+			   $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A1', 'Rangking');
+			   $objPHPExcel->getActiveSheet()->mergeCells('A1:A2');
 				$gos = 1;
-			$gosw = 1;
-					foreach($mhtj as $ssss){
-							$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].$vtl, $datass['program'.$gosw]);
+				$gosw = 1;
+				
+				//print_r($mth);die;
+				
+				foreach($mhtj as $ssss){
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos]."1", "Week ".$gosw." (".$ssss['PER'].")"); 
 							$goss = $gos+1;
-							$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$goss].$vtl, $datass['channel'.$gosw]);
-							$gossx = $goss+1;
-							$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gossx].$vtl, $datass['m'.$gosw]);
+							$goss2 = $goss+1;
+							$objPHPExcel->getActiveSheet()->mergeCells($array_cell[$gos].'1:'.$array_cell[$goss2].'1');
+							$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue($array_cell[$gos].'2', 'Program')
+							->setCellValue($array_cell[$goss].'2', 'Channel')
+							->setCellValue($array_cell[$goss2].'2', $ggg);
 							$gos++;	
 							$gos++;	
 							$gos++;	
 							$gosw++;
-					}
+				}
+				
 
-				$vtl++;
+				$vtl = 3;
+				
+				//print_r($mth);die;
+				
+				foreach($data as $datass){
+					
+					 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$vtl, $datass['Rank']);
+							
+					$gos = 1;
+				$gosw = 1;
+						foreach($mhtj as $ssss){
+								$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].$vtl, $datass['program'.$gosw]);
+								$goss = $gos+1;
+								$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$goss].$vtl, $datass['channel'.$gosw]);
+								$gossx = $goss+1;
+								$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gossx].$vtl, $datass['m'.$gosw]);
+								$gos++;	
+								$gos++;	
+								$gos++;	
+								$gosw++;
+						}
+
+					$vtl++;
+				}
+				
+				
+				$objPHPExcel->getActiveSheet()->setTitle('Audience by Program Summary');
+				// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+				$objPHPExcel->setActiveSheetIndex(0);
+
+				header('Content-Type: application/vnd.ms-excel'); // For .xls files
+				header('Content-Disposition: attachment;filename="Audience by Program.xls"');
+				header('Cache-Control: max-age=0');
+
+				// Save the Excel file to output
+				$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+				$objWriter->save('php://output');
+		   
+			}else{
+			   
+			   $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A1', 'Rangking');
+				$gos = 1;
+				$gosw = 1;
+				
+				//print_r($mth);die;
+				
+				foreach($mhtj as $ssss){
+							$goss = $gos+1;
+							$goss2 = $goss+1;
+							$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue($array_cell[$gos].'1', "Program Week ".$gosw." (".$ssss['PER'].")")
+							->setCellValue($array_cell[$goss].'1', "Channel Week ".$gosw." (".$ssss['PER'].")")
+							->setCellValue($array_cell[$goss2].'1', $ggg." Week ".$gosw." (".$ssss['PER'].")");
+							$gos++;	
+							$gos++;	
+							$gos++;	
+							$gosw++;
+				}
+				
+
+				$vtl = 2;
+				
+				//print_r($mth);die;
+				
+				foreach($data as $datass){
+					
+					 $objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$vtl, $datass['Rank']);
+							
+					$gos = 1;
+				$gosw = 1;
+						foreach($mhtj as $ssss){
+								$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].$vtl, $datass['program'.$gosw]);
+								$goss = $gos+1;
+								$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$goss].$vtl, $datass['channel'.$gosw]);
+								$gossx = $goss+1;
+								$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gossx].$vtl, $datass['m'.$gosw]);
+								$gos++;	
+								$gos++;	
+								$gos++;	
+								$gosw++;
+						}
+
+					$vtl++;
+				}
+				
+				
+				$objPHPExcel->getActiveSheet()->setTitle('Audience by Program Summary');
+				// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+				$objPHPExcel->setActiveSheetIndex(0);
+
+				header('Content-Type: application/vnd.ms-excel'); // For .xls files
+				header('Content-Disposition: attachment;filename="Audience by Program.csv"');
+				header('Cache-Control: max-age=0');
+
+				// Save the Excel file to output
+				$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+				$objWriter->save('php://output');
+			   
 			}
-			
-			
-			$objPHPExcel->getActiveSheet()->setTitle('Audience by Program Summary');
-			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-			$objPHPExcel->setActiveSheetIndex(0);
-
-			header('Content-Type: application/vnd.ms-excel'); // For .xls files
-            header('Content-Disposition: attachment;filename="Audience by Program.xls"');
-            header('Cache-Control: max-age=0');
-
-            // Save the Excel file to output
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
-            $objWriter->save('php://output');
-		   
-		   
 		
 		}
 
@@ -2464,7 +2535,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 		$userid = $this->session->userdata('user_id');
 		$params['user_id'] = $userid;
 		
-		
+		$filetp =  $this->Anti_si($this->input->post('filetp',true));
 		$where =  $this->Anti_si($this->input->post('cond',true));
 		$type =  $this->Anti_si($this->input->post('type',true));
 		$tahun=$this->Anti_si($this->input->post('tahun',true));
@@ -2727,7 +2798,11 @@ class Tvprogramun3tvvir extends JA_Controller {
       //PRINT_R($scama2);die;
 		//echo json_encode($data,true);
 	  
-	   
+	   if($filetp == 'excel'){
+			$dsdf = ' \r ';
+	   }else{
+		    $dsdf = ' ';
+	   }
 	   
 	   
 	   $objPHPExcel->getProperties()->setCreator("Unics")
@@ -2746,7 +2821,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 					
 					foreach($data['weekdt'] as $wkwkS){
 						
-						 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos]."1", "Week ".$wkwkS['WEEK']." \r ".$wkwkS['PER']."");
+						 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos]."1", "Week ".$wkwkS['WEEK']."".$dsdf."".$wkwkS['PER']."");
 						 $objPHPExcel->getActiveSheet()->getStyle($array_cell[$gos]."1")->getAlignment()->setWrapText(true);
 						
 					$gos++;	
@@ -2790,13 +2865,22 @@ class Tvprogramun3tvvir extends JA_Controller {
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel->setActiveSheetIndex(0);
 
-		header('Content-Type: application/vnd.ms-excel'); // For .xls files
+		if($filetp == 'excel'){
+			header('Content-Type: application/vnd.ms-excel'); // For .xls files
             header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
             header('Cache-Control: max-age=0');
-
+			
             // Save the Excel file to output
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
             $objWriter->save('php://output');
+		}else{
+			
+            header('Content-Disposition: attachment;filename="Audience by Channel.csv"');
+            header('Cache-Control: max-age=0');
+			
+			 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+		}
 	}
 	
 		public function load_channels()
@@ -3883,7 +3967,7 @@ class Tvprogramun3tvvir extends JA_Controller {
 		$userid = $this->session->userdata('user_id');
 		$params['user_id'] = $userid;
 		
-		
+		$filetp =  $this->Anti_si($this->input->post('filetp',true));
 		$where =  $this->Anti_si($this->input->post('cond',true));
 		$type =  $this->Anti_si($this->input->post('type',true));
 		$tahun=$this->Anti_si($this->input->post('tahun',true));
@@ -4298,7 +4382,12 @@ class Tvprogramun3tvvir extends JA_Controller {
 					->setCellValue('A1', 'Rangking')
 					->setCellValue('B1', 'Channel');
 		   
-					$gos = 1;
+					
+			
+			
+		if($filetp == 'excel'){
+			
+			$gos = 1;
 					foreach($data['monthdt'] as $ssss){
 						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos]."1", $bulanX[$gos]."-".$start_date); 
 						$gos++;	
@@ -4329,15 +4418,63 @@ class Tvprogramun3tvvir extends JA_Controller {
 			$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
 			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 			$objPHPExcel->setActiveSheetIndex(0);
-
-
+			
+			
+			
 			header('Content-Type: application/vnd.ms-excel'); // For .xls files
             header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
             header('Cache-Control: max-age=0');
-
+			
             // Save the Excel file to output
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
             $objWriter->save('php://output');
+		}else{
+			
+			$gos = 1;
+					$gosw = 1;
+					foreach($data['monthdt'] as $ssss){
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos]."1","Channel Week ".$gosw." (".$ssss['PER'].")"); 
+						
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos+1]."1", $tbl_head." Week ".$gosw." (".$ssss['PER'].")"); 
+						$goss = $gos+1;
+						
+						$gos++;	
+						$gos++;	
+						$gosw++;
+					}
+					
+					
+					$gosx = 2;
+					foreach($scama as $scama42s){
+						 $objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A'.$gosx, $scama42s['Rangking']);
+						
+						$gos = 1;
+						$gosw = 1;
+						foreach($data['monthdt'] as $ssss){
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$gos].$gosx, $scama42s['channel'.$gosw]);
+							$goss = $gos+1;
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue($array_cell[$goss].$gosx, $scama42s['w'.$gosw]);
+							$gos++;	
+							$gos++;	
+							$gosw++;
+						}
+						
+						$gosx++;	
+
+					}
+					
+			$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
+			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+			$objPHPExcel->setActiveSheetIndex(0);
+			
+            header('Content-Disposition: attachment;filename="Audience by Channel.csv"');
+            header('Cache-Control: max-age=0');
+			
+			 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+            $objWriter->save('php://output');
+		}
+
 		
 		}else{
 
@@ -4590,18 +4727,27 @@ class Tvprogramun3tvvir extends JA_Controller {
 					
 					
 			
-			$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
-			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
-			$objPHPExcel->setActiveSheetIndex(0);
+				$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
+				// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+				$objPHPExcel->setActiveSheetIndex(0);
 
 
-			header('Content-Type: application/vnd.ms-excel'); // For .xls files
-            header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
-            header('Cache-Control: max-age=0');
-
-            // Save the Excel file to output
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
-            $objWriter->save('php://output');	
+				if($filetp == 'excel'){
+					header('Content-Type: application/vnd.ms-excel'); // For .xls files
+					header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
+					header('Cache-Control: max-age=0');
+					
+					// Save the Excel file to output
+					$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+					$objWriter->save('php://output');
+				}else{
+					
+					header('Content-Disposition: attachment;filename="Audience by Channel.csv"');
+					header('Cache-Control: max-age=0');
+					
+					 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+					$objWriter->save('php://output');
+				}
 			
 			}else{
 				
@@ -4625,15 +4771,23 @@ class Tvprogramun3tvvir extends JA_Controller {
 				$objPHPExcel->getActiveSheet()->setTitle('Audience by Channel Summary');
 				// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 				$objPHPExcel->setActiveSheetIndex(0);
-
-
-				header('Content-Type: application/vnd.ms-excel'); // For .xls files
-				header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
-				header('Cache-Control: max-age=0');
-
-				// Save the Excel file to output
-				$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
-				$objWriter->save('php://output');	
+				
+				if($filetp == 'excel'){
+					header('Content-Type: application/vnd.ms-excel'); // For .xls files
+					header('Content-Disposition: attachment;filename="Audience by Channel.xls"');
+					header('Cache-Control: max-age=0');
+					
+					// Save the Excel file to output
+					$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); // 'Excel5' for .xls
+					$objWriter->save('php://output');
+				}else{
+					
+					header('Content-Disposition: attachment;filename="Audience by Channel.csv"');
+					header('Cache-Control: max-age=0');
+					
+					 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV'); // 'Excel5' for .xls
+					$objWriter->save('php://output');
+				}
 					
 			}
 		}

@@ -179,7 +179,8 @@
 					  <h4 class="title-periode2" style="font-weight: bold;">Result</h4>
 					</div>
 					 <div class="navbar-right" style="padding-right:20px;padding-top:10px;">
-						<button class="button_black" onclick="excel()" id=''><em class="fa fa-download"></em> &nbsp Export</button>
+						<button class="button_black" onclick="excel('csv')" id=''><em class="fa fa-download"></em> &nbsp CSV</button>
+						<button class="button_black" onclick="excel('excel')" id=''><em class="fa fa-download"></em> &nbsp Excel</button>
 					</div>
 				</div>
 
@@ -635,7 +636,7 @@
     }
 }
 	  
-	  function excel(){
+	  function excel(filetp){
 		  
 		  var group="";
 		  
@@ -740,6 +741,7 @@
 		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
 			"<input type='hidden' name='sess_user_id' value='" + user_id + "' />" +
 			"<input type='hidden' name='sess_token' value='" + token + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
 			"<input type='hidden' name='start_date' value='" + start_date + "' />" +
 			"<input type='hidden' name='end_date' value='" + end_date + "' />" +
 			"<input type='hidden' name='genre' value='" + genre + "' />" +

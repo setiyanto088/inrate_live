@@ -221,7 +221,8 @@
 					</div>
 					 <div class="navbar-right" style="padding-right:40px;padding-top:10px;">
 						<button onClick="filter_panel('channel')" class="button_white" id="filter_channel"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
-						<button class="button_black" id='channel_export'><em class="fa fa-download"></em> &nbsp Export</button>
+						<button class="button_black" id='channel_export_csv'><em class="fa fa-download"></em> &nbsp CSV</button>
+						<button class="button_black" id='channel_export'><em class="fa fa-download"></em> &nbsp Excel</button>
 					</div>
 				</div>
 
@@ -342,7 +343,8 @@
 					</div>
 					 <div class="navbar-right" style="padding-right:40px;padding-top:10px;">
 						<button onClick="filter_panel('program')" class="button_white" id="filter_program"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
-						<button class="button_black" id='program_export'><em class="fa fa-download"></em> &nbsp Export</button>
+						<button class="button_black" id='program_export_csv'><em class="fa fa-download"></em> &nbsp CSV</button>
+						<button class="button_black" id='program_export'><em class="fa fa-download"></em> &nbsp Excel</button>
 					</div>
 				</div>
                 <div class="widget-content">
@@ -480,7 +482,8 @@
 					</div>
 					 <div class="navbar-right" style="padding-right:40px;padding-top:10px;">
 						<button onClick="filter_panel('monthly')" class="button_white" id="filter_monthly"><em class="fa fa-filter"></em> &nbsp Show Filter</button>
-						<button class="button_black" id='channel_export_sum'><em class="fa fa-download"></em> &nbsp Export</button>
+						<button class="button_black" id='channel_export_sum_csv'><em class="fa fa-download"></em> &nbsp CSV</button>
+						<button class="button_black" id='channel_export_sum'><em class="fa fa-download"></em> &nbsp Excel</button>
 					</div>
 				</div>
                 <div class="widget-content">
@@ -598,7 +601,8 @@
 					  <h4 class="title-periode5" style="font-weight: bold;"> Monthly TVOD</h4>
 					</div>
 					 <div class="navbar-right" style="padding-right:40px;padding-top:10px;">
-						<button class="button_black" id='tvod_export'><em class="fa fa-download"></em> &nbsp Export</button>
+						<button class="button_black" id='tvod_export_csv'><em class="fa fa-download"></em> &nbsp CSV</button>
+						<button class="button_black" id='tvod_export'><em class="fa fa-download"></em> &nbsp Excel</button>
 					</div>
 				</div>
                 <div class="widget-content">
@@ -663,16 +667,17 @@
 							</div>
 							 <div class="navbar-right" style="padding:10px;padding-right:10px" >
 							 
-								 <div class="col-lg-6">
+								 <div class="col-lg-4">
 									<select class="form-control" name="audiencebarday" id="audiencebarday" onChange="day_view_f()" required >
 										<option value="Audience" selected >Audience</option>
  										<option value="Viewers" >Total Views</option>
 										<option value="Duration" >Duration</option> 
 									</select> 
 								</div>
-								<div class="col-lg-6">
+								<div class="col-lg-8">
 									
-									<button class="button_black" id='print_days'><em class="fa fa-download"></em>&nbsp Export</button>
+									<button class="button_black" id='print_days_csv'><em class="fa fa-download"></em>&nbsp CSV</button>
+									<button class="button_black" id='print_days'><em class="fa fa-download"></em>&nbsp Excel</button>
 									
 								</div>
 							 </div>
@@ -1418,7 +1423,7 @@ var BarChartDaypart = {
 
 $( document ).ready(function() {
 
-
+	
 	$('#week1').change(function(){
 		$('#tgl1').val(0);	
 	});
@@ -1661,15 +1666,35 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 		
 
 		var tahun = $('#tahun').val();
+		var filetp = 'excel';
 			
 		var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_day_export'; ?>";
 		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
 			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
 			"</form>");
 		  $('body').append(form);
 		  form.submit();
 	  
 	});
+
+	$('#print_days_csv').on('click', function() {
+		
+
+		var tahun = $('#tahun').val();
+		var filetp = 'csv';
+			
+		var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_day_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+	  
+	});
+	
+	
 		
 	$('#channel_export').on('click', function() {
  	  
@@ -1682,6 +1707,58 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 		}
 	  
 		//var form_data = new FormData();  
+		var type = $('#audiencebar').val();
+		var tahun = $('#tahun').val();
+		var bulan = $('#bulan').val();
+		var week = $('#week1').val();
+		var tgl = $('#tgl1').val();
+		var tipe_filter = $('#tipe_filter').val();
+		var profile_chan = $('#profile_chan').val();
+		var check = check;
+		var filetp = 'excel';
+		
+		var filter = table4.search()
+					
+		
+		var cond = filter;
+		var check = check;
+		var type = type;
+		var tahun = tahun;
+		var bulan = bulan;
+		var week = week;
+		var tgl = tgl;
+		var tipe_filter = tipe_filter;
+		var profile = profile_chan;
+		var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_channel_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='cond' value='" + filter + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='type' value='" + type + "' />" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='tgl' value='" + tgl + "' />" +
+			"<input type='hidden' name='tipe_filter' value='" + tipe_filter + "' />" +
+			"<input type='hidden' name='profile' value='" + profile + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+	  
+	});
+	
+	$('#channel_export_csv').on('click', function() {
+ 	  
+		if($('#fta_channel').is(':checked')){
+		
+			var check = "True";
+		}else{
+			var check = "False";
+		
+		}
+	  
+		//var form_data = new FormData();  
+		var filetp = 'csv';
 		var type = $('#audiencebar').val();
 		var tahun = $('#tahun').val();
 		var bulan = $('#bulan').val();
@@ -1706,6 +1783,7 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 		var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_channel_export'; ?>";
 		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
 			"<input type='hidden' name='cond' value='" + filter + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
 			"<input type='hidden' name='check' value='" + check + "' />" +
 			"<input type='hidden' name='type' value='" + type + "' />" +
 			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
@@ -1739,6 +1817,7 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 	var tahun = $('#tahun').val();
 	var channel_prog = $('#channel_prog').val();
  	var tipe_filter_prog = "live";
+	var filetp = 'excel';
 	
  	
 	var tgl1mr = $('#tgl1mr').val();
@@ -1764,6 +1843,65 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 			"<input type='hidden' name='sess_user_id' value='" + user_id + "' />" +
 			"<input type='hidden' name='sess_token' value='" + token + "' />" +
 			"<input type='hidden' name='periode' value='<?php echo $tahunselected ?>' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
+			"<input type='hidden' name='pilihprog' value='" + type + "' />" +
+			"<input type='hidden' name='tgl1mr' value='" + tgl1mr + "' />" +
+			"<input type='hidden' name='tgl2mr' value='" + tgl2mr + "' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='channel' value='" + channel_prog + "' />" +
+			"<input type='hidden' name='profile' value='" + profile_prog + "' />" +
+			"<input type='hidden' name='tipe_filter_prog' value='" + tipe_filter_prog + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+	  
+	});
+	
+	$('#channel_export_sum_csv').on('click', function() {
+ 	  
+		if($('#fta_channel8').is(':checked')){
+		
+		var check = "True";
+	}else{
+		var check = "False";
+	
+	}
+	
+	var user_id = $.cookie(window.cookie_prefix + "user_id");
+    var token = $.cookie(window.cookie_prefix + "token");   
+	
+	var form_data = new FormData();  
+	var type = $('#product_program').val();
+	var field = "Program";
+	var tahun = $('#tahun').val();
+	var channel_prog = $('#channel_prog').val();
+ 	var tipe_filter_prog = "live";
+	var filetp = 'csv';
+ 	
+	var tgl1mr = $('#tgl1mr').val();
+	var tgl2mr = $('#tgl2mr').val();
+	var profile_prog = $('#profile_chan8').val();
+	
+		
+	var form_data = new FormData();
+	
+	form_data.append('sess_user_id', user_id);
+	form_data.append('sess_token', token);
+	form_data.append('periode', '<?php echo $tahunselected ?>');
+	form_data.append('pilihprog', type);
+	form_data.append('tgl1mr', tgl1mr);
+	form_data.append('tgl2mr', tgl2mr);
+	form_data.append('check', check);
+	form_data.append('channel', channel_prog);
+	form_data.append('profile', profile_prog);
+	form_data.append('tipe_filter_prog', tipe_filter_prog);
+	  
+ 	  var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_channel_export_sum'; ?>";
+		var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='sess_user_id' value='" + user_id + "' />" +
+			"<input type='hidden' name='sess_token' value='" + token + "' />" +
+			"<input type='hidden' name='periode' value='<?php echo $tahunselected ?>' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
 			"<input type='hidden' name='pilihprog' value='" + type + "' />" +
 			"<input type='hidden' name='tgl1mr' value='" + tgl1mr + "' />" +
 			"<input type='hidden' name='tgl2mr' value='" + tgl2mr + "' />" +
@@ -1795,7 +1933,7 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 		var tgl = $('#tgl2').val();
 		var channel_prog = $('#channel_prog').val();
 		var tipe_filter = $('#tipe_filter_prog').val();
-		
+		var filetp = 'excel';
 		
 		var profile_prog = $('#profile_prog').val();
 		var check = check;
@@ -1821,6 +1959,70 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 		var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_program_export'; ?>";
 		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
 			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='pilihprog' value='" + type + "' />" +
+			"<input type='hidden' name='field' value='" + field + "' />" +
+			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
+			"<input type='hidden' name='periode' value='<?php echo $tahunselected ?>' />" +
+			"<input type='hidden' name='profile' value='" + profile_prog + "' />" +
+			"<input type='hidden' name='tgl' value='" + tgl + "' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='tipe_filter' value='" + tipe_filter + "' />" +
+			"<input type='hidden' name='channel_prog' value='" + channel_prog + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+		  
+	  
+	});
+	
+	$('#program_export_csv').on('click', function() {
+ 	  
+	  	if($('#fta_program').is(':checked')){
+		
+			var check = "True";
+		}else{
+			var check = "False";
+		
+		}
+	  
+		var form_data = new FormData();  
+		var type = $('#product_program').val();
+		var field = "Program";
+		var tahun = $('#tahun').val();
+		var bulan = $('#bulan').val();
+		var tgl = $('#tgl2').val();
+		var channel_prog = $('#channel_prog').val();
+		var tipe_filter = $('#tipe_filter_prog').val();
+		var filetp = 'csv';
+		
+		var profile_prog = $('#profile_prog').val();
+		var check = check;
+		
+		var filter = table3.search()
+			
+		var week = $('#week2').val();
+		
+		
+		form_data.append('tahun', tahun);
+		form_data.append('bulan', bulan);
+		form_data.append('week', week);
+ 		form_data.append('pilihprog', type);
+		form_data.append('field', field);
+		form_data.append('cond',"<?php echo $cond; ?>");
+		form_data.append('periode',"<?php echo $tahunselected ?>");
+		form_data.append('profile', profile_prog);	
+		form_data.append('tgl', tgl);
+		form_data.append('check', check);
+		form_data.append('tipe_filter', tipe_filter);
+		form_data.append('channel_prog', channel_prog);
+		
+		var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_program_export'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
 			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
 			"<input type='hidden' name='week' value='" + week + "' />" +
 			"<input type='hidden' name='pilihprog' value='" + type + "' />" +
@@ -1858,7 +2060,7 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 		var tgl = $('#tgl2').val();
 		var channel_prog = $('#channel_prog').val();
 		var tipe_filter = $('#tipe_filter_prog').val();
-		
+		var filetp = 'excel';
 		
 		var profile_prog = $('#profile_prog').val();
 		var check = check;
@@ -1870,6 +2072,56 @@ var search_val8 = $( "input[aria-controls='example48']" ).val();
 	  var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_program_export_tvodm'; ?>";
 		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
 			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
+			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
+			"<input type='hidden' name='week' value='" + week + "' />" +
+			"<input type='hidden' name='pilihprog' value='" + type + "' />" +
+			"<input type='hidden' name='field' value='" + field + "' />" +
+			"<input type='hidden' name='cond' value='<?php echo $cond; ?>' />" +
+			"<input type='hidden' name='periode' value='<?php echo $tahunselected ?>' />" +
+			"<input type='hidden' name='profile' value='" + profile_prog + "' />" +
+			"<input type='hidden' name='tgl' value='" + tgl + "' />" +
+			"<input type='hidden' name='check' value='" + check + "' />" +
+			"<input type='hidden' name='tipe_filter' value='" + tipe_filter + "' />" +
+			"<input type='hidden' name='channel_prog' value='" + channel_prog + "' />" +
+			"</form>");
+		  $('body').append(form);
+		  form.submit();
+
+	  
+	});
+	
+	$('#tvod_export_csv').on('click', function() {
+ 	  
+	  	if($('#fta_program').is(':checked')){
+		
+			var check = "True";
+		}else{
+			var check = "False";
+		
+		}
+	  
+		var form_data = new FormData();  
+		var type = $('#product_program').val();
+		var field = "Program";
+		var tahun = $('#tahun').val();
+		var bulan = $('#bulan').val();
+		var tgl = $('#tgl2').val();
+		var channel_prog = $('#channel_prog').val();
+		var tipe_filter = $('#tipe_filter_prog').val();
+		var filetp = 'csv';
+		
+		var profile_prog = $('#profile_prog').val();
+		var check = check;
+		
+		var filter = table3.search()
+			
+		var week = $('#week2').val();
+	  
+	  var url = "<?php echo base_url().'tvprogramun3/audiencebar_by_program_export_tvodm'; ?>";
+		 var form = $("<form action='" + url + "' method='post' target='_blank'>" +
+			"<input type='hidden' name='tahun' value='" + tahun + "' />" +
+			"<input type='hidden' name='filetp' value='" + filetp + "' />" +
 			"<input type='hidden' name='bulan' value='" + bulan + "' />" +
 			"<input type='hidden' name='week' value='" + week + "' />" +
 			"<input type='hidden' name='pilihprog' value='" + type + "' />" +

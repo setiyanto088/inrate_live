@@ -935,7 +935,8 @@ class Dashboarddata extends JA_Controller {
 					$status_array = ['Not Process','Process Success','Process Fail','File Ready to Process','On Queue','On Progress','Checking File'];
 					
 					$process_status = ['Process Incomplete','Process Success','Process Error','On Process','Process Done with Error'];
-					$process_color = ['','green','red','yellow','orange'];
+					$process_color = ['','#5ee6a2','#e0675e','yellow','orange'];
+					$process_color_p = ['','green','#red','yellow','orange'];
 					
 					$array_jobs_detail = [['SPLIT_EPG','Split EPG'],['CLEANSING_CDR','Cleansing CDR'],['SPLIT_CDR','Split CDR'],['JOIN_CDR_EPG','Join CDR EPG'],['RATING_PERMINUTES','Rating per Minutes'],['TVCC','TVCC'],['MEDIAPLAN','TVPC'],['BEFORE_AFTER','Summart Before After'],['MIGRATION','Channel Migration'],['AUDIENCE','Channel Audience'],['DASHBOARD','Dashboard']];
 					
@@ -970,9 +971,8 @@ class Dashboarddata extends JA_Controller {
 								}else{
 									$datad = explode("||",$details_d[0]);
 									$fn = explode("/",$datad[0]);
-									$data_ch[$ik]['load_epg'] = $process_status[$datax['LOAD_EPG']].'<br>'.end($fn).' '.$datad[1].' Rows, '.round(($datad[2]/1024),2).' KB ';
-									
 									$detail_loads = explode("||",$datax['LOAD_EPG_NOTE']);
+									$data_ch[$ik]['load_epg'] = $process_status[$datax['LOAD_EPG']].'<br>'.$detail_loads[0].'<br>'.end($fn).' '.$datad[1].' Rows, '.round(($datad[2]/1024),2).' KB ';
 									
 									$data_ch[$ik]['load_epg_time'] = $detail_loads[1].' - '.$detail_loads[2];
 									$data_ch[$ik]['load_epg_color'] = $process_color[$datax['LOAD_EPG']];
